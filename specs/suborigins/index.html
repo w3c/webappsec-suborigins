@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Subresource Integrity</title>
+  <script src='https://www.w3.org/Tools/respec/respec-w3c-common' class='remove'></script>
+  <script class='remove'>
+    var respecConfig = {
+        // specification status (e.g. WD, LCWD, NOTE, etc.). If in doubt use ED.
+        // Member-SUBM
+        specStatus:           "ED",
+
+        // the specification's short name, as in http://www.w3.org/TR/short-name/
+        shortName:            "suborigins",
+
+        // if the specification's copyright date is a range of years, specify
+        // the start date here:
+        copyrightStart:       "2014",
+
+        // if there a publicly available Editor's Draft, this is the link
+        edDraftURI:           "http://w3c.github.io/webappsec/specs/suborigins/",
+
+        // editors, add as many as you like
+        // only "name" is required
+        editors:  [
+            { name: "Joel Weinberger", url: "mailto:jww@google.com", company: "Google, Inc.", companyURL: "https://google.com/" },
+        ],
+
+        // name of the WG
+        wg:           "Web Application Security Working Group",
+
+        // URI of the public WG page
+        wgURI:        "http://www.w3.org/2011/webappsec/",
+
+        // name (with the @w3c.org) of the public mailing to which comments are due
+        wgPublicList: "public-webappsec",
+        subjectPrefix: "[Suborigins]",
+
+        // URI of the patent status for this WG, for Rec-track documents
+        // !!!! IMPORTANT !!!!
+        // This is important for Rec-track documents, do not copy a patent URI from a random
+        // document unless you know what you're doing. If in doubt ask your friendly neighbourhood
+        // Team Contact.
+        wgPatentURI:  "http://www.w3.org/2004/01/pp-impl/49309/status",
+
+        localBiblio: {
+          "CSP": {
+            title: "Content Security Policy 1.1",
+            href: "http://w3.org/TR/CSP11",
+            authors: [
+              "Adam Barth",
+              "Dan Veditz",
+              "Mike West"
+            ],
+            status: "Working Draft",
+            publisher: "W3C"
+          },
+        }
+    };
+  </script>
+</head>
+<body>
+<section id="abstract">
+  <p>This specification defines a mechanism by which a server may specify a web
+resource response a new origin in the user agent which is a combination of the
+server’s origin and a specified namespace.</p>
+</section>
+
+<section id="sotd">
+  <p>A list of changes to this document may be found at
+<a href="https://github.com/w3c/webappsec">https://github.com/w3c/webappsec</a>.</p>
+</section>
+
+<section class="informative">
+  <h2 id="introduction">Introduction</h2>
+
+  <p>Currently, web applications are almost always compartmentalized by using
+separate host names to establish separate web origins. This is useful for
+helping to prevent XSS and other cross-origin attacks, but has many unintended
+consequences. For example, it causes latency due to additional DNS lookups,
+removes the ability to use single-origin features (such as the
+history.pushState API), and creates cryptic host name changes in the user
+experience. Perhaps most importantly, it results in an extremely inflexible
+architecture that, once rolled out, cannot be easily and transparently changed
+later on.</p>
+
+  <p>There are several mechanisms for reducing the attack surface for XSS without
+creating separate host-name based origins, but each pose their own problems.
+Per-page Suborigins is an attempt to fill some of those gaps. Two of the most
+notable mechanisms are Sandboxed Frames and Content Security Policy (CSP). Both
+are powerful but have shortcomings and there are many external developers
+building legacy applications that find they cannot use those tools.</p>
+
+  <p>Sandboxed frames can be used to completely separate untrusted content, but they
+pose a large problem for containing trusted but potentially buggy code because
+it is very difficult, by design, for them to communicate with other frames. The
+synthetic origins assigned in a sandboxed frame are random and unpredictable,
+making the use of postMessage and CORS difficult. Moreover, because they are by
+definition unique origins, with no relationship to the original origin,
+designing permissions for them to access resources of the original origin would
+be difficult.</p>
+
+  <p>Content Security Policy is also promising but is generally incompatible with
+current website design. Many notable companies found it impractical to retrofit
+most of their applications with it. On top of this, until all applications
+hosted within a single origin are simultaneously put behind CSP, the mechanism
+offers limited incremental benefits, which is especially problematic for
+companies with large portfolios of disparate products all under the same domain.</p>
+
+  <section>
+    <h3 id="goals">Goals</h3>
+
+    <ol>
+      <li>
+        <p>Provide a way for different applications hosted at the same real origin to
+separate their content into separate logical origins. For example,
+https://foobar.com/application and https://foobar.com/widget, today, are, by
+definition, in the same origin, even if they’re different applications. Thus an
+XSS at https://foobar.com/application means an XSS at
+https://foobar.com/widget, even if https://foobar.com/widget is “protected” by
+a strong Content Security Policy.</p>
+      </li>
+      <li>
+        <p>Similarly, provide a way for content authors to split their applications
+into logical modules with origin level separation without using different real
+origins. Content authors should not have to choose between putting all of their
+content in the same origin, on different real origins, or putting content in
+anonymous unique origins (sandboxes).</p>
+      </li>
+      <li>
+        <p>Provide a way for content authors to attribute different permissions such as
+cookie access, storage access, etc. to different suborigins.</p>
+      </li>
+    </ol>
+
+    <p class="issue" data-number="1">Not sure how to actually refer to ‘real origins’. This is a terrible name, and
+we need a better way to talk about them. Maybe physical origin? Traditional
+origin? (jww)</p>
+  </section>
+  <!-- /Introduction::Goals -->
+
+  <section>
+    <h3 id="use-casesexamples">Use Cases/Examples</h3>
+
+    <p>We see effectively three different use cases for Per-page Suborigins:</p>
+
+    <ol>
+      <li>
+        <p>Separating distinct applications that happen to be served from the same
+domain, but do not need to extensively interact with other content. Examples
+include marketing campaigns, simple search UIs, and so on. This use requires
+very little engineering effort and faces very few constraints; the applications
+may use XMLHttpRequest and postMessage to communicate with their host domain as
+required.</p>
+      </li>
+      <li>
+        <p>Allowing for modularity within a larger web application by splitting the
+functional components into different suborigins. For example, Gmail might put
+the contacts widget, settings tab, and HTML message views in separate Per-page
+Suborigins. Such deployments may require relatively modest refactorings to
+switch to postMessage and CORS where direct DOM access and same-origin
+XMLHttpRequest are currently used, but we believe doing so is considerably
+easier than retrofitting CSP onto arbitrary code bases and can be done very
+incrementally.</p>
+      </li>
+      <li>
+        <p>Similar to (2), applications with many users can split information relating
+to different users into their own suborigin. For example, Twitter might put
+each user profile into a unique suborigin so that an XSS within one profile
+cannot be used to immediately infect other users or read their personal
+messages stored within the account.</p>
+      </li>
+    </ol>
+
+  </section>
+  <p><!-- /Introduction::Use Cases/Examples --></p>
+</section>
+<p><!-- /Introduction --></p>
+
+</body>
+</html>
