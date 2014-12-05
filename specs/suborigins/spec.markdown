@@ -121,32 +121,71 @@ This section defines several terms used throughout the document.
 </section> <!-- /Conformance -->
 
 <section>
+### Framework
+
+<section>
 ### Defining a Suborigin
 
-</section> <!-- /Defining a Suborigin -->
+As per the origin spec...
 
 <section>
 ### Serialization
 
-</section> <!-- /Serialization -->
+</section> <!-- /Framework::Defining a Suborigin::Serialization -->
+
+<section>
+### Accessing the Suborigin in JavaScript
+
+</section> <!-- /Framework::Defining a Suborigin::Accessing the Suborigin in JavaScript -->
+
+</section> <!-- /Framework::Defining a Suborigin -->
+
+<section>
+### Access Control
 
 <section>
 ### CORS
 
-</section> <!-- /CORS -->
+</section> <!-- /Framework::Access Control::CORS -->
 
 <section>
-### Permissions
+### Postmessage
 
-This section should probably be called something else other than 'permissions'
-which is an exceedingly ambiguous term. (jww)
-{:.issue}
-</section> <!-- /Permissions -->
+</section> <!-- /Framework::Access Control::Postmessage -->
 
 <section>
-### Validating and Checking Origins and Suborigins
+### Workers
 
-</section> <!-- /Validating and Checking Origins and Suborigins -->
+</section> <!-- /Framework::Access Control::Workers -->
+
+</section> <!-- /Framework::Access Control -->
+
+</section> <!-- /Framework -->
+
+<section>
+### Impact on Web Platform
+
+<section>
+### Examples
+
+</section> <!-- /Impact on Web Platform::Examples -->
+
+<section>
+### Relationship with Sensitive Permissions
+
+DOM storage, cookies, document.domain, etc.
+
+</section> <!-- /Impact on Web Platform::Relationship with Sensitive Permissions -->
+
+</section> <!-- /Impact on Web Platform -->
+
+<section>
+### Algorithms
+
+Similar to comparison and serialization sections in Origin Spec:
+https://tools.ietf.org/html/rfc6454
+
+</section> <!-- /Algorithms -->
 
 <section>
 ### Security Considerations
@@ -160,5 +199,10 @@ which is an exceedingly ambiguous term. (jww)
 ### Presentation of Suborigins to Users
 
 </section> <!-- /Security Considerations::Presentation of Suborigins to Users -->
+
+<section>
+### Not Overthrowing Same-origin Policy
+
+</section> <!-- /Security Considerations::Not Overthrowing Same-origin Policy -->
 
 </section> <!-- /Security Considerations -->
