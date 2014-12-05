@@ -10,7 +10,7 @@ A list of changes to this document may be found at
 </section>
 
 <section class="informative">
-## Introduction
+### Introduction
 
 Currently, web applications are almost always compartmentalized by using
 separate host names to establish separate web origins. This is useful for
@@ -150,5 +150,15 @@ which is an exceedingly ambiguous term. (jww)
 
 <section>
 ### Security Considerations
+
+<section>
+### Data leakage
+
+</section> <!-- /Security Considerations::Data leakage -->
+
+<section>
+### Presentation of Suborigins to Users
+
+</section> <!-- /Security Considerations::Presentation of Suborigins to Users -->
 
 </section> <!-- /Security Considerations -->
