@@ -190,6 +190,9 @@ are encouraged to optimize.</p>
 
     <p>This section defines several terms used throughout the document.</p>
 
+    <p>The term <dfn>origin</dfn> is defined in the Origin specification.
+[[!RFC6454]]</p>
+
   </section>
   <p><!-- /Conformance::Key Concepts and Terminology --></p>
 </section>
@@ -201,7 +204,37 @@ are encouraged to optimize.</p>
   <section>
     <h3 id="defining-a-suborigin">Defining a Suborigin</h3>
 
-    <p>As per the origin spec…</p>
+    <p>Origins are a mechanism for user agents to group URIs into protection domains.
+Two URIs are in the same origin if they share the same scheme, host, and port.
+If URIs are in the same origin, then they share the same authority and can
+access all of each others resources.</p>
+
+    <p>This has been a successful mechanism for privilege separation on the Web.
+However, it does limit the ability of a URI to separate itself into a new
+protection domain as it automatically shares authority with all other identical
+origins, which are defined by physical, rather than programatic, properties.
+While it is possible to setup unique domains and ports different parts of the
+same application (scheme is more difficult to separate out), there are a diverse
+set of practical problems in doing so.</p>
+
+    <p>Suborigins provide a mechanism for creating this type of separation
+programatically. If either of two URIs provide a <dfn>suborigin namespace</dfn>,
+then the two URIs are in the same origin if and only if they share the same
+scheme, host, port, and suborigin namespace.</p>
+
+    <p>Q. In today’s Web, can’t a site get the effective same protection domain simply
+by hosting their content at different subdomains?</p>
+
+    <p>A. Yes, but there are many practical reasons why this is difficult.</p>
+
+    <section>
+      <h3 id="examples">Examples</h3>
+
+      <p class="example highlight">Google runs Search and Maps on the same domain, respectively
+https://www.google.com/ and https://www.google.com.</p>
+
+    </section>
+    <p><!-- /Framework::Defining a Suborigin::Examples --></p>
 
     <section>
       <h3 id="serialization">Serialization</h3>
@@ -228,10 +261,10 @@ are encouraged to optimize.</p>
     <p><!-- /Framework::Access Control::CORS --></p>
 
     <section>
-      <h3 id="postmessage">Postmessage</h3>
+      <h3 id="postmessage">postMessage</h3>
 
     </section>
-    <p><!-- /Framework::Access Control::Postmessage --></p>
+    <p><!-- /Framework::Access Control::postMessage --></p>
 
     <section>
       <h3 id="workers">Workers</h3>
@@ -249,7 +282,7 @@ are encouraged to optimize.</p>
   <h3 id="impact-on-web-platform">Impact on Web Platform</h3>
 
   <section>
-    <h3 id="examples">Examples</h3>
+    <h3 id="examples-1">Examples</h3>
 
   </section>
   <p><!-- /Impact on Web Platform::Examples --></p>

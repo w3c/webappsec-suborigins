@@ -117,6 +117,9 @@ are encouraged to optimize.
 
 This section defines several terms used throughout the document.
 
+The term <dfn>origin</dfn> is defined in the Origin specification.
+[[!RFC6454]]
+
 </section> <!-- /Conformance::Key Concepts and Terminology -->
 </section> <!-- /Conformance -->
 
@@ -126,7 +129,37 @@ This section defines several terms used throughout the document.
 <section>
 ### Defining a Suborigin
 
-As per the origin spec...
+Origins are a mechanism for user agents to group URIs into protection domains.
+Two URIs are in the same origin if they share the same scheme, host, and port.
+If URIs are in the same origin, then they share the same authority and can
+access all of each others resources.
+
+This has been a successful mechanism for privilege separation on the Web.
+However, it does limit the ability of a URI to separate itself into a new
+protection domain as it automatically shares authority with all other identical
+origins, which are defined by physical, rather than programatic, properties.
+While it is possible to setup unique domains and ports different parts of the
+same application (scheme is more difficult to separate out), there are a diverse
+set of practical problems in doing so.
+
+Suborigins provide a mechanism for creating this type of separation
+programatically. If either of two URIs provide a <dfn>suborigin namespace</dfn>,
+then the two URIs are in the same origin if and only if they share the same
+scheme, host, port, and suborigin namespace.
+
+Q. In today's Web, can't a site get the effective same protection domain simply
+by hosting their content at different subdomains?
+
+A. Yes, but there are many practical reasons why this is difficult.
+
+<section>
+### Examples
+
+Google runs Search and Maps on the same domain, respectively
+https://www.google.com/ and https://www.google.com.
+{:.example.highlight}
+
+</section> <!-- /Framework::Defining a Suborigin::Examples -->
 
 <section>
 ### Serialization
@@ -149,9 +182,9 @@ As per the origin spec...
 </section> <!-- /Framework::Access Control::CORS -->
 
 <section>
-### Postmessage
+### postMessage
 
-</section> <!-- /Framework::Access Control::Postmessage -->
+</section> <!-- /Framework::Access Control::postMessage -->
 
 <section>
 ### Workers
