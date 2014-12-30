@@ -143,14 +143,17 @@ same application (scheme is more difficult to separate out), there are a diverse
 set of practical problems in doing so.
 
 Suborigins provide a mechanism for creating this type of separation
-programatically. If either of two URIs provide a <dfn>suborigin namespace</dfn>,
-then the two URIs are in the same origin if and only if they share the same
-scheme, host, port, and suborigin namespace.
+programatically. Any resources may provide, in a manner detailed below, a string
+value <dfn>suborigin namespace</dfn>.  If either of two URIs provide a suborigin
+namespace, then the two URIs are in the same origin if and only if they share
+the same scheme, host, port, and suborigin namespace.
 
 Q. In today's Web, can't a site get the effective same protection domain simply
 by hosting their content at different subdomains?
 
 A. Yes, but there are many practical reasons why this is difficult.
+
+[suborigin namespace]: #dfn-suborigin-namespace
 
 <section>
 ### Examples
@@ -190,8 +193,42 @@ nature of suborigins.
 </section> <!-- /Framework::Defining a Suborigin::Examples -->
 
 <section>
+### Relationship of Suborigins to Origins
+
+Suborigins, in fact, do not provide any new authority to resources. Suborigins
+simply provide <em>an additional way to construct Origins</em>. That is,
+Suborigins do not supercede Origins or provide any additional authority above
+Origins. From the user agent's  perspective, two resources in different
+Suborigins are simply in different Origins, and the relationship between the two
+resources should be the same as any other two differing origins as described in
+[[!RFC6454]].  Thus, this specification is intended to provide the following two
+important properties:
+
+* The rules on how Suborigins are defined.
+* The rules on how Suborigins are tracked.
+
+</section> <!-- /Framework::Defining a Suborigin::Relationship of Suborigins to Origins-->
+
+<section>
 ### Serialization
 
+At an abstract level, a suborigin consists of a scheme, host, and port of a
+traditional origin, plus a [suborigin namespace][]. However, as mentioned above,
+suborigins are intended to fit within the framework of [[!RFC6454]]. Therefore,
+this specification provides a way of serializing a Suborigin bound resource into
+a traditional Origin. This is done by inserting the suborigin namespace into the
+scheme space of the Origin, thus creating a new scheme but maintaining all of
+the information about both the original scheme and the suborigin namespace. This
+is done by inserting a `+` into the URI after the scheme, followed by the
+suborigin namespace, then followed by the rest of the URI starting with `:`.
+
+For example, if the resource is hosted at `https://example.com/` in the
+suborigin namespace `profile`, this would be serialized as
+`https+profile://example.com/`.
+
+Similarly, if a resource is hosted at `https://example.com:8080/` in the
+suborigin namespace `separate`, this would be serialized as
+`https+separate://example.com:8080/`.
 </section> <!-- /Framework::Defining a Suborigin::Serialization -->
 
 <section>
