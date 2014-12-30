@@ -55,6 +55,16 @@
             status: "Working Draft",
             publisher: "W3C"
           },
+          "PrivilegeSeparation": {
+            title: "Privilege Separation in HTML5 Applications",
+            href: "https://www.usenix.org/system/files/conference/usenixsecurity12/sec12-final168.pdf",
+            authors: [
+              "Devdatta Akhawe",
+              "Prateek Saxena",
+              "Dawn Song"
+            ],
+            publisher: "USENIX"
+          },
         }
     };
   </script>
@@ -230,8 +240,37 @@ by hosting their content at different subdomains?</p>
     <section>
       <h3 id="examples">Examples</h3>
 
-      <p class="example highlight">Google runs Search and Maps on the same domain, respectively
-https://www.google.com/ and https://www.google.com.</p>
+      <h4 id="separate-applications-same-origin">Separate applications, same origin</h4>
+      <p>Google runs Search and Maps on the same domain, respectively
+<code>https://www.google.com</code> and <code>https://www.google.com/maps</code>. While these two
+applications are fundamentally separate, there are many reasons for hosting them
+on the same origin, including historical links, branding, and performance.
+However, from security perspective, this means that a compromise of one
+application is a compromise of the other since the only security boundary in the
+browser is the origin, and both applications are hosted on the same origin.
+Thus, even if Google Search were to successful implement a strong Content
+Security Policy [[CSP]], if Google Maps were to have an XSS vulnerability, it
+would be equivalent to having an XSS on Google Search as well, negating Google
+Search’s security measures.</p>
+
+      <h4 id="separation-within-a-single-application">Separation within a single application</h4>
+      <p>Separation is sometimes desirable within a single application because of the
+presence of untrusted data. Take, for example, a social networking site with
+many different user profiles. Each profile contains lots of untrusted content
+created by a single user but it’s all hosted on a single origin. In order to
+separate untrusted content, the application might want a way to put all profile
+information into separate logical origins while all being hosted at the same
+physical origin. Furthermore, all content within a profile should be able to
+access all other content within the same origin, even if displayed in unique
+frames.</p>
+
+      <p>This type of privilege separation within an application has been shown to be
+valuable and reasonable for applications to do by work such as
+Privilege Separation in HTML5 Applications by Akhawe et al
+[[PrivilegeSeparation]]. However, these systems rely on cross frame messaging
+using <code>postMessage</code> even for content in the same trust boundary since they
+utilize <code>sandbox</code>. This provides much of the motivation for the named container
+nature of suborigins.</p>
 
     </section>
     <p><!-- /Framework::Defining a Suborigin::Examples --></p>

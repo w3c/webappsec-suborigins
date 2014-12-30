@@ -155,9 +155,37 @@ A. Yes, but there are many practical reasons why this is difficult.
 <section>
 ### Examples
 
+#### Separate applications, same origin
 Google runs Search and Maps on the same domain, respectively
-https://www.google.com/ and https://www.google.com.
-{:.example.highlight}
+`https://www.google.com` and `https://www.google.com/maps`. While these two
+applications are fundamentally separate, there are many reasons for hosting them
+on the same origin, including historical links, branding, and performance.
+However, from security perspective, this means that a compromise of one
+application is a compromise of the other since the only security boundary in the
+browser is the origin, and both applications are hosted on the same origin.
+Thus, even if Google Search were to successful implement a strong Content
+Security Policy [[CSP]], if Google Maps were to have an XSS vulnerability, it
+would be equivalent to having an XSS on Google Search as well, negating Google
+Search's security measures.
+
+#### Separation within a single application
+Separation is sometimes desirable within a single application because of the
+presence of untrusted data. Take, for example, a social networking site with
+many different user profiles. Each profile contains lots of untrusted content
+created by a single user but it's all hosted on a single origin. In order to
+separate untrusted content, the application might want a way to put all profile
+information into separate logical origins while all being hosted at the same
+physical origin. Furthermore, all content within a profile should be able to
+access all other content within the same origin, even if displayed in unique
+frames.
+
+This type of privilege separation within an application has been shown to be
+valuable and reasonable for applications to do by work such as
+Privilege Separation in HTML5 Applications by Akhawe et al
+[[PrivilegeSeparation]]. However, these systems rely on cross frame messaging
+using `postMessage` even for content in the same trust boundary since they
+utilize `sandbox`. This provides much of the motivation for the named container
+nature of suborigins.
 
 </section> <!-- /Framework::Defining a Suborigin::Examples -->
 
