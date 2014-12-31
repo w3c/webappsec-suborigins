@@ -232,7 +232,20 @@ suborigin namespace `separate`, this would be serialized as
 </section> <!-- /Framework::Defining a Suborigin::Serialization -->
 
 <section>
+### Opting into a Suborigin
+
+Since unlike the `sandbox` attribute, suborigin namespaces are predictable and
+controllable, 
+The server must be
+
+</section> <!-- /Framework::Defining a Suborigin::Opting into a Suborigin -->
+
+<section>
 ### Accessing the Suborigin in JavaScript
+I don't have a great idea for how to do this yet. Should it be as simple as
+document.location.suborigin? Or should it be serialized into document.origin,
+plus a deserialization mechanism? (jww)
+{:.issue}
 
 </section> <!-- /Framework::Defining a Suborigin::Accessing the Suborigin in JavaScript -->
 

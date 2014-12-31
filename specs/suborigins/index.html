@@ -320,7 +320,20 @@ suborigin namespace <code>separate</code>, this would be serialized as
     <p><!-- /Framework::Defining a Suborigin::Serialization --></p>
 
     <section>
+      <h3 id="opting-into-a-suborigin">Opting into a Suborigin</h3>
+
+      <p>Since unlike the <code>sandbox</code> attribute, suborigin namespaces are predictable and
+controllable, 
+The server must be</p>
+
+    </section>
+    <p><!-- /Framework::Defining a Suborigin::Opting into a Suborigin --></p>
+
+    <section>
       <h3 id="accessing-the-suborigin-in-javascript">Accessing the Suborigin in JavaScript</h3>
+      <p class="issue">I don’t have a great idea for how to do this yet. Should it be as simple as
+document.location.suborigin? Or should it be serialized into document.origin,
+plus a deserialization mechanism? (jww)</p>
 
     </section>
     <p><!-- /Framework::Defining a Suborigin::Accessing the Suborigin in JavaScript --></p>
