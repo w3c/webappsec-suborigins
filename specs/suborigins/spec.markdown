@@ -234,9 +234,19 @@ suborigin namespace `separate`, this would be serialized as
 <section>
 ### Opting into a Suborigin
 
-Since unlike the `sandbox` attribute, suborigin namespaces are predictable and
-controllable, 
-The server must be
+Unlike the `sandbox` attribute, suborigin namespaces are predictable and
+controllable. Because of this, potentially untrusted content cannot opt into
+suborigins, unlike iframe sandboxes. If they could, then an XSS on a site could
+enter a specific suborigin and access all of its resources, thus violating the
+entire privilege separation suborigins are intended to protect. To prevent
+this, the server (rather than a resource itself) is treated as the only
+authoritative source of the suborigin namespace of a resource. This is
+implemented through an additional header-only Content Security Policy directive
+`suborigin`, which takes a string value that is the namespace. For example, to
+put a resource in the `testing` suborigin namespace, the server would specify
+the following directive in the CSP header:
+
+    suborigin: testing
 
 </section> <!-- /Framework::Defining a Suborigin::Opting into a Suborigin -->
 
