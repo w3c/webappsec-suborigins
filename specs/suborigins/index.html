@@ -405,6 +405,21 @@ require monkey patching the Origin spec’s syntax of the Origin header.</p>
     <section>
       <h3 id="postmessage">postMessage</h3>
 
+      <p>Cross-origin messaging via <code>postMessage</code> [[!WebMessaging]] provides many of the
+same concerns as CORS. Namely, it is necessary for the recipient to see the
+suborigin namespace of the message sender so an appropriate access control
+decision can be made, and similarly, legacy applications should by default treat
+these messages as not coming from the traditional origin of the sender.</p>
+
+      <p>To enforce this, when a message is sent from a suborigin namespace, the receiver
+has the <code>event.origin</code> value set to <code>null</code> so if it is read, it is not treated
+as coming from any particular origin. Instead, new propriets of
+<code>event.finerorigin</code> and <code>event.suborigin</code> should be set the scheme/host/port and
+suborigin namespace, respectively.</p>
+
+      <p class="issue">Similar to the CORS case, another option is to set <code>event.origin</code> to the
+serialized namespace and then provide a deserialization tool.</p>
+
     </section>
     <p><!-- /Framework::Access Control::postMessage --></p>
 
