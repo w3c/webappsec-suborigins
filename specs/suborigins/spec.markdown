@@ -351,6 +351,14 @@ not relevant to network requests. Pull requests welcome.
 <section>
 ### Impact on Web Platform
 
+Content inside a suborigin namespace is severely restricted in what the hosted
+content can do. The restrictions match the behavior of an iframe with the
+sandbox attribute set to the value of `allow-scripts` [[!HTML]]. While more
+specifics are described below, the general idea here is to put suborigin
+namespaces in a "default secure" context. However, restrictions may be lifted
+going forward at a time when a way to whitelist particular Web platform
+permissions is well-defined.
+
 <section>
 ### Examples
 
