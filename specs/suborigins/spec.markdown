@@ -264,8 +264,50 @@ plus a deserialization mechanism? (jww)
 <section>
 ### Access Control
 
+Cross-origin (including cross-suborigin) communication is tricky when suborigins
+are involved because they need to be backwards compatible with user agents that
+do not support suborigins while providing origin-separation for user agents that
+do support suborigins. The following discussions discuss the three major
+cross-origin mechanisms that are relevant.
+
 <section>
 ### CORS
+
+For pages in a suborigin namespace, all `XMLHttpRequest`s to any URL should be
+treated as cross-origin, thus triggering CORS [[!CORS]] logic with special
+`Finer-Origin:` and `Suborigin:` headers added. Additionally, the `Origin:`
+header that is normally applied to cross-origin requests should <em>not</em> be
+added. These header changes are needed so that a server that recognizes
+suborigins can see the suborigin namespace the request is coming from and apply
+the appropriate CORS headers as is appropriate, while legacy servers will not
+"accidentally" approve cross-origin requests because of an `Origin` header that
+provides an incomplete picture of the origin (that is, an origin without the
+suborigin).
+
+The `Finer-Origin:` header takes a value identical to the Origin Header, as
+defined in [[!RFC6454]]. The `Suborigin:` header takes a string value that is
+the suborigin namespace. The former servers identically as the `Origin:` header,
+but in a purposefully backwards incompatible way, while the `Suborigin:` header
+allows a server to make a more nuanced access control choice. A user agent must
+not include more than one `Finer-Origin:` header and must not include more than
+one `Suborigin:` field.
+
+Similar changes are needed for response from the server with the addition of
+`Access-Control-Allow-Finer-Origin` and `Access-Control-Allow-Suborigin`
+response headers. The former takes the same values as
+`Access-Control-Allow-Origin` as defined in [[!CORS]], while the later takes a
+string value that matches allowed suborigin namespaces, or `*` to allow all
+suborigin namespaces.
+
+I expect that this will be a relatively controversial part of the proposal, but
+I think the concern is pretty important. In particular, a lot of the potential
+benefits of the proposal are eliminated if the Origin header is set with the
+broad, traditional origin as an isolated but compromised suborigin could just
+request private information from the other origin. That having been said, we
+might be able to bypass a lot of these concerns by using the Origin header but
+putting the serialized suborigin as described above it its place. This would
+require monkey patching the Origin spec's syntax of the Origin header.
+{:.issue}
 
 </section> <!-- /Framework::Access Control::CORS -->
 
@@ -276,6 +318,13 @@ plus a deserialization mechanism? (jww)
 
 <section>
 ### Workers
+We need a story here. I basically think that workers should be treated as
+if they're in the same suborigin as whatever created them, but I'm also open to
+other suggestions. Particularly tricky are service workers, which for simplicity
+sake I suggest we treat as applying universally to all suborigins at a single
+physical origin since it works in terms of network requests, and suborigins are
+not relevant to network requests. Pull requests welcome.
+{:.issue}
 
 </section> <!-- /Framework::Access Control::Workers -->
 
