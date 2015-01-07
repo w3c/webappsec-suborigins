@@ -189,9 +189,9 @@ messages stored within the account.</p>
 
 <section id="conformance">
 
-  <p>Conformance requirements phrased as algorithms or specific steps can be
+  <p>Conformance requirements phrased as Framework or specific steps can be
 implemented in any manner, so long as the end result is equivalent. In
-particular, the algorithms defined in this specification are intended to
+particular, the Framework defined in this specification are intended to
 be easy to understand and are not intended to be performant. Implementers
 are encouraged to optimize.</p>
 
@@ -229,7 +229,7 @@ set of practical problems in doing so.</p>
 
     <p>Suborigins provide a mechanism for creating this type of separation
 programatically. Any resources may provide, in a manner detailed below, a string
-value <dfn>suborigin namespace</dfn>.  If either of two URIs provide a suborigin
+value <a href="#dfn-suborigin-namespace">suborigin namespace</a>.  If either of two URIs provide a suborigin
 namespace, then the two URIs are in the same origin if and only if they share
 the same scheme, host, port, and suborigin namespace.</p>
 
@@ -471,7 +471,54 @@ should relate this to http://www.w3.org/TR/html5/browsers.html#sandboxing.</p>
 <p><!-- /Impact on Web Platform --></p>
 
 <section>
-  <h3 id="algorithms">Algorithms</h3>
+  <h3 id="framework-1">Framework</h3>
+
+  <p class="note">These sections are tricky because, unlike traditional origins, we can’t define
+suborigins in terms of URIs. Since the suborigin namespace is defined in a
+header, not in the URI, we need to define them in terms of resources.</p>
+
+  <section>
+    <h3 id="suborigin-directive"><code>suborigin</code> Directive</h3>
+
+    <p>Suborigins are defined by a <code>suborigin</code> directive in the <a href="http://www.w3.org/TR/CSP2">Content Security
+Policy</a> of the resource. The syntax for the name and value of the directive
+are described by the following ABNF grammar:</p>
+
+    <pre><code>directive-name  = "suborigin"
+directive-value = 1*( ALPHA / DIGIT / "-" )
+</code></pre>
+
+    <p>A resource’s <dfn>suborigin namespace</dfn> is the value of the <code>suborigin</code>
+directive.</p>
+
+  </section>
+  <p><!-- /Framework::suborigin Directive --></p>
+
+  <section>
+    <h3 id="suborigin-of-a-resource">Suborigin of a Resource</h3>
+
+    <p>The suborigin of a resource is the value computed by the following algorithm:</p>
+
+    <ol>
+      <li>
+        <p>Let origin be the triple result from starting with step 1 of Section 4 of
+<a href="https://tools.ietf.org/html/rfc6454#page-10">Origin of a URI</a>.</p>
+      </li>
+      <li>
+        <p>If the <a href="http://www.w3.org/TR/CSP2">Content Security Policy</a> of the resource contains a valid <code>suborigin</code>
+directive in the <a href="http://www.w3.org/TR/CSP11/#policy-syntax">directive list</a>, then let suborigin-namespace be the
+<code>directive-value</code>.</p>
+      </li>
+      <li>
+        <p>Otherwise, let suborigin-namespace be null.</p>
+      </li>
+      <li>
+        <p>Return the pair (origin, suborigin-namespace).</p>
+      </li>
+    </ol>
+
+  </section>
+  <p><!-- /Framework::Suborigin of a Resource --></p>
 
   <section>
     <h3 id="comparing-suborigins">Comparing Suborigins</h3>
@@ -481,24 +528,24 @@ same-origin policy, would it be worth defining suborigins purely in terms of
 being a unique scheme? That would make this section somewhat unnecessary since
 origin comparisons would be the same.</p>
 
-    <p>Two origins are “the same” if, and only if, they are identical. In
+    <p>Two suborigins are “the same” if, and only if, they are identical. In
 particular:</p>
 
     <ul>
-      <li>If the two origins are scheme/host/port triples, the two origins are the same
-if, and only if, they have identical schemes, hosts, and ports.</li>
-      <li>If either origin contains a suborigin namespace, then the two origins are the
-same if, and only if, they also have identical suborigin namespaces.</li>
-      <li>An empty string suborigin namespace is <em>not</em> the same as not having a
-suborigin namespace.</li>
+      <li>If the origin portions of the suborigin pairs are scheme/host/port triples,
+the two suborigins are the same if, and only if, they have identical schemes,
+hosts, and ports and the suborigin-namespace portions of the suborigin pairs
+are identical.</li>
+      <li>If both suborigin-namespace portions of the suborigin pairs are null, this is
+considered identical.</li>
       <li>An origin that is a globally unique identifier cannot be the same as an origin
-that is a scheme/host/port triple, with or without a suborigin namespace.</li>
+that is a scheme/host/port triple, with or without a suborigin-namespace.</li>
     </ul>
 
-    <p>Two URIs are the same-origin if their origins are the same.</p>
+    <p>Two resources are the same-origin if their suborigins are the same.</p>
 
   </section>
-  <p><!-- /Algorithms::Comparing Suborigins --></p>
+  <p><!-- /Framework::Comparing Suborigins --></p>
 
   <section>
     <h3 id="serializing-suborigins">Serializing Suborigins</h3>
@@ -514,8 +561,8 @@ algorithm:</p>
 
       <ol>
         <li>
-          <p>If the origin is not a scheme/host/port triple, with or without a suborigin
-namespace, then return the string</p>
+          <p>If the origin portion of the suborigin pair is not a scheme/host/port triple,
+then return the string</p>
 
           <p>null</p>
 
@@ -523,14 +570,15 @@ namespace, then return the string</p>
  these steps.</p>
         </li>
         <li>
-          <p>Otherwise, if the origin has a suborigin namespace:</p>
+          <p>Otherwise, if the suborigin-namespace portion of the suborigin pair is not
+null:</p>
 
           <ol>
             <li>
               <p>Let suffix be the string “+”.</p>
             </li>
             <li>
-              <p>Append the suborigin namespace to suffix.</p>
+              <p>Append the suborigin-namespace portion of the suborigin pair to suffix.</p>
             </li>
             <li>
               <p>Append suffix to the scheme part of the origin triple.</p>
@@ -543,7 +591,7 @@ namespace, then return the string</p>
       </ol>
 
     </section>
-    <p><!-- /Algorithms::Serializing Suborigins::Unicode Serialization of a Suborigin--></p>
+    <p><!-- /Framework::Serializing Suborigins::Unicode Serialization of a Suborigin--></p>
 
     <section>
       <h3 id="ascii-serialization-of-a-suborigin">ASCII Serialization of a Suborigin</h3>
@@ -553,8 +601,8 @@ algorithm:</p>
 
       <ol>
         <li>
-          <p>If the origin is not a scheme/host/port triple, with or without a suborigin
-namespace, then return the string</p>
+          <p>If the origin portion of the suborigin pair is not a scheme/host/port triple,
+then return the string</p>
 
           <p>null</p>
 
@@ -562,14 +610,15 @@ namespace, then return the string</p>
  these steps.</p>
         </li>
         <li>
-          <p>Otherwise, if the origin has a suborigin namespace:</p>
+          <p>Otherwise, if the suborigin-namespace portion of the suborigin pair is not
+null:</p>
 
           <ol>
             <li>
               <p>Let suffix be the string “+”.</p>
             </li>
             <li>
-              <p>Append the suborigin namespace to suffix.</p>
+              <p>Append the suborigin-namespace portion of the suborigin pair to suffix.</p>
             </li>
             <li>
               <p>Append suffix to the scheme part of the origin triple.</p>
@@ -582,19 +631,13 @@ namespace, then return the string</p>
       </ol>
 
     </section>
-    <p><!-- /Algorithms::Serializing Suborigins::ASCII Serialization of a Suborigin--></p>
+    <p><!-- /Framework::Serializing Suborigins::ASCII Serialization of a Suborigin--></p>
 
   </section>
-  <p><!-- /Algorithms::Serializing Suborigins --></p>
-
-  <section>
-    <h3 id="suborigin-of-a-uri">Suborigin of a URI</h3>
-
-  </section>
-  <p><!-- /Algorithms::Suborigin of a URI --></p>
+  <p><!-- /Framework::Serializing Suborigins --></p>
 
 </section>
-<p><!-- /Algorithms --></p>
+<p><!-- /Framework --></p>
 
 <section>
   <h3 id="security-considerations">Security Considerations</h3>

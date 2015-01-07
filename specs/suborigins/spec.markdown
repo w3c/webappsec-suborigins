@@ -106,9 +106,9 @@ messages stored within the account.
 
 <section id="conformance">
 
-Conformance requirements phrased as algorithms or specific steps can be
+Conformance requirements phrased as Framework or specific steps can be
 implemented in any manner, so long as the end result is equivalent. In
-particular, the algorithms defined in this specification are intended to
+particular, the Framework defined in this specification are intended to
 be easy to understand and are not intended to be performant. Implementers
 are encouraged to optimize.
 
@@ -144,7 +144,7 @@ set of practical problems in doing so.
 
 Suborigins provide a mechanism for creating this type of separation
 programatically. Any resources may provide, in a manner detailed below, a string
-value <dfn>suborigin namespace</dfn>.  If either of two URIs provide a suborigin
+value [suborigin namespace][].  If either of two URIs provide a suborigin
 namespace, then the two URIs are in the same origin if and only if they share
 the same scheme, host, port, and suborigin namespace.
 
@@ -152,8 +152,6 @@ Q. In today's Web, can't a site get the effective same protection domain simply
 by hosting their content at different subdomains?
 
 A. Yes, but there are many practical reasons why this is difficult.
-
-[suborigin namespace]: #dfn-suborigin-namespace
 
 <section>
 ### Examples
@@ -376,7 +374,51 @@ should relate this to http://www.w3.org/TR/html5/browsers.html#sandboxing.
 </section> <!-- /Impact on Web Platform -->
 
 <section>
-### Algorithms
+### Framework
+
+These sections are tricky because, unlike traditional origins, we can't define
+suborigins in terms of URIs. Since the suborigin namespace is defined in a
+header, not in the URI, we need to define them in terms of resources.
+{:.note}
+
+<section>
+### `suborigin` Directive
+
+Suborigins are defined by a `suborigin` directive in the [Content Security
+Policy][csp] of the resource. The syntax for the name and value of the directive
+are described by the following ABNF grammar:
+
+    directive-name  = "suborigin"
+    directive-value = 1*( ALPHA / DIGIT / "-" )
+
+A resource's <dfn>suborigin namespace</dfn> is the value of the `suborigin`
+directive.
+
+[suborigin namespace]: #dfn-suborigin-namespace
+
+</section> <!-- /Framework::suborigin Directive -->
+
+<section>
+### Suborigin of a Resource
+
+The suborigin of a resource is the value computed by the following algorithm:
+
+1. Let origin be the triple result from starting with step 1 of Section 4 of
+   [Origin of a URI].
+
+2. If the [Content Security Policy][csp] of the resource contains a valid `suborigin`
+   directive in the [directive list], then let suborigin-namespace be the
+   `directive-value`.
+
+3. Otherwise, let suborigin-namespace be null.
+
+4. Return the pair (origin, suborigin-namespace).
+
+[Origin of a URI]: https://tools.ietf.org/html/rfc6454#page-10
+[csp]: http://www.w3.org/TR/CSP2
+[directive list]: http://www.w3.org/TR/CSP11/#policy-syntax
+
+</section> <!-- /Framework::Suborigin of a Resource -->
 
 <section>
 ### Comparing Suborigins
@@ -387,21 +429,21 @@ being a unique scheme? That would make this section somewhat unnecessary since
 origin comparisons would be the same.
 {:.issue}
 
-Two origins are "the same" if, and only if, they are identical. In
+Two suborigins are "the same" if, and only if, they are identical. In
 particular:
 
-* If the two origins are scheme/host/port triples, the two origins are the same
-  if, and only if, they have identical schemes, hosts, and ports.
-* If either origin contains a suborigin namespace, then the two origins are the
-  same if, and only if, they also have identical suborigin namespaces.
-* An empty string suborigin namespace is <em>not</em> the same as not having a
-  suborigin namespace.
+* If the origin portions of the suborigin pairs are scheme/host/port triples,
+  the two suborigins are the same if, and only if, they have identical schemes,
+  hosts, and ports and the suborigin-namespace portions of the suborigin pairs
+  are identical.
+* If both suborigin-namespace portions of the suborigin pairs are null, this is
+  considered identical.
 * An origin that is a globally unique identifier cannot be the same as an origin
-  that is a scheme/host/port triple, with or without a suborigin namespace.
+  that is a scheme/host/port triple, with or without a suborigin-namespace.
 
-Two URIs are the same-origin if their origins are the same.
+Two resources are the same-origin if their suborigins are the same.
 
-</section> <!-- /Algorithms::Comparing Suborigins -->
+</section> <!-- /Framework::Comparing Suborigins -->
 
 <section>
 ### Serializing Suborigins
@@ -415,19 +457,20 @@ string and to an ASCII [[!RFC0020]] string.
 The Unicode serialization of a suborigin is the value returned by the following
 algorithm:
 
-1. If the origin is not a scheme/host/port triple, with or without a suborigin
-   namespace, then return the string
+1. If the origin portion of the suborigin pair is not a scheme/host/port triple,
+   then return the string
 
      null
 
     (i.e., the code point sequence U+006E, U+0075, U+006C, U+006C) and abort
     these steps.
 
-2. Otherwise, if the origin has a suborigin namespace:
+2. Otherwise, if the suborigin-namespace portion of the suborigin pair is not
+   null:
 
     1. Let suffix be the string "+".
 
-    2. Append the suborigin namespace to suffix.
+    2. Append the suborigin-namespace portion of the suborigin pair to suffix.
 
     3. Append suffix to the scheme part of the origin triple.
 
@@ -435,7 +478,7 @@ algorithm:
 
 [Unicode Serialization of an Origin]: https://tools.ietf.org/html/rfc6454#page-12
 
-</section> <!-- /Algorithms::Serializing Suborigins::Unicode Serialization of a Suborigin-->
+</section> <!-- /Framework::Serializing Suborigins::Unicode Serialization of a Suborigin-->
 
 <section>
 ### ASCII Serialization of a Suborigin
@@ -443,19 +486,20 @@ algorithm:
 The ASCII serialization of a suborigin is the value returned by the following
 algorithm:
 
-1. If the origin is not a scheme/host/port triple, with or without a suborigin
-   namespace, then return the string
+1. If the origin portion of the suborigin pair is not a scheme/host/port triple,
+   then return the string
 
      null
 
     (i.e., the code point sequence U+006E, U+0075, U+006C, U+006C) and abort
     these steps.
 
-2. Otherwise, if the origin has a suborigin namespace:
+2. Otherwise, if the suborigin-namespace portion of the suborigin pair is not
+   null:
 
     1. Let suffix be the string "+".
 
-    2. Append the suborigin namespace to suffix.
+    2. Append the suborigin-namespace portion of the suborigin pair to suffix.
 
     3. Append suffix to the scheme part of the origin triple.
 
@@ -463,16 +507,11 @@ algorithm:
 
 [ASCII Serialization of an Origin]: https://tools.ietf.org/html/rfc6454#page-12
 
-</section> <!-- /Algorithms::Serializing Suborigins::ASCII Serialization of a Suborigin-->
+</section> <!-- /Framework::Serializing Suborigins::ASCII Serialization of a Suborigin-->
 
-</section> <!-- /Algorithms::Serializing Suborigins -->
+</section> <!-- /Framework::Serializing Suborigins -->
 
-<section>
-### Suborigin of a URI
-
-</section> <!-- /Algorithms::Suborigin of a URI -->
-
-</section> <!-- /Algorithms -->
+</section> <!-- /Framework -->
 
 <section>
 ### Security Considerations
