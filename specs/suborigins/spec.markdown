@@ -409,6 +409,9 @@ Two URIs are the same-origin if their origins are the same.
 This section defines how to serialize an origin to a unicode [[!Unicode6]]
 string and to an ASCII [[!RFC0020]] string.
 
+<section>
+### Unicode Serialization of a Suborigin
+
 1. If the origin is not a scheme/host/port triple, with or without a suborigin
    namespace, then return the string
 
@@ -429,6 +432,15 @@ string and to an ASCII [[!RFC0020]] string.
    [Unicode Serialization of an Origin].
 
 [Unicode Serialization of an Origin]: https://tools.ietf.org/html/rfc6454#page-12
+
+</section> <!-- /Algorithms::Serializing Suborigins::Unicode Serialization of a Suborigin-->
+
+<section>
+### ASCII Serialization of an Origin
+
+1. blah blah
+
+</section> <!-- /Algorithms::Serializing Suborigins::ASCII Serialization of a Suborigin-->
 
 </section> <!-- /Algorithms::Serializing Suborigins -->
 
