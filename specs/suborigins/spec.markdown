@@ -385,17 +385,31 @@ https://tools.ietf.org/html/rfc6454
 ### Security Considerations
 
 <section>
-### Data leakage
-
-</section> <!-- /Security Considerations::Data leakage -->
-
-<section>
 ### Presentation of Suborigins to Users
+
+A complication of suborigins is that while they provide a meaningful security
+for an application, that boundary makes much less sense to a user. That is,
+traditional origins provide a security boundary at a physical level: separate
+scheme, hosts, and ports map to real boundaries external of a given application.
+However, suborigins as a boundary only makes sense <em>within the context of the
+program logic itself</em> and there is no meaningful way for users to make
+decisions based on suborigins a priori.
+
+Therefore, suborigins should be used only internally in a user agent and should
+not be presented to users at all. For example, suborigins should never be
+presented in link text or a URL bar.
 
 </section> <!-- /Security Considerations::Presentation of Suborigins to Users -->
 
 <section>
 ### Not Overthrowing Same-origin Policy
+
+Suborigins do not fundamentally change how the same-origin policy works. An
+application without suborigins should work identially to how it always has, and
+even in an application with suborigins, the same-origin policy still applies as
+always. In fact, suborigins have been defined within the context of the
+same-origin policy so that, in theory, serialized suborigins can be thought of
+as a just a special case of the traditional same-origin policy.
 
 </section> <!-- /Security Considerations::Not Overthrowing Same-origin Policy -->
 

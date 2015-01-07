@@ -482,19 +482,32 @@ https://tools.ietf.org/html/rfc6454</p>
   <h3 id="security-considerations">Security Considerations</h3>
 
   <section>
-    <h3 id="data-leakage">Data leakage</h3>
-
-  </section>
-  <p><!-- /Security Considerations::Data leakage --></p>
-
-  <section>
     <h3 id="presentation-of-suborigins-to-users">Presentation of Suborigins to Users</h3>
+
+    <p>A complication of suborigins is that while they provide a meaningful security
+for an application, that boundary makes much less sense to a user. That is,
+traditional origins provide a security boundary at a physical level: separate
+scheme, hosts, and ports map to real boundaries external of a given application.
+However, suborigins as a boundary only makes sense <em>within the context of the
+program logic itself</em> and there is no meaningful way for users to make
+decisions based on suborigins a priori.</p>
+
+    <p>Therefore, suborigins should be used only internally in a user agent and should
+not be presented to users at all. For example, suborigins should never be
+presented in link text or a URL bar.</p>
 
   </section>
   <p><!-- /Security Considerations::Presentation of Suborigins to Users --></p>
 
   <section>
     <h3 id="not-overthrowing-same-origin-policy">Not Overthrowing Same-origin Policy</h3>
+
+    <p>Suborigins do not fundamentally change how the same-origin policy works. An
+application without suborigins should work identially to how it always has, and
+even in an application with suborigins, the same-origin policy still applies as
+always. In fact, suborigins have been defined within the context of the
+same-origin policy so that, in theory, serialized suborigins can be thought of
+as a just a special case of the traditional same-origin policy.</p>
 
   </section>
   <p><!-- /Security Considerations::Not Overthrowing Same-origin Policy --></p>
