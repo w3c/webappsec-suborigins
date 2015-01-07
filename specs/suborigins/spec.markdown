@@ -386,7 +386,32 @@ should relate this to http://www.w3.org/TR/html5/browsers.html#sandboxing.
 <section>
 ### Comparing Suborigins
 
+Since we'd like to make the claim that suborigins do not supercede the
+same-origin policy, would it be worth defining suborigins purely in terms of
+being a unique scheme? That would make this section somewhat unnecessary since
+origin comparisons would be the same.
+{:.issue}
+
+Two origins are "the same" if, and only if, they are identical. In
+particular:
+
+* If the two origins are scheme/host/port triples, the two origins are the same
+  if, and only if, they have identical schemes, hosts, and ports.
+* If either origin contains a suborigin namespace, then the two origins are the
+  same if, and only if, they also have identical suborigin namespaces.
+* An empty string suborigin namespace is <em>not</em> the same as not having a
+  suborigin namespace.
+* An origin that is a globally unique identifier cannot be the same as an origin
+  that is a scheme/host/port triple, with or without a suborigin namespace.
+
+Two URIs are the same-origin if their origins are the same.
+
 </section> <!-- /Algorithms::Comparing Suborigins -->
+
+<section>
+### Suborigin of a URI
+
+</section> <!-- /Algorithms::Suborigin of a URI -->
 
 </section> <!-- /Algorithms -->
 
