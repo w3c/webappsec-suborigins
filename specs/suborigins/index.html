@@ -444,7 +444,13 @@ not relevant to network requests. Pull requests welcome.</p>
 <section>
   <h3 id="impact-on-web-platform">Impact on Web Platform</h3>
 
-  <p>blah blah blah [[!HTML#attr-iframe-sandbox]]</p>
+  <p>Content inside a suborigin namespace is severely restricted in what the hosted
+content can do. The restrictions match the behavior of an iframe with the
+sandbox attribute set to the value of <code>allow-scripts</code> [[!HTML]]. While more
+specifics are described below, the general idea here is to put suborigin
+namespaces in a “default secure” context. However, restrictions may be lifted
+going forward at a time when a way to whitelist particular Web platform
+permissions is well-defined.</p>
 
   <section>
     <h3 id="examples-1">Examples</h3>
