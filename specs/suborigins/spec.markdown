@@ -379,11 +379,6 @@ should relate this to http://www.w3.org/TR/html5/browsers.html#sandboxing.
 ### Algorithms
 
 <section>
-### Serializing Suborigins
-
-</section> <!-- /Algorithms::Serializing Suborigins -->
-
-<section>
 ### Comparing Suborigins
 
 Since we'd like to make the claim that suborigins do not supercede the
@@ -407,6 +402,35 @@ particular:
 Two URIs are the same-origin if their origins are the same.
 
 </section> <!-- /Algorithms::Comparing Suborigins -->
+
+<section>
+### Serializing Suborigins
+
+This section defines how to serialize an origin to a unicode [[!Unicode6]]
+string and to an ASCII [[!RFC0020]] string.
+
+1. If the origin is not a scheme/host/port triple, with or without a suborigin
+   namespace, then return the string
+
+     null
+
+    (i.e., the code point sequence U+006E, U+0075, U+006C, U+006C) and abort
+    these steps.
+
+2. Otherwise, if the origin has a suborigin namespace:
+
+    1. Let suffix be the string "+".
+
+    2. Append the suborigin namespace to suffix.
+
+    3. Append suffix to the scheme part of the origin triple.
+
+3. Proceed with step 1 of section 6.1 in the
+   [Unicode Serialization of an Origin].
+
+[Unicode Serialization of an Origin]: https://tools.ietf.org/html/rfc6454#page-12
+
+</section> <!-- /Algorithms::Serializing Suborigins -->
 
 <section>
 ### Suborigin of a URI
