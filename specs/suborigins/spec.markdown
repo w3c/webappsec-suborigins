@@ -367,7 +367,9 @@ permissions is well-defined.
 <section>
 ### Relationship with Sensitive Permissions
 
-DOM storage, cookies, document.domain, etc.
+We need to discuss DOM storage, cookies, document.domain, etc. In particular, we
+should relate this to http://www.w3.org/TR/html5/browsers.html#sandboxing.
+{:.issue}
 
 </section> <!-- /Impact on Web Platform::Relationship with Sensitive Permissions -->
 
@@ -376,8 +378,15 @@ DOM storage, cookies, document.domain, etc.
 <section>
 ### Algorithms
 
-Similar to comparison and serialization sections in Origin Spec:
-https://tools.ietf.org/html/rfc6454
+<section>
+### Serializing Suborigins
+
+</section> <!-- /Algorithms::Serializing Suborigins -->
+
+<section>
+### Comparing Suborigins
+
+</section> <!-- /Algorithms::Comparing Suborigins -->
 
 </section> <!-- /Algorithms -->
 
