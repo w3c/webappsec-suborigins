@@ -412,6 +412,9 @@ string and to an ASCII [[!RFC0020]] string.
 <section>
 ### Unicode Serialization of a Suborigin
 
+The Unicode serialization of a suborigin is the value returned by the following
+algorithm:
+
 1. If the origin is not a scheme/host/port triple, with or without a suborigin
    namespace, then return the string
 
@@ -428,17 +431,37 @@ string and to an ASCII [[!RFC0020]] string.
 
     3. Append suffix to the scheme part of the origin triple.
 
-3. Proceed with step 1 of section 6.1 in the
-   [Unicode Serialization of an Origin].
+3. Proceed with step 1 of section 6.1 in [Unicode Serialization of an Origin].
 
 [Unicode Serialization of an Origin]: https://tools.ietf.org/html/rfc6454#page-12
 
 </section> <!-- /Algorithms::Serializing Suborigins::Unicode Serialization of a Suborigin-->
 
 <section>
-### ASCII Serialization of an Origin
+### ASCII Serialization of a Suborigin
 
-1. blah blah
+The ASCII serialization of a suborigin is the value returned by the following
+algorithm:
+
+1. If the origin is not a scheme/host/port triple, with or without a suborigin
+   namespace, then return the string
+
+     null
+
+    (i.e., the code point sequence U+006E, U+0075, U+006C, U+006C) and abort
+    these steps.
+
+2. Otherwise, if the origin has a suborigin namespace:
+
+    1. Let suffix be the string "+".
+
+    2. Append the suborigin namespace to suffix.
+
+    3. Append suffix to the scheme part of the origin triple.
+
+3. Proceed with step 1 of section 6.2 in [ASCII Serialization of an Origin].
+
+[ASCII Serialization of an Origin]: https://tools.ietf.org/html/rfc6454#page-12
 
 </section> <!-- /Algorithms::Serializing Suborigins::ASCII Serialization of a Suborigin-->
 

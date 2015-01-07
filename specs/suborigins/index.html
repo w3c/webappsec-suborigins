@@ -509,6 +509,9 @@ string and to an ASCII [[!RFC0020]] string.</p>
     <section>
       <h3 id="unicode-serialization-of-a-suborigin">Unicode Serialization of a Suborigin</h3>
 
+      <p>The Unicode serialization of a suborigin is the value returned by the following
+algorithm:</p>
+
       <ol>
         <li>
           <p>If the origin is not a scheme/host/port triple, with or without a suborigin
@@ -535,8 +538,7 @@ namespace, then return the string</p>
           </ol>
         </li>
         <li>
-          <p>Proceed with step 1 of section 6.1 in the
-<a href="https://tools.ietf.org/html/rfc6454#page-12">Unicode Serialization of an Origin</a>.</p>
+          <p>Proceed with step 1 of section 6.1 in <a href="https://tools.ietf.org/html/rfc6454#page-12">Unicode Serialization of an Origin</a>.</p>
         </li>
       </ol>
 
@@ -544,10 +546,39 @@ namespace, then return the string</p>
     <p><!-- /Algorithms::Serializing Suborigins::Unicode Serialization of a Suborigin--></p>
 
     <section>
-      <h3 id="ascii-serialization-of-an-origin">ASCII Serialization of an Origin</h3>
+      <h3 id="ascii-serialization-of-a-suborigin">ASCII Serialization of a Suborigin</h3>
+
+      <p>The ASCII serialization of a suborigin is the value returned by the following
+algorithm:</p>
 
       <ol>
-        <li>blah blah</li>
+        <li>
+          <p>If the origin is not a scheme/host/port triple, with or without a suborigin
+namespace, then return the string</p>
+
+          <p>null</p>
+
+          <p>(i.e., the code point sequence U+006E, U+0075, U+006C, U+006C) and abort
+ these steps.</p>
+        </li>
+        <li>
+          <p>Otherwise, if the origin has a suborigin namespace:</p>
+
+          <ol>
+            <li>
+              <p>Let suffix be the string “+”.</p>
+            </li>
+            <li>
+              <p>Append the suborigin namespace to suffix.</p>
+            </li>
+            <li>
+              <p>Append suffix to the scheme part of the origin triple.</p>
+            </li>
+          </ol>
+        </li>
+        <li>
+          <p>Proceed with step 1 of section 6.2 in <a href="https://tools.ietf.org/html/rfc6454#page-12">ASCII Serialization of an Origin</a>.</p>
+        </li>
       </ol>
 
     </section>
