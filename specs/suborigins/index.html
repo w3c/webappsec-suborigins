@@ -209,17 +209,14 @@ are encouraged to optimize.</p>
 <p><!-- /Conformance --></p>
 
 <section>
-  <h3 id="framework">Framework</h3>
+  <h3 id="defining-a-suborigin">Defining a Suborigin</h3>
 
-  <section>
-    <h3 id="defining-a-suborigin">Defining a Suborigin</h3>
-
-    <p>Origins are a mechanism for user agents to group URIs into protection domains.
+  <p>Origins are a mechanism for user agents to group URIs into protection domains.
 Two URIs are in the same origin if they share the same scheme, host, and port.
 If URIs are in the same origin, then they share the same authority and can
 access all of each others resources.</p>
 
-    <p>This has been a successful mechanism for privilege separation on the Web.
+  <p>This has been a successful mechanism for privilege separation on the Web.
 However, it does limit the ability of a URI to separate itself into a new
 protection domain as it automatically shares authority with all other identical
 origins, which are defined by physical, rather than programatic, properties.
@@ -227,22 +224,22 @@ While it is possible to setup unique domains and ports different parts of the
 same application (scheme is more difficult to separate out), there are a diverse
 set of practical problems in doing so.</p>
 
-    <p>Suborigins provide a mechanism for creating this type of separation
+  <p>Suborigins provide a mechanism for creating this type of separation
 programatically. Any resources may provide, in a manner detailed below, a string
 value <a href="#dfn-suborigin-namespace">suborigin namespace</a>.  If either of two URIs provide a suborigin
 namespace, then the two URIs are in the same origin if and only if they share
 the same scheme, host, port, and suborigin namespace.</p>
 
-    <p>Q. In today’s Web, can’t a site get the effective same protection domain simply
+  <p>Q. In today’s Web, can’t a site get the effective same protection domain simply
 by hosting their content at different subdomains?</p>
 
-    <p>A. Yes, but there are many practical reasons why this is difficult.</p>
+  <p>A. Yes, but there are many practical reasons why this is difficult.</p>
 
-    <section>
-      <h3 id="examples">Examples</h3>
+  <section>
+    <h3 id="examples">Examples</h3>
 
-      <h4 id="separate-applications-same-origin">Separate applications, same origin</h4>
-      <p>Google runs Search and Maps on the same domain, respectively
+    <h4 id="separate-applications-same-origin">Separate applications, same origin</h4>
+    <p>Google runs Search and Maps on the same domain, respectively
 <code>https://www.google.com</code> and <code>https://www.google.com/maps</code>. While these two
 applications are fundamentally separate, there are many reasons for hosting them
 on the same origin, including historical links, branding, and performance.
@@ -254,8 +251,8 @@ Security Policy [[CSP]], if Google Maps were to have an XSS vulnerability, it
 would be equivalent to having an XSS on Google Search as well, negating Google
 Search’s security measures.</p>
 
-      <h4 id="separation-within-a-single-application">Separation within a single application</h4>
-      <p>Separation is sometimes desirable within a single application because of the
+    <h4 id="separation-within-a-single-application">Separation within a single application</h4>
+    <p>Separation is sometimes desirable within a single application because of the
 presence of untrusted data. Take, for example, a social networking site with
 many different user profiles. Each profile contains lots of untrusted content
 created by a single user but it’s all hosted on a single origin. In order to
@@ -265,7 +262,7 @@ physical origin. Furthermore, all content within a profile should be able to
 access all other content within the same origin, even if displayed in unique
 frames.</p>
 
-      <p>This type of privilege separation within an application has been shown to be
+    <p>This type of privilege separation within an application has been shown to be
 valuable and reasonable for applications to do by work such as
 Privilege Separation in HTML5 Applications by Akhawe et al
 [[PrivilegeSeparation]]. However, these systems rely on cross frame messaging
@@ -273,13 +270,13 @@ using <code>postMessage</code> even for content in the same trust boundary since
 utilize <code>sandbox</code>. This provides much of the motivation for the named container
 nature of suborigins.</p>
 
-    </section>
-    <p><!-- /Framework::Defining a Suborigin::Examples --></p>
+  </section>
+  <p><!-- /Defining a Suborigin::Examples --></p>
 
-    <section>
-      <h3 id="relationship-of-suborigins-to-origins">Relationship of Suborigins to Origins</h3>
+  <section>
+    <h3 id="relationship-of-suborigins-to-origins">Relationship of Suborigins to Origins</h3>
 
-      <p>Suborigins, in fact, do not provide any new authority to resources. Suborigins
+    <p>Suborigins, in fact, do not provide any new authority to resources. Suborigins
 simply provide <em>an additional way to construct Origins</em>. That is,
 Suborigins do not supercede Origins or provide any additional authority above
 Origins. From the user agent’s  perspective, two resources in different
@@ -288,18 +285,18 @@ resources should be the same as any other two differing origins as described in
 [[!RFC6454]].  Thus, this specification is intended to provide the following two
 important properties:</p>
 
-      <ul>
-        <li>The rules on how Suborigins are defined.</li>
-        <li>The rules on how Suborigins are tracked.</li>
-      </ul>
+    <ul>
+      <li>The rules on how Suborigins are defined.</li>
+      <li>The rules on how Suborigins are tracked.</li>
+    </ul>
 
-    </section>
-    <p><!-- /Framework::Defining a Suborigin::Relationship of Suborigins to Origins--></p>
+  </section>
+  <p><!-- /Defining a Suborigin::Relationship of Suborigins to Origins--></p>
 
-    <section>
-      <h3 id="serialization">Serialization</h3>
+  <section>
+    <h3 id="representation-of-suborigins">Representation of Suborigins</h3>
 
-      <p>At an abstract level, a suborigin consists of a scheme, host, and port of a
+    <p>At an abstract level, a suborigin consists of the scheme, host, and port of a
 traditional origin, plus a <a href="#dfn-suborigin-namespace">suborigin namespace</a>. However, as mentioned above,
 suborigins are intended to fit within the framework of [[!RFC6454]]. Therefore,
 this specification provides a way of serializing a Suborigin bound resource into
@@ -309,20 +306,24 @@ the information about both the original scheme and the suborigin namespace. This
 is done by inserting a <code>+</code> into the URI after the scheme, followed by the
 suborigin namespace, then followed by the rest of the URI starting with <code>:</code>.</p>
 
-      <p>For example, if the resource is hosted at <code>https://example.com/</code> in the
+    <p>For example, if the resource is hosted at <code>https://example.com/</code> in the
 suborigin namespace <code>profile</code>, this would be serialized as
 <code>https+profile://example.com/</code>.</p>
 
-      <p>Similarly, if a resource is hosted at <code>https://example.com:8080/</code> in the
+    <p>Similarly, if a resource is hosted at <code>https://example.com:8080/</code> in the
 suborigin namespace <code>separate</code>, this would be serialized as
 <code>https+separate://example.com:8080/</code>.</p>
-    </section>
-    <p><!-- /Framework::Defining a Suborigin::Serialization --></p>
 
-    <section>
-      <h3 id="opting-into-a-suborigin">Opting into a Suborigin</h3>
+    <p>Internally, the <a href="#dfn-suborigin-namespace">suborigin namespace</a> must be tracked by the user agent. When
+the origin needs to be serialized for a resource, the user agent should follow
+the algorithm in <a href="#serializing-suborigins">Serializing Suborigins</a>.</p>
+  </section>
+  <p><!-- /Defining a Suborigin::Serialization --></p>
 
-      <p>Unlike the <code>sandbox</code> attribute, suborigin namespaces are predictable and
+  <section>
+    <h3 id="opting-into-a-suborigin">Opting into a Suborigin</h3>
+
+    <p>Unlike the <code>sandbox</code> attribute, suborigin namespaces are predictable and
 controllable. Because of this, potentially untrusted content cannot opt into
 suborigins, unlike iframe sandboxes. If they could, then an XSS on a site could
 enter a specific suborigin and access all of its resources, thus violating the
@@ -334,37 +335,54 @@ implemented through an additional header-only Content Security Policy directive
 put a resource in the <code>testing</code> suborigin namespace, the server would specify
 the following directive in the CSP header:</p>
 
-      <pre><code>suborigin: testing
+    <pre><code>suborigin: testing
 </code></pre>
 
-    </section>
-    <p><!-- /Framework::Defining a Suborigin::Opting into a Suborigin --></p>
-
     <section>
-      <h3 id="accessing-the-suborigin-in-javascript">Accessing the Suborigin in JavaScript</h3>
-      <p class="issue">I don’t have a great idea for how to do this yet. Should it be as simple as
+      <h3 id="suborigin-directive"><code>suborigin</code> Directive</h3>
+
+      <p>Suborigins are defined by a <code>suborigin</code> directive in the <a href="http://www.w3.org/TR/CSP2">Content Security
+Policy</a> of the resource. The syntax for the name and value of the directive
+are described by the following ABNF grammar:</p>
+
+      <pre><code>directive-name  = "suborigin"
+directive-value = 1*( ALPHA / DIGIT / "-" )
+</code></pre>
+
+      <p>A resource’s <dfn>suborigin namespace</dfn> is the value of the <code>suborigin</code>
+directive.</p>
+
+    </section>
+    <p><!-- /Defining a Suborigin::Opting into a Suborigin::suborigin Directive --></p>
+
+  </section>
+  <p><!-- /Defining a Suborigin::Opting into a Suborigin --></p>
+
+  <section>
+    <h3 id="accessing-the-suborigin-in-javascript">Accessing the Suborigin in JavaScript</h3>
+    <p class="issue">I don’t have a great idea for how to do this yet. Should it be as simple as
 document.location.suborigin? Or should it be serialized into document.origin,
 plus a deserialization mechanism? (jww)</p>
 
-    </section>
-    <p><!-- /Framework::Defining a Suborigin::Accessing the Suborigin in JavaScript --></p>
-
   </section>
-  <p><!-- /Framework::Defining a Suborigin --></p>
+  <p><!-- /Defining a Suborigin::Accessing the Suborigin in JavaScript --></p>
 
-  <section>
-    <h3 id="access-control">Access Control</h3>
+</section>
+<p><!-- /Defining a Suborigin --></p>
 
-    <p>Cross-origin (including cross-suborigin) communication is tricky when suborigins
+<section>
+  <h3 id="access-control">Access Control</h3>
+
+  <p>Cross-origin (including cross-suborigin) communication is tricky when suborigins
 are involved because they need to be backwards compatible with user agents that
 do not support suborigins while providing origin-separation for user agents that
 do support suborigins. The following discussions discuss the three major
 cross-origin mechanisms that are relevant.</p>
 
-    <section>
-      <h3 id="cors">CORS</h3>
+  <section>
+    <h3 id="cors">CORS</h3>
 
-      <p>For pages in a suborigin namespace, all <code>XMLHttpRequest</code>s to any URL should be
+    <p>For pages in a suborigin namespace, all <code>XMLHttpRequest</code>s to any URL should be
 treated as cross-origin, thus triggering CORS [[!CORS]] logic with special
 <code>Finer-Origin:</code> and <code>Suborigin:</code> headers added. Additionally, the <code>Origin:</code>
 header that is normally applied to cross-origin requests should <em>not</em> be
@@ -375,7 +393,7 @@ the appropriate CORS headers as is appropriate, while legacy servers will not
 provides an incomplete picture of the origin (that is, an origin without the
 suborigin).</p>
 
-      <p>The <code>Finer-Origin:</code> header takes a value identical to the Origin Header, as
+    <p>The <code>Finer-Origin:</code> header takes a value identical to the Origin Header, as
 defined in [[!RFC6454]]. The <code>Suborigin:</code> header takes a string value that is
 the suborigin namespace. The former servers identically as the <code>Origin:</code> header,
 but in a purposefully backwards incompatible way, while the <code>Suborigin:</code> header
@@ -383,14 +401,14 @@ allows a server to make a more nuanced access control choice. A user agent must
 not include more than one <code>Finer-Origin:</code> header and must not include more than
 one <code>Suborigin:</code> field.</p>
 
-      <p>Similar changes are needed for response from the server with the addition of
+    <p>Similar changes are needed for response from the server with the addition of
 <code>Access-Control-Allow-Finer-Origin</code> and <code>Access-Control-Allow-Suborigin</code>
 response headers. The former takes the same values as
 <code>Access-Control-Allow-Origin</code> as defined in [[!CORS]], while the later takes a
 string value that matches allowed suborigin namespaces, or <code>*</code> to allow all
 suborigin namespaces.</p>
 
-      <p class="issue">I expect that this will be a relatively controversial part of the proposal, but
+    <p class="issue">I expect that this will be a relatively controversial part of the proposal, but
 I think the concern is pretty important. In particular, a lot of the potential
 benefits of the proposal are eliminated if the Origin header is set with the
 broad, traditional origin as an isolated but compromised suborigin could just
@@ -399,47 +417,44 @@ might be able to bypass a lot of these concerns by using the Origin header but
 putting the serialized suborigin as described above it its place. This would
 require monkey patching the Origin spec’s syntax of the Origin header.</p>
 
-    </section>
-    <p><!-- /Framework::Access Control::CORS --></p>
+  </section>
+  <p><!-- /Access Control::CORS --></p>
 
-    <section>
-      <h3 id="postmessage">postMessage</h3>
+  <section>
+    <h3 id="postmessage"><code>postMessage</code></h3>
 
-      <p>Cross-origin messaging via <code>postMessage</code> [[!WebMessaging]] provides many of the
+    <p>Cross-origin messaging via <code>postMessage</code> [[!WebMessaging]] provides many of the
 same concerns as CORS. Namely, it is necessary for the recipient to see the
 suborigin namespace of the message sender so an appropriate access control
 decision can be made, and similarly, legacy applications should by default treat
 these messages as not coming from the traditional origin of the sender.</p>
 
-      <p>To enforce this, when a message is sent from a suborigin namespace, the receiver
+    <p>To enforce this, when a message is sent from a suborigin namespace, the receiver
 has the <code>event.origin</code> value set to <code>null</code> so if it is read, it is not treated
 as coming from any particular origin. Instead, new propriets of
 <code>event.finerorigin</code> and <code>event.suborigin</code> should be set the scheme/host/port and
 suborigin namespace, respectively.</p>
 
-      <p class="issue">Similar to the CORS case, another option is to set <code>event.origin</code> to the
+    <p class="issue">Similar to the CORS case, another option is to set <code>event.origin</code> to the
 serialized namespace and then provide a deserialization tool.</p>
 
-    </section>
-    <p><!-- /Framework::Access Control::postMessage --></p>
+  </section>
+  <p><!-- /Access Control::postMessage --></p>
 
-    <section>
-      <h3 id="workers">Workers</h3>
-      <p class="issue">We need a story here. I basically think that workers should be treated as
+  <section>
+    <h3 id="workers">Workers</h3>
+    <p class="issue">We need a story here. I basically think that workers should be treated as
 if they’re in the same suborigin as whatever created them, but I’m also open to
 other suggestions. Particularly tricky are service workers, which for simplicity
 sake I suggest we treat as applying universally to all suborigins at a single
 physical origin since it works in terms of network requests, and suborigins are
 not relevant to network requests. Pull requests welcome.</p>
 
-    </section>
-    <p><!-- /Framework::Access Control::Workers --></p>
-
   </section>
-  <p><!-- /Framework::Access Control --></p>
+  <p><!-- /Access Control::Workers --></p>
 
 </section>
-<p><!-- /Framework --></p>
+<p><!-- /Access Control --></p>
 
 <section>
   <h3 id="impact-on-web-platform">Impact on Web Platform</h3>
@@ -471,28 +486,11 @@ should relate this to http://www.w3.org/TR/html5/browsers.html#sandboxing.</p>
 <p><!-- /Impact on Web Platform --></p>
 
 <section>
-  <h3 id="framework-1">Framework</h3>
+  <h3 id="framework">Framework</h3>
 
   <p class="note">These sections are tricky because, unlike traditional origins, we can’t define
 suborigins in terms of URIs. Since the suborigin namespace is defined in a
 header, not in the URI, we need to define them in terms of resources.</p>
-
-  <section>
-    <h3 id="suborigin-directive"><code>suborigin</code> Directive</h3>
-
-    <p>Suborigins are defined by a <code>suborigin</code> directive in the <a href="http://www.w3.org/TR/CSP2">Content Security
-Policy</a> of the resource. The syntax for the name and value of the directive
-are described by the following ABNF grammar:</p>
-
-    <pre><code>directive-name  = "suborigin"
-directive-value = 1*( ALPHA / DIGIT / "-" )
-</code></pre>
-
-    <p>A resource’s <dfn>suborigin namespace</dfn> is the value of the <code>suborigin</code>
-directive.</p>
-
-  </section>
-  <p><!-- /Framework::suborigin Directive --></p>
 
   <section>
     <h3 id="suborigin-of-a-resource">Suborigin of a Resource</h3>

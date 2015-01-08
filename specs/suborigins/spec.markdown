@@ -124,9 +124,6 @@ The term <dfn>origin</dfn> is defined in the Origin specification.
 </section> <!-- /Conformance -->
 
 <section>
-### Framework
-
-<section>
 ### Defining a Suborigin
 
 Origins are a mechanism for user agents to group URIs into protection domains.
@@ -188,7 +185,7 @@ using `postMessage` even for content in the same trust boundary since they
 utilize `sandbox`. This provides much of the motivation for the named container
 nature of suborigins.
 
-</section> <!-- /Framework::Defining a Suborigin::Examples -->
+</section> <!-- /Defining a Suborigin::Examples -->
 
 <section>
 ### Relationship of Suborigins to Origins
@@ -205,12 +202,12 @@ important properties:
 * The rules on how Suborigins are defined.
 * The rules on how Suborigins are tracked.
 
-</section> <!-- /Framework::Defining a Suborigin::Relationship of Suborigins to Origins-->
+</section> <!-- /Defining a Suborigin::Relationship of Suborigins to Origins-->
 
 <section>
-### Serialization
+### Representation of Suborigins
 
-At an abstract level, a suborigin consists of a scheme, host, and port of a
+At an abstract level, a suborigin consists of the scheme, host, and port of a
 traditional origin, plus a [suborigin namespace][]. However, as mentioned above,
 suborigins are intended to fit within the framework of [[!RFC6454]]. Therefore,
 this specification provides a way of serializing a Suborigin bound resource into
@@ -227,7 +224,11 @@ suborigin namespace `profile`, this would be serialized as
 Similarly, if a resource is hosted at `https://example.com:8080/` in the
 suborigin namespace `separate`, this would be serialized as
 `https+separate://example.com:8080/`.
-</section> <!-- /Framework::Defining a Suborigin::Serialization -->
+
+Internally, the [suborigin namespace][] must be tracked by the user agent. When
+the origin needs to be serialized for a resource, the user agent should follow
+the algorithm in [Serializing Suborigins][].
+</section> <!-- /Defining a Suborigin::Serialization -->
 
 <section>
 ### Opting into a Suborigin
@@ -246,7 +247,24 @@ the following directive in the CSP header:
 
     suborigin: testing
 
-</section> <!-- /Framework::Defining a Suborigin::Opting into a Suborigin -->
+<section>
+### `suborigin` Directive
+
+Suborigins are defined by a `suborigin` directive in the [Content Security
+Policy][csp] of the resource. The syntax for the name and value of the directive
+are described by the following ABNF grammar:
+
+    directive-name  = "suborigin"
+    directive-value = 1*( ALPHA / DIGIT / "-" )
+
+A resource's <dfn>suborigin namespace</dfn> is the value of the `suborigin`
+directive.
+
+[suborigin namespace]: #dfn-suborigin-namespace
+
+</section> <!-- /Defining a Suborigin::Opting into a Suborigin::suborigin Directive -->
+
+</section> <!-- /Defining a Suborigin::Opting into a Suborigin -->
 
 <section>
 ### Accessing the Suborigin in JavaScript
@@ -255,9 +273,9 @@ document.location.suborigin? Or should it be serialized into document.origin,
 plus a deserialization mechanism? (jww)
 {:.issue}
 
-</section> <!-- /Framework::Defining a Suborigin::Accessing the Suborigin in JavaScript -->
+</section> <!-- /Defining a Suborigin::Accessing the Suborigin in JavaScript -->
 
-</section> <!-- /Framework::Defining a Suborigin -->
+</section> <!-- /Defining a Suborigin -->
 
 <section>
 ### Access Control
@@ -307,10 +325,10 @@ putting the serialized suborigin as described above it its place. This would
 require monkey patching the Origin spec's syntax of the Origin header.
 {:.issue}
 
-</section> <!-- /Framework::Access Control::CORS -->
+</section> <!-- /Access Control::CORS -->
 
 <section>
-### postMessage
+### `postMessage`
 
 Cross-origin messaging via `postMessage` [[!WebMessaging]] provides many of the
 same concerns as CORS. Namely, it is necessary for the recipient to see the
@@ -328,7 +346,7 @@ Similar to the CORS case, another option is to set `event.origin` to the
 serialized namespace and then provide a deserialization tool.
 {:.issue}
 
-</section> <!-- /Framework::Access Control::postMessage -->
+</section> <!-- /Access Control::postMessage -->
 
 <section>
 ### Workers
@@ -340,11 +358,9 @@ physical origin since it works in terms of network requests, and suborigins are
 not relevant to network requests. Pull requests welcome.
 {:.issue}
 
-</section> <!-- /Framework::Access Control::Workers -->
+</section> <!-- /Access Control::Workers -->
 
-</section> <!-- /Framework::Access Control -->
-
-</section> <!-- /Framework -->
+</section> <!-- /Access Control -->
 
 <section>
 ### Impact on Web Platform
@@ -380,23 +396,6 @@ These sections are tricky because, unlike traditional origins, we can't define
 suborigins in terms of URIs. Since the suborigin namespace is defined in a
 header, not in the URI, we need to define them in terms of resources.
 {:.note}
-
-<section>
-### `suborigin` Directive
-
-Suborigins are defined by a `suborigin` directive in the [Content Security
-Policy][csp] of the resource. The syntax for the name and value of the directive
-are described by the following ABNF grammar:
-
-    directive-name  = "suborigin"
-    directive-value = 1*( ALPHA / DIGIT / "-" )
-
-A resource's <dfn>suborigin namespace</dfn> is the value of the `suborigin`
-directive.
-
-[suborigin namespace]: #dfn-suborigin-namespace
-
-</section> <!-- /Framework::suborigin Directive -->
 
 <section>
 ### Suborigin of a Resource
@@ -450,6 +449,8 @@ Two resources are the same-origin if their suborigins are the same.
 
 This section defines how to serialize an origin to a unicode [[!Unicode6]]
 string and to an ASCII [[!RFC0020]] string.
+
+[Serializing Suborigins]: #serializing-suborigins
 
 <section>
 ### Unicode Serialization of a Suborigin
