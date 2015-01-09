@@ -1,4 +1,5 @@
 <h1>Suborigins</h1>
+
 <pre class='metadata'>
 Status: ED
 ED: https://w3c.github.io/webappsec/specs/suborigins/
@@ -173,7 +174,7 @@ However, from security perspective, this means that a compromise of one
 application is a compromise of the other since the only security boundary in the
 browser is the origin, and both applications are hosted on the same origin.
 Thus, even if Google Search were to successful implement a strong Content
-Security Policy [[CSP]], if Google Maps were to have an XSS vulnerability, it
+Security Policy [[CSP2]], if Google Maps were to have an XSS vulnerability, it
 would be equivalent to having an XSS on Google Search as well, negating Google
 Search's security measures.
 
@@ -235,4 +236,330 @@ Internally, the <a>suborigin namespace</a> must be tracked by the user agent. Wh
 the origin needs to be serialized for a resource, the user agent should follow
 the algorithm in [[#serializing]].
 
+## Opting into a Suborigin
+
+Unlike the <code>sandbox</code> attribute, suborigin namespaces are predictable
+and controllable. Because of this, potentially untrusted content cannot opt into
+suborigins, unlike iframe sandboxes. If they could, then an XSS on a site could
+enter a specific suborigin and access all of its resources, thus violating the
+entire privilege separation suborigins are intended to protect. To prevent this,
+the server (rather than a resource itself) is treated as the only authoritative
+source of the suborigin namespace of a resource. This is implemented through an
+additional header-only Content Security Policy directive <code>suborigin</code>,
+which takes a string value that is the namespace. For example, to put a resource
+in the `testing` suborigin namespace, the server would specify the following
+directive in the CSP header:
+
+<pre>
+  suborigin: testing
+</pre>
+
+## <code>suborigin</code> Directive ## {#suborigin-directive}
+
+Suborigins are defined by a <dfn>suborigin directive</dfn> in the Content
+Security Policy [[!CSP2]] of the resource. The syntax for the name and value of
+the directive are described by the following ABNF grammar:
+
+<pre>
+  directive-name  = "suborigin"
+  directive-value = 1*( ALPHA / DIGIT / "-" )
+</pre>
+
+A resource's <dfn>suborigin namespace</dfn> is the value of the
+<code>suborigin</code> directive.
+
+## Accessing the Suborigin in JavaScript
+
+Issue: I don't have a great idea for how to do this yet. Should it be as simple
+as document.location.suborigin? Or should it be serialized into document.origin,
+plus a deserialization mechanism? (jww)
+
 </section><!-- Defining a Suborigin -->
+
+<section>
+# Access Control # {#access-control}
+
+Cross-origin (including cross-suborigin) communication is tricky when suborigins
+are involved because they need to be backwards compatible with user agents that
+do not support suborigins while providing origin-separation for user agents that
+do support suborigins. The following discussions discuss the three major
+cross-origin mechanisms that are relevant.
+
+## CORS ## {#cors}
+
+For pages in a suborigin namespace, all <code>XMLHttpRequest</code>s to any URL
+should be treated as cross-origin, thus triggering CORS [[!CORS]] logic with
+special <code>Finer-Origin:</code> and <code>Suborigin:</code> headers added.
+Additionally, the <code>Origin:</code> header that is normally applied to
+cross-origin requests should <em>not</em> be added. These header changes are
+needed so that a server that recognizes suborigins can see the suborigin
+namespace the request is coming from and apply the appropriate CORS headers as
+is appropriate, while legacy servers will not "accidentally" approve
+cross-origin requests because of an <code>Origin</code> header that provides an
+incomplete picture of the origin (that is, an origin without the suborigin).
+
+The <code>Finer-Origin:</code> header takes a value identical to the Origin
+Header, as defined in [[!RFC6454]]. The <code>Suborigin:</code> header takes a
+string value that is the suborigin namespace. The former servers identically as
+the <code>Origin:</code> header, but in a purposefully backwards incompatible
+way, while the <code>Suborigin:</code> header allows a server to make a more
+nuanced access control choice. A user agent must not include more than one
+<code>Finer-Origin:</code> header and must not include more than one
+<code>Suborigin:</code> field.
+
+Similar changes are needed for response from the server with the addition of
+<code>Access-Control-Allow-Finer-Origin</code> and
+<code>Access-Control-Allow-Suborigin</code> response headers. The former takes
+the same values as <code>Access-Control-Allow-Origin</code> as defined in
+[[!CORS]], while the later takes a string value that matches allowed suborigin
+namespaces, or <code>*</code> to allow all suborigin namespaces.
+
+Issue: I expect that this will be a relatively controversial part of the
+proposal, but I think the concern is pretty important. In particular, a lot of
+the potential benefits of the proposal are eliminated if the Origin header is
+set with the broad, traditional origin as an isolated but compromised suborigin
+could just request private information from the other origin. That having been
+said, we might be able to bypass a lot of these concerns by using the Origin
+header but putting the serialized suborigin as described above it its place.
+This would require monkey patching the Origin spec's syntax of the Origin
+header.
+
+## <code>postMessage</code> ## {#postmessage}
+
+Cross-origin messaging via <code>postMessage</code> [[!WebMessaging]] provides
+many of the same concerns as CORS. Namely, it is necessary for the recipient to
+see the suborigin namespace of the message sender so an appropriate access
+control decision can be made, and similarly, legacy applications should by
+default treat these messages as not coming from the traditional origin of the
+sender.
+
+To enforce this, when a message is sent from a suborigin namespace, the receiver
+has the <code>event.origin</code> value set to <code>null</code> so if it is
+read, it is not treated as coming from any particular origin. Instead, new
+propriets of <code>event.finerorigin</code> and <code>event.suborigin</code>
+should be set the scheme/host/port and suborigin namespace, respectively.
+
+Issue: Similar to the CORS case, another option is to set
+<code>event.origin</code> to the serialized namespace and then provide a
+deserialization tool.
+
+### Workers ### {#workers}
+
+Issue: We need a story here. I basically think that workers should be treated as
+if they're in the same suborigin as whatever created them, but I'm also open to
+other suggestions. Particularly tricky are service workers, which for simplicity
+sake I suggest we treat as applying universally to all suborigins at a single
+physical origin since it works in terms of network requests, and suborigins are
+not relevant to network requests. Pull requests welcome.
+
+</section><!-- Access Control -->
+
+<section>
+
+# Impact on Web Platform # {#impact}
+
+Content inside a suborigin namespace is severely restricted in what the hosted
+content can do. The restrictions match the behavior of an iframe with the
+sandbox attribute set to the value of <code>allow-scripts</code> [[!HTML]].
+While more specifics are described below, the general idea here is to put
+suborigin namespaces in a "default secure" context. However, restrictions may be
+lifted going forward at a time when a way to whitelist particular Web platform
+permissions is well-defined.
+
+## Examples
+
+## Relationship with Sensitive Permissions
+
+Issue: We need to discuss DOM storage, cookies, document.domain, etc. In
+particular, we should relate this to
+http://www.w3.org/TR/html5/browsers.html#sandboxing.
+
+</section><!-- Impact on Web Platform -->
+
+<section>
+# Framework ## {#framework}
+
+Note: These sections are tricky because, unlike traditional origins, we can't
+define suborigins in terms of URIs. Since the suborigin namespace is defined in
+a header, not in the URI, we need to define them in terms of resources.
+
+## Suborigin of a Resource
+
+The suborigin of a resource is the value computed by the following algorithm:
+
+<ol>
+
+  <li>
+    Let origin be the triple result from starting with step 1 of Section 4 of
+    the <a href="https://tools.ietf.org/html/rfc6454#section-4">Section 4</a> of
+    of the Origin specification. [[!RFC6454]]
+  </li>
+
+  <li>
+    If the Content Security Policy of the resource contains a valid
+    <a>suborigin directive</a> in the <a
+    href="https://www.w3.org/TR/CSP2/#policy-syntax">directive list</a>
+    [[!CSP2]], then let <code>suborigin-namespace</code> be the
+    <code>directive-value</code>.
+  </li>
+
+  <li>
+    Otherwise, let <code>suborigin-namespace</code> be <code>null</code>.
+  </li>
+
+  <li>
+    Return the pair <code>(origin, suborigin-namespace)</code>.
+  </li>
+
+</ol>
+
+## Comparing Suborigins
+
+Issue: Since we'd like to make the claim that suborigins do not supercede the
+same-origin policy, would it be worth defining suborigins purely in terms of
+being a unique scheme? That would make this section somewhat unnecessary since
+origin comparisons would be the same.
+
+Two suborigins are "the same" if, and only if, they are identical. In
+particular:
+
+* If the origin portions of the suborigin pairs are scheme/host/port triples,
+  the two suborigins are the same if, and only if, they have identical schemes,
+  hosts, and ports and the <code>suborigin-namespace</code> portions of the
+  suborigin pairs are identical.
+* If both <code>suborigin-namespace</code> portions of the suborigin pairs are
+  null, this is considered identical.
+* An origin that is a globally unique identifier cannot be the same as an origin
+  that is a scheme/host/port triple, with or without a
+  <code>suborigin-namespace</code>.
+
+Two resources are the same-origin if their suborigins are the same.
+
+## Serializing Suborigins ### {#serializing}
+
+This section defines how to serialize an origin to a unicode [[!Unicode6]]
+string and to an ASCII [[!RFC0020]] string.
+
+### Unicode Serialization of a Suborigin
+
+The Unicode serialization of a suborigin is the value returned by the following
+algorithm:
+
+<ol>
+
+  <li>
+    If the origin portion of the suborigin pair is not a scheme/host/port
+    triple, then return the string
+      <pre>
+        null
+      </pre>
+
+    (i.e., the code point sequence U+006E, U+0075, U+006C, U+006C) and abort
+    these steps.
+  </li>
+
+  <li>
+    Otherwise, if the suborigin-namespace portion of the suborigin pair is not
+    null:
+
+    <ol>
+
+      <li>
+        Let suffix be the string "+".
+      </li>
+
+      <li>
+        Append the suborigin-namespace portion of the suborigin pair to suffix.
+      </li>
+
+      <li>
+        Append suffix to the scheme part of the origin triple.
+      </li>
+
+    </ol>
+  </li>
+
+  <li>
+    Proceed with step 1 of <a
+    href="https://tools.ietf.org/html/rfc6454#section-6.1">Section 6.1 in the
+    Origin specification</a> [[!RFC6454]].
+  </li>
+
+</ol>
+
+### ASCII Serialization of a Suborigin
+
+The ASCII serialization of a suborigin is the value returned by the following
+algorithm:
+
+<ol>
+  <li>
+    If the origin portion of the suborigin pair is not a scheme/host/port
+    triple, then return the string
+
+      <pre>
+        null
+      </pre>
+
+    (i.e., the code point sequence U+006E, U+0075, U+006C, U+006C) and abort
+    these steps.
+  </li>
+
+  <li>
+    Otherwise, if the suborigin-namespace portion of the suborigin pair is not
+    null:
+
+    <ol>
+
+      <li>
+        Let suffix be the string "+".
+      </li>
+
+      <li>
+        Append the suborigin-namespace portion of the suborigin pair to suffix.
+      </li>
+
+      <li>
+        Append suffix to the scheme part of the origin triple.
+      </li>
+
+    </ol>
+  </li>
+
+  <li>
+    Proceed with step 1 of <a
+    href="https://tools.ietf.org/html/rfc6454#section-6.2">Section 6.2 in the
+    Origin specification</a> [[!RFC6454]].
+  </li>
+
+</ol>
+
+</section> <!-- /Framework -->
+
+<section>
+# Security Considerations
+
+## Presentation of Suborigins to Users
+
+A complication of suborigins is that while they provide a meaningful security
+for an application, that boundary makes much less sense to a user. That is,
+traditional origins provide a security boundary at a physical level: separate
+scheme, hosts, and ports map to real boundaries external of a given application.
+However, suborigins as a boundary only makes sense <em>within the context of the
+program logic itself</em>, and there is no meaningful way for users to make
+decisions based on suborigins a priori.
+
+Therefore, suborigins should be used only internally in a user agent and should
+not be presented to users at all. For example, suborigins should never be
+presented in link text or a URL bar.
+
+## Not Overthrowing Same-origin Policy
+
+Suborigins do not fundamentally change how the same-origin policy works. An
+application without suborigins should work identially to how it always has, and
+even in an application with suborigins, the same-origin policy still applies as
+always. In fact, suborigins have been defined within the context of the
+same-origin policy so that, in theory, serialized suborigins can be thought of
+as a just a special case of the traditional same-origin policy.
+
+</section> <!-- /Security Considerations -->

@@ -191,6 +191,43 @@
             </li>
             <li><a href="#relationship-of-suborigins-to-origins"><span class="secno">3.2</span> <span class="content">Relationship of Suborigins to Origins</span></a></li>
             <li><a href="#representation-of-suborigins"><span class="secno">3.3</span> <span class="content">Representation of Suborigins</span></a></li>
+            <li><a href="#opting-into-a-suborigin"><span class="secno">3.4</span> <span class="content">Opting into a Suborigin</span></a></li>
+            <li><a href="#suborigin-directive"><span class="secno">3.5</span> <span class="content"><code>suborigin</code> Directive</span></a></li>
+            <li><a href="#accessing-the-suborigin-in-javascript"><span class="secno">3.6</span> <span class="content">Accessing the Suborigin in JavaScript</span></a></li>
+          </ul>
+        </li>
+        <li><a href="#access-control"><span class="secno">4</span> <span class="content">Access Control</span></a>
+          <ul class="toc">
+            <li><a href="#cors"><span class="secno">4.1</span> <span class="content">CORS</span></a></li>
+            <li><a href="#postmessage"><span class="secno">4.2</span> <span class="content"><code>postMessage</code></span></a>
+              <ul class="toc">
+                <li><a href="#workers"><span class="secno">4.2.1</span> <span class="content">Workers</span></a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li><a href="#impact"><span class="secno">5</span> <span class="content">Impact on Web Platform</span></a>
+          <ul class="toc">
+            <li><a href="#examples0"><span class="secno">5.1</span> <span class="content">Examples</span></a></li>
+            <li><a href="#relationship-with-sensitive-permissions"><span class="secno">5.2</span> <span class="content">Relationship with Sensitive Permissions</span></a></li>
+          </ul>
+        </li>
+        <li><a href="#framework"><span class="secno">6</span> <span class="content">Framework #</span></a>
+          <ul class="toc">
+            <li><a href="#suborigin-of-a-resource"><span class="secno">6.1</span> <span class="content">Suborigin of a Resource</span></a></li>
+            <li><a href="#comparing-suborigins"><span class="secno">6.2</span> <span class="content">Comparing Suborigins</span></a></li>
+            <li><a href="#serializing"><span class="secno">6.3</span> <span class="content">Serializing Suborigins #</span></a>
+              <ul class="toc">
+                <li><a href="#unicode-serialization-of-a-suborigin"><span class="secno">6.3.1</span> <span class="content">Unicode Serialization of a Suborigin</span></a></li>
+                <li><a href="#ascii-serialization-of-a-suborigin"><span class="secno">6.3.2</span> <span class="content">ASCII Serialization of a Suborigin</span></a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li><a href="#security-considerations"><span class="secno">7</span> <span class="content">Security Considerations</span></a>
+          <ul class="toc">
+            <li><a href="#presentation-of-suborigins-to-users"><span class="secno">7.1</span> <span class="content">Presentation of Suborigins to Users</span></a></li>
+            <li><a href="#not-overthrowing-same-origin-policy"><span class="secno">7.2</span> <span class="content">Not Overthrowing Same-origin Policy</span></a></li>
           </ul>
         </li>
         <li><a href="#conformance"><span class="secno"></span> <span class="content">Conformance</span></a>
@@ -211,6 +248,7 @@
       </ul></div>
 
     <main>
+
 
 
 
@@ -414,7 +452,7 @@ However, from security perspective, this means that a compromise of one
 application is a compromise of the other since the only security boundary in the
 browser is the origin, and both applications are hosted on the same origin.
 Thus, even if Google Search were to successful implement a strong Content
-Security Policy <a data-biblio-type="informative" data-link-type="biblio" href="#biblio-csp" title="CSP">[CSP]</a>, if Google Maps were to have an XSS vulnerability, it
+Security Policy <a data-biblio-type="informative" data-link-type="biblio" href="#biblio-csp2" title="CSP2">[CSP2]</a>, if Google Maps were to have an XSS vulnerability, it
 would be equivalent to having an XSS on Google Search as well, negating Google
 Search’s security measures.
 
@@ -469,7 +507,7 @@ important properties:</p>
 
 
         <p>At an abstract level, a suborigin consists of the scheme, host, and port of a
-traditional origin, plus a <a data-link-type="dfn">suborigin namespace</a>. However, as mentioned
+traditional origin, plus a <a data-link-type="dfn" href="#suborigin-namespace">suborigin namespace</a>. However, as mentioned
 above, suborigins are intended to fit within the framework of <a data-biblio-type="normative" data-link-type="biblio" href="#biblio-rfc6454" title="RFC6454">[RFC6454]</a>.
 Therefore, this specification provides a way of serializing a Suborigin bound
 resource into a traditional Origin. This is done by inserting the suborigin
@@ -490,11 +528,437 @@ the suborigin namespace <code>separate</code>, this would be serialized as
 <code>https+separate://example.com:8080/</code>.</p>
 
 
-        <p>Internally, the <a data-link-type="dfn">suborigin namespace</a> must be tracked by the user agent. When
+        <p>Internally, the <a data-link-type="dfn" href="#suborigin-namespace">suborigin namespace</a> must be tracked by the user agent. When
 the origin needs to be serialized for a resource, the user agent should follow
-the algorithm in <a data-section="" href="#serializing"></a>.</p>
+the algorithm in <a data-section="" href="#serializing">§6.3 Serializing Suborigins #</a>.</p>
+
+
+        <h3 class="heading settled" data-level="3.4" id="opting-into-a-suborigin"><span class="secno">3.4. </span><span class="content">Opting into a Suborigin</span><a class="self-link" href="#opting-into-a-suborigin"></a></h3>
+
+
+        <p>Unlike the <code>sandbox</code> attribute, suborigin namespaces are predictable
+and controllable. Because of this, potentially untrusted content cannot opt into
+suborigins, unlike iframe sandboxes. If they could, then an XSS on a site could
+enter a specific suborigin and access all of its resources, thus violating the
+entire privilege separation suborigins are intended to protect. To prevent this,
+the server (rather than a resource itself) is treated as the only authoritative
+source of the suborigin namespace of a resource. This is implemented through an
+additional header-only Content Security Policy directive <code>suborigin</code>,
+which takes a string value that is the namespace. For example, to put a resource
+in the `testing` suborigin namespace, the server would specify the following
+directive in the CSP header:</p>
+
+
+        <pre>suborigin: testing
+</pre>
+
+
+        <h3 class="heading settled" data-level="3.5" id="suborigin-directive"><span class="secno">3.5. </span><span class="content"><code>suborigin</code> Directive</span><a class="self-link" href="#suborigin-directive"></a></h3>
+
+
+        <p>Suborigins are defined by a <dfn data-dfn-type="dfn" data-noexport="" id="suborigin-directive0">suborigin directive<a class="self-link" href="#suborigin-directive0"></a></dfn> in the Content
+Security Policy <a data-biblio-type="normative" data-link-type="biblio" href="#biblio-csp2" title="CSP2">[CSP2]</a> of the resource. The syntax for the name and value of
+the directive are described by the following ABNF grammar:</p>
+
+
+        <pre>directive-name  = "suborigin"
+directive-value = 1*( ALPHA / DIGIT / "-" )
+</pre>
+
+
+        <p>A resource’s <dfn data-dfn-type="dfn" data-noexport="" id="suborigin-namespace">suborigin namespace<a class="self-link" href="#suborigin-namespace"></a></dfn> is the value of the
+<code>suborigin</code> directive.</p>
+
+
+        <h3 class="heading settled" data-level="3.6" id="accessing-the-suborigin-in-javascript"><span class="secno">3.6. </span><span class="content">Accessing the Suborigin in JavaScript</span><a class="self-link" href="#accessing-the-suborigin-in-javascript"></a></h3>
+
+
+        <p class="issue" id="issue-56caee46"><a class="self-link" href="#issue-56caee46"></a>I don’t have a great idea for how to do this yet. Should it be as simple
+as document.location.suborigin? Or should it be serialized into document.origin,
+plus a deserialization mechanism? (jww)</p>
 
 </section>
+
+
+      <section>
+
+        <h2 class="heading settled" data-level="4" id="access-control"><span class="secno">4. </span><span class="content">Access Control</span><a class="self-link" href="#access-control"></a></h2>
+
+
+        <p>Cross-origin (including cross-suborigin) communication is tricky when suborigins
+are involved because they need to be backwards compatible with user agents that
+do not support suborigins while providing origin-separation for user agents that
+do support suborigins. The following discussions discuss the three major
+cross-origin mechanisms that are relevant.</p>
+
+
+        <h3 class="heading settled" data-level="4.1" id="cors"><span class="secno">4.1. </span><span class="content">CORS</span><a class="self-link" href="#cors"></a></h3>
+
+
+        <p>For pages in a suborigin namespace, all <code>XMLHttpRequest</code>s to any URL
+should be treated as cross-origin, thus triggering CORS <a data-biblio-type="normative" data-link-type="biblio" href="#biblio-cors" title="CORS">[CORS]</a> logic with
+special <code>Finer-Origin:</code> and <code>Suborigin:</code> headers added.
+Additionally, the <code>Origin:</code> header that is normally applied to
+cross-origin requests should <em>not</em> be added. These header changes are
+needed so that a server that recognizes suborigins can see the suborigin
+namespace the request is coming from and apply the appropriate CORS headers as
+is appropriate, while legacy servers will not "accidentally" approve
+cross-origin requests because of an <code>Origin</code> header that provides an
+incomplete picture of the origin (that is, an origin without the suborigin).</p>
+
+
+        <p>The <code>Finer-Origin:</code> header takes a value identical to the Origin
+Header, as defined in <a data-biblio-type="normative" data-link-type="biblio" href="#biblio-rfc6454" title="RFC6454">[RFC6454]</a>. The <code>Suborigin:</code> header takes a
+string value that is the suborigin namespace. The former servers identically as
+the <code>Origin:</code> header, but in a purposefully backwards incompatible
+way, while the <code>Suborigin:</code> header allows a server to make a more
+nuanced access control choice. A user agent must not include more than one
+<code>Finer-Origin:</code> header and must not include more than one
+<code>Suborigin:</code> field.</p>
+
+
+        <p>Similar changes are needed for response from the server with the addition of
+<code>Access-Control-Allow-Finer-Origin</code> and
+<code>Access-Control-Allow-Suborigin</code> response headers. The former takes
+the same values as <code>Access-Control-Allow-Origin</code> as defined in
+<a data-biblio-type="normative" data-link-type="biblio" href="#biblio-cors" title="CORS">[CORS]</a>, while the later takes a string value that matches allowed suborigin
+namespaces, or <code>*</code> to allow all suborigin namespaces.</p>
+
+
+        <p class="issue" id="issue-fac22004"><a class="self-link" href="#issue-fac22004"></a>I expect that this will be a relatively controversial part of the
+proposal, but I think the concern is pretty important. In particular, a lot of
+the potential benefits of the proposal are eliminated if the Origin header is
+set with the broad, traditional origin as an isolated but compromised suborigin
+could just request private information from the other origin. That having been
+said, we might be able to bypass a lot of these concerns by using the Origin
+header but putting the serialized suborigin as described above it its place.
+This would require monkey patching the Origin spec’s syntax of the Origin
+header.</p>
+
+
+        <h3 class="heading settled" data-level="4.2" id="postmessage"><span class="secno">4.2. </span><span class="content"><code>postMessage</code></span><a class="self-link" href="#postmessage"></a></h3>
+
+
+        <p>Cross-origin messaging via <code>postMessage</code> <a data-biblio-type="normative" data-link-type="biblio" href="#biblio-webmessaging" title="WebMessaging">[WebMessaging]</a> provides
+many of the same concerns as CORS. Namely, it is necessary for the recipient to
+see the suborigin namespace of the message sender so an appropriate access
+control decision can be made, and similarly, legacy applications should by
+default treat these messages as not coming from the traditional origin of the
+sender.</p>
+
+
+        <p>To enforce this, when a message is sent from a suborigin namespace, the receiver
+has the <code>event.origin</code> value set to <code>null</code> so if it is
+read, it is not treated as coming from any particular origin. Instead, new
+propriets of <code>event.finerorigin</code> and <code>event.suborigin</code>
+should be set the scheme/host/port and suborigin namespace, respectively.</p>
+
+
+        <p class="issue" id="issue-89125c85"><a class="self-link" href="#issue-89125c85"></a>Similar to the CORS case, another option is to set
+<code>event.origin</code> to the serialized namespace and then provide a
+deserialization tool.</p>
+
+
+        <h4 class="heading settled" data-level="4.2.1" id="workers"><span class="secno">4.2.1. </span><span class="content">Workers</span><a class="self-link" href="#workers"></a></h4>
+
+
+        <p class="issue" id="issue-cc64826b"><a class="self-link" href="#issue-cc64826b"></a>We need a story here. I basically think that workers should be treated as
+if they’re in the same suborigin as whatever created them, but I’m also open to
+other suggestions. Particularly tricky are service workers, which for simplicity
+sake I suggest we treat as applying universally to all suborigins at a single
+physical origin since it works in terms of network requests, and suborigins are
+not relevant to network requests. Pull requests welcome.</p>
+
+</section>
+
+
+      <section>
+
+
+        <h2 class="heading settled" data-level="5" id="impact"><span class="secno">5. </span><span class="content">Impact on Web Platform</span><a class="self-link" href="#impact"></a></h2>
+
+
+        <p>Content inside a suborigin namespace is severely restricted in what the hosted
+content can do. The restrictions match the behavior of an iframe with the
+sandbox attribute set to the value of <code>allow-scripts</code> <a data-biblio-type="normative" data-link-type="biblio" href="#biblio-html" title="HTML">[HTML]</a>.
+While more specifics are described below, the general idea here is to put
+suborigin namespaces in a "default secure" context. However, restrictions may be
+lifted going forward at a time when a way to whitelist particular Web platform
+permissions is well-defined.</p>
+
+
+        <h3 class="heading settled" data-level="5.1" id="examples0"><span class="secno">5.1. </span><span class="content">Examples</span><a class="self-link" href="#examples0"></a></h3>
+
+
+        <h3 class="heading settled" data-level="5.2" id="relationship-with-sensitive-permissions"><span class="secno">5.2. </span><span class="content">Relationship with Sensitive Permissions</span><a class="self-link" href="#relationship-with-sensitive-permissions"></a></h3>
+
+
+        <p class="issue" id="issue-f36cefaf"><a class="self-link" href="#issue-f36cefaf"></a>We need to discuss DOM storage, cookies, document.domain, etc. In
+particular, we should relate this to
+http://www.w3.org/TR/html5/browsers.html#sandboxing.</p>
+
+</section>
+
+
+      <section>
+
+        <h2 class="heading settled" data-level="6" id="framework"><span class="secno">6. </span><span class="content">Framework #</span><a class="self-link" href="#framework"></a></h2>
+
+
+        <p class="note" role="note">Note: These sections are tricky because, unlike traditional origins, we can’t
+define suborigins in terms of URIs. Since the suborigin namespace is defined in
+a header, not in the URI, we need to define them in terms of resources.</p>
+
+
+        <h3 class="heading settled" data-level="6.1" id="suborigin-of-a-resource"><span class="secno">6.1. </span><span class="content">Suborigin of a Resource</span><a class="self-link" href="#suborigin-of-a-resource"></a></h3>
+
+
+        <p>The suborigin of a resource is the value computed by the following algorithm:</p>
+
+
+        <ol>
+
+  
+          <li>
+    Let origin be the triple result from starting with step 1 of Section 4 of
+    the <a href="https://tools.ietf.org/html/rfc6454#section-4">Section 4</a> of
+    of the Origin specification. <a data-biblio-type="normative" data-link-type="biblio" href="#biblio-rfc6454" title="RFC6454">[RFC6454]</a>
+  </li>
+
+  
+          <li>
+    If the Content Security Policy of the resource contains a valid
+    <a data-link-type="dfn" href="#suborigin-directive0">suborigin directive</a> in the <a href="https://www.w3.org/TR/CSP2/#policy-syntax">directive list</a>
+    <a data-biblio-type="normative" data-link-type="biblio" href="#biblio-csp2" title="CSP2">[CSP2]</a>, then let <code>suborigin-namespace</code> be the
+    <code>directive-value</code>.
+  </li>
+
+  
+          <li>
+    Otherwise, let <code>suborigin-namespace</code> be <code>null</code>.
+  </li>
+
+  
+          <li>
+    Return the pair <code>(origin, suborigin-namespace)</code>.
+  </li>
+
+</ol>
+
+
+        <h3 class="heading settled" data-level="6.2" id="comparing-suborigins"><span class="secno">6.2. </span><span class="content">Comparing Suborigins</span><a class="self-link" href="#comparing-suborigins"></a></h3>
+
+
+        <p class="issue" id="issue-ffc4fc4d"><a class="self-link" href="#issue-ffc4fc4d"></a>Since we’d like to make the claim that suborigins do not supercede the
+same-origin policy, would it be worth defining suborigins purely in terms of
+being a unique scheme? That would make this section somewhat unnecessary since
+origin comparisons would be the same.</p>
+
+
+        <p>Two suborigins are "the same" if, and only if, they are identical. In
+particular:</p>
+
+
+        <ul>
+          <li data-md="">
+            <p>If the origin portions of the suborigin pairs are scheme/host/port triples,
+  the two suborigins are the same if, and only if, they have identical schemes,
+  hosts, and ports and the <code>suborigin-namespace</code> portions of the
+  suborigin pairs are identical.</p>
+            
+
+          </li>
+          <li data-md="">
+            <p>If both <code>suborigin-namespace</code> portions of the suborigin pairs are
+  null, this is considered identical.</p>
+            
+
+          </li>
+          <li data-md="">
+            <p>An origin that is a globally unique identifier cannot be the same as an origin
+  that is a scheme/host/port triple, with or without a
+  <code>suborigin-namespace</code>.</p>
+            
+
+          </li></ul>
+
+        <p>Two resources are the same-origin if their suborigins are the same.</p>
+
+
+        <h3 class="heading settled" data-level="6.3" id="serializing"><span class="secno">6.3. </span><span class="content">Serializing Suborigins #</span><a class="self-link" href="#serializing"></a></h3>
+
+
+        <p>This section defines how to serialize an origin to a unicode <a data-biblio-type="normative" data-link-type="biblio" href="#biblio-unicode6" title="Unicode6">[Unicode6]</a>
+string and to an ASCII <a data-biblio-type="normative" data-link-type="biblio" href="#biblio-rfc0020" title="RFC0020">[RFC0020]</a> string.</p>
+
+
+        <h4 class="heading settled" data-level="6.3.1" id="unicode-serialization-of-a-suborigin"><span class="secno">6.3.1. </span><span class="content">Unicode Serialization of a Suborigin</span><a class="self-link" href="#unicode-serialization-of-a-suborigin"></a></h4>
+
+
+        <p>The Unicode serialization of a suborigin is the value returned by the following
+algorithm:</p>
+
+
+        <ol>
+
+  
+          <li>
+    If the origin portion of the suborigin pair is not a scheme/host/port
+    triple, then return the string
+      
+            <pre>null
+</pre>
+            
+
+
+            <p>(i.e., the code point sequence U+006E, U+0075, U+006C, U+006C) and abort
+    these steps.</p>
+            
+  
+          </li>
+
+  
+          <li>
+    Otherwise, if the suborigin-namespace portion of the suborigin pair is not
+    null:
+
+    
+            <ol>
+
+      
+              <li>
+        Let suffix be the string "+".
+      </li>
+              
+
+      
+              <li>
+        Append the suborigin-namespace portion of the suborigin pair to suffix.
+      </li>
+              
+
+      
+              <li>
+        Append suffix to the scheme part of the origin triple.
+      </li>
+              
+
+    
+            </ol>
+            
+  
+          </li>
+
+  
+          <li>
+    Proceed with step 1 of <a href="https://tools.ietf.org/html/rfc6454#section-6.1">Section 6.1 in the
+    Origin specification</a> <a data-biblio-type="normative" data-link-type="biblio" href="#biblio-rfc6454" title="RFC6454">[RFC6454]</a>.
+  </li>
+
+</ol>
+
+
+        <h4 class="heading settled" data-level="6.3.2" id="ascii-serialization-of-a-suborigin"><span class="secno">6.3.2. </span><span class="content">ASCII Serialization of a Suborigin</span><a class="self-link" href="#ascii-serialization-of-a-suborigin"></a></h4>
+
+
+        <p>The ASCII serialization of a suborigin is the value returned by the following
+algorithm:</p>
+
+
+        <ol>
+  
+          <li>
+    If the origin portion of the suborigin pair is not a scheme/host/port
+    triple, then return the string
+
+      
+            <pre>null
+</pre>
+            
+
+
+            <p>(i.e., the code point sequence U+006E, U+0075, U+006C, U+006C) and abort
+    these steps.</p>
+            
+  
+          </li>
+
+  
+          <li>
+    Otherwise, if the suborigin-namespace portion of the suborigin pair is not
+    null:
+
+    
+            <ol>
+
+      
+              <li>
+        Let suffix be the string "+".
+      </li>
+              
+
+      
+              <li>
+        Append the suborigin-namespace portion of the suborigin pair to suffix.
+      </li>
+              
+
+      
+              <li>
+        Append suffix to the scheme part of the origin triple.
+      </li>
+              
+
+    
+            </ol>
+            
+  
+          </li>
+
+  
+          <li>
+    Proceed with step 1 of <a href="https://tools.ietf.org/html/rfc6454#section-6.2">Section 6.2 in the
+    Origin specification</a> <a data-biblio-type="normative" data-link-type="biblio" href="#biblio-rfc6454" title="RFC6454">[RFC6454]</a>.
+  </li>
+
+</ol>
+
+</section> 
+
+
+      <section>
+
+        <h2 class="heading settled" data-level="7" id="security-considerations"><span class="secno">7. </span><span class="content">Security Considerations</span><a class="self-link" href="#security-considerations"></a></h2>
+
+
+        <h3 class="heading settled" data-level="7.1" id="presentation-of-suborigins-to-users"><span class="secno">7.1. </span><span class="content">Presentation of Suborigins to Users</span><a class="self-link" href="#presentation-of-suborigins-to-users"></a></h3>
+
+
+        <p>A complication of suborigins is that while they provide a meaningful security
+for an application, that boundary makes much less sense to a user. That is,
+traditional origins provide a security boundary at a physical level: separate
+scheme, hosts, and ports map to real boundaries external of a given application.
+However, suborigins as a boundary only makes sense <em>within the context of the
+program logic itself</em>, and there is no meaningful way for users to make
+decisions based on suborigins a priori.</p>
+
+
+        <p>Therefore, suborigins should be used only internally in a user agent and should
+not be presented to users at all. For example, suborigins should never be
+presented in link text or a URL bar.</p>
+
+
+        <h3 class="heading settled" data-level="7.2" id="not-overthrowing-same-origin-policy"><span class="secno">7.2. </span><span class="content">Not Overthrowing Same-origin Policy</span><a class="self-link" href="#not-overthrowing-same-origin-policy"></a></h3>
+
+
+        <p>Suborigins do not fundamentally change how the same-origin policy works. An
+application without suborigins should work identially to how it always has, and
+even in an application with suborigins, the same-origin policy still applies as
+always. In fact, suborigins have been defined within the context of the
+same-origin policy so that, in theory, serialized suborigins can be thought of
+as a just a special case of the traditional same-origin policy.</p>
+
+</section> 
 
 </main>
 
@@ -569,24 +1033,64 @@ the algorithm in <a data-section="" href="#serializing"></a>.</p>
     <h2 class="no-num heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
     <h3 class="no-num heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
     <dl>
+      <dt id="biblio-csp2" title="CSP2"><a class="self-link" href="#biblio-csp2"></a>[CSP2]</dt>
+      <dd>Mike West; Adam Barth; Daniel Veditz. <a href="http://www.w3.org/TR/CSP2/">Content Security Policy Level 2</a>. 3 July 2014. LCWD. URL: <a href="http://www.w3.org/TR/CSP2/">http://www.w3.org/TR/CSP2/</a></dd>
+      <dt id="biblio-html" title="HTML"><a class="self-link" href="#biblio-html"></a>[HTML]</dt>
+      <dd>Ian Hickson. <a href="https://html.spec.whatwg.org/">HTML</a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/">https://html.spec.whatwg.org/</a></dd>
+      <dt id="biblio-unicode6" title="UNICODE6"><a class="self-link" href="#biblio-unicode6"></a>[UNICODE6]</dt>
+      <dd>The Unicode Consortium. <a href="http://www.unicode.org/versions/Unicode6.2.0/">The Unicode Standard, Version 6.2.0</a>. Defined by: The Unicode Standard, Version 6.2.0 URL: <a href="http://www.unicode.org/versions/Unicode6.2.0/">http://www.unicode.org/versions/Unicode6.2.0/</a></dd>
+      <dt id="biblio-cors" title="cors"><a class="self-link" href="#biblio-cors"></a>[cors]</dt>
+      <dd>Anne van Kesteren. <a href="http://www.w3.org/TR/cors/">Cross-Origin Resource Sharing</a>. 16 January 2014. REC. URL: <a href="http://www.w3.org/TR/cors/">http://www.w3.org/TR/cors/</a></dd>
+      <dt id="biblio-rfc0020" title="rfc0020"><a class="self-link" href="#biblio-rfc0020"></a>[rfc0020]</dt>
+      <dd>V.G. Cerf. <a href="http://www.ietf.org/rfc/rfc0020.txt">ASCII format for network interchange</a>. October 1969. Unknown. URL: <a href="http://www.ietf.org/rfc/rfc0020.txt">http://www.ietf.org/rfc/rfc0020.txt</a></dd>
       <dt id="biblio-rfc2119" title="rfc2119"><a class="self-link" href="#biblio-rfc2119"></a>[rfc2119]</dt>
       <dd>S. Bradner. <a href="http://www.ietf.org/rfc/rfc2119.txt">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="http://www.ietf.org/rfc/rfc2119.txt">http://www.ietf.org/rfc/rfc2119.txt</a></dd>
       <dt id="biblio-rfc6454" title="rfc6454"><a class="self-link" href="#biblio-rfc6454"></a>[rfc6454]</dt>
-      <dd>A. Barth. <a href="http://www.ietf.org/rfc/rfc6454.txt">The Web Origin Concept</a>. December 2011. Proposed Standard. URL: <a href="http://www.ietf.org/rfc/rfc6454.txt">http://www.ietf.org/rfc/rfc6454.txt</a></dd></dl>
+      <dd>A. Barth. <a href="http://www.ietf.org/rfc/rfc6454.txt">The Web Origin Concept</a>. December 2011. Proposed Standard. URL: <a href="http://www.ietf.org/rfc/rfc6454.txt">http://www.ietf.org/rfc/rfc6454.txt</a></dd>
+      <dt id="biblio-webmessaging" title="webmessaging"><a class="self-link" href="#biblio-webmessaging"></a>[webmessaging]</dt>
+      <dd>Ian Hickson. <a href="http://www.w3.org/TR/webmessaging/">HTML5 Web Messaging</a>. 1 May 2012. CR. URL: <a href="http://www.w3.org/TR/webmessaging/">http://www.w3.org/TR/webmessaging/</a></dd></dl>
     <h3 class="no-num heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
     <dl>
-      <dt id="biblio-csp" title="CSP"><a class="self-link" href="#biblio-csp"></a>[CSP]</dt>
-      <dd>Brandon Sterne; Adam Barth. <a href="http://www.w3.org/TR/CSP/">Content Security Policy 1.0</a>. 15 November 2012. CR. URL: <a href="http://www.w3.org/TR/CSP/">http://www.w3.org/TR/CSP/</a></dd>
       <dt id="biblio-privilegeseparation" title="PrivilegeSeparation"><a class="self-link" href="#biblio-privilegeseparation"></a>[PrivilegeSeparation]</dt>
       <dd>Devdatta Akhawe; Prateek Saxena; Dawn Song. <a href="https://www.usenix.org/system/files/conference/usenixsecurity12/sec12-final168.pdf">Privilege Separation in HTML5 Applications</a>. URL: <a href="https://www.usenix.org/system/files/conference/usenixsecurity12/sec12-final168.pdf">https://www.usenix.org/system/files/conference/usenixsecurity12/sec12-final168.pdf</a></dd></dl>
     <h2 class="no-num heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
     <ul class="indexlist">
       <li>conformant server, <a href="#conformant-server" title="section Unnumbered section">Unnumbered section</a></li>
       <li>conformant user agent, <a href="#conformant-user-agent" title="section Unnumbered section">Unnumbered section</a></li>
-      <li>origin, <a href="#origin" title="section 2.2">2.2</a></li></ul>
+      <li>origin, <a href="#origin" title="section 2.2">2.2</a></li>
+      <li>suborigin directive, <a href="#suborigin-directive0" title="section 3.5">3.5</a></li>
+      <li>suborigin namespace, <a href="#suborigin-namespace" title="section 3.5">3.5</a></li></ul>
     <h2 class="no-num heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
     <div style="counter-reset:issue">
       <div class="issue">Not sure how to actually refer to 'real origins'. This is a terrible
 name, and we need a better way to talk about them. Maybe physical origin?
-Traditional origin? (jww)<a href="#issue-e1a79dec"> ↵ </a></div></div></body>
+Traditional origin? (jww)<a href="#issue-e1a79dec"> ↵ </a></div>
+      <div class="issue">I don’t have a great idea for how to do this yet. Should it be as simple
+as document.location.suborigin? Or should it be serialized into document.origin,
+plus a deserialization mechanism? (jww)<a href="#issue-56caee46"> ↵ </a></div>
+      <div class="issue">I expect that this will be a relatively controversial part of the
+proposal, but I think the concern is pretty important. In particular, a lot of
+the potential benefits of the proposal are eliminated if the Origin header is
+set with the broad, traditional origin as an isolated but compromised suborigin
+could just request private information from the other origin. That having been
+said, we might be able to bypass a lot of these concerns by using the Origin
+header but putting the serialized suborigin as described above it its place.
+This would require monkey patching the Origin spec’s syntax of the Origin
+header.<a href="#issue-fac22004"> ↵ </a></div>
+      <div class="issue">Similar to the CORS case, another option is to set
+<code>event.origin</code> to the serialized namespace and then provide a
+deserialization tool.<a href="#issue-89125c85"> ↵ </a></div>
+      <div class="issue">We need a story here. I basically think that workers should be treated as
+if they’re in the same suborigin as whatever created them, but I’m also open to
+other suggestions. Particularly tricky are service workers, which for simplicity
+sake I suggest we treat as applying universally to all suborigins at a single
+physical origin since it works in terms of network requests, and suborigins are
+not relevant to network requests. Pull requests welcome.<a href="#issue-cc64826b"> ↵ </a></div>
+      <div class="issue">We need to discuss DOM storage, cookies, document.domain, etc. In
+particular, we should relate this to
+http://www.w3.org/TR/html5/browsers.html#sandboxing.<a href="#issue-f36cefaf"> ↵ </a></div>
+      <div class="issue">Since we’d like to make the claim that suborigins do not supercede the
+same-origin policy, would it be worth defining suborigins purely in terms of
+being a unique scheme? That would make this section somewhat unnecessary since
+origin comparisons would be the same.<a href="#issue-ffc4fc4d"> ↵ </a></div></div></body>
 </html>
