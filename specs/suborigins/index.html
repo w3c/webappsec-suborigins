@@ -1,90 +1,216 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>Suborigins</title>
-  <script src='https://www.w3.org/Tools/respec/respec-w3c-common' class='remove'></script>
-  <script class='remove'>
-    var respecConfig = {
-        // specification status (e.g. WD, LCWD, NOTE, etc.). If in doubt use ED.
-        // Member-SUBM
-        specStatus:           "ED",
+<!doctype html>
+<html lang="en">
+  <head>
+  
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    
+  
+    <title>Suborigins</title>
+    
+  
+    <link href="../default.css" rel="stylesheet" type="text/css">
+    
+  
+    <style>
+  body {
+    background: url("https://www.w3.org/StyleSheets/TR/logo-ED") top left no-repeat white;
+    background-attachment: fixed;
+    color: black;
+    font-family: sans-serif;
+    margin: 0 auto;
+    max-width: 50em;
+    padding: 2em 1em 2em 70px;
+  }
+  :link { color: #00C; background: transparent }
+  :visited { color: #609; background: transparent }
+  a[href]:active { color: #C00; background: transparent }
+  a[href]:hover { background: #ffa }
 
-        // the specification's short name, as in http://www.w3.org/TR/short-name/
-        shortName:            "suborigins",
+  a[href] img { border-style: none }
 
-        // if the specification's copyright date is a range of years, specify
-        // the start date here:
-        copyrightStart:       "2014",
+  h1, h2, h3, h4, h5, h6 { text-align: left }
+  h1, h2, h3 { color: #005A9C; }
+  h1 { font: 170% sans-serif }
+  h2 { font: 140% sans-serif }
+  h3 { font: 120% sans-serif }
+  h4 { font: bold 100% sans-serif }
+  h5 { font: italic 100% sans-serif }
+  h6 { font: small-caps 100% sans-serif }
 
-        // if there a publicly available Editor's Draft, this is the link
-        edDraftURI:           "http://w3c.github.io/webappsec/specs/suborigins/",
+  .hide { display: none }
 
-        // editors, add as many as you like
-        // only "name" is required
-        editors:  [
-            { name: "Joel Weinberger", url: "mailto:jww@google.com", company: "Google, Inc.", companyURL: "https://google.com/" },
-        ],
+  div.head { margin-bottom: 1em }
+  div.head h1 { margin-top: 2em; clear: both }
+  div.head table { margin-left: 2em; margin-top: 2em }
 
-        // name of the WG
-        wg:           "Web Application Security Working Group",
+  p.copyright { font-size: small }
+  p.copyright small { font-size: small }
 
-        // URI of the public WG page
-        wgURI:        "http://www.w3.org/2011/webappsec/",
+  pre { margin-left: 2em }
+  dt { font-weight: bold }
 
-        // name (with the @w3c.org) of the public mailing to which comments are due
-        wgPublicList: "public-webappsec",
-        subjectPrefix: "[Suborigins]",
+  ul.toc, ol.toc {
+    list-style: none;
+  }
+  </style>
+    
 
-        // URI of the patent status for this WG, for Rec-track documents
-        // !!!! IMPORTANT !!!!
-        // This is important for Rec-track documents, do not copy a patent URI from a random
-        // document unless you know what you're doing. If in doubt ask your friendly neighbourhood
-        // Team Contact.
-        wgPatentURI:  "http://www.w3.org/2004/01/pp-impl/49309/status",
+  </head>
+  
 
-        localBiblio: {
-          "CSP": {
-            title: "Content Security Policy 1.1",
-            href: "http://w3.org/TR/CSP11",
-            authors: [
-              "Adam Barth",
-              "Dan Veditz",
-              "Mike West"
-            ],
-            status: "Working Draft",
-            publisher: "W3C"
-          },
-          "PrivilegeSeparation": {
-            title: "Privilege Separation in HTML5 Applications",
-            href: "https://www.usenix.org/system/files/conference/usenixsecurity12/sec12-final168.pdf",
-            authors: [
-              "Devdatta Akhawe",
-              "Prateek Saxena",
-              "Dawn Song"
-            ],
-            publisher: "USENIX"
-          },
-        }
-    };
-  </script>
-</head>
-<body>
-<section id="abstract">
-  <p>This specification defines a mechanism by which a server may specify a web
-resource response a new origin in the user agent which is a combination of the
-server’s origin and a specified namespace.</p>
-</section>
+  <body class="h-entry">
 
-<section id="sotd">
-  <p>A list of changes to this document may be found at
-<a href="https://github.com/w3c/webappsec">https://github.com/w3c/webappsec</a>.</p>
-</section>
+    <div class="head">
+  
+      <p data-fill-with="logo"><a class="logo" href="http://www.w3.org/">
+    <img alt="W3C" height="48" src="https://www.w3.org/Icons/w3c_home" width="72">
+</a>
+</p>
+  
+      <h1 class="p-name no-ref" id="title">Suborigins</h1>
+  
+      <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft,
+    <time class="dt-updated" datetime="2015-01-09">9 January 2015</time></span></h2>
+  
+      <div data-fill-with="spec-metadata">
+        <dl>
+          <dt>This version:</dt>
+          <dd><a class="u-url" href="https://w3c.github.io/webappsec/specs/suborigins/">https://w3c.github.io/webappsec/specs/suborigins/</a></dd>
+          <dt>Feedback:</dt>
+          <dd><span><a href="mailto:public-webappsec@w3.org?subject=%5Bsuborigins%5D%20feedback">public-webappsec@w3.org</a> with subject line “<kbd>[suborigins] <var>… message topic …</var></kbd>” (<a href="http://lists.w3.org/Archives/Public/public-webappsec/" rel="discussion">archives</a>)</span></dd>
+          <dt>Issue Tracking:</dt>
+          <dd><a href="#issues-index">Inline In Spec</a></dd>
+          <dt class="editor">Editor:</dt>
+          <dd class="editor">
+            <div class="p-author h-card vcard"><a class="p-name fn u-email email" href="mailto:Inc. jww@google.com">Joel Weinberger Google</a></div>
+          </dd>
+        </dl>
+      </div>
+  
+      <div data-fill-with="warning"></div>
+  
+      <p class="copyright" data-fill-with="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2014
+  <a href="http://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup>
+  (<a href="http://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>,
+  <a href="http://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>,
+  <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>),
 
-<section class="informative">
-  <h3 id="introduction">Introduction</h3>
+  All Rights Reserved.
 
-  <p>Currently, web applications are almost always compartmentalized by using
+  <abbr title="World Wide Web Consortium">W3C</abbr> <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>,
+  <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and
+
+  <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a>
+  rules apply.
+</p>
+  
+      <hr title="Separator for header">
+</div>
+
+
+    <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
+
+    <div class="p-summary" data-fill-with="abstract">
+      <p>This specification defines a mechanism by which a server may specify a web resource response a new origin in the user agent which is a combination of the server’s origin and a specified namespace.</p>
+
+</div>
+
+
+    <h2 class="no-num no-toc no-ref heading settled" id="status"><span class="content">Status of this document</span></h2>
+
+    <div data-fill-with="status">
+      <p>
+	This is a public copy of the editors’ draft.
+	It is provided for discussion only and may change at any moment.
+	Its publication here does not imply endorsement of its contents by W3C.
+	Don’t cite this document other than as work in progress.
+
+</p>
+      <p>
+  <strong>Changes to this document may be tracked at
+  <a href="https://github.com/w3c/webappsec">https://github.com/w3c/webappsec</a>.</strong>
+
+</p>
+      <p>
+	The (<a href="http://lists.w3.org/Archives/Public/public-webappsec/">archived</a>) public mailing list
+	<a href="mailto:public-webappsec@w3.org?Subject=%5Bsuborigins%5D%20PUT%20SUBJECT%20HERE">public-webappsec@w3.org</a>
+	(see <a href="http://www.w3.org/Mail/Request">instructions</a>)
+	is preferred for discussion of this specification.
+	When sending e-mail,
+	please put the text “suborigins” in the subject,
+	preferably like this:
+	“[suborigins] <em>…summary of comment…</em>”
+
+</p>
+      <p>
+	This document was produced by the
+  <a href="http://www.w3.org/2011/webappsec/">Web Application Security Working Group</a>.
+
+</p>
+      <p>
+	This document was produced by a group operating under
+	the <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/">5 February 2004 W3C Patent Policy</a>.
+	W3C maintains a <a href="http://www.w3.org/2004/01/pp-impl/49309/status" rel="disclosure">public list of any patent disclosures</a>
+	made in connection with the deliverables of the group;
+	that page also includes instructions for disclosing a patent.
+	An individual who has actual knowledge of a patent which the individual believes contains <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">Essential Claim(s)</a>
+	must disclose the information in accordance with <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure">section 6 of the W3C Patent Policy</a>.
+
+</p>
+      <p>
+  This document is governed by the <a href="http://www.w3.org/2014/Process-20140801/" id="w3c_process_revision">1 August 2014 W3C Process Document</a>.
+
+</p></div>
+
+    <div data-fill-with="at-risk"></div>
+
+
+    <h2 class="no-num no-toc no-ref heading settled" id="contents"><span class="content">Table of Contents</span></h2>
+
+    <div data-fill-with="table-of-contents" role="navigation">
+      <ul class="toc" role="directory">
+        <li><a href="#intro"><span class="secno">1</span> <span class="content">Introduction</span></a>
+          <ul class="toc">
+            <li><a href="#goals"><span class="secno">1.1</span> <span class="content">Goals</span></a></li>
+            <li><a href="#usecases"><span class="secno">1.2</span> <span class="content">Use Cases/Examples</span></a></li>
+          </ul>
+        </li>
+        <li><a href="#terms"><span class="secno">2</span> <span class="content">Key Concepts and Terminology</span></a>
+          <ul class="toc">
+            <li><a href="#terms-defined-here"><span class="secno">2.1</span> <span class="content">Terms defined by this specification</span></a></li>
+            <li><a href="#terms-defined-by-reference"><span class="secno">2.2</span> <span class="content">Terms defined by reference</span></a></li>
+          </ul>
+        </li>
+        <li><a href="#conformance"><span class="secno"></span> <span class="content">Conformance</span></a>
+          <ul class="toc">
+            <li><a href="#conventions"><span class="secno"></span> <span class="content">Document conventions</span></a></li>
+            <li><a href="#conformant-algorithms"><span class="secno"></span> <span class="content">Conformant Algorithms</span></a></li>
+            <li><a href="#conformance-classes"><span class="secno"></span> <span class="content">Conformance Classes</span></a></li>
+          </ul>
+        </li>
+        <li><a href="#references"><span class="secno"></span> <span class="content">References</span></a>
+          <ul class="toc">
+            <li><a href="#normative"><span class="secno"></span> <span class="content">Normative References</span></a></li>
+          </ul>
+        </li>
+        <li><a href="#index"><span class="secno"></span> <span class="content">Index</span></a></li>
+        <li><a href="#issues-index"><span class="secno"></span> <span class="content">Issues Index</span></a></li>
+      </ul></div>
+
+    <main>
+
+
+
+
+      <section>
+
+        <h2 class="heading settled" data-level="1" id="intro"><span class="secno">1. </span><span class="content">Introduction</span><a class="self-link" href="#intro"></a></h2>
+
+
+        <p><em>This section is not normative.</em></p>
+
+
+        <p>Currently, web applications are almost always compartmentalized by using
 separate host names to establish separate web origins. This is useful for
 helping to prevent XSS and other cross-origin attacks, but has many unintended
 consequences. For example, it causes latency due to additional DNS lookups,
@@ -94,14 +220,16 @@ experience. Perhaps most importantly, it results in an extremely inflexible
 architecture that, once rolled out, cannot be easily and transparently changed
 later on.</p>
 
-  <p>There are several mechanisms for reducing the attack surface for XSS without
+
+        <p>There are several mechanisms for reducing the attack surface for XSS without
 creating separate host-name based origins, but each pose their own problems.
 Per-page Suborigins is an attempt to fill some of those gaps. Two of the most
 notable mechanisms are Sandboxed Frames and Content Security Policy (CSP). Both
 are powerful but have shortcomings and there are many external developers
 building legacy applications that find they cannot use those tools.</p>
 
-  <p>Sandboxed frames can be used to completely separate untrusted content, but they
+
+        <p>Sandboxed frames can be used to completely separate untrusted content, but they
 pose a large problem for containing trusted but potentially buggy code because
 it is very difficult, by design, for them to communicate with other frames. The
 synthetic origins assigned in a sandboxed frame are random and unpredictable,
@@ -110,569 +238,206 @@ definition unique origins, with no relationship to the original origin,
 designing permissions for them to access resources of the original origin would
 be difficult.</p>
 
-  <p>Content Security Policy is also promising but is generally incompatible with
+
+        <p>Content Security Policy is also promising but is generally incompatible with
 current website design. Many notable companies found it impractical to retrofit
 most of their applications with it. On top of this, until all applications
 hosted within a single origin are simultaneously put behind CSP, the mechanism
 offers limited incremental benefits, which is especially problematic for
 companies with large portfolios of disparate products all under the same domain.</p>
 
-  <section>
-    <h3 id="goals">Goals</h3>
 
-    <ol>
-      <li>
-        <p>Provide a way for different applications hosted at the same real origin to
-separate their content into separate logical origins. For example,
-https://foobar.com/application and https://foobar.com/widget, today, are, by
-definition, in the same origin, even if they’re different applications. Thus an
-XSS at https://foobar.com/application means an XSS at
-https://foobar.com/widget, even if https://foobar.com/widget is “protected” by
-a strong Content Security Policy.</p>
-      </li>
-      <li>
-        <p>Similarly, provide a way for content authors to split their applications
-into logical modules with origin level separation without using different real
-origins. Content authors should not have to choose between putting all of their
-content in the same origin, on different real origins, or putting content in
-anonymous unique origins (sandboxes).</p>
-      </li>
-      <li>
-        <p>Provide a way for content authors to attribute different permissions such as
-cookie access, storage access, etc. to different suborigins.</p>
-      </li>
-    </ol>
+        <h3 class="heading settled" data-level="1.1" id="goals"><span class="secno">1.1. </span><span class="content">Goals</span><a class="self-link" href="#goals"></a></h3>
 
-    <p class="issue">Not sure how to actually refer to ‘real origins’. This is a terrible name, and
-we need a better way to talk about them. Maybe physical origin? Traditional
-origin? (jww)</p>
-  </section>
-  <!-- /Introduction::Goals -->
 
-  <section>
-    <h3 id="use-casesexamples">Use Cases/Examples</h3>
+        <ol>
+  
+          <li>
+    Provide a way for different applications hosted at the same real origin to
+    separate their content into separate logical origins. For example,
+    https://foobar.com/application and https://foobar.com/widget, today, are, by
+    definition, in the same origin, even if they’re different applications. Thus
+    an XSS at https://foobar.com/application means an XSS at
+    https://foobar.com/widget, even if https://foobar.com/widget is "protected"
+    by a strong Content Security Policy.
+  </li>
 
-    <p>We see effectively three different use cases for Per-page Suborigins:</p>
+  
+          <li>
+    Similarly, provide a way for content authors to split their applications
+    into logical modules with origin level separation without using different
+    real origins. Content authors should not have to choose between putting all
+    of their content in the same origin, on different real origins, or putting
+    content in anonymous unique origins (sandboxes).
+  </li>
 
-    <ol>
-      <li>
-        <p>Separating distinct applications that happen to be served from the same
-domain, but do not need to extensively interact with other content. Examples
-include marketing campaigns, simple search UIs, and so on. This use requires
-very little engineering effort and faces very few constraints; the applications
-may use XMLHttpRequest and postMessage to communicate with their host domain as
-required.</p>
-      </li>
-      <li>
-        <p>Allowing for modularity within a larger web application by splitting the
-functional components into different suborigins. For example, Gmail might put
-the contacts widget, settings tab, and HTML message views in separate Per-page
-Suborigins. Such deployments may require relatively modest refactorings to
-switch to postMessage and CORS where direct DOM access and same-origin
-XMLHttpRequest are currently used, but we believe doing so is considerably
-easier than retrofitting CSP onto arbitrary code bases and can be done very
-incrementally.</p>
-      </li>
-      <li>
-        <p>Similar to (2), applications with many users can split information relating
-to different users into their own suborigin. For example, Twitter might put
-each user profile into a unique suborigin so that an XSS within one profile
-cannot be used to immediately infect other users or read their personal
-messages stored within the account.</p>
-      </li>
-    </ol>
+  
+          <li>
+    Provide a way for content authors to attribute different permissions such as
+    cookie access, storage access, etc. to different suborigins.
+  </li>
 
-  </section>
-  <!-- /Introduction::Use Cases/Examples -->
-</section>
-<!-- /Introduction -->
+</ol>
 
-<section id="conformance">
 
-  <p>Conformance requirements phrased as Framework or specific steps can be
-implemented in any manner, so long as the end result is equivalent. In
-particular, the Framework defined in this specification are intended to
-be easy to understand and are not intended to be performant. Implementers
-are encouraged to optimize.</p>
+        <p class="issue" id="issue-e1a79dec"><a class="self-link" href="#issue-e1a79dec"></a>Not sure how to actually refer to 'real origins'. This is a terrible
+name, and we need a better way to talk about them. Maybe physical origin?
+Traditional origin? (jww)</p>
 
-  <section>
-    <h3 id="key-concepts-and-terminology">Key Concepts and Terminology</h3>
 
-    <p>This section defines several terms used throughout the document.</p>
+        <h3 class="heading settled" data-level="1.2" id="usecases"><span class="secno">1.2. </span><span class="content">Use Cases/Examples</span><a class="self-link" href="#usecases"></a></h3>
 
-    <p>The term <dfn>origin</dfn> is defined in the Origin specification.
-[[!RFC6454]]</p>
 
-  </section>
-  <p><!-- /Conformance::Key Concepts and Terminology --></p>
-</section>
-<p><!-- /Conformance --></p>
+        <p>We see effectively three different use cases for Per-page Suborigins:</p>
 
-<section>
-  <h3 id="defining-a-suborigin">Defining a Suborigin</h3>
 
-  <p>Origins are a mechanism for user agents to group URIs into protection domains.
-Two URIs are in the same origin if they share the same scheme, host, and port.
-If URIs are in the same origin, then they share the same authority and can
-access all of each others resources.</p>
+        <ol>
+  
+          <li>
+    Separating distinct applications that happen to be served from the same
+    domain, but do not need to extensively interact with other content. Examples
+    include marketing campaigns, simple search UIs, and so on. This use requires
+    very little engineering effort and faces very few constraints; the
+    applications may use XMLHttpRequest and postMessage to communicate with
+    their host domain as required.
+  </li>
 
-  <p>This has been a successful mechanism for privilege separation on the Web.
-However, it does limit the ability of a URI to separate itself into a new
-protection domain as it automatically shares authority with all other identical
-origins, which are defined by physical, rather than programatic, properties.
-While it is possible to setup unique domains and ports different parts of the
-same application (scheme is more difficult to separate out), there are a diverse
-set of practical problems in doing so.</p>
+  
+          <li>
+    Allowing for modularity within a larger web application by splitting the
+    functional components into different suborigins. For example, Gmail might
+    put the contacts widget, settings tab, and HTML message views in separate
+    Per-page Suborigins. Such deployments may require relatively modest
+    refactorings to switch to postMessage and CORS where direct DOM access and
+    same-origin XMLHttpRequest are currently used, but we believe doing so is
+    considerably easier than retrofitting CSP onto arbitrary code bases and can
+    be done very incrementally.
+  </li>
 
-  <p>Suborigins provide a mechanism for creating this type of separation
-programatically. Any resources may provide, in a manner detailed below, a string
-value <a href="#dfn-suborigin-namespace">suborigin namespace</a>.  If either of two URIs provide a suborigin
-namespace, then the two URIs are in the same origin if and only if they share
-the same scheme, host, port, and suborigin namespace.</p>
+  
+          <li>
+    Similar to (2), applications with many users can split information relating
+    to different users into their own suborigin. For example, Twitter might put
+    each user profile into a unique suborigin so that an XSS within one profile
+    cannot be used to immediately infect other users or read their personal
+    messages stored within the account.
+  </li>
 
-  <p>Q. In today’s Web, can’t a site get the effective same protection domain simply
-by hosting their content at different subdomains?</p>
-
-  <p>A. Yes, but there are many practical reasons why this is difficult.</p>
-
-  <section>
-    <h3 id="examples">Examples</h3>
-
-    <h4 id="separate-applications-same-origin">Separate applications, same origin</h4>
-    <p>Google runs Search and Maps on the same domain, respectively
-<code>https://www.google.com</code> and <code>https://www.google.com/maps</code>. While these two
-applications are fundamentally separate, there are many reasons for hosting them
-on the same origin, including historical links, branding, and performance.
-However, from security perspective, this means that a compromise of one
-application is a compromise of the other since the only security boundary in the
-browser is the origin, and both applications are hosted on the same origin.
-Thus, even if Google Search were to successful implement a strong Content
-Security Policy [[CSP]], if Google Maps were to have an XSS vulnerability, it
-would be equivalent to having an XSS on Google Search as well, negating Google
-Search’s security measures.</p>
-
-    <h4 id="separation-within-a-single-application">Separation within a single application</h4>
-    <p>Separation is sometimes desirable within a single application because of the
-presence of untrusted data. Take, for example, a social networking site with
-many different user profiles. Each profile contains lots of untrusted content
-created by a single user but it’s all hosted on a single origin. In order to
-separate untrusted content, the application might want a way to put all profile
-information into separate logical origins while all being hosted at the same
-physical origin. Furthermore, all content within a profile should be able to
-access all other content within the same origin, even if displayed in unique
-frames.</p>
-
-    <p>This type of privilege separation within an application has been shown to be
-valuable and reasonable for applications to do by work such as
-Privilege Separation in HTML5 Applications by Akhawe et al
-[[PrivilegeSeparation]]. However, these systems rely on cross frame messaging
-using <code>postMessage</code> even for content in the same trust boundary since they
-utilize <code>sandbox</code>. This provides much of the motivation for the named container
-nature of suborigins.</p>
-
-  </section>
-  <p><!-- /Defining a Suborigin::Examples --></p>
-
-  <section>
-    <h3 id="relationship-of-suborigins-to-origins">Relationship of Suborigins to Origins</h3>
-
-    <p>Suborigins, in fact, do not provide any new authority to resources. Suborigins
-simply provide <em>an additional way to construct Origins</em>. That is,
-Suborigins do not supercede Origins or provide any additional authority above
-Origins. From the user agent’s  perspective, two resources in different
-Suborigins are simply in different Origins, and the relationship between the two
-resources should be the same as any other two differing origins as described in
-[[!RFC6454]].  Thus, this specification is intended to provide the following two
-important properties:</p>
-
-    <ul>
-      <li>The rules on how Suborigins are defined.</li>
-      <li>The rules on how Suborigins are tracked.</li>
-    </ul>
-
-  </section>
-  <p><!-- /Defining a Suborigin::Relationship of Suborigins to Origins--></p>
-
-  <section>
-    <h3 id="representation-of-suborigins">Representation of Suborigins</h3>
-
-    <p>At an abstract level, a suborigin consists of the scheme, host, and port of a
-traditional origin, plus a <a href="#dfn-suborigin-namespace">suborigin namespace</a>. However, as mentioned above,
-suborigins are intended to fit within the framework of [[!RFC6454]]. Therefore,
-this specification provides a way of serializing a Suborigin bound resource into
-a traditional Origin. This is done by inserting the suborigin namespace into the
-scheme space of the Origin, thus creating a new scheme but maintaining all of
-the information about both the original scheme and the suborigin namespace. This
-is done by inserting a <code>+</code> into the URI after the scheme, followed by the
-suborigin namespace, then followed by the rest of the URI starting with <code>:</code>.</p>
-
-    <p>For example, if the resource is hosted at <code>https://example.com/</code> in the
-suborigin namespace <code>profile</code>, this would be serialized as
-<code>https+profile://example.com/</code>.</p>
-
-    <p>Similarly, if a resource is hosted at <code>https://example.com:8080/</code> in the
-suborigin namespace <code>separate</code>, this would be serialized as
-<code>https+separate://example.com:8080/</code>.</p>
-
-    <p>Internally, the <a href="#dfn-suborigin-namespace">suborigin namespace</a> must be tracked by the user agent. When
-the origin needs to be serialized for a resource, the user agent should follow
-the algorithm in <a href="#serializing-suborigins">Serializing Suborigins</a>.</p>
-  </section>
-  <p><!-- /Defining a Suborigin::Serialization --></p>
-
-  <section>
-    <h3 id="opting-into-a-suborigin">Opting into a Suborigin</h3>
-
-    <p>Unlike the <code>sandbox</code> attribute, suborigin namespaces are predictable and
-controllable. Because of this, potentially untrusted content cannot opt into
-suborigins, unlike iframe sandboxes. If they could, then an XSS on a site could
-enter a specific suborigin and access all of its resources, thus violating the
-entire privilege separation suborigins are intended to protect. To prevent
-this, the server (rather than a resource itself) is treated as the only
-authoritative source of the suborigin namespace of a resource. This is
-implemented through an additional header-only Content Security Policy directive
-<code>suborigin</code>, which takes a string value that is the namespace. For example, to
-put a resource in the <code>testing</code> suborigin namespace, the server would specify
-the following directive in the CSP header:</p>
-
-    <pre><code>suborigin: testing
-</code></pre>
-
-    <section>
-      <h3 id="suborigin-directive"><code>suborigin</code> Directive</h3>
-
-      <p>Suborigins are defined by a <code>suborigin</code> directive in the <a href="http://www.w3.org/TR/CSP2">Content Security
-Policy</a> of the resource. The syntax for the name and value of the directive
-are described by the following ABNF grammar:</p>
-
-      <pre><code>directive-name  = "suborigin"
-directive-value = 1*( ALPHA / DIGIT / "-" )
-</code></pre>
-
-      <p>A resource’s <dfn>suborigin namespace</dfn> is the value of the <code>suborigin</code>
-directive.</p>
-
-    </section>
-    <p><!-- /Defining a Suborigin::Opting into a Suborigin::suborigin Directive --></p>
-
-  </section>
-  <p><!-- /Defining a Suborigin::Opting into a Suborigin --></p>
-
-  <section>
-    <h3 id="accessing-the-suborigin-in-javascript">Accessing the Suborigin in JavaScript</h3>
-    <p class="issue">I don’t have a great idea for how to do this yet. Should it be as simple as
-document.location.suborigin? Or should it be serialized into document.origin,
-plus a deserialization mechanism? (jww)</p>
-
-  </section>
-  <p><!-- /Defining a Suborigin::Accessing the Suborigin in JavaScript --></p>
+</ol>
 
 </section>
-<p><!-- /Defining a Suborigin --></p>
 
-<section>
-  <h3 id="access-control">Access Control</h3>
 
-  <p>Cross-origin (including cross-suborigin) communication is tricky when suborigins
-are involved because they need to be backwards compatible with user agents that
-do not support suborigins while providing origin-separation for user agents that
-do support suborigins. The following discussions discuss the three major
-cross-origin mechanisms that are relevant.</p>
+      <section>
 
-  <section>
-    <h3 id="cors">CORS</h3>
+        <h2 class="heading settled" data-level="2" id="terms"><span class="secno">2. </span><span class="content">Key Concepts and Terminology</span><a class="self-link" href="#terms"></a></h2>
+This section defines several terms used throughout the document.
 
-    <p>For pages in a suborigin namespace, all <code>XMLHttpRequest</code>s to any URL should be
-treated as cross-origin, thus triggering CORS [[!CORS]] logic with special
-<code>Finer-Origin:</code> and <code>Suborigin:</code> headers added. Additionally, the <code>Origin:</code>
-header that is normally applied to cross-origin requests should <em>not</em> be
-added. These header changes are needed so that a server that recognizes
-suborigins can see the suborigin namespace the request is coming from and apply
-the appropriate CORS headers as is appropriate, while legacy servers will not
-“accidentally” approve cross-origin requests because of an <code>Origin</code> header that
-provides an incomplete picture of the origin (that is, an origin without the
-suborigin).</p>
 
-    <p>The <code>Finer-Origin:</code> header takes a value identical to the Origin Header, as
-defined in [[!RFC6454]]. The <code>Suborigin:</code> header takes a string value that is
-the suborigin namespace. The former servers identically as the <code>Origin:</code> header,
-but in a purposefully backwards incompatible way, while the <code>Suborigin:</code> header
-allows a server to make a more nuanced access control choice. A user agent must
-not include more than one <code>Finer-Origin:</code> header and must not include more than
-one <code>Suborigin:</code> field.</p>
+        <h3 class="heading settled" data-level="2.1" id="terms-defined-here"><span class="secno">2.1. </span><span class="content">Terms defined by this specification</span><a class="self-link" href="#terms-defined-here"></a></h3>
 
-    <p>Similar changes are needed for response from the server with the addition of
-<code>Access-Control-Allow-Finer-Origin</code> and <code>Access-Control-Allow-Suborigin</code>
-response headers. The former takes the same values as
-<code>Access-Control-Allow-Origin</code> as defined in [[!CORS]], while the later takes a
-string value that matches allowed suborigin namespaces, or <code>*</code> to allow all
-suborigin namespaces.</p>
 
-    <p class="issue">I expect that this will be a relatively controversial part of the proposal, but
-I think the concern is pretty important. In particular, a lot of the potential
-benefits of the proposal are eliminated if the Origin header is set with the
-broad, traditional origin as an isolated but compromised suborigin could just
-request private information from the other origin. That having been said, we
-might be able to bypass a lot of these concerns by using the Origin header but
-putting the serialized suborigin as described above it its place. This would
-require monkey patching the Origin spec’s syntax of the Origin header.</p>
+        <h3 class="heading settled" data-level="2.2" id="terms-defined-by-reference"><span class="secno">2.2. </span><span class="content">Terms defined by reference</span><a class="self-link" href="#terms-defined-by-reference"></a></h3>
 
-  </section>
-  <p><!-- /Access Control::CORS --></p>
-
-  <section>
-    <h3 id="postmessage"><code>postMessage</code></h3>
-
-    <p>Cross-origin messaging via <code>postMessage</code> [[!WebMessaging]] provides many of the
-same concerns as CORS. Namely, it is necessary for the recipient to see the
-suborigin namespace of the message sender so an appropriate access control
-decision can be made, and similarly, legacy applications should by default treat
-these messages as not coming from the traditional origin of the sender.</p>
-
-    <p>To enforce this, when a message is sent from a suborigin namespace, the receiver
-has the <code>event.origin</code> value set to <code>null</code> so if it is read, it is not treated
-as coming from any particular origin. Instead, new propriets of
-<code>event.finerorigin</code> and <code>event.suborigin</code> should be set the scheme/host/port and
-suborigin namespace, respectively.</p>
-
-    <p class="issue">Similar to the CORS case, another option is to set <code>event.origin</code> to the
-serialized namespace and then provide a deserialization tool.</p>
-
-  </section>
-  <p><!-- /Access Control::postMessage --></p>
-
-  <section>
-    <h3 id="workers">Workers</h3>
-    <p class="issue">We need a story here. I basically think that workers should be treated as
-if they’re in the same suborigin as whatever created them, but I’m also open to
-other suggestions. Particularly tricky are service workers, which for simplicity
-sake I suggest we treat as applying universally to all suborigins at a single
-physical origin since it works in terms of network requests, and suborigins are
-not relevant to network requests. Pull requests welcome.</p>
-
-  </section>
-  <p><!-- /Access Control::Workers --></p>
+        <dl>
+    
+          <dt><dfn data-dfn-type="dfn" data-noexport="" id="origin">origin<a class="self-link" href="#origin"></a></dfn></dt>
+    
+          <dd>
+      An origin defines the scope of authority or privilege under which a
+      resource operates. It is defined in detail in the Origin specification
+      <a data-biblio-type="normative" data-link-type="biblio" href="#biblio-rfc6454" title="RFC6454">[RFC6454]</a>.
+    </dd>
+</dl>
 
 </section>
-<p><!-- /Access Control --></p>
 
-<section>
-  <h3 id="impact-on-web-platform">Impact on Web Platform</h3>
 
-  <p>Content inside a suborigin namespace is severely restricted in what the hosted
-content can do. The restrictions match the behavior of an iframe with the
-sandbox attribute set to the value of <code>allow-scripts</code> [[!HTML]]. While more
-specifics are described below, the general idea here is to put suborigin
-namespaces in a “default secure” context. However, restrictions may be lifted
-going forward at a time when a way to whitelist particular Web platform
-permissions is well-defined.</p>
+</main>
 
-  <section>
-    <h3 id="examples-1">Examples</h3>
+    <h2 class="no-ref no-num heading settled" id="conformance"><span class="content">Conformance</span><a class="self-link" href="#conformance"></a></h2>
 
-  </section>
-  <p><!-- /Impact on Web Platform::Examples --></p>
 
-  <section>
-    <h3 id="relationship-with-sensitive-permissions">Relationship with Sensitive Permissions</h3>
+    <h3 class="no-ref no-num heading settled" id="conventions"><span class="content">Document conventions</span><a class="self-link" href="#conventions"></a></h3>
 
-    <p class="issue">We need to discuss DOM storage, cookies, document.domain, etc. In particular, we
-should relate this to http://www.w3.org/TR/html5/browsers.html#sandboxing.</p>
+    
+    <p>Conformance requirements are expressed with a combination of
+    descriptive assertions and RFC 2119 terminology. The key words "MUST",
+    "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT",
+    "RECOMMENDED", "MAY", and "OPTIONAL" in the normative parts of this
+    document are to be interpreted as described in RFC 2119.
+    However, for readability, these words do not appear in all uppercase
+    letters in this specification.
 
-  </section>
-  <p><!-- /Impact on Web Platform::Relationship with Sensitive Permissions --></p>
+    </p>
+    <p>All of the text of this specification is normative except sections
+    explicitly marked as non-normative, examples, and notes. <a data-biblio-type="normative" data-link-type="biblio" href="#biblio-rfc2119" title="RFC2119">[RFC2119]</a></p>
 
-</section>
-<p><!-- /Impact on Web Platform --></p>
+    
+    <p>Examples in this specification are introduced with the words "for example"
+    or are set apart from the normative text with <code>class="example"</code>,
+    like this:
 
-<section>
-  <h3 id="framework">Framework</h3>
+    </p>
+    <div class="example">
+        
+      <p>This is an example of an informative example.</p>
+      
+    
+    </div>
 
-  <p class="note">These sections are tricky because, unlike traditional origins, we can’t define
-suborigins in terms of URIs. Since the suborigin namespace is defined in a
-header, not in the URI, we need to define them in terms of resources.</p>
+    
+    <p>Informative notes begin with the word "Note" and are set apart from the
+    normative text with <code>class="note"</code>, like this:
 
-  <section>
-    <h3 id="suborigin-of-a-resource">Suborigin of a Resource</h3>
+    </p>
+    <p class="note" role="note">Note, this is an informative note.</p>
 
-    <p>The suborigin of a resource is the value computed by the following algorithm:</p>
 
-    <ol>
-      <li>
-        <p>Let origin be the triple result from starting with step 1 of Section 4 of
-<a href="https://tools.ietf.org/html/rfc6454#page-10">Origin of a URI</a>.</p>
-      </li>
-      <li>
-        <p>If the <a href="http://www.w3.org/TR/CSP2">Content Security Policy</a> of the resource contains a valid <code>suborigin</code>
-directive in the <a href="http://www.w3.org/TR/CSP11/#policy-syntax">directive list</a>, then let suborigin-namespace be the
-<code>directive-value</code>.</p>
-      </li>
-      <li>
-        <p>Otherwise, let suborigin-namespace be null.</p>
-      </li>
-      <li>
-        <p>Return the pair (origin, suborigin-namespace).</p>
-      </li>
-    </ol>
+    <h3 class="no-ref no-num heading settled" id="conformant-algorithms"><span class="content">Conformant Algorithms</span><a class="self-link" href="#conformant-algorithms"></a></h3>
 
-  </section>
-  <p><!-- /Framework::Suborigin of a Resource --></p>
+    
+    <p>Requirements phrased in the imperative as part of algorithms (such as
+    "strip any leading space characters" or "return false and abort these
+    steps") are to be interpreted with the meaning of the key word ("must",
+    "should", "may", etc) used in introducing the algorithm.</p>
 
-  <section>
-    <h3 id="comparing-suborigins">Comparing Suborigins</h3>
+    
+    <p>Conformance requirements phrased as algorithms or specific steps can be
+    implemented in any manner, so long as the end result is equivalent. In
+    particular, the algorithms defined in this specification are intended to
+    be easy to understand and are not intended to be performant. Implementers
+    are encouraged to optimize.</p>
 
-    <p class="issue">Since we’d like to make the claim that suborigins do not supercede the
-same-origin policy, would it be worth defining suborigins purely in terms of
-being a unique scheme? That would make this section somewhat unnecessary since
-origin comparisons would be the same.</p>
 
-    <p>Two suborigins are “the same” if, and only if, they are identical. In
-particular:</p>
+    <h3 class="no-ref no-num heading settled" id="conformance-classes"><span class="content">Conformance Classes</span><a class="self-link" href="#conformance-classes"></a></h3>
 
-    <ul>
-      <li>If the origin portions of the suborigin pairs are scheme/host/port triples,
-the two suborigins are the same if, and only if, they have identical schemes,
-hosts, and ports and the suborigin-namespace portions of the suborigin pairs
-are identical.</li>
-      <li>If both suborigin-namespace portions of the suborigin pairs are null, this is
-considered identical.</li>
-      <li>An origin that is a globally unique identifier cannot be the same as an origin
-that is a scheme/host/port triple, with or without a suborigin-namespace.</li>
-    </ul>
+    
+    <p>A <dfn data-dfn-type="dfn" data-noexport="" id="conformant-user-agent">conformant user agent<a class="self-link" href="#conformant-user-agent"></a></dfn> must implement all the requirements
+    listed in this specification that are applicable to user agents.</p>
 
-    <p>Two resources are the same-origin if their suborigins are the same.</p>
+    
+    <p>A <dfn data-dfn-type="dfn" data-noexport="" id="conformant-server">conformant server<a class="self-link" href="#conformant-server"></a></dfn> must implement all the requirements listed
+    in this specification that are applicable to servers.</p>
 
-  </section>
-  <p><!-- /Framework::Comparing Suborigins --></p>
 
-  <section>
-    <h3 id="serializing-suborigins">Serializing Suborigins</h3>
 
-    <p>This section defines how to serialize an origin to a unicode [[!Unicode6]]
-string and to an ASCII [[!RFC0020]] string.</p>
 
-    <section>
-      <h3 id="unicode-serialization-of-a-suborigin">Unicode Serialization of a Suborigin</h3>
-
-      <p>The Unicode serialization of a suborigin is the value returned by the following
-algorithm:</p>
-
-      <ol>
-        <li>
-          <p>If the origin portion of the suborigin pair is not a scheme/host/port triple,
-then return the string</p>
-
-          <p>null</p>
-
-          <p>(i.e., the code point sequence U+006E, U+0075, U+006C, U+006C) and abort
- these steps.</p>
-        </li>
-        <li>
-          <p>Otherwise, if the suborigin-namespace portion of the suborigin pair is not
-null:</p>
-
-          <ol>
-            <li>
-              <p>Let suffix be the string “+”.</p>
-            </li>
-            <li>
-              <p>Append the suborigin-namespace portion of the suborigin pair to suffix.</p>
-            </li>
-            <li>
-              <p>Append suffix to the scheme part of the origin triple.</p>
-            </li>
-          </ol>
-        </li>
-        <li>
-          <p>Proceed with step 1 of section 6.1 in <a href="https://tools.ietf.org/html/rfc6454#page-12">Unicode Serialization of an Origin</a>.</p>
-        </li>
-      </ol>
-
-    </section>
-    <p><!-- /Framework::Serializing Suborigins::Unicode Serialization of a Suborigin--></p>
-
-    <section>
-      <h3 id="ascii-serialization-of-a-suborigin">ASCII Serialization of a Suborigin</h3>
-
-      <p>The ASCII serialization of a suborigin is the value returned by the following
-algorithm:</p>
-
-      <ol>
-        <li>
-          <p>If the origin portion of the suborigin pair is not a scheme/host/port triple,
-then return the string</p>
-
-          <p>null</p>
-
-          <p>(i.e., the code point sequence U+006E, U+0075, U+006C, U+006C) and abort
- these steps.</p>
-        </li>
-        <li>
-          <p>Otherwise, if the suborigin-namespace portion of the suborigin pair is not
-null:</p>
-
-          <ol>
-            <li>
-              <p>Let suffix be the string “+”.</p>
-            </li>
-            <li>
-              <p>Append the suborigin-namespace portion of the suborigin pair to suffix.</p>
-            </li>
-            <li>
-              <p>Append suffix to the scheme part of the origin triple.</p>
-            </li>
-          </ol>
-        </li>
-        <li>
-          <p>Proceed with step 1 of section 6.2 in <a href="https://tools.ietf.org/html/rfc6454#page-12">ASCII Serialization of an Origin</a>.</p>
-        </li>
-      </ol>
-
-    </section>
-    <p><!-- /Framework::Serializing Suborigins::ASCII Serialization of a Suborigin--></p>
-
-  </section>
-  <p><!-- /Framework::Serializing Suborigins --></p>
-
-</section>
-<p><!-- /Framework --></p>
-
-<section>
-  <h3 id="security-considerations">Security Considerations</h3>
-
-  <section>
-    <h3 id="presentation-of-suborigins-to-users">Presentation of Suborigins to Users</h3>
-
-    <p>A complication of suborigins is that while they provide a meaningful security
-for an application, that boundary makes much less sense to a user. That is,
-traditional origins provide a security boundary at a physical level: separate
-scheme, hosts, and ports map to real boundaries external of a given application.
-However, suborigins as a boundary only makes sense <em>within the context of the
-program logic itself</em> and there is no meaningful way for users to make
-decisions based on suborigins a priori.</p>
-
-    <p>Therefore, suborigins should be used only internally in a user agent and should
-not be presented to users at all. For example, suborigins should never be
-presented in link text or a URL bar.</p>
-
-  </section>
-  <p><!-- /Security Considerations::Presentation of Suborigins to Users --></p>
-
-  <section>
-    <h3 id="not-overthrowing-same-origin-policy">Not Overthrowing Same-origin Policy</h3>
-
-    <p>Suborigins do not fundamentally change how the same-origin policy works. An
-application without suborigins should work identially to how it always has, and
-even in an application with suborigins, the same-origin policy still applies as
-always. In fact, suborigins have been defined within the context of the
-same-origin policy so that, in theory, serialized suborigins can be thought of
-as a just a special case of the traditional same-origin policy.</p>
-
-  </section>
-  <p><!-- /Security Considerations::Not Overthrowing Same-origin Policy --></p>
-
-</section>
-<p><!-- /Security Considerations --></p>
-
-</body>
+    <h2 class="no-num heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
+    <h3 class="no-num heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
+    <dl>
+      <dt id="biblio-rfc2119" title="rfc2119"><a class="self-link" href="#biblio-rfc2119"></a>[rfc2119]</dt>
+      <dd>S. Bradner. <a href="http://www.ietf.org/rfc/rfc2119.txt">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="http://www.ietf.org/rfc/rfc2119.txt">http://www.ietf.org/rfc/rfc2119.txt</a></dd>
+      <dt id="biblio-rfc6454" title="rfc6454"><a class="self-link" href="#biblio-rfc6454"></a>[rfc6454]</dt>
+      <dd>A. Barth. <a href="http://www.ietf.org/rfc/rfc6454.txt">The Web Origin Concept</a>. December 2011. Proposed Standard. URL: <a href="http://www.ietf.org/rfc/rfc6454.txt">http://www.ietf.org/rfc/rfc6454.txt</a></dd></dl>
+    <h2 class="no-num heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
+    <ul class="indexlist">
+      <li>conformant server, <a href="#conformant-server" title="section Unnumbered section">Unnumbered section</a></li>
+      <li>conformant user agent, <a href="#conformant-user-agent" title="section Unnumbered section">Unnumbered section</a></li>
+      <li>origin, <a href="#origin" title="section 2.2">2.2</a></li></ul>
+    <h2 class="no-num heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
+    <div style="counter-reset:issue">
+      <div class="issue">Not sure how to actually refer to 'real origins'. This is a terrible
+name, and we need a better way to talk about them. Maybe physical origin?
+Traditional origin? (jww)<a href="#issue-e1a79dec"> ↵ </a></div></div></body>
 </html>

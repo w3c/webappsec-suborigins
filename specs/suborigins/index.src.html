@@ -79,4 +79,58 @@ Issue: Not sure how to actually refer to 'real origins'. This is a terrible
 name, and we need a better way to talk about them. Maybe physical origin?
 Traditional origin? (jww)
 
-</section>
+<h3 id="usecases">Use Cases/Examples</h3>
+
+We see effectively three different use cases for Per-page Suborigins:
+
+<ol>
+  <li>
+    Separating distinct applications that happen to be served from the same
+    domain, but do not need to extensively interact with other content. Examples
+    include marketing campaigns, simple search UIs, and so on. This use requires
+    very little engineering effort and faces very few constraints; the
+    applications may use XMLHttpRequest and postMessage to communicate with
+    their host domain as required.
+  </li>
+
+  <li>
+    Allowing for modularity within a larger web application by splitting the
+    functional components into different suborigins. For example, Gmail might
+    put the contacts widget, settings tab, and HTML message views in separate
+    Per-page Suborigins. Such deployments may require relatively modest
+    refactorings to switch to postMessage and CORS where direct DOM access and
+    same-origin XMLHttpRequest are currently used, but we believe doing so is
+    considerably easier than retrofitting CSP onto arbitrary code bases and can
+    be done very incrementally.
+  </li>
+
+  <li>
+    Similar to (2), applications with many users can split information relating
+    to different users into their own suborigin. For example, Twitter might put
+    each user profile into a unique suborigin so that an XSS within one profile
+    cannot be used to immediately infect other users or read their personal
+    messages stored within the account.
+  </li>
+
+</ol>
+
+</section><!-- /Introduction -->
+
+<section>
+<h2 id="terms">Key Concepts and Terminology</h2>
+This section defines several terms used throughout the document.
+
+<h3 id="terms-defined-here">Terms defined by this specification</h3>
+
+<h3 id="terms-defined-by-reference">Terms defined by reference</h3>
+<dl>
+    <dt><dfn>origin</dfn></dt>
+    <dd>
+      An origin defines the scope of authority or privilege under which a
+      resource operates. It is defined in detail in the Origin specification
+      [[!RFC6454]].
+    </dd>
+</dl>
+
+</section><!-- /Key Concepts and Terminology -->
+
