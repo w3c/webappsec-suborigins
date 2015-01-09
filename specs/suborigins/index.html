@@ -181,6 +181,18 @@
             <li><a href="#terms-defined-by-reference"><span class="secno">2.2</span> <span class="content">Terms defined by reference</span></a></li>
           </ul>
         </li>
+        <li><a href="#defining-suborigin"><span class="secno">3</span> <span class="content">Defining a Suborigin</span></a>
+          <ul class="toc">
+            <li><a href="#examples"><span class="secno">3.1</span> <span class="content">Examples</span></a>
+              <ul class="toc">
+                <li><a href="#separate-applications-same-origin"><span class="secno">3.1.1</span> <span class="content">Separate applications, same origin</span></a></li>
+                <li><a href="#separation-within-a-single-application"><span class="secno">3.1.2</span> <span class="content">Separation within a single application</span></a></li>
+              </ul>
+            </li>
+            <li><a href="#relationship-of-suborigins-to-origins"><span class="secno">3.2</span> <span class="content">Relationship of Suborigins to Origins</span></a></li>
+            <li><a href="#representation-of-suborigins"><span class="secno">3.3</span> <span class="content">Representation of Suborigins</span></a></li>
+          </ul>
+        </li>
         <li><a href="#conformance"><span class="secno"></span> <span class="content">Conformance</span></a>
           <ul class="toc">
             <li><a href="#conventions"><span class="secno"></span> <span class="content">Document conventions</span></a></li>
@@ -191,6 +203,7 @@
         <li><a href="#references"><span class="secno"></span> <span class="content">References</span></a>
           <ul class="toc">
             <li><a href="#normative"><span class="secno"></span> <span class="content">Normative References</span></a></li>
+            <li><a href="#informative"><span class="secno"></span> <span class="content">Informative References</span></a></li>
           </ul>
         </li>
         <li><a href="#index"><span class="secno"></span> <span class="content">Index</span></a></li>
@@ -331,7 +344,9 @@ Traditional origin? (jww)</p>
       <section>
 
         <h2 class="heading settled" data-level="2" id="terms"><span class="secno">2. </span><span class="content">Key Concepts and Terminology</span><a class="self-link" href="#terms"></a></h2>
-This section defines several terms used throughout the document.
+
+
+        <p>This section defines several terms used throughout the document.</p>
 
 
         <h3 class="heading settled" data-level="2.1" id="terms-defined-here"><span class="secno">2.1. </span><span class="content">Terms defined by this specification</span><a class="self-link" href="#terms-defined-here"></a></h3>
@@ -352,6 +367,134 @@ This section defines several terms used throughout the document.
 
 </section>
 
+
+      <section>
+
+        <h2 class="heading settled" data-level="3" id="defining-suborigin"><span class="secno">3. </span><span class="content">Defining a Suborigin</span><a class="self-link" href="#defining-suborigin"></a></h2>
+
+
+        <p>Origins are a mechanism for user agents to group URIs into protection domains.
+Two URIs are in the same origin if they share the same scheme, host, and port.
+If URIs are in the same origin, then they share the same authority and can
+access all of each others resources.</p>
+
+
+        <p>This has been a successful mechanism for privilege separation on the Web.
+However, it does limit the ability of a URI to separate itself into a new
+protection domain as it automatically shares authority with all other identical
+origins, which are defined by physical, rather than programatic, properties.
+While it is possible to setup unique domains and ports different parts of the
+same application (scheme is more difficult to separate out), there are a diverse
+set of practical problems in doing so.</p>
+
+
+        <p>Suborigins provide a mechanism for creating this type of separation
+programatically. Any resources may provide, in a manner detailed below, a string
+value [suborigin namespace][].  If either of two URIs provide a suborigin
+namespace, then the two URIs are in the same origin if and only if they share
+the same scheme, host, port, and suborigin namespace.</p>
+
+
+        <p>Q. In today’s Web, can’t a site get the effective same protection domain simply
+by hosting their content at different subdomains?</p>
+
+
+        <p>A. Yes, but there are many practical reasons why this is difficult.</p>
+
+
+        <h3 class="heading settled" data-level="3.1" id="examples"><span class="secno">3.1. </span><span class="content">Examples</span><a class="self-link" href="#examples"></a></h3>
+
+
+        <h4 class="heading settled" data-level="3.1.1" id="separate-applications-same-origin"><span class="secno">3.1.1. </span><span class="content">Separate applications, same origin</span><a class="self-link" href="#separate-applications-same-origin"></a></h4>
+Google runs Search and Maps on the same domain, respectively
+`https://www.google.com` and `https://www.google.com/maps`. While these two
+applications are fundamentally separate, there are many reasons for hosting them
+on the same origin, including historical links, branding, and performance.
+However, from security perspective, this means that a compromise of one
+application is a compromise of the other since the only security boundary in the
+browser is the origin, and both applications are hosted on the same origin.
+Thus, even if Google Search were to successful implement a strong Content
+Security Policy <a data-biblio-type="informative" data-link-type="biblio" href="#biblio-csp" title="CSP">[CSP]</a>, if Google Maps were to have an XSS vulnerability, it
+would be equivalent to having an XSS on Google Search as well, negating Google
+Search’s security measures.
+
+
+        <h4 class="heading settled" data-level="3.1.2" id="separation-within-a-single-application"><span class="secno">3.1.2. </span><span class="content">Separation within a single application</span><a class="self-link" href="#separation-within-a-single-application"></a></h4>
+Separation is sometimes desirable within a single application because of the
+presence of untrusted data. Take, for example, a social networking site with
+many different user profiles. Each profile contains lots of untrusted content
+created by a single user but it’s all hosted on a single origin. In order to
+separate untrusted content, the application might want a way to put all profile
+information into separate logical origins while all being hosted at the same
+physical origin. Furthermore, all content within a profile should be able to
+access all other content within the same origin, even if displayed in unique
+frames.
+
+
+        <p>This type of privilege separation within an application has been shown to be
+valuable and reasonable for applications to do by work such as
+Privilege Separation in HTML5 Applications by Akhawe et al
+<a data-biblio-type="informative" data-link-type="biblio" href="#biblio-privilegeseparation" title="PrivilegeSeparation">[PrivilegeSeparation]</a>. However, these systems rely on cross frame messaging
+using `postMessage` even for content in the same trust boundary since they
+utilize `sandbox`. This provides much of the motivation for the named container
+nature of suborigins.</p>
+
+
+        <h3 class="heading settled" data-level="3.2" id="relationship-of-suborigins-to-origins"><span class="secno">3.2. </span><span class="content">Relationship of Suborigins to Origins</span><a class="self-link" href="#relationship-of-suborigins-to-origins"></a></h3>
+
+
+        <p>Suborigins, in fact, do not provide any new authority to resources. Suborigins
+simply provide <em>an additional way to construct Origins</em>. That is,
+Suborigins do not supercede Origins or provide any additional authority above
+Origins. From the user agent’s  perspective, two resources in different
+Suborigins are simply in different Origins, and the relationship between the two
+resources should be the same as any other two differing origins as described in
+<a data-biblio-type="normative" data-link-type="biblio" href="#biblio-rfc6454" title="RFC6454">[RFC6454]</a>.  Thus, this specification is intended to provide the following two
+important properties:</p>
+
+
+        <ul>
+          <li data-md="">
+            <p>The rules on how Suborigins are defined.</p>
+            
+
+          </li>
+          <li data-md="">
+            <p>The rules on how Suborigins are tracked.</p>
+            
+
+          </li></ul>
+
+        <h3 class="heading settled" data-level="3.3" id="representation-of-suborigins"><span class="secno">3.3. </span><span class="content">Representation of Suborigins</span><a class="self-link" href="#representation-of-suborigins"></a></h3>
+
+
+        <p>At an abstract level, a suborigin consists of the scheme, host, and port of a
+traditional origin, plus a <a data-link-type="dfn">suborigin namespace</a>. However, as mentioned
+above, suborigins are intended to fit within the framework of <a data-biblio-type="normative" data-link-type="biblio" href="#biblio-rfc6454" title="RFC6454">[RFC6454]</a>.
+Therefore, this specification provides a way of serializing a Suborigin bound
+resource into a traditional Origin. This is done by inserting the suborigin
+namespace into the scheme space of the Origin, thus creating a new scheme but
+maintaining all of the information about both the original scheme and the
+suborigin namespace. This is done by inserting a <code>+</code> into the URI
+after the scheme, followed by the suborigin namespace, then followed by the rest
+of the URI starting with <code>:</code>.</p>
+
+
+        <p>For example, if the resource is hosted at <code>https://example.com/</code> in
+the suborigin namespace <code>profile</code>, this would be serialized as
+<code>https+profile://example.com/</code>.</p>
+
+
+        <p>Similarly, if a resource is hosted at <code>https://example.com:8080/</code> in
+the suborigin namespace <code>separate</code>, this would be serialized as
+<code>https+separate://example.com:8080/</code>.</p>
+
+
+        <p>Internally, the <a data-link-type="dfn">suborigin namespace</a> must be tracked by the user agent. When
+the origin needs to be serialized for a resource, the user agent should follow
+the algorithm in <a data-section="" href="#serializing"></a>.</p>
+
+</section>
 
 </main>
 
@@ -430,6 +573,12 @@ This section defines several terms used throughout the document.
       <dd>S. Bradner. <a href="http://www.ietf.org/rfc/rfc2119.txt">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="http://www.ietf.org/rfc/rfc2119.txt">http://www.ietf.org/rfc/rfc2119.txt</a></dd>
       <dt id="biblio-rfc6454" title="rfc6454"><a class="self-link" href="#biblio-rfc6454"></a>[rfc6454]</dt>
       <dd>A. Barth. <a href="http://www.ietf.org/rfc/rfc6454.txt">The Web Origin Concept</a>. December 2011. Proposed Standard. URL: <a href="http://www.ietf.org/rfc/rfc6454.txt">http://www.ietf.org/rfc/rfc6454.txt</a></dd></dl>
+    <h3 class="no-num heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
+    <dl>
+      <dt id="biblio-csp" title="CSP"><a class="self-link" href="#biblio-csp"></a>[CSP]</dt>
+      <dd>Brandon Sterne; Adam Barth. <a href="http://www.w3.org/TR/CSP/">Content Security Policy 1.0</a>. 15 November 2012. CR. URL: <a href="http://www.w3.org/TR/CSP/">http://www.w3.org/TR/CSP/</a></dd>
+      <dt id="biblio-privilegeseparation" title="PrivilegeSeparation"><a class="self-link" href="#biblio-privilegeseparation"></a>[PrivilegeSeparation]</dt>
+      <dd>Devdatta Akhawe; Prateek Saxena; Dawn Song. <a href="https://www.usenix.org/system/files/conference/usenixsecurity12/sec12-final168.pdf">Privilege Separation in HTML5 Applications</a>. URL: <a href="https://www.usenix.org/system/files/conference/usenixsecurity12/sec12-final168.pdf">https://www.usenix.org/system/files/conference/usenixsecurity12/sec12-final168.pdf</a></dd></dl>
     <h2 class="no-num heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
     <ul class="indexlist">
       <li>conformant server, <a href="#conformant-server" title="section Unnumbered section">Unnumbered section</a></li>

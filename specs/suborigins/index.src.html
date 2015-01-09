@@ -10,7 +10,7 @@ Group: webappsec
 </pre>
 
 <section>
-<h2 id="intro">Introduction</h2>
+# Introduction # {#intro}
 
 <em>This section is not normative.</em>
 
@@ -47,7 +47,7 @@ hosted within a single origin are simultaneously put behind CSP, the mechanism
 offers limited incremental benefits, which is especially problematic for
 companies with large portfolios of disparate products all under the same domain.
 
-<h3 id="goals">Goals</h3>
+## Goals ## {#goals}
 
 <ol>
   <li>
@@ -79,7 +79,7 @@ Issue: Not sure how to actually refer to 'real origins'. This is a terrible
 name, and we need a better way to talk about them. Maybe physical origin?
 Traditional origin? (jww)
 
-<h3 id="usecases">Use Cases/Examples</h3>
+## Use Cases/Examples ## {#usecases}
 
 We see effectively three different use cases for Per-page Suborigins:
 
@@ -117,12 +117,13 @@ We see effectively three different use cases for Per-page Suborigins:
 </section><!-- /Introduction -->
 
 <section>
-<h2 id="terms">Key Concepts and Terminology</h2>
+# Key Concepts and Terminology # {#terms}
+
 This section defines several terms used throughout the document.
 
-<h3 id="terms-defined-here">Terms defined by this specification</h3>
+## Terms defined by this specification ## {#terms-defined-here}
 
-<h3 id="terms-defined-by-reference">Terms defined by reference</h3>
+## Terms defined by reference ## {#terms-defined-by-reference}
 <dl>
     <dt><dfn>origin</dfn></dt>
     <dd>
@@ -134,3 +135,104 @@ This section defines several terms used throughout the document.
 
 </section><!-- /Key Concepts and Terminology -->
 
+<section>
+# Defining a Suborigin # {#defining-suborigin}
+
+Origins are a mechanism for user agents to group URIs into protection domains.
+Two URIs are in the same origin if they share the same scheme, host, and port.
+If URIs are in the same origin, then they share the same authority and can
+access all of each others resources.
+
+This has been a successful mechanism for privilege separation on the Web.
+However, it does limit the ability of a URI to separate itself into a new
+protection domain as it automatically shares authority with all other identical
+origins, which are defined by physical, rather than programatic, properties.
+While it is possible to setup unique domains and ports different parts of the
+same application (scheme is more difficult to separate out), there are a diverse
+set of practical problems in doing so.
+
+Suborigins provide a mechanism for creating this type of separation
+programatically. Any resources may provide, in a manner detailed below, a string
+value [suborigin namespace][].  If either of two URIs provide a suborigin
+namespace, then the two URIs are in the same origin if and only if they share
+the same scheme, host, port, and suborigin namespace.
+
+Q. In today's Web, can't a site get the effective same protection domain simply
+by hosting their content at different subdomains?
+
+A. Yes, but there are many practical reasons why this is difficult.
+
+## Examples
+
+### Separate applications, same origin
+Google runs Search and Maps on the same domain, respectively
+`https://www.google.com` and `https://www.google.com/maps`. While these two
+applications are fundamentally separate, there are many reasons for hosting them
+on the same origin, including historical links, branding, and performance.
+However, from security perspective, this means that a compromise of one
+application is a compromise of the other since the only security boundary in the
+browser is the origin, and both applications are hosted on the same origin.
+Thus, even if Google Search were to successful implement a strong Content
+Security Policy [[CSP]], if Google Maps were to have an XSS vulnerability, it
+would be equivalent to having an XSS on Google Search as well, negating Google
+Search's security measures.
+
+### Separation within a single application
+Separation is sometimes desirable within a single application because of the
+presence of untrusted data. Take, for example, a social networking site with
+many different user profiles. Each profile contains lots of untrusted content
+created by a single user but it's all hosted on a single origin. In order to
+separate untrusted content, the application might want a way to put all profile
+information into separate logical origins while all being hosted at the same
+physical origin. Furthermore, all content within a profile should be able to
+access all other content within the same origin, even if displayed in unique
+frames.
+
+This type of privilege separation within an application has been shown to be
+valuable and reasonable for applications to do by work such as
+Privilege Separation in HTML5 Applications by Akhawe et al
+[[PrivilegeSeparation]]. However, these systems rely on cross frame messaging
+using `postMessage` even for content in the same trust boundary since they
+utilize `sandbox`. This provides much of the motivation for the named container
+nature of suborigins.
+
+## Relationship of Suborigins to Origins
+
+Suborigins, in fact, do not provide any new authority to resources. Suborigins
+simply provide <em>an additional way to construct Origins</em>. That is,
+Suborigins do not supercede Origins or provide any additional authority above
+Origins. From the user agent's  perspective, two resources in different
+Suborigins are simply in different Origins, and the relationship between the two
+resources should be the same as any other two differing origins as described in
+[[!RFC6454]].  Thus, this specification is intended to provide the following two
+important properties:
+
+* The rules on how Suborigins are defined.
+* The rules on how Suborigins are tracked.
+
+## Representation of Suborigins
+
+At an abstract level, a suborigin consists of the scheme, host, and port of a
+traditional origin, plus a <a>suborigin namespace</a>. However, as mentioned
+above, suborigins are intended to fit within the framework of [[!RFC6454]].
+Therefore, this specification provides a way of serializing a Suborigin bound
+resource into a traditional Origin. This is done by inserting the suborigin
+namespace into the scheme space of the Origin, thus creating a new scheme but
+maintaining all of the information about both the original scheme and the
+suborigin namespace. This is done by inserting a <code>+</code> into the URI
+after the scheme, followed by the suborigin namespace, then followed by the rest
+of the URI starting with <code>:</code>.
+
+For example, if the resource is hosted at <code>https://example.com/</code> in
+the suborigin namespace <code>profile</code>, this would be serialized as
+<code>https+profile://example.com/</code>.
+
+Similarly, if a resource is hosted at <code>https://example.com:8080/</code> in
+the suborigin namespace <code>separate</code>, this would be serialized as
+<code>https+separate://example.com:8080/</code>.
+
+Internally, the <a>suborigin namespace</a> must be tracked by the user agent. When
+the origin needs to be serialized for a resource, the user agent should follow
+the algorithm in [[#serializing]].
+
+</section><!-- Defining a Suborigin -->
