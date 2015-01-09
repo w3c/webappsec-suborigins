@@ -161,9 +161,9 @@ the same scheme, host, port, and suborigin namespace.
 Q. In today's Web, can't a site get the effective same protection domain simply
 by hosting their content at different subdomains?
 
-A. Yes, but there are many practical reasons why this is difficult.
+A. Yes, but there are many practical reasons why this is difficult:
 
-## Examples
+## Difficulties using subdomains
 
 ### Separate applications, same origin
 Google runs Search and Maps on the same domain, respectively
@@ -254,7 +254,7 @@ directive in the CSP header:
   suborigin: testing
 </pre>
 
-## <code>suborigin</code> Directive ## {#suborigin-directive}
+## The <code>suborigin</code> Directive
 
 Suborigins are defined by a <dfn>suborigin directive</dfn> in the Content
 Security Policy [[!CSP2]] of the resource. The syntax for the name and value of
@@ -366,8 +366,6 @@ suborigin namespaces in a "default secure" context. However, restrictions may be
 lifted going forward at a time when a way to whitelist particular Web platform
 permissions is well-defined.
 
-## Examples
-
 ## Relationship with Sensitive Permissions
 
 Issue: We need to discuss DOM storage, cookies, document.domain, etc. In
@@ -423,15 +421,15 @@ origin comparisons would be the same.
 Two suborigins are "the same" if, and only if, they are identical. In
 particular:
 
-* If the origin portions of the suborigin pairs are scheme/host/port triples,
-  the two suborigins are the same if, and only if, they have identical schemes,
-  hosts, and ports and the <code>suborigin-namespace</code> portions of the
-  suborigin pairs are identical.
-* If both <code>suborigin-namespace</code> portions of the suborigin pairs are
-  null, this is considered identical.
-* An origin that is a globally unique identifier cannot be the same as an origin
-  that is a scheme/host/port triple, with or without a
-  <code>suborigin-namespace</code>.
+*   If the origin portions of the suborigin pairs are scheme/host/port triples,
+    the two suborigins are the same if, and only if, they have identical
+    schemes, hosts, and ports and the <code>suborigin-namespace</code> portions
+    of the suborigin pairs are identical.
+*   If both <code>suborigin-namespace</code> portions of the suborigin pairs are
+    null, this is considered identical.
+*   An origin that is a globally unique identifier cannot be the same as an
+    origin that is a scheme/host/port triple, with or without a
+    <code>suborigin-namespace</code>.
 
 Two resources are the same-origin if their suborigins are the same.
 
