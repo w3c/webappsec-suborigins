@@ -199,11 +199,8 @@
         <li><a href="#access-control"><span class="secno">4</span> <span class="content">Access Control</span></a>
           <ul class="toc">
             <li><a href="#cors"><span class="secno">4.1</span> <span class="content">CORS</span></a></li>
-            <li><a href="#postmessage"><span class="secno">4.2</span> <span class="content"><code>postMessage</code></span></a>
-              <ul class="toc">
-                <li><a href="#workers"><span class="secno">4.2.1</span> <span class="content">Workers</span></a></li>
-              </ul>
-            </li>
+            <li><a href="#postmessage"><span class="secno">4.2</span> <span class="content"><code>postMessage</code></span></a></li>
+            <li><a href="#workers"><span class="secno">4.3</span> <span class="content">Workers</span></a></li>
           </ul>
         </li>
         <li><a href="#impact"><span class="secno">5</span> <span class="content">Impact on Web Platform</span></a>
@@ -211,11 +208,11 @@
             <li><a href="#relationship-with-sensitive-permissions"><span class="secno">5.1</span> <span class="content">Relationship with Sensitive Permissions</span></a></li>
           </ul>
         </li>
-        <li><a href="#framework"><span class="secno">6</span> <span class="content">Framework #</span></a>
+        <li><a href="#framework"><span class="secno">6</span> <span class="content">Framework</span></a>
           <ul class="toc">
             <li><a href="#suborigin-of-a-resource"><span class="secno">6.1</span> <span class="content">Suborigin of a Resource</span></a></li>
             <li><a href="#comparing-suborigins"><span class="secno">6.2</span> <span class="content">Comparing Suborigins</span></a></li>
-            <li><a href="#serializing"><span class="secno">6.3</span> <span class="content">Serializing Suborigins #</span></a>
+            <li><a href="#serializing"><span class="secno">6.3</span> <span class="content">Serializing Suborigins</span></a>
               <ul class="toc">
                 <li><a href="#unicode-serialization-of-a-suborigin"><span class="secno">6.3.1</span> <span class="content">Unicode Serialization of a Suborigin</span></a></li>
                 <li><a href="#ascii-serialization-of-a-suborigin"><span class="secno">6.3.2</span> <span class="content">ASCII Serialization of a Suborigin</span></a></li>
@@ -529,7 +526,7 @@ the suborigin namespace <code>separate</code>, this would be serialized as
 
         <p>Internally, the <a data-link-type="dfn" href="#suborigin-namespace">suborigin namespace</a> must be tracked by the user agent. When
 the origin needs to be serialized for a resource, the user agent should follow
-the algorithm in <a data-section="" href="#serializing">§6.3 Serializing Suborigins #</a>.</p>
+the algorithm in <a data-section="" href="#serializing">§6.3 Serializing Suborigins</a>.</p>
 
 
         <h3 class="heading settled" data-level="3.4" id="opting-into-a-suborigin"><span class="secno">3.4. </span><span class="content">Opting into a Suborigin</span><a class="self-link" href="#opting-into-a-suborigin"></a></h3>
@@ -658,7 +655,7 @@ should be set the scheme/host/port and suborigin namespace, respectively.</p>
 deserialization tool.</p>
 
 
-        <h4 class="heading settled" data-level="4.2.1" id="workers"><span class="secno">4.2.1. </span><span class="content">Workers</span><a class="self-link" href="#workers"></a></h4>
+        <h3 class="heading settled" data-level="4.3" id="workers"><span class="secno">4.3. </span><span class="content">Workers</span><a class="self-link" href="#workers"></a></h3>
 
 
         <p class="issue" id="issue-cc64826b"><a class="self-link" href="#issue-cc64826b"></a>We need a story here. I basically think that workers should be treated as
@@ -698,7 +695,7 @@ http://www.w3.org/TR/html5/browsers.html#sandboxing.</p>
 
       <section>
 
-        <h2 class="heading settled" data-level="6" id="framework"><span class="secno">6. </span><span class="content">Framework #</span><a class="self-link" href="#framework"></a></h2>
+        <h2 class="heading settled" data-level="6" id="framework"><span class="secno">6. </span><span class="content">Framework</span><a class="self-link" href="#framework"></a></h2>
 
 
         <p class="note" role="note">Note: These sections are tricky because, unlike traditional origins, we can’t
@@ -781,7 +778,7 @@ particular:</p>
         <p>Two resources are the same-origin if their suborigins are the same.</p>
 
 
-        <h3 class="heading settled" data-level="6.3" id="serializing"><span class="secno">6.3. </span><span class="content">Serializing Suborigins #</span><a class="self-link" href="#serializing"></a></h3>
+        <h3 class="heading settled" data-level="6.3" id="serializing"><span class="secno">6.3. </span><span class="content">Serializing Suborigins</span><a class="self-link" href="#serializing"></a></h3>
 
 
         <p>This section defines how to serialize an origin to a unicode <a data-biblio-type="normative" data-link-type="biblio" href="#biblio-unicode6" title="Unicode6">[Unicode6]</a>

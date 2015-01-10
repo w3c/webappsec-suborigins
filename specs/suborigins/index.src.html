@@ -344,7 +344,7 @@ Issue: Similar to the CORS case, another option is to set
 <code>event.origin</code> to the serialized namespace and then provide a
 deserialization tool.
 
-### Workers ### {#workers}
+## Workers ## {#workers}
 
 Issue: We need a story here. I basically think that workers should be treated as
 if they're in the same suborigin as whatever created them, but I'm also open to
@@ -376,7 +376,7 @@ http://www.w3.org/TR/html5/browsers.html#sandboxing.
 </section><!-- Impact on Web Platform -->
 
 <section>
-# Framework ## {#framework}
+# Framework # {#framework}
 
 Note: These sections are tricky because, unlike traditional origins, we can't
 define suborigins in terms of URIs. Since the suborigin namespace is defined in
@@ -434,7 +434,7 @@ particular:
 
 Two resources are the same-origin if their suborigins are the same.
 
-## Serializing Suborigins ### {#serializing}
+## Serializing Suborigins ## {#serializing}
 
 This section defines how to serialize an origin to a unicode [[!Unicode6]]
 string and to an ASCII [[!RFC0020]] string.
