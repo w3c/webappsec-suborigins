@@ -70,7 +70,7 @@
       <h1 class="p-name no-ref" id="title">Suborigins</h1>
   
       <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft,
-    <time class="dt-updated" datetime="2015-01-10">10 January 2015</time></span></h2>
+    <time class="dt-updated" datetime="2015-01-20">20 January 2015</time></span></h2>
   
       <div data-fill-with="spec-metadata">
         <dl>
@@ -473,7 +473,7 @@ frames.
         <p>This type of privilege separation within an application has been shown to be
 valuable and reasonable for applications to do by work such as
 Privilege Separation in HTML5 Applications by Akhawe et al
-<a data-biblio-type="informative" data-link-type="biblio" href="#biblio-privilegeseparation" title="PrivilegeSeparation">[PrivilegeSeparation]</a>. However, these systems rely on cross frame messaging
+<a data-biblio-type="informative" data-link-type="biblio" href="#biblio-privilegeseparation" title="PRIVILEGESEPARATION">[PRIVILEGESEPARATION]</a>. However, these systems rely on cross frame messaging
 using `postMessage` even for content in the same trust boundary since they
 utilize `sandbox`. This provides much of the motivation for the named container
 nature of suborigins.</p>
@@ -1032,9 +1032,11 @@ as a just a special case of the traditional same-origin policy.</p>
     <h3 class="no-num heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
     <dl>
       <dt id="biblio-csp2" title="CSP2"><a class="self-link" href="#biblio-csp2"></a>[CSP2]</dt>
-      <dd>Mike West; Adam Barth; Daniel Veditz. <a href="http://www.w3.org/TR/CSP2/">Content Security Policy Level 2</a>. 3 July 2014. LCWD. URL: <a href="http://www.w3.org/TR/CSP2/">http://www.w3.org/TR/CSP2/</a></dd>
+      <dd>Mike West; Adam Barth; Dan Veditz. <a href="https://w3c.github.io/webappsec/content-security-policy/">Content Security Policy Level 2</a>. LCWD. URL: <a href="https://w3c.github.io/webappsec/content-security-policy/">https://w3c.github.io/webappsec/content-security-policy/</a></dd>
       <dt id="biblio-html" title="HTML"><a class="self-link" href="#biblio-html"></a>[HTML]</dt>
       <dd>Ian Hickson. <a href="https://html.spec.whatwg.org/">HTML</a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/">https://html.spec.whatwg.org/</a></dd>
+      <dt id="biblio-rfc6454" title="RFC6454"><a class="self-link" href="#biblio-rfc6454"></a>[RFC6454]</dt>
+      <dd>Adam Barth. <a href="http://www.ietf.org/rfc/rfc6454.txt">The Web Origin Concept</a>. RFC. URL: <a href="http://www.ietf.org/rfc/rfc6454.txt">http://www.ietf.org/rfc/rfc6454.txt</a></dd>
       <dt id="biblio-unicode6" title="UNICODE6"><a class="self-link" href="#biblio-unicode6"></a>[UNICODE6]</dt>
       <dd>The Unicode Consortium. <a href="http://www.unicode.org/versions/Unicode6.2.0/">The Unicode Standard, Version 6.2.0</a>. Defined by: The Unicode Standard, Version 6.2.0 URL: <a href="http://www.unicode.org/versions/Unicode6.2.0/">http://www.unicode.org/versions/Unicode6.2.0/</a></dd>
       <dt id="biblio-cors" title="cors"><a class="self-link" href="#biblio-cors"></a>[cors]</dt>
@@ -1043,13 +1045,11 @@ as a just a special case of the traditional same-origin policy.</p>
       <dd>V.G. Cerf. <a href="http://www.ietf.org/rfc/rfc0020.txt">ASCII format for network interchange</a>. October 1969. Unknown. URL: <a href="http://www.ietf.org/rfc/rfc0020.txt">http://www.ietf.org/rfc/rfc0020.txt</a></dd>
       <dt id="biblio-rfc2119" title="rfc2119"><a class="self-link" href="#biblio-rfc2119"></a>[rfc2119]</dt>
       <dd>S. Bradner. <a href="http://www.ietf.org/rfc/rfc2119.txt">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="http://www.ietf.org/rfc/rfc2119.txt">http://www.ietf.org/rfc/rfc2119.txt</a></dd>
-      <dt id="biblio-rfc6454" title="rfc6454"><a class="self-link" href="#biblio-rfc6454"></a>[rfc6454]</dt>
-      <dd>A. Barth. <a href="http://www.ietf.org/rfc/rfc6454.txt">The Web Origin Concept</a>. December 2011. Proposed Standard. URL: <a href="http://www.ietf.org/rfc/rfc6454.txt">http://www.ietf.org/rfc/rfc6454.txt</a></dd>
       <dt id="biblio-webmessaging" title="webmessaging"><a class="self-link" href="#biblio-webmessaging"></a>[webmessaging]</dt>
       <dd>Ian Hickson. <a href="http://www.w3.org/TR/webmessaging/">HTML5 Web Messaging</a>. 1 May 2012. CR. URL: <a href="http://www.w3.org/TR/webmessaging/">http://www.w3.org/TR/webmessaging/</a></dd></dl>
     <h3 class="no-num heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
     <dl>
-      <dt id="biblio-privilegeseparation" title="PrivilegeSeparation"><a class="self-link" href="#biblio-privilegeseparation"></a>[PrivilegeSeparation]</dt>
+      <dt id="biblio-privilegeseparation" title="PRIVILEGESEPARATION"><a class="self-link" href="#biblio-privilegeseparation"></a>[PRIVILEGESEPARATION]</dt>
       <dd>Devdatta Akhawe; Prateek Saxena; Dawn Song. <a href="https://www.usenix.org/system/files/conference/usenixsecurity12/sec12-final168.pdf">Privilege Separation in HTML5 Applications</a>. URL: <a href="https://www.usenix.org/system/files/conference/usenixsecurity12/sec12-final168.pdf">https://www.usenix.org/system/files/conference/usenixsecurity12/sec12-final168.pdf</a></dd></dl>
     <h2 class="no-num heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
     <ul class="indexlist">
