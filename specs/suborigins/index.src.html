@@ -116,6 +116,8 @@ We see effectively three different use cases for Per-page Suborigins:
 
 </ol>
 
+These examples are expounded upon in [[#case-studies]].
+
 </section><!-- /Introduction -->
 
 <section>
@@ -201,6 +203,10 @@ Privilege Separation in HTML5 Applications by Akhawe et al
 using `postMessage` even for content in the same trust boundary since they
 utilize `sandbox`. This provides much of the motivation for the named container
 nature of suborigins.
+
+## Threat Model ## {#threat-model}
+
+Issue: TODO(jww) Fill this in
 
 ## Relationship of Suborigins to Origins
 
@@ -538,6 +544,22 @@ algorithm:
 </ol>
 
 </section> <!-- /Framework -->
+
+<section>
+# Examples
+
+## Case Studies ## {#case-studies}
+
+Issue: TODO(jww) Fill this in.
+
+## Practical Considerations in Using Suborigins
+
+Issue: TODO(jww) Fill this in. Focusing on this such as "set suborigin header on
+all subpages of a path, if that's how you're defining it", you need
+access-control-allow-suborigin for XHR, etc. Probably should relate
+to [[#case-studies]] as well.
+
+</section> <!-- /Examples -->
 
 <section>
 # Security Considerations

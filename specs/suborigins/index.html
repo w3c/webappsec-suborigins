@@ -70,7 +70,7 @@
       <h1 class="p-name no-ref" id="title">Suborigins</h1>
   
       <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft,
-    <time class="dt-updated" datetime="2015-01-20">20 January 2015</time></span></h2>
+    <time class="dt-updated" datetime="2015-02-09">9 February 2015</time></span></h2>
   
       <div data-fill-with="spec-metadata">
         <dl>
@@ -189,11 +189,12 @@
                 <li><a href="#separation-within-a-single-application"><span class="secno">3.1.2</span> <span class="content">Separation within a single application</span></a></li>
               </ul>
             </li>
-            <li><a href="#relationship-of-suborigins-to-origins"><span class="secno">3.2</span> <span class="content">Relationship of Suborigins to Origins</span></a></li>
-            <li><a href="#representation-of-suborigins"><span class="secno">3.3</span> <span class="content">Representation of Suborigins</span></a></li>
-            <li><a href="#opting-into-a-suborigin"><span class="secno">3.4</span> <span class="content">Opting into a Suborigin</span></a></li>
-            <li><a href="#the-suborigin-directive"><span class="secno">3.5</span> <span class="content">The <code>suborigin</code> Directive</span></a></li>
-            <li><a href="#accessing-the-suborigin-in-javascript"><span class="secno">3.6</span> <span class="content">Accessing the Suborigin in JavaScript</span></a></li>
+            <li><a href="#threat-model"><span class="secno">3.2</span> <span class="content">Threat Model</span></a></li>
+            <li><a href="#relationship-of-suborigins-to-origins"><span class="secno">3.3</span> <span class="content">Relationship of Suborigins to Origins</span></a></li>
+            <li><a href="#representation-of-suborigins"><span class="secno">3.4</span> <span class="content">Representation of Suborigins</span></a></li>
+            <li><a href="#opting-into-a-suborigin"><span class="secno">3.5</span> <span class="content">Opting into a Suborigin</span></a></li>
+            <li><a href="#the-suborigin-directive"><span class="secno">3.6</span> <span class="content">The <code>suborigin</code> Directive</span></a></li>
+            <li><a href="#accessing-the-suborigin-in-javascript"><span class="secno">3.7</span> <span class="content">Accessing the Suborigin in JavaScript</span></a></li>
           </ul>
         </li>
         <li><a href="#access-control"><span class="secno">4</span> <span class="content">Access Control</span></a>
@@ -220,10 +221,16 @@
             </li>
           </ul>
         </li>
-        <li><a href="#security-considerations"><span class="secno">7</span> <span class="content">Security Considerations</span></a>
+        <li><a href="#examples"><span class="secno">7</span> <span class="content">Examples</span></a>
           <ul class="toc">
-            <li><a href="#presentation-of-suborigins-to-users"><span class="secno">7.1</span> <span class="content">Presentation of Suborigins to Users</span></a></li>
-            <li><a href="#not-overthrowing-same-origin-policy"><span class="secno">7.2</span> <span class="content">Not Overthrowing Same-origin Policy</span></a></li>
+            <li><a href="#case-studies"><span class="secno">7.1</span> <span class="content">Case Studies</span></a></li>
+            <li><a href="#practical-considerations-in-using-suborigins"><span class="secno">7.2</span> <span class="content">Practical Considerations in Using Suborigins</span></a></li>
+          </ul>
+        </li>
+        <li><a href="#security-considerations"><span class="secno">8</span> <span class="content">Security Considerations</span></a>
+          <ul class="toc">
+            <li><a href="#presentation-of-suborigins-to-users"><span class="secno">8.1</span> <span class="content">Presentation of Suborigins to Users</span></a></li>
+            <li><a href="#not-overthrowing-same-origin-policy"><span class="secno">8.2</span> <span class="content">Not Overthrowing Same-origin Policy</span></a></li>
           </ul>
         </li>
         <li><a href="#conformance"><span class="secno"></span> <span class="content">Conformance</span></a>
@@ -372,6 +379,9 @@ Traditional origin? (jww)</p>
 
 </ol>
 
+
+        <p>These examples are expounded upon in <a data-section="" href="#case-studies">§7.1 Case Studies</a>.</p>
+
 </section>
 
 
@@ -479,7 +489,13 @@ utilize `sandbox`. This provides much of the motivation for the named container
 nature of suborigins.</p>
 
 
-        <h3 class="heading settled" data-level="3.2" id="relationship-of-suborigins-to-origins"><span class="secno">3.2. </span><span class="content">Relationship of Suborigins to Origins</span><a class="self-link" href="#relationship-of-suborigins-to-origins"></a></h3>
+        <h3 class="heading settled" data-level="3.2" id="threat-model"><span class="secno">3.2. </span><span class="content">Threat Model</span><a class="self-link" href="#threat-model"></a></h3>
+
+
+        <p class="issue" id="issue-0e741adc"><a class="self-link" href="#issue-0e741adc"></a>TODO(jww) Fill this in</p>
+
+
+        <h3 class="heading settled" data-level="3.3" id="relationship-of-suborigins-to-origins"><span class="secno">3.3. </span><span class="content">Relationship of Suborigins to Origins</span><a class="self-link" href="#relationship-of-suborigins-to-origins"></a></h3>
 
 
         <p>Suborigins, in fact, do not provide any new authority to resources. Suborigins
@@ -504,7 +520,7 @@ important properties:</p>
 
           </li></ul>
 
-        <h3 class="heading settled" data-level="3.3" id="representation-of-suborigins"><span class="secno">3.3. </span><span class="content">Representation of Suborigins</span><a class="self-link" href="#representation-of-suborigins"></a></h3>
+        <h3 class="heading settled" data-level="3.4" id="representation-of-suborigins"><span class="secno">3.4. </span><span class="content">Representation of Suborigins</span><a class="self-link" href="#representation-of-suborigins"></a></h3>
 
 
         <p>At an abstract level, a suborigin consists of the scheme, host, and port of a
@@ -534,7 +550,7 @@ the origin needs to be serialized for a resource, the user agent should follow
 the algorithm in <a data-section="" href="#serializing">§6.3 Serializing Suborigins</a>.</p>
 
 
-        <h3 class="heading settled" data-level="3.4" id="opting-into-a-suborigin"><span class="secno">3.4. </span><span class="content">Opting into a Suborigin</span><a class="self-link" href="#opting-into-a-suborigin"></a></h3>
+        <h3 class="heading settled" data-level="3.5" id="opting-into-a-suborigin"><span class="secno">3.5. </span><span class="content">Opting into a Suborigin</span><a class="self-link" href="#opting-into-a-suborigin"></a></h3>
 
 
         <p>Unlike the <code>sandbox</code> attribute, suborigin namespaces are predictable
@@ -554,7 +570,7 @@ directive in the CSP header:</p>
 </pre>
 
 
-        <h3 class="heading settled" data-level="3.5" id="the-suborigin-directive"><span class="secno">3.5. </span><span class="content">The <code>suborigin</code> Directive</span><a class="self-link" href="#the-suborigin-directive"></a></h3>
+        <h3 class="heading settled" data-level="3.6" id="the-suborigin-directive"><span class="secno">3.6. </span><span class="content">The <code>suborigin</code> Directive</span><a class="self-link" href="#the-suborigin-directive"></a></h3>
 
 
         <p>Suborigins are defined by a <dfn data-dfn-type="dfn" data-noexport="" id="suborigin-directive">suborigin directive<a class="self-link" href="#suborigin-directive"></a></dfn> in the Content
@@ -571,7 +587,7 @@ directive-value = 1*( ALPHA / DIGIT / "-" )
 <code>suborigin</code> directive.</p>
 
 
-        <h3 class="heading settled" data-level="3.6" id="accessing-the-suborigin-in-javascript"><span class="secno">3.6. </span><span class="content">Accessing the Suborigin in JavaScript</span><a class="self-link" href="#accessing-the-suborigin-in-javascript"></a></h3>
+        <h3 class="heading settled" data-level="3.7" id="accessing-the-suborigin-in-javascript"><span class="secno">3.7. </span><span class="content">Accessing the Suborigin in JavaScript</span><a class="self-link" href="#accessing-the-suborigin-in-javascript"></a></h3>
 
 
         <p class="issue" id="issue-56caee46"><a class="self-link" href="#issue-56caee46"></a>I don’t have a great idea for how to do this yet. Should it be as simple
@@ -926,10 +942,32 @@ algorithm:</p>
 
       <section>
 
-        <h2 class="heading settled" data-level="7" id="security-considerations"><span class="secno">7. </span><span class="content">Security Considerations</span><a class="self-link" href="#security-considerations"></a></h2>
+        <h2 class="heading settled" data-level="7" id="examples"><span class="secno">7. </span><span class="content">Examples</span><a class="self-link" href="#examples"></a></h2>
 
 
-        <h3 class="heading settled" data-level="7.1" id="presentation-of-suborigins-to-users"><span class="secno">7.1. </span><span class="content">Presentation of Suborigins to Users</span><a class="self-link" href="#presentation-of-suborigins-to-users"></a></h3>
+        <h3 class="heading settled" data-level="7.1" id="case-studies"><span class="secno">7.1. </span><span class="content">Case Studies</span><a class="self-link" href="#case-studies"></a></h3>
+
+
+        <p class="issue" id="issue-784eaba2"><a class="self-link" href="#issue-784eaba2"></a>TODO(jww) Fill this in.</p>
+
+
+        <h3 class="heading settled" data-level="7.2" id="practical-considerations-in-using-suborigins"><span class="secno">7.2. </span><span class="content">Practical Considerations in Using Suborigins</span><a class="self-link" href="#practical-considerations-in-using-suborigins"></a></h3>
+
+
+        <p class="issue" id="issue-c296f66a"><a class="self-link" href="#issue-c296f66a"></a>TODO(jww) Fill this in. Focusing on this such as "set suborigin header on
+all subpages of a path, if that’s how you’re defining it", you need
+access-control-allow-suborigin for XHR, etc. Probably should relate
+to <a data-section="" href="#case-studies">§7.1 Case Studies</a> as well.</p>
+
+</section> 
+
+
+      <section>
+
+        <h2 class="heading settled" data-level="8" id="security-considerations"><span class="secno">8. </span><span class="content">Security Considerations</span><a class="self-link" href="#security-considerations"></a></h2>
+
+
+        <h3 class="heading settled" data-level="8.1" id="presentation-of-suborigins-to-users"><span class="secno">8.1. </span><span class="content">Presentation of Suborigins to Users</span><a class="self-link" href="#presentation-of-suborigins-to-users"></a></h3>
 
 
         <p>A complication of suborigins is that while they provide a meaningful security
@@ -946,7 +984,7 @@ not be presented to users at all. For example, suborigins should never be
 presented in link text or a URL bar.</p>
 
 
-        <h3 class="heading settled" data-level="7.2" id="not-overthrowing-same-origin-policy"><span class="secno">7.2. </span><span class="content">Not Overthrowing Same-origin Policy</span><a class="self-link" href="#not-overthrowing-same-origin-policy"></a></h3>
+        <h3 class="heading settled" data-level="8.2" id="not-overthrowing-same-origin-policy"><span class="secno">8.2. </span><span class="content">Not Overthrowing Same-origin Policy</span><a class="self-link" href="#not-overthrowing-same-origin-policy"></a></h3>
 
 
         <p>Suborigins do not fundamentally change how the same-origin policy works. An
@@ -1056,8 +1094,8 @@ as a just a special case of the traditional same-origin policy.</p>
       <li>conformant server, <a href="#conformant-server" title="section Unnumbered section">Unnumbered section</a></li>
       <li>conformant user agent, <a href="#conformant-user-agent" title="section Unnumbered section">Unnumbered section</a></li>
       <li>origin, <a href="#origin" title="section 2.2">2.2</a></li>
-      <li>suborigin directive, <a href="#suborigin-directive" title="section 3.5">3.5</a></li>
-      <li>suborigin namespace, <a href="#suborigin-namespace" title="section 3.5">3.5</a></li></ul>
+      <li>suborigin directive, <a href="#suborigin-directive" title="section 3.6">3.6</a></li>
+      <li>suborigin namespace, <a href="#suborigin-namespace" title="section 3.6">3.6</a></li></ul>
     <h2 class="no-num heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
     <div style="counter-reset:issue">
       <div class="issue">Not sure how to actually refer to 'real origins'. This is a terrible
@@ -1066,6 +1104,7 @@ Traditional origin? (jww)<a href="#issue-e1a79dec"> ↵ </a></div>
       <div class="issue">TODO(jww) This needs to be filled in once we have a pretty good handle on
 the basic structure of this document. At that point, we should extract the terms
 defined throughout the spec and place them here.<a href="#issue-3c008d43"> ↵ </a></div>
+      <div class="issue">TODO(jww) Fill this in<a href="#issue-0e741adc"> ↵ </a></div>
       <div class="issue">I don’t have a great idea for how to do this yet. Should it be as simple
 as document.location.suborigin? Or should it be serialized into document.origin,
 plus a deserialization mechanism? (jww)<a href="#issue-56caee46"> ↵ </a></div>
@@ -1093,5 +1132,10 @@ http://www.w3.org/TR/html5/browsers.html#sandboxing.<a href="#issue-f36cefaf"> �
       <div class="issue">Since we’d like to make the claim that suborigins do not supercede the
 same-origin policy, would it be worth defining suborigins purely in terms of
 being a unique scheme? That would make this section somewhat unnecessary since
-origin comparisons would be the same.<a href="#issue-ffc4fc4d"> ↵ </a></div></div></body>
+origin comparisons would be the same.<a href="#issue-ffc4fc4d"> ↵ </a></div>
+      <div class="issue">TODO(jww) Fill this in.<a href="#issue-784eaba2"> ↵ </a></div>
+      <div class="issue">TODO(jww) Fill this in. Focusing on this such as "set suborigin header on
+all subpages of a path, if that’s how you’re defining it", you need
+access-control-allow-suborigin for XHR, etc. Probably should relate
+to <a data-section="" href="#case-studies">§7.1 Case Studies</a> as well.<a href="#issue-c296f66a"> ↵ </a></div></div></body>
 </html>
