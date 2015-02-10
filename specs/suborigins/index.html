@@ -225,7 +225,7 @@
           <ul class="toc">
             <li><a href="#case-studies"><span class="secno">7.1</span> <span class="content">Case Studies</span></a>
               <ul class="toc">
-                <li><a href="#separating-applications"><span class="secno">7.1.1</span> <span class="content">Separation Two Different Applications</span></a></li>
+                <li><a href="#separating-applications"><span class="secno">7.1.1</span> <span class="content">Separation of Two Different Applications</span></a></li>
                 <li><a href="#other-case-study-studies"><span class="secno">7.1.2</span> <span class="content">Other Case Study/Studies</span></a></li>
               </ul>
             </li>
@@ -953,11 +953,42 @@ algorithm:</p>
         <h3 class="heading settled" data-level="7.1" id="case-studies"><span class="secno">7.1. </span><span class="content">Case Studies</span><a class="self-link" href="#case-studies"></a></h3>
 
 
-        <h4 class="heading settled" data-level="7.1.1" id="separating-applications"><span class="secno">7.1.1. </span><span class="content">Separation Two Different Applications</span><a class="self-link" href="#separating-applications"></a></h4>
+        <h4 class="heading settled" data-level="7.1.1" id="separating-applications"><span class="secno">7.1.1. </span><span class="content">Separation of Two Different Applications</span><a class="self-link" href="#separating-applications"></a></h4>
 Take a site, <code>https://example.com/</code>, that runs two applications, Chat
 and Shopping, used, respectively, for instant messaging and Internet shopping.
 The former is hosted at <code>https://example.com/chat/</code>, and the latter
 is hosted at <code>https://example.com/shopping/</code>.
+
+
+        <p>The Shopping application has been very well tested and generally does not
+contain much untrusted content. In fact, it only takes simple text from
+advertisers, and that text only ever appears in HTML contexts, so the
+application is able to entity encode the text and stop nearly all cross-site
+scripting attacks on the application. Just in case, though, the developers have
+implemented a CSP that is served with pages at subpaths of
+<code>https://example.com/shopping/</code> that only allows scripts loaded from
+<code>scripts.example.com</code>.</p>
+
+
+        <p>Historically, <code>https://example.com/chat/</code> has been riddled with
+cross-site scripting attacks. The application takes untrusted content from a
+wider variety of sources and for added complexity, that content ends up in many
+more contexts, such as HTML tag attributes. On top of that, the developers never
+bothered creating a CSP for the application.</p>
+
+
+        <p>This is bad enough, but, unfortunately, it has led to the extremely bad
+consequence of attackers using the low hanging fruit of Chat to attack Shopping,
+the more desirable target. Cross-site scripting Shopping allows an attacker to
+buy goods with the user’s account, so this is really the juicy target.</p>
+
+
+        <p>Since the applications are hosted on the same origin, these attacks have not
+traditionally been that difficult. Once an attacker has executed code on Chat
+with an XSS, they open a new window or iframe at
+<code>example.com/shopping/</code>. Since this is at the same origin as Chat,
+this allows the attacker to inject code through the document object of the windo
+or iframe into the Shopping context, allowing the attacker to buy-away.</p>
 
 
         <p>For historical and branding reasons, both must be hosted on the
