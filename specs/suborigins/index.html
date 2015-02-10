@@ -314,10 +314,12 @@ companies with large portfolios of disparate products all under the same domain.
           <li>
     Provide a way for different applications hosted at the same real origin to
     separate their content into separate logical origins. For example,
-    https://foobar.com/application and https://foobar.com/widget, today, are, by
+    <code>https://foobar.com/application</code> and
+    <code>https://foobar.com/widget</code>, today, are, by
     definition, in the same origin, even if they’re different applications. Thus
-    an XSS at https://foobar.com/application means an XSS at
-    https://foobar.com/widget, even if https://foobar.com/widget is "protected"
+    an XSS at <code>https://foobar.com/application</code> means an XSS at
+    <code>https://foobar.com/widget</code>, even if
+    <code>https://foobar.com/widget</code> is "protected"
     by a strong Content Security Policy.
   </li>
 
@@ -461,16 +463,17 @@ by hosting their content at different subdomains?</p>
 
         <h4 class="heading settled" data-level="3.1.1" id="separate-applications-same-origin"><span class="secno">3.1.1. </span><span class="content">Separate applications, same origin</span><a class="self-link" href="#separate-applications-same-origin"></a></h4>
 Google runs Search and Maps on the same domain, respectively
-`https://www.google.com` and `https://www.google.com/maps`. While these two
-applications are fundamentally separate, there are many reasons for hosting them
-on the same origin, including historical links, branding, and performance.
-However, from security perspective, this means that a compromise of one
-application is a compromise of the other since the only security boundary in the
-browser is the origin, and both applications are hosted on the same origin.
-Thus, even if Google Search were to successful implement a strong Content
-Security Policy <a data-biblio-type="informative" data-link-type="biblio" href="#biblio-csp2" title="CSP2">[CSP2]</a>, if Google Maps were to have an XSS vulnerability, it
-would be equivalent to having an XSS on Google Search as well, negating Google
-Search’s security measures.
+<code>https://www.google.com</code> and
+<code>https://www.google.com/maps</code>. While these two applications are
+fundamentally separate, there are many reasons for hosting them on the same
+origin, including historical links, branding, and performance.  However, from
+security perspective, this means that a compromise of one application is a
+compromise of the other since the only security boundary in the browser is the
+origin, and both applications are hosted on the same origin.  Thus, even if
+Google Search were to successful implement a strong Content Security Policy
+<a data-biblio-type="informative" data-link-type="biblio" href="#biblio-csp2" title="CSP2">[CSP2]</a>, if Google Maps were to have an XSS vulnerability, it would be
+equivalent to having an XSS on Google Search as well, negating Google Search’s
+security measures.
 
 
         <h4 class="heading settled" data-level="3.1.2" id="separation-within-a-single-application"><span class="secno">3.1.2. </span><span class="content">Separation within a single application</span><a class="self-link" href="#separation-within-a-single-application"></a></h4>
@@ -489,9 +492,9 @@ frames.
 valuable and reasonable for applications to do by work such as
 Privilege Separation in HTML5 Applications by Akhawe et al
 <a data-biblio-type="informative" data-link-type="biblio" href="#biblio-privilegeseparation" title="PRIVILEGESEPARATION">[PRIVILEGESEPARATION]</a>. However, these systems rely on cross frame messaging
-using `postMessage` even for content in the same trust boundary since they
-utilize `sandbox`. This provides much of the motivation for the named container
-nature of suborigins.</p>
+using <code>postMessage</code> even for content in the same trust boundary since
+they utilize <code>sandbox</code>. This provides much of the motivation for the
+named container nature of suborigins.</p>
 
 
         <h3 class="heading settled" data-level="3.2" id="threat-model"><span class="secno">3.2. </span><span class="content">Threat Model</span><a class="self-link" href="#threat-model"></a></h3>
@@ -567,8 +570,8 @@ the server (rather than a resource itself) is treated as the only authoritative
 source of the suborigin namespace of a resource. This is implemented through an
 additional header-only Content Security Policy directive <code>suborigin</code>,
 which takes a string value that is the namespace. For example, to put a resource
-in the `testing` suborigin namespace, the server would specify the following
-directive in the CSP header:</p>
+in the <code>testing</code> suborigin namespace, the server would specify the
+following directive in the CSP header:</p>
 
 
         <pre>suborigin: testing
@@ -1045,10 +1048,11 @@ cross-origin requests, the server must add the
 <code>Access-Control-Allow-Suborigin</code> headers, as defined in <a data-section="" href="#cors">§4.1 CORS</a>.</p>
 
 
-        <p>In the client-side portion of the application, if `postMessage` is used, the
-application must be modified so it does not check the `event.origin` field.
-Instead, it should check `event.finerorigin` and additionally the
-`event.suborigin` fields, as they are defined in <a data-section="" href="#postmessage">§4.2 postMessage</a>.</p>
+        <p>In the client-side portion of the application, if <code>postMessage</code> is
+used, the application must be modified so it does not check the
+<code>event.origin</code> field.  Instead, it should check
+<code>event.finerorigin</code> and additionally the <code>event.suborigin</code>
+fields, as they are defined in <a data-section="" href="#postmessage">§4.2 postMessage</a>.</p>
 
 
         <p class="issue" id="issue-45bac813"><a class="self-link" href="#issue-45bac813"></a>TODO Write down any other practical ramifications of using suborigins
@@ -1084,7 +1088,7 @@ presented in link text or a URL bar.</p>
 
 
         <p>Suborigins do not fundamentally change how the same-origin policy works. An
-application without suborigins should work identially to how it always has, and
+application without suborigins should work identically to how it always has, and
 even in an application with suborigins, the same-origin policy still applies as
 always. In fact, suborigins have been defined within the context of the
 same-origin policy so that, in theory, serialized suborigins can be thought of
