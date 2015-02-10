@@ -223,8 +223,13 @@
         </li>
         <li><a href="#examples"><span class="secno">7</span> <span class="content">Examples</span></a>
           <ul class="toc">
-            <li><a href="#case-studies"><span class="secno">7.1</span> <span class="content">Case Studies</span></a></li>
-            <li><a href="#practical-considerations-in-using-suborigins"><span class="secno">7.2</span> <span class="content">Practical Considerations in Using Suborigins</span></a></li>
+            <li><a href="#case-studies"><span class="secno">7.1</span> <span class="content">Case Studies</span></a>
+              <ul class="toc">
+                <li><a href="#separating-applications"><span class="secno">7.1.1</span> <span class="content">Separation Two Different Applications</span></a></li>
+                <li><a href="#other-case-study-studies"><span class="secno">7.1.2</span> <span class="content">Other Case Study/Studies</span></a></li>
+              </ul>
+            </li>
+            <li><a href="#practical-considerations"><span class="secno">7.2</span> <span class="content">Practical Considerations in Using Suborigins</span></a></li>
           </ul>
         </li>
         <li><a href="#security-considerations"><span class="secno">8</span> <span class="content">Security Considerations</span></a>
@@ -948,10 +953,40 @@ algorithm:</p>
         <h3 class="heading settled" data-level="7.1" id="case-studies"><span class="secno">7.1. </span><span class="content">Case Studies</span><a class="self-link" href="#case-studies"></a></h3>
 
 
-        <p class="issue" id="issue-784eaba2"><a class="self-link" href="#issue-784eaba2"></a>TODO(jww) Fill this in.</p>
+        <h4 class="heading settled" data-level="7.1.1" id="separating-applications"><span class="secno">7.1.1. </span><span class="content">Separation Two Different Applications</span><a class="self-link" href="#separating-applications"></a></h4>
+Take a site, <code>https://example.com/</code>, that runs two applications, Chat
+and Shopping, used, respectively, for instant messaging and Internet shopping.
+The former is hosted at <code>https://example.com/chat/</code>, and the latter
+is hosted at <code>https://example.com/shopping/</code>.
 
 
-        <h3 class="heading settled" data-level="7.2" id="practical-considerations-in-using-suborigins"><span class="secno">7.2. </span><span class="content">Practical Considerations in Using Suborigins</span><a class="self-link" href="#practical-considerations-in-using-suborigins"></a></h3>
+        <p>For historical and branding reasons, both must be hosted on the
+<code>example.com</code> origin. Thus, while these two applications are
+completely separate, the company cannot split the products into two different
+origins (e.g. <code>examplechat.com</code> and <code>exampleshopping.com</code>)
+or different suborigins (e.g. <code>chat.example.com</code> and
+<code>shopping.example.com</code>).</p>
+
+  
+        <li>
+    Separating distinct applications that happen to be served from the same
+    domain, but do not need to extensively interact with other content. Examples
+    include marketing campaigns, simple search UIs, and so on. This use requires
+    very little engineering effort and faces very few constraints; the
+    applications may use XMLHttpRequest and postMessage to communicate with
+    their host domain as required.
+  </li>
+
+
+
+        <h4 class="heading settled" data-level="7.1.2" id="other-case-study-studies"><span class="secno">7.1.2. </span><span class="content">Other Case Study/Studies</span><a class="self-link" href="#other-case-study-studies"></a></h4>
+
+
+        <p class="issue" id="issue-4ae8b8b9"><a class="self-link" href="#issue-4ae8b8b9"></a>TODO: Find out if anyone (perhaps lcamtuf?) would like to write in
+another, real life case study.</p>
+
+
+        <h3 class="heading settled" data-level="7.2" id="practical-considerations"><span class="secno">7.2. </span><span class="content">Practical Considerations in Using Suborigins</span><a class="self-link" href="#practical-considerations"></a></h3>
 
 
         <p class="issue" id="issue-c296f66a"><a class="self-link" href="#issue-c296f66a"></a>TODO(jww) Fill this in. Focusing on this such as "set suborigin header on
@@ -1133,7 +1168,8 @@ http://www.w3.org/TR/html5/browsers.html#sandboxing.<a href="#issue-f36cefaf"> �
 same-origin policy, would it be worth defining suborigins purely in terms of
 being a unique scheme? That would make this section somewhat unnecessary since
 origin comparisons would be the same.<a href="#issue-ffc4fc4d"> ↵ </a></div>
-      <div class="issue">TODO(jww) Fill this in.<a href="#issue-784eaba2"> ↵ </a></div>
+      <div class="issue">TODO: Find out if anyone (perhaps lcamtuf?) would like to write in
+another, real life case study.<a href="#issue-4ae8b8b9"> ↵ </a></div>
       <div class="issue">TODO(jww) Fill this in. Focusing on this such as "set suborigin header on
 all subpages of a path, if that’s how you’re defining it", you need
 access-control-allow-suborigin for XHR, etc. Probably should relate

@@ -550,9 +550,62 @@ algorithm:
 
 ## Case Studies ## {#case-studies}
 
-Issue: TODO(jww) Fill this in.
+### Separation of Two Different Applications ### {#separating-applications}
+Take a site, <code>https://example.com/</code>, that runs two applications, Chat
+and Shopping, used, respectively, for instant messaging and Internet shopping.
+The former is hosted at <code>https://example.com/chat/</code>, and the latter
+is hosted at <code>https://example.com/shopping/</code>.
 
-## Practical Considerations in Using Suborigins
+The Shopping application has been very well tested and generally does not
+contain much untrusted content. In fact, it only takes simple text from
+advertisers, and that text only ever appears in HTML contexts, so the
+application is able to entity encode the text and stop nearly all cross-site
+scripting attacks on the application. Just in case, though, the developers have
+implemented a CSP that is served with pages at subpaths of
+<code>https://example.com/shopping/</code> that only allows scripts loaded from
+<code>scripts.example.com</code>.
+
+Historically, <code>https://example.com/chat/</code> has been riddled with
+cross-site scripting attacks. The application takes untrusted content from a
+wider variety of sources and for added complexity, that content ends up in many
+more contexts, such as HTML tag attributes. On top of that, the developers never
+bothered creating a CSP for the application.
+
+This is bad enough, but, unfortunately, it has led to the extremely bad
+consequence of attackers using the low hanging fruit of Chat to attack Shopping,
+the more desirable target. Cross-site scripting Shopping allows an attacker to
+buy goods with the user's account, so this is really the juicy target.
+
+Since the applications are hosted on the same origin, these attacks have not
+traditionally been that difficult. Once an attacker has executed code on Chat
+with an XSS, they open a new window or iframe at
+<code>example.com/shopping/</code>. Since this is at the same origin as Chat,
+this allows the attacker to inject code through the document object of the windo
+or iframe into the Shopping context, allowing the attacker to buy-away.
+
+For historical and branding reasons, both must be hosted on the
+<code>example.com</code> origin. Thus, while these two applications are
+completely separate, the company cannot split the products into two different
+origins (e.g. <code>examplechat.com</code> and <code>exampleshopping.com</code>)
+or different suborigins (e.g. <code>chat.example.com</code> and
+<code>shopping.example.com</code>).
+
+  <li>
+    Separating distinct applications that happen to be served from the same
+    domain, but do not need to extensively interact with other content. Examples
+    include marketing campaigns, simple search UIs, and so on. This use requires
+    very little engineering effort and faces very few constraints; the
+    applications may use XMLHttpRequest and postMessage to communicate with
+    their host domain as required.
+  </li>
+
+
+### Other Case Study/Studies
+
+Issue: TODO: Find out if anyone (perhaps lcamtuf?) would like to write in
+another, real life case study.
+
+## Practical Considerations in Using Suborigins ## {#practical-considerations}
 
 Issue: TODO(jww) Fill this in. Focusing on this such as "set suborigin header on
 all subpages of a path, if that's how you're defining it", you need
