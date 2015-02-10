@@ -500,7 +500,24 @@ named container nature of suborigins.</p>
         <h3 class="heading settled" data-level="3.2" id="threat-model"><span class="secno">3.2. </span><span class="content">Threat Model</span><a class="self-link" href="#threat-model"></a></h3>
 
 
-        <p class="issue" id="issue-0e741adc"><a class="self-link" href="#issue-0e741adc"></a>TODO(jww) Fill this in</p>
+        <p>Origins and the Same Origin Policy have provided a strong defence against
+malicious applications. Instead of giving the application the power of the user,
+applications on the Web are limited to a unique space that is defined by their
+host. However, by tying the origin to the physical host, this has limited the
+power of developers.</p>
+
+
+        <p>Suborigins attempt to provide developers with tool to contain two different
+principles that are on the same host. Suborigins allow two or more applications
+or modules to be hosted at the same origin but use the same origin policy to
+separate them from each other.</p>
+
+
+        <p>This tool is purely for modularity and meant to be an application security tool.
+It is <em>not</em> meant to help users differentiate between two different
+applications at the same host, as reflected by the fact that user agents may not
+put the suborigin in user-visible UI. Additionally, suborigins cannot protect
+against colluding malicious or compromised applications.</p>
 
 
         <h3 class="heading settled" data-level="3.3" id="relationship-of-suborigins-to-origins"><span class="secno">3.3. </span><span class="content">Relationship of Suborigins to Origins</span><a class="self-link" href="#relationship-of-suborigins-to-origins"></a></h3>
@@ -1204,7 +1221,6 @@ Traditional origin? (jww)<a href="#issue-e1a79dec"> ↵ </a></div>
       <div class="issue">TODO(jww) This needs to be filled in once we have a pretty good handle on
 the basic structure of this document. At that point, we should extract the terms
 defined throughout the spec and place them here.<a href="#issue-3c008d43"> ↵ </a></div>
-      <div class="issue">TODO(jww) Fill this in<a href="#issue-0e741adc"> ↵ </a></div>
       <div class="issue">I don’t have a great idea for how to do this yet. Should it be as simple
 as document.location.suborigin? Or should it be serialized into document.origin,
 plus a deserialization mechanism? (jww)<a href="#issue-56caee46"> ↵ </a></div>

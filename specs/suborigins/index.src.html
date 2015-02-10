@@ -209,7 +209,22 @@ named container nature of suborigins.
 
 ## Threat Model ## {#threat-model}
 
-Issue: TODO(jww) Fill this in
+Origins and the Same Origin Policy have provided a strong defence against
+malicious applications. Instead of giving the application the power of the user,
+applications on the Web are limited to a unique space that is defined by their
+host. However, by tying the origin to the physical host, this has limited the
+power of developers.
+
+Suborigins attempt to provide developers with tool to contain two different
+principles that are on the same host. Suborigins allow two or more applications
+or modules to be hosted at the same origin but use the same origin policy to
+separate them from each other.
+
+This tool is purely for modularity and meant to be an application security tool.
+It is <em>not</em> meant to help users differentiate between two different
+applications at the same host, as reflected by the fact that user agents may not
+put the suborigin in user-visible UI. Additionally, suborigins cannot protect
+against colluding malicious or compromised applications.
 
 ## Relationship of Suborigins to Origins
 
