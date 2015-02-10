@@ -672,7 +672,7 @@ sender.</p>
         <p>To enforce this, when a message is sent from a suborigin namespace, the receiver
 has the <code>event.origin</code> value set to <code>null</code> so if it is
 read, it is not treated as coming from any particular origin. Instead, new
-propriets of <code>event.finerorigin</code> and <code>event.suborigin</code>
+properties of <code>event.finerorigin</code> and <code>event.suborigin</code>
 should be set the scheme/host/port and suborigin namespace, respectively.</p>
 
 
@@ -1043,6 +1043,12 @@ adding the usual <code>Access-Control-Allow-Origin</code> header for
 cross-origin requests, the server must add the
 <code>Access-Control-Allow-Finer-Origin</code> and
 <code>Access-Control-Allow-Suborigin</code> headers, as defined in <a data-section="" href="#cors">§4.1 CORS</a>.</p>
+
+
+        <p>In the client-side portion of the application, if `postMessage` is used, the
+application must be modified so it does not check the `event.origin` field.
+Instead, it should check `event.finerorigin` and additionally the
+`event.suborigin` fields, as they are defined in <a data-section="" href="#postmessage">§4.2 postMessage</a>.</p>
 
 
         <p class="issue" id="issue-45bac813"><a class="self-link" href="#issue-45bac813"></a>TODO Write down any other practical ramifications of using suborigins
