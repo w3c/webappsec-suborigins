@@ -37,10 +37,10 @@ Sandboxed frames can be used to completely separate untrusted content, but they
 pose a large problem for containing trusted but potentially buggy code because
 it is very difficult, by design, for them to communicate with other frames. The
 synthetic origins assigned in a sandboxed frame are random and unpredictable,
-making the use of postMessage and CORS difficult. Moreover, because they are by
-definition unique origins, with no relationship to the original origin,
-designing permissions for them to access resources of the original origin would
-be difficult.
+making the use of <code>postMessage</code> and CORS difficult. Moreover, because
+they are by definition unique origins, with no relationship to the original
+origin, designing permissions for them to access resources of the original
+origin would be difficult.
 
 Content Security Policy is also promising but is generally incompatible with
 current website design. Many notable companies found it impractical to retrofit
@@ -91,8 +91,8 @@ We see effectively three different use cases for Per-page Suborigins:
     domain, but do not need to extensively interact with other content. Examples
     include marketing campaigns, simple search UIs, and so on. This use requires
     very little engineering effort and faces very few constraints; the
-    applications may use XMLHttpRequest and postMessage to communicate with
-    their host domain as required.
+    applications may use <code>XMLHttpRequest</code> and
+    <code>postMessage</code> to communicate with their host domain as required.
   </li>
 
   <li>
@@ -100,10 +100,10 @@ We see effectively three different use cases for Per-page Suborigins:
     functional components into different suborigins. For example, Gmail might
     put the contacts widget, settings tab, and HTML message views in separate
     Per-page Suborigins. Such deployments may require relatively modest
-    refactorings to switch to postMessage and CORS where direct DOM access and
-    same-origin XMLHttpRequest are currently used, but we believe doing so is
-    considerably easier than retrofitting CSP onto arbitrary code bases and can
-    be done very incrementally.
+    refactorings to switch to <code>postMessage</code> and CORS where direct DOM
+    access and same-origin <code>XMLHttpRequest</code> are currently used, but
+    we believe doing so is considerably easier than retrofitting CSP onto
+    arbitrary code bases and can be done very incrementally.
   </li>
 
   <li>
@@ -550,7 +550,7 @@ algorithm:
 
 ## Case Studies ## {#case-studies}
 
-### Separation of Two Different Applications ### {#separating-applications}
+### Separation of Two Applications ### {#separating-applications}
 Take a site, <code>https://example.com/</code>, that runs two applications, Chat
 and Shopping, used, respectively, for instant messaging and Internet shopping.
 The former is hosted at <code>https://example.com/chat/</code>, and the latter
@@ -580,8 +580,9 @@ Since the applications are hosted on the same origin, these attacks have not
 traditionally been that difficult. Once an attacker has executed code on Chat
 with an XSS, they open a new window or iframe at
 <code>example.com/shopping/</code>. Since this is at the same origin as Chat,
-this allows the attacker to inject code through the document object of the windo
-or iframe into the Shopping context, allowing the attacker to buy-away.
+this allows the attacker to inject code through the <code>document</code> object
+of the window or iframe into the Shopping context, allowing the attacker to buy
+whatever they'd like.
 
 For historical and branding reasons, both must be hosted on the
 <code>example.com</code> origin. Thus, while these two applications are
@@ -590,15 +591,20 @@ origins (e.g. <code>examplechat.com</code> and <code>exampleshopping.com</code>)
 or different suborigins (e.g. <code>chat.example.com</code> and
 <code>shopping.example.com</code>).
 
-  <li>
-    Separating distinct applications that happen to be served from the same
-    domain, but do not need to extensively interact with other content. Examples
-    include marketing campaigns, simple search UIs, and so on. This use requires
-    very little engineering effort and faces very few constraints; the
-    applications may use XMLHttpRequest and postMessage to communicate with
-    their host domain as required.
-  </li>
+To address this, the developers decide to serve both applications on two
+separate suborigins. For all HTTP requests to any subpath of <code>/chat</code>
+or <code>/shopping</code>, example.com includes a Content Security Policy
+directive of <code>suborigin: chat</code> or <code>suborigin: shopping</code>,
+respectively.
 
+This does not remove any of the XSS attacks on Chat. However, when an attacker
+injects code into Chat and opens a window or iframe to
+<code>example.com/shopping/</code>, they can no longer inject content through
+the document as it will fail the same origin check. Of course, the application
+can still use <code>XMLHttpRequest</code> and <code>postMessage</code> to
+communicate with the document, but that will only be through well defined APIs.
+In short, the CSP of the Shopping application is now actually effective as the
+permissive Chat application is no longer a bypass of it.
 
 ### Other Case Study/Studies
 
