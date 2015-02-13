@@ -70,7 +70,7 @@
       <h1 class="p-name no-ref" id="title">Suborigins</h1>
   
       <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft,
-    <time class="dt-updated" datetime="2015-02-10">10 February 2015</time></span></h2>
+    <time class="dt-updated" datetime="2015-02-12">12 February 2015</time></span></h2>
   
       <div data-fill-with="spec-metadata">
         <dl>
@@ -189,7 +189,12 @@
                 <li><a href="#separation-within-a-single-application"><span class="secno">3.1.2</span> <span class="content">Separation within a single application</span></a></li>
               </ul>
             </li>
-            <li><a href="#threat-model"><span class="secno">3.2</span> <span class="content">Threat Model</span></a></li>
+            <li><a href="#threat-model"><span class="secno">3.2</span> <span class="content">Threat Model</span></a>
+              <ul class="toc">
+                <li><a href="#threat-model-cross-doc"><span class="secno">3.2.1</span> <span class="content">Cross-Document Attacker</span></a></li>
+                <li><a href="#threat-model-out-of-scope"><span class="secno">3.2.2</span> <span class="content">Out of Scope Attacker</span></a></li>
+              </ul>
+            </li>
             <li><a href="#relationship-of-suborigins-to-origins"><span class="secno">3.3</span> <span class="content">Relationship of Suborigins to Origins</span></a></li>
             <li><a href="#representation-of-suborigins"><span class="secno">3.4</span> <span class="content">Representation of Suborigins</span></a></li>
             <li><a href="#opting-into-a-suborigin"><span class="secno">3.5</span> <span class="content">Opting into a Suborigin</span></a></li>
@@ -511,6 +516,20 @@ power of developers.</p>
 principles that are on the same host. Suborigins allow two or more applications
 or modules to be hosted at the same origin but use the same origin policy to
 separate them from each other.</p>
+
+
+        <h4 class="heading settled" data-level="3.2.1" id="threat-model-cross-doc"><span class="secno">3.2.1. </span><span class="content">Cross-Document Attacker</span><a class="self-link" href="#threat-model-cross-doc"></a></h4>
+
+
+        <p>An attacker that is able to compromise one document should not be able to
+control another document that is on the same host but delivered in a different
+suborigin namespace. If an attacker is able to XSS, for example, a document on
+<code>example.com</code> delivered in the suborigin namespace <code>foo</code>,
+the attacker should not be able to control any document on
+<code>example.com</code> not in the <code>foo</code> namespace.</p>
+
+
+        <h4 class="heading settled" data-level="3.2.2" id="threat-model-out-of-scope"><span class="secno">3.2.2. </span><span class="content">Out of Scope Attacker</span><a class="self-link" href="#threat-model-out-of-scope"></a></h4>
 
 
         <p>This tool is purely for modularity and meant to be an application security tool.

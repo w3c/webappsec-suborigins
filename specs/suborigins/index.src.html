@@ -220,6 +220,17 @@ principles that are on the same host. Suborigins allow two or more applications
 or modules to be hosted at the same origin but use the same origin policy to
 separate them from each other.
 
+### Cross-Document Attacker ### {#threat-model-cross-doc}
+
+An attacker that is able to compromise one document should not be able to
+control another document that is on the same host but delivered in a different
+suborigin namespace. If an attacker is able to XSS, for example, a document on
+<code>example.com</code> delivered in the suborigin namespace <code>foo</code>,
+the attacker should not be able to control any document on
+<code>example.com</code> not in the <code>foo</code> namespace.
+
+### Out of Scope Attacker ### {#threat-model-out-of-scope}
+
 This tool is purely for modularity and meant to be an application security tool.
 It is <em>not</em> meant to help users differentiate between two different
 applications at the same host, as reflected by the fact that user agents may not
