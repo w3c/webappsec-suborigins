@@ -1,280 +1,1149 @@
-<!doctype html>
-<html lang="en">
-  <head>
-  
-    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-    
-  
-    <title>Suborigins</title>
-    
-  
-    <link href="../default.css" rel="stylesheet" type="text/css">
-    
-  
-    <style>
-  body {
-    background: url("https://www.w3.org/StyleSheets/TR/logo-ED") top left no-repeat white;
-    background-attachment: fixed;
-    color: black;
-    font-family: sans-serif;
-    margin: 0 auto;
-    max-width: 50em;
-    padding: 2em 1em 2em 70px;
-  }
-  :link { color: #00C; background: transparent }
-  :visited { color: #609; background: transparent }
-  a[href]:active { color: #C00; background: transparent }
-  a[href]:hover { background: #ffa }
+<!doctype html><html lang="en">
+ <head>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  <title>Suborigins</title>
+<style data-fill-with="stylesheet">/* This section copied from the W3C's ED styles. */
 
-  a[href] img { border-style: none }
+	body {
+		color: black;
+		font-family: sans-serif;
+		margin: 0 auto;
+		max-width: 50em;
+		padding: 2em 1em 2em 70px;
+	}
+	:link { color: #00C; background: transparent }
+	:visited { color: #609; background: transparent }
+	a[href]:active { color: #C00; background: transparent }
+	a[href]:hover { background: #ffa }
 
-  h1, h2, h3, h4, h5, h6 { text-align: left }
-  h1, h2, h3 { color: #005A9C; }
-  h1 { font: 170% sans-serif }
-  h2 { font: 140% sans-serif }
-  h3 { font: 120% sans-serif }
-  h4 { font: bold 100% sans-serif }
-  h5 { font: italic 100% sans-serif }
-  h6 { font: small-caps 100% sans-serif }
+	a[href] img { border-style: none }
 
-  .hide { display: none }
+	h1, h2, h3, h4, h5, h6 { text-align: left }
+	h1, h2, h3 { color: #005A9C; }
+	h1 { font: 170% sans-serif }
+	h2 { font: 140% sans-serif }
+	h3 { font: 120% sans-serif }
+	h4 { font: bold 100% sans-serif }
+	h5 { font: italic 100% sans-serif }
+	h6 { font: small-caps 100% sans-serif }
 
-  div.head { margin-bottom: 1em }
-  div.head h1 { margin-top: 2em; clear: both }
-  div.head table { margin-left: 2em; margin-top: 2em }
+	.hide { display: none }
 
-  p.copyright { font-size: small }
-  p.copyright small { font-size: small }
+	div.head { margin-bottom: 1em }
+	div.head h1 { margin-top: 2em; clear: both }
+	div.head table { margin-left: 2em; margin-top: 2em }
 
-  pre { margin-left: 2em }
-  dt { font-weight: bold }
+	p.copyright { font-size: small }
+	p.copyright small { font-size: small }
 
-  ul.toc, ol.toc {
-    list-style: none;
-  }
-  </style>
-    
+	pre { margin-left: 2em }
+	dt { font-weight: bold }
 
-  </head>
-  
+	ul.toc, ol.toc {
+		list-style: none;
+	}
 
-  <body class="h-entry">
+/* The rest copied from the CSSWG's default.css */
 
-    <div class="head">
-  
-      <p data-fill-with="logo"><a class="logo" href="http://www.w3.org/">
-    <img alt="W3C" height="48" src="https://www.w3.org/Icons/w3c_home" width="72">
-</a>
-</p>
-  
-      <h1 class="p-name no-ref" id="title">Suborigins</h1>
-  
-      <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft,
-    <time class="dt-updated" datetime="2015-02-12">12 February 2015</time></span></h2>
-  
-      <div data-fill-with="spec-metadata">
-        <dl>
-          <dt>This version:</dt>
-          <dd><a class="u-url" href="https://metromoxie.github.io/webappsec/specs/suborigins/">https://metromoxie.github.io/webappsec/specs/suborigins/</a></dd>
-          <dt>Feedback:</dt>
-          <dd><span><a href="mailto:public-webappsec@w3.org?subject=%5Bsuborigins%5D%20feedback">public-webappsec@w3.org</a> with subject line “<kbd>[suborigins] <var>… message topic …</var></kbd>” (<a href="http://lists.w3.org/Archives/Public/public-webappsec/" rel="discussion">archives</a>)</span></dd>
-          <dt>Issue Tracking:</dt>
-          <dd><a href="#issues-index">Inline In Spec</a></dd>
-          <dt class="editor">Editor:</dt>
-          <dd class="editor">
-            <div class="p-author h-card vcard"><a class="p-name fn u-email email" href="mailto:jww@google.com">Joel Weinberger</a> (<span class="p-org org">Google Inc.</span>)</div>
-          </dd>
-        </dl>
-      </div>
-  
-      <div data-fill-with="warning"></div>
-  
-      <p class="copyright" data-fill-with="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2014
-  <a href="http://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup>
-  (<a href="http://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>,
-  <a href="http://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>,
-  <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>),
+	body {
+		counter-reset: exampleno figure issue;
+		max-width: 50em;
+		margin: 0 auto !important;
+		line-height: 1.5;
+	}
 
-  All Rights Reserved.
+/******************************************************************************/
+/*                                Sectioning                                  */
+/******************************************************************************/
 
-  <abbr title="World Wide Web Consortium">W3C</abbr> <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>,
-  <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and
+/** Headings ******************************************************************/
 
-  <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a>
-  rules apply.
-</p>
-  
-      <hr title="Separator for header">
-</div>
+	h1, h2, h3, h4, h5, h6, dt {
+		page-break-after: avoid;
+	}
+
+	h2, h3, h5, h6 {
+		margin-top: 3em;
+	}
+	h4 {
+		 margin-top: 4em;
+	}
+
+/** Subheadings ***************************************************************/
+
+	h1 + h2,
+	#subtitle + h2 {
+		/* #subtitle is a subtitle in an H2 under the H1 */
+		margin-top: 0;
+	}
+	h2 + h3,
+	h3 + h4,
+	h4 + h5,
+	h5 + h6 {
+		margin-top: 1.2em; /* = 1 x line-height */
+	}
+
+/** Section divider ***********************************************************/
+	/* <hr> used to separate TMI into the second half of a section              */
+	hr:not([title]) {
+		font-size: 1.5em;
+		text-align: center;
+		margin: 1em auto;
+		height: auto;
+		border: transparent solid 0;
+		background: transparent;
+	}
+	hr:not([title])::before {
+		content: "\1F411\2003\2003\1F411\2003\2003\1F411";
+	}
+	/* note: <hr> with title separates document header from contents */
+
+/******************************************************************************/
+/*                            Paragraphs and Lists                            */
+/******************************************************************************/
+
+	p {
+		margin: 1em 0;
+	}
+	dd     > p:first-child,
+	li     > p:first-child {
+		margin-top: 0;
+	}
+
+	ul, ol {
+		margin-left: 0;
+		padding-left: 2em;
+	}
+	li {
+		margin: 0.25em 2em 0.5em 0;
+		padding-left: 0;
+	}
+
+	dl dd {
+		margin: 0 0 1em 2em;
+	}
+	.head dd {
+		margin-bottom: 0;
+	}
+
+	/* Style for algorithms */
+	ol.algorithm ol {
+	 border-left: 1px solid #90b8de;
+	 margin-left: 1em;
+	}
+	ol.algorithm ol.algorithm {
+	 border-left: none;
+	 margin-left: 0;
+	}
+
+	/* Style for switch/case <dl>s */
+	dl.switch > dd > ol.only {
+	 margin-left: 0;
+	}
+	dl.switch > dd > ol.algorithm {
+	 margin-left: -2em;
+	}
+	dl.switch {
+	 padding-left: 2em;
+	}
+	dl.switch > dt {
+	 text-indent: -1.5em;
+	 margin-top: 1em;
+	}
+	dl.switch > dt + dt {
+	 margin-top: 0;
+	}
+	dl.switch > dt::before {
+	 content: '\21AA';
+	 padding: 0 0.5em 0 0;
+	 display: inline-block;
+	 width: 1em;
+	 text-align: right;
+	 line-height: 0.5em;
+	}
+
+	/* Style for paragraphs I know are in MD-genned lists */
+	[data-md] > :first-child {
+		margin-top: 0;
+	}
+	[data-md] > :last-child {
+		margin-bottom: 0;
+	}
+
+/** Inline Lists **************************************************************/
+	/* This is mostly to make the list inside the CR exit criteria more compact. */
+
+	ol.inline, ol.inline li {
+		display: inline;
+		padding: 0; margin: 0;
+	}
+	ol.inline {
+		counter-reset: list-item;
+	}
+	ol.inline li {
+		counter-increment: list-item;
+	}
+	ol.inline li::before {
+		content: "(" counter(list-item) ") ";
+		font-weight: bold;
+	}
+
+/** Terminology Markup ********************************************************/
 
 
-    <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
+/******************************************************************************/
+/*                                 Inline Markup                              */
+/******************************************************************************/
 
-    <div class="p-summary" data-fill-with="abstract">
-      <p>This specification defines a mechanism by which a server may specify a web resource response a new origin in the user agent which is a combination of the server’s origin and a specified namespace.</p>
+/** Terminology Markup ********************************************************/
+	dfn   { /* Defining instance */
+		font-weight: bolder;
+	}
+	a > i { /* Instance of term */
+		font-style: normal;
+	}
+	dt dfn code, code.idl {
+		font-size: inherit;
+	}
+	dfn var {
+		font-style: normal;
+	}
 
-</div>
+/** Change Marking ************************************************************/
+
+	del { color: red;  text-decoration: line-through; }
+	ins { color: #080; text-decoration: underline;    }
+
+/** Miscellaneous improvements to inline formatting ***************************/
+
+	sup {
+		vertical-align: super;
+		font-size: 80%
+	}
+
+/******************************************************************************/
+/*                                    Code                                    */
+/******************************************************************************/
+
+/** General monospace/pre rules ***********************************************/
+
+	pre, code {
+		font-family: Menlo, Consolas, "DejaVu Sans Mono", monospace;
+		font-size: .9em;
+		page-break-inside: avoid;
+	}
+	pre {
+		margin-top: 1em;
+		margin-bottom: 1em;
+		overflow: auto;
+	}
+
+/** Syntax-Highlighted Code ***************************************************/
+
+	.example pre[class*="language-"],
+	.example [class*="language-"] pre,
+	.example pre[class*="lang-"],
+	.example [class*="lang-"] pre {
+		background: transparent; /* Prism applies a gray background that doesn't work well in the template. */
+	}
+
+/** Example Code **************************************************************/
+
+	div.html, div.xml,
+	pre.html, pre.xml {
+		padding: 0.5em;
+		margin: 1em 0;
+		position: relative;
+		clear: both;
+		color: #600;
+	}
+	pre.example,
+	pre.html,
+	pre.xml {
+		padding-top: 1.5em;
+	}
+
+	pre.illegal, .illegal pre
+	pre.deprecated, .deprecated pre {
+		color: red;
+	}
+
+/** IDL fragments *************************************************************/
+
+	pre.idl {
+		/* Match blue propdef boxes */
+		padding: .5em 1em;
+		background: #DEF;
+		margin: 1.2em 0;
+		border-left: 0.5em solid #8CCBF2;
+	}
+	pre.idl :link, pre.idl :visited {
+		color:inherit;
+		background:transparent;
+	}
+
+/** Inline CSS fragments ******************************************************/
+
+	.css.css, .property.property, .descriptor.descriptor {
+		color: #005a9c;
+		font-size: inherit;
+		font-family: inherit;
+	}
+	.css::before, .property::before, .descriptor::before {
+		content: "‘";
+	}
+	.css::after, .property::after, .descriptor::after {
+		content: "’";
+	}
+	.property, .descriptor {
+		/* Don't wrap property and descriptor names */
+		white-space: nowrap;
+	}
+	.type { /* CSS value <type> */
+	font-style: italic;
+	}
+	pre .property::before, pre .property::after {
+		content: "";
+	}
+
+/** Inline markup fragments ***************************************************/
+
+	code.html, code.xml {
+		color: #660000;
+	}
+
+/** Autolinks produced using Bikeshed *****************************************/
+
+	[data-link-type="property"]::before,
+	[data-link-type="propdesc"]::before,
+	[data-link-type="descriptor"]::before,
+	[data-link-type="value"]::before,
+	[data-link-type="function"]::before,
+	[data-link-type="at-rule"]::before,
+	[data-link-type="selector"]::before,
+	[data-link-type="maybe"]::before {
+		content: "‘";
+	}
+	[data-link-type="property"]::after,
+	[data-link-type="propdesc"]::after,
+	[data-link-type="descriptor"]::after,
+	[data-link-type="value"]::after,
+	[data-link-type="function"]::after,
+	[data-link-type="at-rule"]::after,
+	[data-link-type="selector"]::after,
+	[data-link-type="maybe"]::after {
+		content: "’";
+	}
+
+	[data-link-type].production::before,
+	[data-link-type].production::after,
+	.prod [data-link-type]::before,
+	.prod [data-link-type]::after {
+		content: "";
+	}
+
+	[data-link-type=element]         { font-family: monospace; }
+	[data-link-type=element]::before { content: "<" }
+	[data-link-type=element]::after  { content: ">" }
+
+	[data-link-type=biblio] {
+		white-space: pre;
+	}
 
 
-    <h2 class="no-num no-toc no-ref heading settled" id="status"><span class="content">Status of this document</span></h2>
+/******************************************************************************/
+/*                                    Links                                   */
+/******************************************************************************/
 
-    <div data-fill-with="status">
-      <p>
-	This is a public copy of the editors’ draft.
+/** General Hyperlinks ********************************************************/
+
+	/* We hyperlink a lot, so make it less intrusive */
+	a:link, a:visited {
+		color: inherit;
+		text-decoration: none;
+		border-bottom: 1px solid silver;
+	}
+	@supports (text-decoration-color: silver) {
+		a:link, a:visited {
+			border-bottom: none;
+			text-decoration: underline;
+			text-decoration-color: silver;
+		}
+		a:visited {
+			text-decoration-style: dotted;
+		}
+	}
+
+	a.logo:link, a.logo:visited { /* backout above styling for W3C logo */
+		padding: 0;
+		border: none;
+		text-decoration: none;
+	}
+
+/** Self-Links ****************************************************************/
+	/* Auto-generated links from an element to its own anchor, for usability */
+
+	.heading, .issue, .note, .example, li, dt {
+		position: relative;
+	}
+	a.self-link {
+		position: absolute;
+		top: 0;
+		left: -2.5em;
+		width: 2em;
+		height: 2em;
+		text-align: center;
+		border: none;
+		transition: opacity .2s;
+		opacity: .5;
+	}
+	a.self-link:hover {
+		opacity: 1;
+	}
+	.heading > a.self-link {
+		font-size: 83%;
+	}
+	li > a.self-link {
+		left: -3.5em;
+	}
+	dfn > a.self-link {
+		top: auto;
+		left: auto;
+		opacity: 0;
+		width: 1.5em;
+		height: 1.5em;
+		background: gray;
+		color: white;
+		font-style: normal;
+		transition: opacity .2s, background-color .2s, color .2s;
+	}
+	dfn:hover > a.self-link {
+		opacity: 1;
+	}
+	dfn > a.self-link:hover {
+		color: black;
+	}
+
+	a.self-link::before            { content: "¶"; }
+	.heading > a.self-link::before { content: "§"; }
+	dfn > a.self-link::before      { content: "#"; }
+
+/******************************************************************************/
+/*                                    Images                                  */
+/******************************************************************************/
+
+	img {
+		border-style: none;
+	}
+
+	figure, div.figure, div.sidefigure {
+		page-break-inside: avoid;
+	}
+
+	div.figure, p.figure, div.sidefigure, figure {
+		text-align: center;
+		margin: 2.5em 0;
+	}
+	div.figure pre, div.sidefigure pre, figure pre {
+		text-align: left;
+		display: table;
+		margin: 1em auto;
+	}
+	.figure table, figure table {
+		margin: auto;
+	}
+	div.sidefigure, figure.sidefigure {
+		float: right;
+		width: 50%;
+		margin: 0 0 0.5em 0.5em
+	}
+	div.figure img, div.sidefigure img, figure img,
+	div.figure object, div.sidefigure object, figure object {
+		display: block;
+		margin: auto;
+		max-width: 100%
+	}
+	p.caption, figcaption, caption {
+		text-align: center;
+		font-style: italic;
+		font-size: 90%;
+	}
+	p.caption:not(.no-marker)::before, figcaption:not(.no-marker)::before {
+		content: "Figure " counter(figure) ". ";
+	}
+	p.caption::before, figcaption::before, figcaption > .marker {
+		font-weight: bold;
+	}
+	p.caption, figcaption {
+		counter-increment: figure;
+	}
+
+	/* DL list is indented 2em, but figure inside it is not */
+	dd > div.figure, dd > figure { margin-left: -2em }
+
+	pre.ascii-art {
+		display: table; /* shrinkwrap */
+		margin: 1em auto;
+	}
+
+	/* Displaying the output of text layout, particularly when
+		 line-breaking is being invoked, and thus having a
+		 visible width is good. */
+	pre.output {
+		margin: 1em;
+		border: solid thin silver;
+		padding: 0.25em;
+		display: table;
+	}
+
+/******************************************************************************/
+/*                             Colored Boxes                                  */
+/******************************************************************************/
+
+	.issue, .note, .example, .why, .advisement, blockquote {
+		padding: .5em;
+		border: .5em;
+		border-left-style: solid;
+		page-break-inside: avoid;
+	}
+	span.issue, span.note {
+		padding: .1em .5em .15em;
+		border-right-style: solid;
+	}
+
+	div.issue,
+	div.note,
+	div.example,
+	details.why,
+	blockquote {
+		margin: 1em auto;
+	}
+	.note  > p:first-child,
+	.issue > p:first-child,
+	blockquote > :first-child {
+		margin-top: 0;
+	}
+	blockquote > :last-child {
+		margin-bottom: 0;
+	}
+
+/** Blockquotes ***************************************************************/
+
+	blockquote {
+		border-color: silver;
+	}
+
+/** Open issue ****************************************************************/
+	/* not intended for CR+ publication */
+
+	.issue {
+		border-color: #E05252;
+		background: #FBE9E9;
+		counter-increment: issue;
+		overflow: auto;
+	}
+	.issue:not(.no-marker)::before {
+		content: "ISSUE " counter(issue);
+		padding-right: 1em;
+	}
+	.issue::before, .issue > .marker {
+		color: #AE1E1E;
+	}
+
+/** Example *******************************************************************/
+
+	.example {
+		border-color: #E0CB52;
+		background: #FCFAEE;
+		counter-increment: exampleno;
+		overflow: auto;
+		clear: both;
+	}
+	.example::before, .example > .marker {
+		color: #827017;
+		font-family: sans-serif;
+		min-width: 7.5em;
+		display: block;
+	}
+	.example:not(.no-marker)::before {
+		content: "EXAMPLE";
+		content: "EXAMPLE " counter(exampleno);
+	}
+	.invalid.example::before, .invalid.example > .marker,
+	.illegal.example::before, .illegal.example > .marker {
+		color: red;
+	}
+	.invalid.example:not(.no-marker)::before,
+	.illegal.example:not(.no-marker)::before {
+		content: "INVALID EXAMPLE";
+		content: "INVALID EXAMPLE" counter(exampleno);
+	}
+
+/** Non-normative Note ********************************************************/
+
+	.note, .why {
+		border-color: #52E052;
+		background: #E9FBE9;
+		overflow: auto;
+	}
+	.note::before, .note > .marker {
+		display: block;
+		color: hsl(120, 70%, 30%);
+	}
+
+/** Advisement Box ************************************************************/
+	/*  for attention-grabbing normative statements */
+
+	.advisement {
+		border-color: orange;
+		border-style: none solid;
+		background: #FFEECC;
+		text-align: center;
+	}
+	strong.advisement {
+		display: block;
+	}
+	/*.advisement::before { color: #FF8800; } */
+
+/** ??? ***********************************************************************/
+
+	details.why {
+		border-color: #52E052;
+		background: #E9FBE9;
+		display: block;
+	}
+
+	details.why > summary {
+		font-style: italic;
+		display: block;
+	}
+
+	details.why[open] > summary {
+		border-bottom: 1px silver solid;
+	}
+
+/** Spec Obsoletion Notice ****************************************************/
+	/* obnoxious obsoletion notice for older/abandoned specs. */
+
+	details.annoying-warning {
+		display: block;
+	}
+
+	details.annoying-warning[open] {
+		background: #fdd;
+		color: red;
+		font-weight: bold;
+		text-align: center;
+		padding: .5em;
+		border: thick solid red;
+		border-radius: 1em;
+	}
+@media not print {
+	details.annoying-warning[open] {
+		position: fixed;
+		left: 1em;
+		right: 1em;
+		bottom: 1em;
+		z-index: 1000;
+	}
+}
+
+	details.annoying-warning:not([open]) > summary {
+		background: #fdd;
+		color: red;
+		font-weight: bold;
+		text-align: center;
+		padding: .5em;
+	}
+
+/******************************************************************************/
+/*                                    Tables                                  */
+/******************************************************************************/
+
+/** Property/Descriptor Definition Tables *************************************/
+
+	table.propdef, table.propdef-extra,
+	table.descdef, table.definition-table {
+		page-break-inside: avoid;
+		width: 100%;
+		margin: 1.2em 0;
+		border-left: 0.5em solid #8CCBF2;
+		padding: 0.5em 1em;
+		background: #DEF;
+		border-spacing: 0;
+	}
+
+	table.propdef td, table.propdef-extra td,
+	table.descdef td, table.definition-table td,
+	table.propdef th, table.propdef-extra th,
+	table.descdef th, table.definition-table th {
+		padding: 0.5em;
+		vertical-align: baseline;
+		border-bottom: 1px solid #bbd7e9;
+	}
+	table.propdef > tbody > tr:last-child th,
+	table.propdef-extra > tbody > tr:last-child th,
+	table.descdef > tbody > tr:last-child th,
+	table.definition-table > tbody > tr:last-child th,
+	table.propdef > tbody > tr:last-child td,
+	table.propdef-extra > tbody > tr:last-child td,
+	table.descdef > tbody > tr:last-child td,
+	table.definition-table > tbody > tr:last-child td {
+		border-bottom: 0;
+	}
+
+	table.propdef th,
+	table.propdef-extra th,
+	table.descdef th,
+	table.definition-table th {
+		font-style: italic;
+		font-weight: normal;
+		width: 8.3em;
+		padding-left: 1em;
+	}
+
+	/* For when values are extra-complex and need formatting for readability */
+	table td.pre {
+		white-space: pre-wrap;
+	}
+
+	/* A footnote at the bottom of a propdef */
+	table.propdef td.footnote,
+	table.propdef-extra td.footnote,
+	table.descdef td.footnote,
+	table.definition-table td.footnote {
+		padding-top: 0.6em;
+	}
+	table.propdef td.footnote::before,
+	table.propdef-extra td.footnote::before,
+	table.descdef td.footnote::before,
+	table.definition-table td.footnote::before {
+		content: " ";
+		display: block;
+		height: 0.6em;
+		width: 4em;
+		border-top: thin solid;
+	}
+
+/** Profile Tables ************************************************************/
+	/* table of required features in a CSS profile */
+
+	table.features th {
+		background: #00589f;
+		color: #fff;
+		text-align: left;
+		padding: 0.2em 0.2em 0.2em 0.5em;
+	}
+	table.features td {
+		vertical-align: top;
+		border-bottom: 1px solid #ccc;
+		padding: 0.3em 0.3em 0.3em 0.7em;
+	}
+
+/** Data tables (and properly marked-up proptables) ***************************/
+	/*
+		 <table class="data"> highlights structural relationships in a table
+		 when correct markup is used (e.g. thead/tbody, th vs. td, scope attribute)
+
+		 Use class="complex data" for particularly complicated tables --
+		 (This will draw more lines: busier, but clearer.)
+
+		 Use class="long" on table cells with paragraph-like contents
+		 (This will adjust text alignment accordingly.)
+	*/
+
+	.data, .proptable {
+		margin: 1em auto;
+		border-collapse: collapse;
+		width: 100%;
+		border: hidden;
+	}
+	.data {
+		text-align: center;
+		width: auto;
+	}
+	.data caption {
+		width: 100%;
+	}
+
+	.data td, .data th,
+	.proptable td, .proptable th {
+		padding: 0.5em;
+		border-width: 1px;
+		border-color: silver;
+		border-top-style: solid;
+	}
+
+	.data thead td:empty {
+		padding: 0;
+		border: 0;
+	}
+
+	.data thead th[scope="row"],
+	.proptable thead th[scope="row"] {
+		text-align: right;
+		color: inherit;
+	}
+
+	.data thead,
+	.proptable thead,
+	.data tbody,
+	.proptable tbody {
+		color: inherit;
+		border-bottom: 2px solid;
+	}
+
+	.data colgroup {
+		border-left: 2px solid;
+	}
+
+	.data tbody th:first-child,
+	.proptable tbody th:first-child ,
+	.data tbody td[scope="row"]:first-child,
+	.proptable tbody td[scope="row"]:first-child {
+		text-align: right;
+		color: inherit;
+		border-right: 2px solid;
+		border-top: 1px solid silver;
+		padding-right: 1em;
+	}
+	.data.define td:last-child {
+		text-align: left;
+	}
+
+	.data tbody th[rowspan],
+	.proptable tbody th[rowspan],
+	.data tbody td[rowspan],
+	.proptable tbody td[rowspan]{
+		border-left:  1px solid silver;
+		border-right: 1px solid silver;
+	}
+
+	.complex.data th,
+	.complex.data td {
+		border: 1px solid silver;
+	}
+
+	.data td.long {
+	 vertical-align: baseline;
+	 text-align: left;
+	}
+
+	.data img {
+		vertical-align: middle;
+	}
+
+
+/******************************************************************************/
+/*                                  Indices                                   */
+/******************************************************************************/
+
+
+/** Table of Contents *********************************************************/
+
+	/* ToC not indented, but font style shows hierarchy */
+	ul.toc           { margin: 1em 0;     font-weight: bold; /*text-transform: uppercase;*/ }
+	ul.toc ul        { margin: 0;        font-weight: normal; text-transform: none; }
+	ul.toc ul ul     { margin: 0 0 0 2em; font-style: italic; }
+	ul.toc ul ul ul  { margin: 0; }
+	ul.toc > li      { margin: 1.5em 0; }
+	ul.toc ul.toc li { margin: 0.3em 0 0 0; }
+
+	ul.toc, ul.toc ul, ul.toc li { padding: 0; line-height: 1.3; }
+	ul.toc a { text-decoration: none; border-bottom-style: none; }
+	ul.toc a:hover, ul.toc a:focus  { border-bottom-style: solid; }
+	@supports (text-decoration-style: solid) {
+		ul.toc a:hover, ul.toc a:focus  {
+			border-bottom-style: none;
+			text-decoration-style: solid;
+		}
+	}
+	/*
+	ul.toc li li li, ul.toc li li li ul {margin-left: 0; display: inline}
+	ul.toc li li li ul, ul.toc li li li ul li {margin-left: 0; display: inline}
+	*/
+
+	/* Section numbers in a column of their own */
+	ul.toc {
+		margin-left: 5em
+	}
+	ul.toc span.secno {
+		float: left;
+		width: 4em;
+		margin-left: -5em;
+	}
+	ul.toc ul ul span.secno {
+		margin-left: -7em;
+	}
+	/*ul.toc span.secno {text-align: right}*/
+	ul.toc li {
+		clear: both;
+	}
+	/* If we had 'tab', floats would not be needed here:
+		 ul.toc span.secno {tab: 5em right; margin-right: 1em}
+		 ul.toc li {text-indent: 5em hanging}
+	 The second line in case items wrap
+	*/
+
+/** At-risk List **************************************************************/
+	/* Style for At Risk features (intended as editorial aid, not intended for publishing) */
+
+	.atrisk::before {
+	 float: right;
+	 margin-top: -0.25em;
+	 padding: 0.5em 1em 0.5em 0;
+	 text-indent: -0.9em;
+	 border: 1px solid;
+	 content: '\25C0    Not yet widely implemented';
+	 white-space: pre;
+	 font-size: small;
+	 background-color: white;
+	 color: gray;
+	 text-align: center;
+	}
+
+	.toc .atrisk::before { content:none }
+
+/** Index *********************************************************************/
+
+	/* Index Lists: Layout */
+	ul.indexlist       { margin-left: 0; columns: 15em; -webkit-columns: 15em; text-indent: 1em hanging; }
+	ul.indexlist li    { margin-left: 0; list-style: none; break-inside: avoid; word-break: break-word; }
+	ul.indexlist li li { margin-left: 1em }
+	ul.indexlist dl    { margin-top: 0; }
+	ul.indexlist dt    { margin: .2em 0 .2em 20px;}
+	ul.indexlist dd    { margin: .2em 0 .2em 40px;}
+	/* Index Lists: Typography */
+	ul.indexlist ul,
+	ul.indexlist dl { font-size: smaller; }
+	ul.indexlist li span {
+		white-space: nowrap;
+		position: absolute;
+		color: transparent; }
+	ul.indexlist li a:hover + span,
+	ul.indexlist li a:focus + span {
+		color: gray;
+	}
+	@media print {
+		ul.indexlist li span { color: gray; }
+	}
+
+/** Property Index Tables *****************************************************/
+	/* See also the data table styling section, which this effectively subclasses */
+
+	table.proptable {
+		font-size: small;
+		border-collapse: collapse;
+		border-spacing: 0;
+		text-align: left;
+		margin: 1em 0;
+	}
+
+	table.proptable td,
+	table.proptable th {
+		padding: 0.4em;
+		text-align: center;
+	}
+
+	table.proptable tr:hover td {
+		background: #DEF;
+	}
+	.propdef th {
+		font-style: italic;
+		font-weight: normal;
+		text-align: left;
+		width: 3em;
+	}
+	/* The link in the first column in the property table (formerly a TD) */
+	table.proptable td .property,
+	table.proptable th .property {
+		display: block;
+		text-align: left;
+		font-weight: bold;
+	}
+
+/** Extra-large Elements ******************************************************/
+
+	.big-element-wrapper {
+		max-width: 50em;
+		overflow-x: auto;
+	}
+
+/******************************************************************************/
+/*                                    Print                                   */
+/******************************************************************************/
+
+	@media print {
+		html {
+			margin: 0 !important; }
+		body {
+			font-family: serif; }
+		th, td {
+			font-family: inherit; }
+		a {
+			color: inherit !important; }
+
+		a:link, a:visited {
+			text-decoration: none !important }
+		a:link::after, a:visited::after { /* create a cross-ref "see..." */ }
+		.example::before {
+			font-family: serif !important; }
+	}
+	@page {
+		margin: 1.5cm 1.1cm;
+	}
+
+</style>
+  <meta content="Bikeshed 1.0.0" name="generator">
+ </head>
+ <body class="h-entry">
+  <div class="head">
+   <p data-fill-with="logo"><a class="logo" href="http://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/Icons/w3c_home" width="72"> </a> </p>
+   <h1 class="p-name no-ref" id="title">Suborigins</h1>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2015-11-12">12 November 2015</time></span></h2>
+   <div data-fill-with="spec-metadata">
+    <dl>
+     <dt>This version:
+     <dd><a class="u-url" href="https://metromoxie.github.io/webappsec/specs/suborigins/">https://metromoxie.github.io/webappsec/specs/suborigins/</a>
+     <dt>Feedback:
+     <dd><span><a href="mailto:public-webappsec@w3.org?subject=%5Bsuborigins%5D%20YOUR%20TOPIC%20HERE">public-webappsec@w3.org</a> with subject line “<kbd>[suborigins] <i data-lt="">… message topic …</i></kbd>” (<a href="http://lists.w3.org/Archives/Public/public-webappsec/" rel="discussion">archives</a>)</span>
+     <dt class="editor">Editor:
+     <dd class="editor p-author h-card vcard"><a class="p-name fn u-email email" href="mailto:jww@google.com">Joel Weinberger</a> (<span class="p-org org">Google Inc.</span>)
+    </dl>
+   </div>
+   <div data-fill-with="warning"></div>
+   <p class="copyright" data-fill-with="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2015 <a href="http://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>, <a href="http://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>). W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply. </p>
+   <hr title="Separator for header">
+  </div>
+  <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
+  <div class="p-summary" data-fill-with="abstract">
+   <p>This specification defines a mechanism by which a server may specify a web resource response a new origin in the user agent which is a combination of the server’s origin and a specified namespace.</p>
+  </div>
+  <h2 class="no-num no-toc no-ref heading settled" id="status"><span class="content">Status of this document</span></h2>
+  <div data-fill-with="status">
+   <p> This is a public copy of the editors’ draft.
 	It is provided for discussion only and may change at any moment.
 	Its publication here does not imply endorsement of its contents by W3C.
-	Don’t cite this document other than as work in progress.
-
-</p>
-      <p>
-  <strong>Changes to this document may be tracked at
-  <a href="https://github.com/w3c/webappsec">https://github.com/w3c/webappsec</a>.</strong>
-
-</p>
-      <p>
-	The (<a href="http://lists.w3.org/Archives/Public/public-webappsec/">archived</a>) public mailing list
-	<a href="mailto:public-webappsec@w3.org?Subject=%5Bsuborigins%5D%20PUT%20SUBJECT%20HERE">public-webappsec@w3.org</a>
-	(see <a href="http://www.w3.org/Mail/Request">instructions</a>)
+	Don’t cite this document other than as work in progress. </p>
+   <p> <strong>Changes to this document may be tracked at <a href="https://github.com/w3c/webappsec">https://github.com/w3c/webappsec</a>.</strong> </p>
+   <p> The (<a href="http://lists.w3.org/Archives/Public/public-webappsec/">archived</a>) public mailing list <a href="mailto:public-webappsec@w3.org?Subject=%5Bsuborigins%5D%20PUT%20SUBJECT%20HERE">public-webappsec@w3.org</a> (see <a href="http://www.w3.org/Mail/Request">instructions</a>)
 	is preferred for discussion of this specification.
 	When sending e-mail,
 	please put the text “suborigins” in the subject,
 	preferably like this:
-	“[suborigins] <em>…summary of comment…</em>”
-
-</p>
-      <p>
-	This document was produced by the
-  <a href="http://www.w3.org/2011/webappsec/">Web Application Security Working Group</a>.
-
-</p>
-      <p>
-	This document was produced by a group operating under
+	“[suborigins] <em>…summary of comment…</em>” </p>
+   <p> This document was produced by the <a href="http://www.w3.org/2011/webappsec/">Web Application Security Working Group</a>. </p>
+   <p> This document was produced by a group operating under
 	the <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/">5 February 2004 W3C Patent Policy</a>.
-	W3C maintains a <a href="http://www.w3.org/2004/01/pp-impl/49309/status" rel="disclosure">public list of any patent disclosures</a>
-	made in connection with the deliverables of the group;
+	W3C maintains a <a href="http://www.w3.org/2004/01/pp-impl/49309/status" rel="disclosure">public list of any patent disclosures</a> made in connection with the deliverables of the group;
 	that page also includes instructions for disclosing a patent.
-	An individual who has actual knowledge of a patent which the individual believes contains <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">Essential Claim(s)</a>
-	must disclose the information in accordance with <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure">section 6 of the W3C Patent Policy</a>.
-
-</p>
-      <p>
-  This document is governed by the <a href="http://www.w3.org/2014/Process-20140801/" id="w3c_process_revision">1 August 2014 W3C Process Document</a>.
-
-</p></div>
-
-    <div data-fill-with="at-risk"></div>
-
-
-    <h2 class="no-num no-toc no-ref heading settled" id="contents"><span class="content">Table of Contents</span></h2>
-
-    <div data-fill-with="table-of-contents" role="navigation">
-      <ul class="toc" role="directory">
-        <li><a href="#intro"><span class="secno">1</span> <span class="content">Introduction</span></a>
-          <ul class="toc">
-            <li><a href="#goals"><span class="secno">1.1</span> <span class="content">Goals</span></a></li>
-            <li><a href="#usecases"><span class="secno">1.2</span> <span class="content">Use Cases/Examples</span></a></li>
-          </ul>
-        </li>
-        <li><a href="#terms"><span class="secno">2</span> <span class="content">Key Concepts and Terminology</span></a>
-          <ul class="toc">
-            <li><a href="#terms-defined-here"><span class="secno">2.1</span> <span class="content">Terms defined by this specification</span></a></li>
-            <li><a href="#terms-defined-by-reference"><span class="secno">2.2</span> <span class="content">Terms defined by reference</span></a></li>
-          </ul>
-        </li>
-        <li><a href="#defining-suborigin"><span class="secno">3</span> <span class="content">Defining a Suborigin</span></a>
-          <ul class="toc">
-            <li><a href="#difficulties-using-subdomains"><span class="secno">3.1</span> <span class="content">Difficulties using subdomains</span></a>
-              <ul class="toc">
-                <li><a href="#separate-applications-same-origin"><span class="secno">3.1.1</span> <span class="content">Separate applications, same origin</span></a></li>
-                <li><a href="#separation-within-a-single-application"><span class="secno">3.1.2</span> <span class="content">Separation within a single application</span></a></li>
-              </ul>
-            </li>
-            <li><a href="#threat-model"><span class="secno">3.2</span> <span class="content">Threat Model</span></a>
-              <ul class="toc">
-                <li><a href="#threat-model-cross-doc"><span class="secno">3.2.1</span> <span class="content">Cross-Document Attacker</span></a></li>
-                <li><a href="#threat-model-out-of-scope"><span class="secno">3.2.2</span> <span class="content">Out of Scope Attacker</span></a></li>
-              </ul>
-            </li>
-            <li><a href="#relationship-of-suborigins-to-origins"><span class="secno">3.3</span> <span class="content">Relationship of Suborigins to Origins</span></a></li>
-            <li><a href="#representation-of-suborigins"><span class="secno">3.4</span> <span class="content">Representation of Suborigins</span></a></li>
-            <li><a href="#opting-into-a-suborigin"><span class="secno">3.5</span> <span class="content">Opting into a Suborigin</span></a></li>
-            <li><a href="#the-suborigin-directive"><span class="secno">3.6</span> <span class="content">The <code>suborigin</code> Directive</span></a></li>
-            <li><a href="#accessing-the-suborigin-in-javascript"><span class="secno">3.7</span> <span class="content">Accessing the Suborigin in JavaScript</span></a></li>
-          </ul>
-        </li>
-        <li><a href="#access-control"><span class="secno">4</span> <span class="content">Access Control</span></a>
-          <ul class="toc">
-            <li><a href="#cors"><span class="secno">4.1</span> <span class="content">CORS</span></a></li>
-            <li><a href="#postmessage"><span class="secno">4.2</span> <span class="content"><code>postMessage</code></span></a></li>
-            <li><a href="#workers"><span class="secno">4.3</span> <span class="content">Workers</span></a></li>
-          </ul>
-        </li>
-        <li><a href="#impact"><span class="secno">5</span> <span class="content">Impact on Web Platform</span></a>
-          <ul class="toc">
-            <li><a href="#relationship-with-sensitive-permissions"><span class="secno">5.1</span> <span class="content">Relationship with Sensitive Permissions</span></a></li>
-          </ul>
-        </li>
-        <li><a href="#framework"><span class="secno">6</span> <span class="content">Framework</span></a>
-          <ul class="toc">
-            <li><a href="#suborigin-of-a-resource"><span class="secno">6.1</span> <span class="content">Suborigin of a Resource</span></a></li>
-            <li><a href="#comparing-suborigins"><span class="secno">6.2</span> <span class="content">Comparing Suborigins</span></a></li>
-            <li><a href="#serializing"><span class="secno">6.3</span> <span class="content">Serializing Suborigins</span></a>
-              <ul class="toc">
-                <li><a href="#unicode-serialization-of-a-suborigin"><span class="secno">6.3.1</span> <span class="content">Unicode Serialization of a Suborigin</span></a></li>
-                <li><a href="#ascii-serialization-of-a-suborigin"><span class="secno">6.3.2</span> <span class="content">ASCII Serialization of a Suborigin</span></a></li>
-              </ul>
-            </li>
-          </ul>
-        </li>
-        <li><a href="#examples"><span class="secno">7</span> <span class="content">Examples</span></a>
-          <ul class="toc">
-            <li><a href="#case-studies"><span class="secno">7.1</span> <span class="content">Case Studies</span></a>
-              <ul class="toc">
-                <li><a href="#separating-applications"><span class="secno">7.1.1</span> <span class="content">Separation of Two Applications</span></a></li>
-                <li><a href="#other-case-study-studies"><span class="secno">7.1.2</span> <span class="content">Other Case Study/Studies</span></a></li>
-              </ul>
-            </li>
-            <li><a href="#practical-considerations"><span class="secno">7.2</span> <span class="content">Practical Considerations in Using Suborigins</span></a></li>
-          </ul>
-        </li>
-        <li><a href="#security-considerations"><span class="secno">8</span> <span class="content">Security Considerations</span></a>
-          <ul class="toc">
-            <li><a href="#presentation-of-suborigins-to-users"><span class="secno">8.1</span> <span class="content">Presentation of Suborigins to Users</span></a></li>
-            <li><a href="#not-overthrowing-same-origin-policy"><span class="secno">8.2</span> <span class="content">Not Overthrowing Same-origin Policy</span></a></li>
-          </ul>
-        </li>
-        <li><a href="#conformance"><span class="secno"></span> <span class="content">Conformance</span></a>
-          <ul class="toc">
-            <li><a href="#conventions"><span class="secno"></span> <span class="content">Document conventions</span></a></li>
-            <li><a href="#conformant-algorithms"><span class="secno"></span> <span class="content">Conformant Algorithms</span></a></li>
-            <li><a href="#conformance-classes"><span class="secno"></span> <span class="content">Conformance Classes</span></a></li>
-          </ul>
-        </li>
-        <li><a href="#references"><span class="secno"></span> <span class="content">References</span></a>
-          <ul class="toc">
-            <li><a href="#normative"><span class="secno"></span> <span class="content">Normative References</span></a></li>
-            <li><a href="#informative"><span class="secno"></span> <span class="content">Informative References</span></a></li>
-          </ul>
-        </li>
-        <li><a href="#index"><span class="secno"></span> <span class="content">Index</span></a></li>
-        <li><a href="#issues-index"><span class="secno"></span> <span class="content">Issues Index</span></a></li>
-      </ul></div>
-
-    <main>
-
-
-
-
-
-      <section>
-
-        <h2 class="heading settled" data-level="1" id="intro"><span class="secno">1. </span><span class="content">Introduction</span><a class="self-link" href="#intro"></a></h2>
-
-
-        <p><em>This section is not normative.</em></p>
-
-
-        <p>Currently, web applications are almost always compartmentalized by using
+	An individual who has actual knowledge of a patent which the individual believes contains <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">Essential Claim(s)</a> must disclose the information in accordance with <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure">section 6 of the W3C Patent Policy</a>. </p>
+   <p> This document is governed by the <a href="http://www.w3.org/2015/Process-20150901/" id="w3c_process_revision">1 September 2015 W3C Process Document</a>. </p>
+   <p></p>
+  </div>
+  <div data-fill-with="at-risk"></div>
+  <h2 class="no-num no-toc no-ref heading settled" id="contents"><span class="content">Table of Contents</span></h2>
+  <div data-fill-with="table-of-contents" role="navigation">
+   <ul class="toc" role="directory">
+    <li>
+     <a href="#intro"><span class="secno">1</span> <span class="content">Introduction</span></a>
+     <ul class="toc">
+      <li><a href="#goals"><span class="secno">1.1</span> <span class="content">Goals</span></a>
+      <li><a href="#usecases"><span class="secno">1.2</span> <span class="content">Use Cases/Examples</span></a>
+     </ul>
+    <li>
+     <a href="#terms"><span class="secno">2</span> <span class="content">Key Concepts and Terminology</span></a>
+     <ul class="toc">
+      <li><a href="#terms-defined-here"><span class="secno">2.1</span> <span class="content">Terms defined by this specification</span></a>
+      <li><a href="#terms-defined-by-reference"><span class="secno">2.2</span> <span class="content">Terms defined by reference</span></a>
+     </ul>
+    <li>
+     <a href="#defining-suborigin"><span class="secno">3</span> <span class="content">Defining a Suborigin</span></a>
+     <ul class="toc">
+      <li>
+       <a href="#difficulties-using-subdomains"><span class="secno">3.1</span> <span class="content">Difficulties using subdomains</span></a>
+       <ul class="toc">
+        <li><a href="#separate-applications-same-origin"><span class="secno">3.1.1</span> <span class="content">Separate applications, same origin</span></a>
+        <li><a href="#separation-within-a-single-application"><span class="secno">3.1.2</span> <span class="content">Separation within a single application</span></a>
+       </ul>
+      <li>
+       <a href="#threat-model"><span class="secno">3.2</span> <span class="content">Threat Model</span></a>
+       <ul class="toc">
+        <li><a href="#threat-model-cross-doc"><span class="secno">3.2.1</span> <span class="content">Cross-Document Attacker</span></a>
+        <li><a href="#threat-model-out-of-scope"><span class="secno">3.2.2</span> <span class="content">Out of Scope Attacker</span></a>
+       </ul>
+      <li><a href="#relationship-of-suborigins-to-origins"><span class="secno">3.3</span> <span class="content">Relationship of Suborigins to Origins</span></a>
+      <li><a href="#representation-of-suborigins"><span class="secno">3.4</span> <span class="content">Representation of Suborigins</span></a>
+      <li><a href="#opting-into-a-suborigin"><span class="secno">3.5</span> <span class="content">Opting into a Suborigin</span></a>
+      <li><a href="#the-suborigin-directive"><span class="secno">3.6</span> <span class="content">The <code>suborigin</code> Directive</span></a>
+      <li><a href="#accessing-the-suborigin-in-javascript"><span class="secno">3.7</span> <span class="content">Accessing the Suborigin in JavaScript</span></a>
+     </ul>
+    <li>
+     <a href="#access-control"><span class="secno">4</span> <span class="content">Access Control</span></a>
+     <ul class="toc">
+      <li><a href="#cors"><span class="secno">4.1</span> <span class="content">CORS</span></a>
+      <li><a href="#postmessage"><span class="secno">4.2</span> <span class="content"><code>postMessage</code></span></a>
+      <li><a href="#workers"><span class="secno">4.3</span> <span class="content">Workers</span></a>
+     </ul>
+    <li>
+     <a href="#impact"><span class="secno">5</span> <span class="content">Impact on Web Platform</span></a>
+     <ul class="toc">
+      <li><a href="#relationship-with-sensitive-permissions"><span class="secno">5.1</span> <span class="content">Relationship with Sensitive Permissions</span></a>
+     </ul>
+    <li>
+     <a href="#framework"><span class="secno">6</span> <span class="content">Framework</span></a>
+     <ul class="toc">
+      <li><a href="#suborigin-of-a-resource"><span class="secno">6.1</span> <span class="content">Suborigin of a Resource</span></a>
+      <li><a href="#comparing-suborigins"><span class="secno">6.2</span> <span class="content">Comparing Suborigins</span></a>
+      <li>
+       <a href="#serializing"><span class="secno">6.3</span> <span class="content">Serializing Suborigins</span></a>
+       <ul class="toc">
+        <li><a href="#unicode-serialization-of-a-suborigin"><span class="secno">6.3.1</span> <span class="content">Unicode Serialization of a Suborigin</span></a>
+        <li><a href="#ascii-serialization-of-a-suborigin"><span class="secno">6.3.2</span> <span class="content">ASCII Serialization of a Suborigin</span></a>
+       </ul>
+     </ul>
+    <li>
+     <a href="#examples"><span class="secno">7</span> <span class="content">Examples</span></a>
+     <ul class="toc">
+      <li>
+       <a href="#case-studies"><span class="secno">7.1</span> <span class="content">Case Studies</span></a>
+       <ul class="toc">
+        <li><a href="#separating-applications"><span class="secno">7.1.1</span> <span class="content">Separation of Two Applications</span></a>
+        <li><a href="#other-case-study-studies"><span class="secno">7.1.2</span> <span class="content">Other Case Study/Studies</span></a>
+       </ul>
+      <li><a href="#practical-considerations"><span class="secno">7.2</span> <span class="content">Practical Considerations in Using Suborigins</span></a>
+     </ul>
+    <li>
+     <a href="#security-considerations"><span class="secno">8</span> <span class="content">Security Considerations</span></a>
+     <ul class="toc">
+      <li><a href="#presentation-of-suborigins-to-users"><span class="secno">8.1</span> <span class="content">Presentation of Suborigins to Users</span></a>
+      <li><a href="#not-overthrowing-same-origin-policy"><span class="secno">8.2</span> <span class="content">Not Overthrowing Same-origin Policy</span></a>
+     </ul>
+    <li>
+     <a href="#conformance"><span class="secno"></span> <span class="content">Conformance</span></a>
+     <ul class="toc">
+      <li><a href="#conventions"><span class="secno"></span> <span class="content">Document conventions</span></a>
+      <li><a href="#conformant-algorithms"><span class="secno"></span> <span class="content">Conformant Algorithms</span></a>
+     </ul>
+    <li>
+     <a href="#index"><span class="secno"></span> <span class="content">Index</span></a>
+     <ul class="toc">
+      <li><a href="#index-defined-here"><span class="secno"></span> <span class="content">Terms defined by this specification</span></a>
+     </ul>
+    <li>
+     <a href="#references"><span class="secno"></span> <span class="content">References</span></a>
+     <ul class="toc">
+      <li><a href="#normative"><span class="secno"></span> <span class="content">Normative References</span></a>
+      <li><a href="#informative"><span class="secno"></span> <span class="content">Informative References</span></a>
+     </ul>
+    <li><a href="#issues-index"><span class="secno"></span> <span class="content">Issues Index</span></a>
+   </ul>
+  </div>
+  <main>
+   <section>
+    <h2 class="heading settled" data-level="1" id="intro"><span class="secno">1. </span><span class="content">Introduction</span><a class="self-link" href="#intro"></a></h2>
+    <p><em>This section is not normative.</em></p>
+    <p>Currently, web applications are almost always compartmentalized by using
 separate host names to establish separate web origins. This is useful for
 helping to prevent XSS and other cross-origin attacks, but has many unintended
 consequences. For example, it causes latency due to additional DNS lookups,
@@ -283,17 +1152,13 @@ history.pushState API), and creates cryptic host name changes in the user
 experience. Perhaps most importantly, it results in an extremely inflexible
 architecture that, once rolled out, cannot be easily and transparently changed
 later on.</p>
-
-
-        <p>There are several mechanisms for reducing the attack surface for XSS without
+    <p>There are several mechanisms for reducing the attack surface for XSS without
 creating separate host-name based origins, but each pose their own problems.
 Per-page Suborigins is an attempt to fill some of those gaps. Two of the most
 notable mechanisms are Sandboxed Frames and Content Security Policy (CSP). Both
 are powerful but have shortcomings and there are many external developers
 building legacy applications that find they cannot use those tools.</p>
-
-
-        <p>Sandboxed frames can be used to completely separate untrusted content, but they
+    <p>Sandboxed frames can be used to completely separate untrusted content, but they
 pose a large problem for containing trusted but potentially buggy code because
 it is very difficult, by design, for them to communicate with other frames. The
 synthetic origins assigned in a sandboxed frame are random and unpredictable,
@@ -301,188 +1166,102 @@ making the use of <code>postMessage</code> and CORS difficult. Moreover, because
 they are by definition unique origins, with no relationship to the original
 origin, designing permissions for them to access resources of the original
 origin would be difficult.</p>
-
-
-        <p>Content Security Policy is also promising but is generally incompatible with
+    <p>Content Security Policy is also promising but is generally incompatible with
 current website design. Many notable companies found it impractical to retrofit
 most of their applications with it. On top of this, until all applications
 hosted within a single origin are simultaneously put behind CSP, the mechanism
 offers limited incremental benefits, which is especially problematic for
 companies with large portfolios of disparate products all under the same domain.</p>
-
-
-        <h3 class="heading settled" data-level="1.1" id="goals"><span class="secno">1.1. </span><span class="content">Goals</span><a class="self-link" href="#goals"></a></h3>
-
-
-        <ol>
-  
-          <li>
-    Provide a way for different applications hosted at the same real origin to
-    separate their content into separate logical origins. For example,
-    <code>https://foobar.com/application</code> and
-    <code>https://foobar.com/widget</code>, today, are, by
+    <h3 class="heading settled" data-level="1.1" id="goals"><span class="secno">1.1. </span><span class="content">Goals</span><a class="self-link" href="#goals"></a></h3>
+    <ol>
+     <li> Provide a way for different applications hosted at the same real origin to
+    separate their content into separate logical origins. For example, <code>https://foobar.com/application</code> and <code>https://foobar.com/widget</code>, today, are, by
     definition, in the same origin, even if they’re different applications. Thus
-    an XSS at <code>https://foobar.com/application</code> means an XSS at
-    <code>https://foobar.com/widget</code>, even if
-    <code>https://foobar.com/widget</code> is "protected"
-    by a strong Content Security Policy.
-  </li>
-
-  
-          <li>
-    Similarly, provide a way for content authors to split their applications
+    an XSS at <code>https://foobar.com/application</code> means an XSS at <code>https://foobar.com/widget</code>, even if <code>https://foobar.com/widget</code> is "protected"
+    by a strong Content Security Policy. 
+     <li> Similarly, provide a way for content authors to split their applications
     into logical modules with origin level separation without using different
     real origins. Content authors should not have to choose between putting all
     of their content in the same origin, on different real origins, or putting
-    content in anonymous unique origins (sandboxes).
-  </li>
-
-  
-          <li>
-    Provide a way for content authors to attribute different permissions such as
-    cookie access, storage access, etc. to different suborigins.
-  </li>
-
-</ol>
-
-
-        <p class="issue" id="issue-e1a79dec"><a class="self-link" href="#issue-e1a79dec"></a>Not sure how to actually refer to 'real origins'. This is a terrible
+    content in anonymous unique origins (sandboxes). 
+     <li> Provide a way for content authors to attribute different permissions such as
+    cookie access, storage access, etc. to different suborigins. 
+    </ol>
+    <p class="issue" id="issue-e1a79dec"><a class="self-link" href="#issue-e1a79dec"></a> Not sure how to actually refer to 'real origins'. This is a terrible
 name, and we need a better way to talk about them. Maybe physical origin?
 Traditional origin? (jww)</p>
-
-
-        <h3 class="heading settled" data-level="1.2" id="usecases"><span class="secno">1.2. </span><span class="content">Use Cases/Examples</span><a class="self-link" href="#usecases"></a></h3>
-
-
-        <p>We see effectively three different use cases for Per-page Suborigins:</p>
-
-
-        <ol>
-  
-          <li>
-    Separating distinct applications that happen to be served from the same
+    <h3 class="heading settled" data-level="1.2" id="usecases"><span class="secno">1.2. </span><span class="content">Use Cases/Examples</span><a class="self-link" href="#usecases"></a></h3>
+    <p>We see effectively three different use cases for Per-page Suborigins:</p>
+    <ol>
+     <li> Separating distinct applications that happen to be served from the same
     domain, but do not need to extensively interact with other content. Examples
     include marketing campaigns, simple search UIs, and so on. This use requires
     very little engineering effort and faces very few constraints; the
-    applications may use <code>XMLHttpRequest</code> and
-    <code>postMessage</code> to communicate with their host domain as required.
-  </li>
-
-  
-          <li>
-    Allowing for modularity within a larger web application by splitting the
+    applications may use <code>XMLHttpRequest</code> and <code>postMessage</code> to communicate with their host domain as required. 
+     <li> Allowing for modularity within a larger web application by splitting the
     functional components into different suborigins. For example, Gmail might
     put the contacts widget, settings tab, and HTML message views in separate
     Per-page Suborigins. Such deployments may require relatively modest
     refactorings to switch to <code>postMessage</code> and CORS where direct DOM
     access and same-origin <code>XMLHttpRequest</code> are currently used, but
     we believe doing so is considerably easier than retrofitting CSP onto
-    arbitrary code bases and can be done very incrementally.
-  </li>
-
-  
-          <li>
-    Similar to (2), applications with many users can split information relating
+    arbitrary code bases and can be done very incrementally. 
+     <li> Similar to (2), applications with many users can split information relating
     to different users into their own suborigin. For example, Twitter might put
     each user profile into a unique suborigin so that an XSS within one profile
     cannot be used to immediately infect other users or read their personal
-    messages stored within the account.
-  </li>
-
-</ol>
-
-
-        <p>These examples are expounded upon in <a data-section="" href="#case-studies">§7.1 Case Studies</a>.</p>
-
-</section>
-
-
-      <section>
-
-        <h2 class="heading settled" data-level="2" id="terms"><span class="secno">2. </span><span class="content">Key Concepts and Terminology</span><a class="self-link" href="#terms"></a></h2>
-
-
-        <p class="issue" id="issue-3c008d43"><a class="self-link" href="#issue-3c008d43"></a>TODO(jww) This needs to be filled in once we have a pretty good handle on
+    messages stored within the account. 
+    </ol>
+    <p>These examples are expounded upon in <a href="#case-studies">§7.1 Case Studies</a>.</p>
+   </section>
+   <section>
+    <h2 class="heading settled" data-level="2" id="terms"><span class="secno">2. </span><span class="content">Key Concepts and Terminology</span><a class="self-link" href="#terms"></a></h2>
+    <p class="issue" id="issue-3c008d43"><a class="self-link" href="#issue-3c008d43"></a> TODO(jww) This needs to be filled in once we have a pretty good handle on
 the basic structure of this document. At that point, we should extract the terms
 defined throughout the spec and place them here.</p>
-
-
-        <p>This section defines several terms used throughout the document.</p>
-
-
-        <h3 class="heading settled" data-level="2.1" id="terms-defined-here"><span class="secno">2.1. </span><span class="content">Terms defined by this specification</span><a class="self-link" href="#terms-defined-here"></a></h3>
-
-
-        <h3 class="heading settled" data-level="2.2" id="terms-defined-by-reference"><span class="secno">2.2. </span><span class="content">Terms defined by reference</span><a class="self-link" href="#terms-defined-by-reference"></a></h3>
-
-        <dl>
-    
-          <dt><dfn data-dfn-type="dfn" data-noexport="" id="origin">origin<a class="self-link" href="#origin"></a></dfn></dt>
-    
-          <dd>
-      An origin defines the scope of authority or privilege under which a
-      resource operates. It is defined in detail in the Origin specification
-      <a data-biblio-type="normative" data-link-type="biblio" href="#biblio-rfc6454" title="RFC6454">[RFC6454]</a>.
-    </dd>
-</dl>
-
-</section>
-
-
-      <section>
-
-        <h2 class="heading settled" data-level="3" id="defining-suborigin"><span class="secno">3. </span><span class="content">Defining a Suborigin</span><a class="self-link" href="#defining-suborigin"></a></h2>
-
-
-        <p>Origins are a mechanism for user agents to group URIs into protection domains.
+    <p>This section defines several terms used throughout the document.</p>
+    <h3 class="heading settled" data-level="2.1" id="terms-defined-here"><span class="secno">2.1. </span><span class="content">Terms defined by this specification</span><a class="self-link" href="#terms-defined-here"></a></h3>
+    <h3 class="heading settled" data-level="2.2" id="terms-defined-by-reference"><span class="secno">2.2. </span><span class="content">Terms defined by reference</span><a class="self-link" href="#terms-defined-by-reference"></a></h3>
+    <dl>
+     <dt><dfn data-dfn-type="dfn" data-noexport="" id="origin">origin<a class="self-link" href="#origin"></a></dfn>
+     <dd> An origin defines the scope of authority or privilege under which a
+      resource operates. It is defined in detail in the Origin specification <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a>. 
+    </dl>
+   </section>
+   <section>
+    <h2 class="heading settled" data-level="3" id="defining-suborigin"><span class="secno">3. </span><span class="content">Defining a Suborigin</span><a class="self-link" href="#defining-suborigin"></a></h2>
+    <p>Origins are a mechanism for user agents to group URIs into protection domains.
 Two URIs are in the same origin if they share the same scheme, host, and port.
 If URIs are in the same origin, then they share the same authority and can
 access all of each others resources.</p>
-
-
-        <p>This has been a successful mechanism for privilege separation on the Web.
+    <p>This has been a successful mechanism for privilege separation on the Web.
 However, it does limit the ability of a URI to separate itself into a new
 protection domain as it automatically shares authority with all other identical
 origins, which are defined by physical, rather than programatic, properties.
 While it is possible to setup unique domains and ports different parts of the
 same application (scheme is more difficult to separate out), there are a diverse
 set of practical problems in doing so.</p>
-
-
-        <p>Suborigins provide a mechanism for creating this type of separation
+    <p>Suborigins provide a mechanism for creating this type of separation
 programatically. Any resources may provide, in a manner detailed below, a string
 value [suborigin namespace][].  If either of two URIs provide a suborigin
 namespace, then the two URIs are in the same origin if and only if they share
 the same scheme, host, port, and suborigin namespace.</p>
-
-
-        <p>Q. In today’s Web, can’t a site get the effective same protection domain simply
+    <p>Q. In today’s Web, can’t a site get the effective same protection domain simply
 by hosting their content at different subdomains?</p>
-
-
-        <p>A. Yes, but there are many practical reasons why this is difficult:</p>
-
-
-        <h3 class="heading settled" data-level="3.1" id="difficulties-using-subdomains"><span class="secno">3.1. </span><span class="content">Difficulties using subdomains</span><a class="self-link" href="#difficulties-using-subdomains"></a></h3>
-
-
-        <h4 class="heading settled" data-level="3.1.1" id="separate-applications-same-origin"><span class="secno">3.1.1. </span><span class="content">Separate applications, same origin</span><a class="self-link" href="#separate-applications-same-origin"></a></h4>
-Google runs Search and Maps on the same domain, respectively
-<code>https://www.google.com</code> and
-<code>https://www.google.com/maps</code>. While these two applications are
+    <p>A. Yes, but there are many practical reasons why this is difficult:</p>
+    <h3 class="heading settled" data-level="3.1" id="difficulties-using-subdomains"><span class="secno">3.1. </span><span class="content">Difficulties using subdomains</span><a class="self-link" href="#difficulties-using-subdomains"></a></h3>
+    <h4 class="heading settled" data-level="3.1.1" id="separate-applications-same-origin"><span class="secno">3.1.1. </span><span class="content">Separate applications, same origin</span><a class="self-link" href="#separate-applications-same-origin"></a></h4>
+     Google runs Search and Maps on the same domain, respectively <code>https://www.google.com</code> and <code>https://www.google.com/maps</code>. While these two applications are
 fundamentally separate, there are many reasons for hosting them on the same
 origin, including historical links, branding, and performance.  However, from
 security perspective, this means that a compromise of one application is a
 compromise of the other since the only security boundary in the browser is the
 origin, and both applications are hosted on the same origin.  Thus, even if
-Google Search were to successful implement a strong Content Security Policy
-<a data-biblio-type="informative" data-link-type="biblio" href="#biblio-csp2" title="CSP2">[CSP2]</a>, if Google Maps were to have an XSS vulnerability, it would be
+Google Search were to successful implement a strong Content Security Policy <a data-link-type="biblio" href="#biblio-csp2">[CSP2]</a>, if Google Maps were to have an XSS vulnerability, it would be
 equivalent to having an XSS on Google Search as well, negating Google Search’s
-security measures.
-
-
-        <h4 class="heading settled" data-level="3.1.2" id="separation-within-a-single-application"><span class="secno">3.1.2. </span><span class="content">Separation within a single application</span><a class="self-link" href="#separation-within-a-single-application"></a></h4>
-Separation is sometimes desirable within a single application because of the
+security measures. 
+    <h4 class="heading settled" data-level="3.1.2" id="separation-within-a-single-application"><span class="secno">3.1.2. </span><span class="content">Separation within a single application</span><a class="self-link" href="#separation-within-a-single-application"></a></h4>
+     Separation is sometimes desirable within a single application because of the
 presence of untrusted data. Take, for example, a social networking site with
 many different user profiles. Each profile contains lots of untrusted content
 created by a single user but it’s all hosted on a single origin. In order to
@@ -490,86 +1269,52 @@ separate untrusted content, the application might want a way to put all profile
 information into separate logical origins while all being hosted at the same
 physical origin. Furthermore, all content within a profile should be able to
 access all other content within the same origin, even if displayed in unique
-frames.
-
-
-        <p>This type of privilege separation within an application has been shown to be
+frames. 
+    <p>This type of privilege separation within an application has been shown to be
 valuable and reasonable for applications to do by work such as
-Privilege Separation in HTML5 Applications by Akhawe et al
-<a data-biblio-type="informative" data-link-type="biblio" href="#biblio-privilegeseparation" title="PRIVILEGESEPARATION">[PRIVILEGESEPARATION]</a>. However, these systems rely on cross frame messaging
+Privilege Separation in HTML5 Applications by Akhawe et al <a data-link-type="biblio" href="#biblio-privilegeseparation">[PRIVILEGESEPARATION]</a>. However, these systems rely on cross frame messaging
 using <code>postMessage</code> even for content in the same trust boundary since
 they utilize <code>sandbox</code>. This provides much of the motivation for the
 named container nature of suborigins.</p>
-
-
-        <h3 class="heading settled" data-level="3.2" id="threat-model"><span class="secno">3.2. </span><span class="content">Threat Model</span><a class="self-link" href="#threat-model"></a></h3>
-
-
-        <p>Origins and the Same Origin Policy have provided a strong defence against
+    <h3 class="heading settled" data-level="3.2" id="threat-model"><span class="secno">3.2. </span><span class="content">Threat Model</span><a class="self-link" href="#threat-model"></a></h3>
+    <p>Origins and the Same Origin Policy have provided a strong defence against
 malicious applications. Instead of giving the application the power of the user,
 applications on the Web are limited to a unique space that is defined by their
 host. However, by tying the origin to the physical host, this has limited the
 power of developers.</p>
-
-
-        <p>Suborigins attempt to provide developers with tool to contain two different
+    <p>Suborigins attempt to provide developers with tool to contain two different
 principles that are on the same host. Suborigins allow two or more applications
 or modules to be hosted at the same origin but use the same origin policy to
 separate them from each other.</p>
-
-
-        <h4 class="heading settled" data-level="3.2.1" id="threat-model-cross-doc"><span class="secno">3.2.1. </span><span class="content">Cross-Document Attacker</span><a class="self-link" href="#threat-model-cross-doc"></a></h4>
-
-
-        <p>An attacker that is able to compromise one document should not be able to
+    <h4 class="heading settled" data-level="3.2.1" id="threat-model-cross-doc"><span class="secno">3.2.1. </span><span class="content">Cross-Document Attacker</span><a class="self-link" href="#threat-model-cross-doc"></a></h4>
+    <p>An attacker that is able to compromise one document should not be able to
 control another document that is on the same host but delivered in a different
-suborigin namespace. If an attacker is able to XSS, for example, a document on
-<code>example.com</code> delivered in the suborigin namespace <code>foo</code>,
-the attacker should not be able to control any document on
-<code>example.com</code> not in the <code>foo</code> namespace.</p>
-
-
-        <h4 class="heading settled" data-level="3.2.2" id="threat-model-out-of-scope"><span class="secno">3.2.2. </span><span class="content">Out of Scope Attacker</span><a class="self-link" href="#threat-model-out-of-scope"></a></h4>
-
-
-        <p>This tool is purely for modularity and meant to be an application security tool.
+suborigin namespace. If an attacker is able to XSS, for example, a document on <code>example.com</code> delivered in the suborigin namespace <code>foo</code>,
+the attacker should not be able to control any document on <code>example.com</code> not in the <code>foo</code> namespace.</p>
+    <h4 class="heading settled" data-level="3.2.2" id="threat-model-out-of-scope"><span class="secno">3.2.2. </span><span class="content">Out of Scope Attacker</span><a class="self-link" href="#threat-model-out-of-scope"></a></h4>
+    <p>This tool is purely for modularity and meant to be an application security tool.
 It is <em>not</em> meant to help users differentiate between two different
 applications at the same host, as reflected by the fact that user agents may not
 put the suborigin in user-visible UI. Additionally, suborigins cannot protect
 against colluding malicious or compromised applications.</p>
-
-
-        <h3 class="heading settled" data-level="3.3" id="relationship-of-suborigins-to-origins"><span class="secno">3.3. </span><span class="content">Relationship of Suborigins to Origins</span><a class="self-link" href="#relationship-of-suborigins-to-origins"></a></h3>
-
-
-        <p>Suborigins, in fact, do not provide any new authority to resources. Suborigins
+    <h3 class="heading settled" data-level="3.3" id="relationship-of-suborigins-to-origins"><span class="secno">3.3. </span><span class="content">Relationship of Suborigins to Origins</span><a class="self-link" href="#relationship-of-suborigins-to-origins"></a></h3>
+    <p>Suborigins, in fact, do not provide any new authority to resources. Suborigins
 simply provide <em>an additional way to construct Origins</em>. That is,
 Suborigins do not supercede Origins or provide any additional authority above
 Origins. From the user agent’s  perspective, two resources in different
 Suborigins are simply in different Origins, and the relationship between the two
-resources should be the same as any other two differing origins as described in
-<a data-biblio-type="normative" data-link-type="biblio" href="#biblio-rfc6454" title="RFC6454">[RFC6454]</a>.  Thus, this specification is intended to provide the following two
+resources should be the same as any other two differing origins as described in <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a>.  Thus, this specification is intended to provide the following two
 important properties:</p>
-
-
-        <ul>
-          <li data-md="">
-            <p>The rules on how Suborigins are defined.</p>
-            
-
-          </li>
-          <li data-md="">
-            <p>The rules on how Suborigins are tracked.</p>
-            
-
-          </li></ul>
-
-        <h3 class="heading settled" data-level="3.4" id="representation-of-suborigins"><span class="secno">3.4. </span><span class="content">Representation of Suborigins</span><a class="self-link" href="#representation-of-suborigins"></a></h3>
-
-
-        <p>At an abstract level, a suborigin consists of the scheme, host, and port of a
+    <ul>
+     <li data-md="">
+      <p>The rules on how Suborigins are defined.</p>
+     <li data-md="">
+      <p>The rules on how Suborigins are tracked.</p>
+    </ul>
+    <h3 class="heading settled" data-level="3.4" id="representation-of-suborigins"><span class="secno">3.4. </span><span class="content">Representation of Suborigins</span><a class="self-link" href="#representation-of-suborigins"></a></h3>
+    <p>At an abstract level, a suborigin consists of the scheme, host, and port of a
 traditional origin, plus a <a data-link-type="dfn" href="#suborigin-namespace">suborigin namespace</a>. However, as mentioned
-above, suborigins are intended to fit within the framework of <a data-biblio-type="normative" data-link-type="biblio" href="#biblio-rfc6454" title="RFC6454">[RFC6454]</a>.
+above, suborigins are intended to fit within the framework of <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a>.
 Therefore, this specification provides a way of serializing a Suborigin bound
 resource into a traditional Origin. This is done by inserting the suborigin
 namespace into the scheme space of the Origin, thus creating a new scheme but
@@ -577,27 +1322,15 @@ maintaining all of the information about both the original scheme and the
 suborigin namespace. This is done by inserting a <code>+</code> into the URI
 after the scheme, followed by the suborigin namespace, then followed by the rest
 of the URI starting with <code>:</code>.</p>
-
-
-        <p>For example, if the resource is hosted at <code>https://example.com/</code> in
-the suborigin namespace <code>profile</code>, this would be serialized as
-<code>https+profile://example.com/</code>.</p>
-
-
-        <p>Similarly, if a resource is hosted at <code>https://example.com:8080/</code> in
-the suborigin namespace <code>separate</code>, this would be serialized as
-<code>https+separate://example.com:8080/</code>.</p>
-
-
-        <p>Internally, the <a data-link-type="dfn" href="#suborigin-namespace">suborigin namespace</a> must be tracked by the user agent. When
+    <p>For example, if the resource is hosted at <code>https://example.com/</code> in
+the suborigin namespace <code>profile</code>, this would be serialized as <code>https+profile://example.com/</code>.</p>
+    <p>Similarly, if a resource is hosted at <code>https://example.com:8080/</code> in
+the suborigin namespace <code>separate</code>, this would be serialized as <code>https+separate://example.com:8080/</code>.</p>
+    <p>Internally, the <a data-link-type="dfn" href="#suborigin-namespace">suborigin namespace</a> must be tracked by the user agent. When
 the origin needs to be serialized for a resource, the user agent should follow
-the algorithm in <a data-section="" href="#serializing">§6.3 Serializing Suborigins</a>.</p>
-
-
-        <h3 class="heading settled" data-level="3.5" id="opting-into-a-suborigin"><span class="secno">3.5. </span><span class="content">Opting into a Suborigin</span><a class="self-link" href="#opting-into-a-suborigin"></a></h3>
-
-
-        <p>Unlike the <code>sandbox</code> attribute, suborigin namespaces are predictable
+the algorithm in <a href="#serializing">§6.3 Serializing Suborigins</a>.</p>
+    <h3 class="heading settled" data-level="3.5" id="opting-into-a-suborigin"><span class="secno">3.5. </span><span class="content">Opting into a Suborigin</span><a class="self-link" href="#opting-into-a-suborigin"></a></h3>
+    <p>Unlike the <code>sandbox</code> attribute, suborigin namespaces are predictable
 and controllable. Because of this, potentially untrusted content cannot opt into
 suborigins, unlike iframe sandboxes. If they could, then an XSS on a site could
 enter a specific suborigin and access all of its resources, thus violating the
@@ -608,56 +1341,31 @@ additional header-only Content Security Policy directive <code>suborigin</code>,
 which takes a string value that is the namespace. For example, to put a resource
 in the <code>testing</code> suborigin namespace, the server would specify the
 following directive in the CSP header:</p>
-
-
-        <pre>suborigin: testing
+<pre>suborigin: testing
 </pre>
-
-
-        <h3 class="heading settled" data-level="3.6" id="the-suborigin-directive"><span class="secno">3.6. </span><span class="content">The <code>suborigin</code> Directive</span><a class="self-link" href="#the-suborigin-directive"></a></h3>
-
-
-        <p>Suborigins are defined by a <dfn data-dfn-type="dfn" data-noexport="" id="suborigin-directive">suborigin directive<a class="self-link" href="#suborigin-directive"></a></dfn> in the Content
-Security Policy <a data-biblio-type="normative" data-link-type="biblio" href="#biblio-csp2" title="CSP2">[CSP2]</a> of the resource. The syntax for the name and value of
+    <h3 class="heading settled" data-level="3.6" id="the-suborigin-directive"><span class="secno">3.6. </span><span class="content">The <code>suborigin</code> Directive</span><a class="self-link" href="#the-suborigin-directive"></a></h3>
+    <p>Suborigins are defined by a <dfn data-dfn-type="dfn" data-noexport="" id="suborigin-directive">suborigin directive<a class="self-link" href="#suborigin-directive"></a></dfn> in the Content
+Security Policy <a data-link-type="biblio" href="#biblio-csp2">[CSP2]</a> of the resource. The syntax for the name and value of
 the directive are described by the following ABNF grammar:</p>
-
-
-        <pre>directive-name  = "suborigin"
+<pre>directive-name  = "suborigin"
 directive-value = 1*( ALPHA / DIGIT / "-" )
 </pre>
-
-
-        <p>A resource’s <dfn data-dfn-type="dfn" data-noexport="" id="suborigin-namespace">suborigin namespace<a class="self-link" href="#suborigin-namespace"></a></dfn> is the value of the
-<code>suborigin</code> directive.</p>
-
-
-        <h3 class="heading settled" data-level="3.7" id="accessing-the-suborigin-in-javascript"><span class="secno">3.7. </span><span class="content">Accessing the Suborigin in JavaScript</span><a class="self-link" href="#accessing-the-suborigin-in-javascript"></a></h3>
-
-
-        <p class="issue" id="issue-56caee46"><a class="self-link" href="#issue-56caee46"></a>I don’t have a great idea for how to do this yet. Should it be as simple
+    <p>A resource’s <dfn data-dfn-type="dfn" data-noexport="" id="suborigin-namespace">suborigin namespace<a class="self-link" href="#suborigin-namespace"></a></dfn> is the value of the <code>suborigin</code> directive.</p>
+    <h3 class="heading settled" data-level="3.7" id="accessing-the-suborigin-in-javascript"><span class="secno">3.7. </span><span class="content">Accessing the Suborigin in JavaScript</span><a class="self-link" href="#accessing-the-suborigin-in-javascript"></a></h3>
+    <p class="issue" id="issue-56caee46"><a class="self-link" href="#issue-56caee46"></a> I don’t have a great idea for how to do this yet. Should it be as simple
 as document.location.suborigin? Or should it be serialized into document.origin,
 plus a deserialization mechanism? (jww)</p>
-
-</section>
-
-
-      <section>
-
-        <h2 class="heading settled" data-level="4" id="access-control"><span class="secno">4. </span><span class="content">Access Control</span><a class="self-link" href="#access-control"></a></h2>
-
-
-        <p>Cross-origin (including cross-suborigin) communication is tricky when suborigins
+   </section>
+   <section>
+    <h2 class="heading settled" data-level="4" id="access-control"><span class="secno">4. </span><span class="content">Access Control</span><a class="self-link" href="#access-control"></a></h2>
+    <p>Cross-origin (including cross-suborigin) communication is tricky when suborigins
 are involved because they need to be backwards compatible with user agents that
 do not support suborigins while providing origin-separation for user agents that
 do support suborigins. The following discussions discuss the three major
 cross-origin mechanisms that are relevant.</p>
-
-
-        <h3 class="heading settled" data-level="4.1" id="cors"><span class="secno">4.1. </span><span class="content">CORS</span><a class="self-link" href="#cors"></a></h3>
-
-
-        <p>For pages in a suborigin namespace, all <code>XMLHttpRequest</code>s to any URL
-should be treated as cross-origin, thus triggering CORS <a data-biblio-type="normative" data-link-type="biblio" href="#biblio-cors" title="CORS">[CORS]</a> logic with
+    <h3 class="heading settled" data-level="4.1" id="cors"><span class="secno">4.1. </span><span class="content">CORS</span><a class="self-link" href="#cors"></a></h3>
+    <p>For pages in a suborigin namespace, all <code>XMLHttpRequest</code>s to any URL
+should be treated as cross-origin, thus triggering CORS <a data-link-type="biblio" href="#biblio-cors">[CORS]</a> logic with
 special <code>Finer-Origin:</code> and <code>Suborigin:</code> headers added.
 Additionally, the <code>Origin:</code> header that is normally applied to
 cross-origin requests should <em>not</em> be added. These header changes are
@@ -666,27 +1374,16 @@ namespace the request is coming from and apply the appropriate CORS headers as
 is appropriate, while legacy servers will not "accidentally" approve
 cross-origin requests because of an <code>Origin</code> header that provides an
 incomplete picture of the origin (that is, an origin without the suborigin).</p>
-
-
-        <p>The <code>Finer-Origin:</code> header takes a value identical to the Origin
-Header, as defined in <a data-biblio-type="normative" data-link-type="biblio" href="#biblio-rfc6454" title="RFC6454">[RFC6454]</a>. The <code>Suborigin:</code> header takes a
+    <p>The <code>Finer-Origin:</code> header takes a value identical to the Origin
+Header, as defined in <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a>. The <code>Suborigin:</code> header takes a
 string value that is the suborigin namespace. The former servers identically as
 the <code>Origin:</code> header, but in a purposefully backwards incompatible
 way, while the <code>Suborigin:</code> header allows a server to make a more
-nuanced access control choice. A user agent must not include more than one
-<code>Finer-Origin:</code> header and must not include more than one
-<code>Suborigin:</code> field.</p>
-
-
-        <p>Similar changes are needed for responses from the server with the addition of
-<code>Access-Control-Allow-Finer-Origin</code> and
-<code>Access-Control-Allow-Suborigin</code> response headers. The former takes
-the same values as <code>Access-Control-Allow-Origin</code> as defined in
-<a data-biblio-type="normative" data-link-type="biblio" href="#biblio-cors" title="CORS">[CORS]</a>, while the later takes a string value that matches allowed suborigin
+nuanced access control choice. A user agent must not include more than one <code>Finer-Origin:</code> header and must not include more than one <code>Suborigin:</code> field.</p>
+    <p>Similar changes are needed for responses from the server with the addition of <code>Access-Control-Allow-Finer-Origin</code> and <code>Access-Control-Allow-Suborigin</code> response headers. The former takes
+the same values as <code>Access-Control-Allow-Origin</code> as defined in <a data-link-type="biblio" href="#biblio-cors">[CORS]</a>, while the later takes a string value that matches allowed suborigin
 namespaces, or <code>*</code> to allow all suborigin namespaces.</p>
-
-
-        <p class="issue" id="issue-fac22004"><a class="self-link" href="#issue-fac22004"></a>I expect that this will be a relatively controversial part of the
+    <p class="issue" id="issue-fac22004"><a class="self-link" href="#issue-fac22004"></a> I expect that this will be a relatively controversial part of the
 proposal, but I think the concern is pretty important. In particular, a lot of
 the potential benefits of the proposal are eliminated if the Origin header is
 set with the broad, traditional origin as an isolated but compromised suborigin
@@ -695,555 +1392,284 @@ said, we might be able to bypass a lot of these concerns by using the Origin
 header but putting the serialized suborigin as described above it its place.
 This would require monkey patching the Origin spec’s syntax of the Origin
 header.</p>
-
-
-        <h3 class="heading settled" data-level="4.2" id="postmessage"><span class="secno">4.2. </span><span class="content"><code>postMessage</code></span><a class="self-link" href="#postmessage"></a></h3>
-
-
-        <p>Cross-origin messaging via <code>postMessage</code> <a data-biblio-type="normative" data-link-type="biblio" href="#biblio-webmessaging" title="WebMessaging">[WebMessaging]</a> provides
+    <h3 class="heading settled" data-level="4.2" id="postmessage"><span class="secno">4.2. </span><span class="content"><code>postMessage</code></span><a class="self-link" href="#postmessage"></a></h3>
+    <p>Cross-origin messaging via <code>postMessage</code> <a data-link-type="biblio" href="#biblio-webmessaging">[WebMessaging]</a> provides
 many of the same concerns as CORS. Namely, it is necessary for the recipient to
 see the suborigin namespace of the message sender so an appropriate access
 control decision can be made, and similarly, legacy applications should by
 default treat these messages as not coming from the traditional origin of the
 sender.</p>
-
-
-        <p>To enforce this, when a message is sent from a suborigin namespace, the receiver
+    <p>To enforce this, when a message is sent from a suborigin namespace, the receiver
 has the <code>event.origin</code> value set to <code>null</code> so if it is
 read, it is not treated as coming from any particular origin. Instead, new
-properties of <code>event.finerorigin</code> and <code>event.suborigin</code>
-should be set the scheme/host/port and suborigin namespace, respectively.</p>
-
-
-        <p class="issue" id="issue-89125c85"><a class="self-link" href="#issue-89125c85"></a>Similar to the CORS case, another option is to set
-<code>event.origin</code> to the serialized namespace and then provide a
+properties of <code>event.finerorigin</code> and <code>event.suborigin</code> should be set the scheme/host/port and suborigin namespace, respectively.</p>
+    <p class="issue" id="issue-89125c85"><a class="self-link" href="#issue-89125c85"></a> Similar to the CORS case, another option is to set <code>event.origin</code> to the serialized namespace and then provide a
 deserialization tool.</p>
-
-
-        <h3 class="heading settled" data-level="4.3" id="workers"><span class="secno">4.3. </span><span class="content">Workers</span><a class="self-link" href="#workers"></a></h3>
-
-
-        <p class="issue" id="issue-cc64826b"><a class="self-link" href="#issue-cc64826b"></a>We need a story here. I basically think that workers should be treated as
+    <h3 class="heading settled" data-level="4.3" id="workers"><span class="secno">4.3. </span><span class="content">Workers</span><a class="self-link" href="#workers"></a></h3>
+    <p class="issue" id="issue-cc64826b"><a class="self-link" href="#issue-cc64826b"></a> We need a story here. I basically think that workers should be treated as
 if they’re in the same suborigin as whatever created them, but I’m also open to
 other suggestions. Particularly tricky are service workers, which for simplicity
 sake I suggest we treat as applying universally to all suborigins at a single
 physical origin since it works in terms of network requests, and suborigins are
 not relevant to network requests. Pull requests welcome.</p>
-
-</section>
-
-
-      <section>
-
-
-        <h2 class="heading settled" data-level="5" id="impact"><span class="secno">5. </span><span class="content">Impact on Web Platform</span><a class="self-link" href="#impact"></a></h2>
-
-
-        <p>Content inside a suborigin namespace is severely restricted in what the hosted
+   </section>
+   <section>
+    <h2 class="heading settled" data-level="5" id="impact"><span class="secno">5. </span><span class="content">Impact on Web Platform</span><a class="self-link" href="#impact"></a></h2>
+    <p>Content inside a suborigin namespace is severely restricted in what the hosted
 content can do. The restrictions match the behavior of an iframe with the
-sandbox attribute set to the value of <code>allow-scripts</code> <a data-biblio-type="normative" data-link-type="biblio" href="#biblio-html" title="HTML">[HTML]</a>.
+sandbox attribute set to the value of <code>allow-scripts</code> <a data-link-type="biblio" href="#biblio-html">[HTML]</a>.
 While more specifics are described below, the general idea here is to put
 suborigin namespaces in a "default secure" context. However, restrictions may be
 lifted going forward at a time when a way to whitelist particular Web platform
 permissions is well-defined.</p>
-
-
-        <h3 class="heading settled" data-level="5.1" id="relationship-with-sensitive-permissions"><span class="secno">5.1. </span><span class="content">Relationship with Sensitive Permissions</span><a class="self-link" href="#relationship-with-sensitive-permissions"></a></h3>
-
-
-        <p class="issue" id="issue-f36cefaf"><a class="self-link" href="#issue-f36cefaf"></a>We need to discuss DOM storage, cookies, document.domain, etc. In
+    <h3 class="heading settled" data-level="5.1" id="relationship-with-sensitive-permissions"><span class="secno">5.1. </span><span class="content">Relationship with Sensitive Permissions</span><a class="self-link" href="#relationship-with-sensitive-permissions"></a></h3>
+    <p class="issue" id="issue-f36cefaf"><a class="self-link" href="#issue-f36cefaf"></a> We need to discuss DOM storage, cookies, document.domain, etc. In
 particular, we should relate this to
 http://www.w3.org/TR/html5/browsers.html#sandboxing.</p>
-
-</section>
-
-
-      <section>
-
-        <h2 class="heading settled" data-level="6" id="framework"><span class="secno">6. </span><span class="content">Framework</span><a class="self-link" href="#framework"></a></h2>
-
-
-        <p class="note" role="note">Note: These sections are tricky because, unlike traditional origins, we can’t
+   </section>
+   <section>
+    <h2 class="heading settled" data-level="6" id="framework"><span class="secno">6. </span><span class="content">Framework</span><a class="self-link" href="#framework"></a></h2>
+    <p class="note" role="note">Note: These sections are tricky because, unlike traditional origins, we can’t
 define suborigins in terms of URIs. Since the suborigin namespace is defined in
 a header, not in the URI, we need to define them in terms of resources.</p>
-
-
-        <h3 class="heading settled" data-level="6.1" id="suborigin-of-a-resource"><span class="secno">6.1. </span><span class="content">Suborigin of a Resource</span><a class="self-link" href="#suborigin-of-a-resource"></a></h3>
-
-
-        <p>The suborigin of a resource is the value computed by the following algorithm:</p>
-
-
-        <ol>
-
-  
-          <li>
-    Let origin be the triple result from starting with step 1 of Section 4 of
+    <h3 class="heading settled" data-level="6.1" id="suborigin-of-a-resource"><span class="secno">6.1. </span><span class="content">Suborigin of a Resource</span><a class="self-link" href="#suborigin-of-a-resource"></a></h3>
+    <p>The suborigin of a resource is the value computed by the following algorithm:</p>
+    <ol>
+     <li> Let origin be the triple result from starting with step 1 of Section 4 of
     the <a href="https://tools.ietf.org/html/rfc6454#section-4">Section 4</a> of
-    of the Origin specification. <a data-biblio-type="normative" data-link-type="biblio" href="#biblio-rfc6454" title="RFC6454">[RFC6454]</a>
-  </li>
-
-  
-          <li>
-    If the Content Security Policy of the resource contains a valid
-    <a data-link-type="dfn" href="#suborigin-directive">suborigin directive</a> in the <a href="https://www.w3.org/TR/CSP2/#policy-syntax">directive list</a>
-    <a data-biblio-type="normative" data-link-type="biblio" href="#biblio-csp2" title="CSP2">[CSP2]</a>, then let <code>suborigin-namespace</code> be the
-    <code>directive-value</code>.
-  </li>
-
-  
-          <li>
-    Otherwise, let <code>suborigin-namespace</code> be <code>null</code>.
-  </li>
-
-  
-          <li>
-    Return the pair <code>(origin, suborigin-namespace)</code>.
-  </li>
-
-</ol>
-
-
-        <h3 class="heading settled" data-level="6.2" id="comparing-suborigins"><span class="secno">6.2. </span><span class="content">Comparing Suborigins</span><a class="self-link" href="#comparing-suborigins"></a></h3>
-
-
-        <p class="issue" id="issue-8607a4d5"><a class="self-link" href="#issue-8607a4d5"></a>Since we’d like to make the claim that suborigins do not supersede the
+    of the Origin specification. <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a> 
+     <li> If the Content Security Policy of the resource contains a valid <a data-link-type="dfn" href="#suborigin-directive">suborigin directive</a> in the <a href="https://www.w3.org/TR/CSP2/#policy-syntax">directive list</a> <a data-link-type="biblio" href="#biblio-csp2">[CSP2]</a>, then let <code>suborigin-namespace</code> be the <code>directive-value</code>. 
+     <li> Otherwise, let <code>suborigin-namespace</code> be <code>null</code>. 
+     <li> Return the pair <code>(origin, suborigin-namespace)</code>. 
+    </ol>
+    <h3 class="heading settled" data-level="6.2" id="comparing-suborigins"><span class="secno">6.2. </span><span class="content">Comparing Suborigins</span><a class="self-link" href="#comparing-suborigins"></a></h3>
+    <p class="issue" id="issue-8607a4d5"><a class="self-link" href="#issue-8607a4d5"></a> Since we’d like to make the claim that suborigins do not supersede the
 same-origin policy, would it be worth defining suborigins purely in terms of
 being a unique scheme? That would make this section somewhat unnecessary since
 origin comparisons would be the same.</p>
-
-
-        <p>Two suborigins are "the same" if, and only if, they are identical. In
+    <p>Two suborigins are "the same" if, and only if, they are identical. In
 particular:</p>
-
-
-        <ul>
-          <li data-md="">
-            <p>If the origin portions of the suborigin pairs are scheme/host/port triples,
+    <ul>
+     <li data-md="">
+      <p>If the origin portions of the suborigin pairs are scheme/host/port triples,
   the two suborigins are the same if, and only if, they have identical
   schemes, hosts, and ports and the <code>suborigin-namespace</code> portions
   of the suborigin pairs are identical.</p>
-            
-
-          </li>
-          <li data-md="">
-            <p>If both <code>suborigin-namespace</code> portions of the suborigin pairs are
+     <li data-md="">
+      <p>If both <code>suborigin-namespace</code> portions of the suborigin pairs are
   null, this is considered identical.</p>
-            
-
-          </li>
-          <li data-md="">
-            <p>An origin that is a globally unique identifier cannot be the same as an
-  origin that is a scheme/host/port triple, with or without a
-  <code>suborigin-namespace</code>.</p>
-            
-
-          </li></ul>
-
-        <p>Two resources are the same-origin if their suborigins are the same.</p>
-
-
-        <h3 class="heading settled" data-level="6.3" id="serializing"><span class="secno">6.3. </span><span class="content">Serializing Suborigins</span><a class="self-link" href="#serializing"></a></h3>
-
-
-        <p>This section defines how to serialize an origin to a unicode <a data-biblio-type="normative" data-link-type="biblio" href="#biblio-unicode6" title="Unicode6">[Unicode6]</a>
-string and to an ASCII <a data-biblio-type="normative" data-link-type="biblio" href="#biblio-rfc0020" title="RFC0020">[RFC0020]</a> string.</p>
-
-
-        <h4 class="heading settled" data-level="6.3.1" id="unicode-serialization-of-a-suborigin"><span class="secno">6.3.1. </span><span class="content">Unicode Serialization of a Suborigin</span><a class="self-link" href="#unicode-serialization-of-a-suborigin"></a></h4>
-
-
-        <p>The Unicode serialization of a suborigin is the value returned by the following
+     <li data-md="">
+      <p>An origin that is a globally unique identifier cannot be the same as an
+  origin that is a scheme/host/port triple, with or without a <code>suborigin-namespace</code>.</p>
+    </ul>
+    <p>Two resources are the same-origin if their suborigins are the same.</p>
+    <h3 class="heading settled" data-level="6.3" id="serializing"><span class="secno">6.3. </span><span class="content">Serializing Suborigins</span><a class="self-link" href="#serializing"></a></h3>
+    <p>This section defines how to serialize an origin to a unicode <a data-link-type="biblio" href="#biblio-unicode6">[Unicode6]</a> string and to an ASCII <a data-link-type="biblio" href="#biblio-rfc0020">[RFC0020]</a> string.</p>
+    <h4 class="heading settled" data-level="6.3.1" id="unicode-serialization-of-a-suborigin"><span class="secno">6.3.1. </span><span class="content">Unicode Serialization of a Suborigin</span><a class="self-link" href="#unicode-serialization-of-a-suborigin"></a></h4>
+    <p>The Unicode serialization of a suborigin is the value returned by the following
 algorithm:</p>
-
-
-        <ol>
-
-  
-          <li>
-    If the origin portion of the suborigin pair is not a scheme/host/port
-    triple, then return the string
-      
-            <pre>null
+    <ol>
+     <li>
+       If the origin portion of the suborigin pair is not a scheme/host/port
+    triple, then return the string 
+<pre>null
 </pre>
-            
-
-
-            <p>(i.e., the code point sequence U+006E, U+0075, U+006C, U+006C) and abort
+      <p>(i.e., the code point sequence U+006E, U+0075, U+006C, U+006C) and abort
     these steps.</p>
-            
-  
-          </li>
-
-  
-          <li>
-    Otherwise, if the suborigin-namespace portion of the suborigin pair is not
-    null:
-
-    
-            <ol>
-
-      
-              <li>
-        Let suffix be the string "+".
-      </li>
-              
-
-      
-              <li>
-        Append the suborigin-namespace portion of the suborigin pair to suffix.
-      </li>
-              
-
-      
-              <li>
-        Append suffix to the scheme part of the origin triple.
-      </li>
-              
-
-    
-            </ol>
-            
-  
-          </li>
-
-  
-          <li>
-    Proceed with step 1 of <a href="https://tools.ietf.org/html/rfc6454#section-6.1">Section 6.1 in the
-    Origin specification</a> <a data-biblio-type="normative" data-link-type="biblio" href="#biblio-rfc6454" title="RFC6454">[RFC6454]</a>.
-  </li>
-
-</ol>
-
-
-        <h4 class="heading settled" data-level="6.3.2" id="ascii-serialization-of-a-suborigin"><span class="secno">6.3.2. </span><span class="content">ASCII Serialization of a Suborigin</span><a class="self-link" href="#ascii-serialization-of-a-suborigin"></a></h4>
-
-
-        <p>The ASCII serialization of a suborigin is the value returned by the following
+     <li>
+       Otherwise, if the suborigin-namespace portion of the suborigin pair is not
+    null: 
+      <ol>
+       <li> Let suffix be the string "+". 
+       <li> Append the suborigin-namespace portion of the suborigin pair to suffix. 
+       <li> Append suffix to the scheme part of the origin triple. 
+      </ol>
+     <li> Proceed with step 1 of <a href="https://tools.ietf.org/html/rfc6454#section-6.1">Section 6.1 in the
+    Origin specification</a> <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a>. 
+    </ol>
+    <h4 class="heading settled" data-level="6.3.2" id="ascii-serialization-of-a-suborigin"><span class="secno">6.3.2. </span><span class="content">ASCII Serialization of a Suborigin</span><a class="self-link" href="#ascii-serialization-of-a-suborigin"></a></h4>
+    <p>The ASCII serialization of a suborigin is the value returned by the following
 algorithm:</p>
-
-
-        <ol>
-  
-          <li>
-    If the origin portion of the suborigin pair is not a scheme/host/port
-    triple, then return the string
-
-      
-            <pre>null
+    <ol>
+     <li>
+       If the origin portion of the suborigin pair is not a scheme/host/port
+    triple, then return the string 
+<pre>null
 </pre>
-            
-
-
-            <p>(i.e., the code point sequence U+006E, U+0075, U+006C, U+006C) and abort
+      <p>(i.e., the code point sequence U+006E, U+0075, U+006C, U+006C) and abort
     these steps.</p>
-            
-  
-          </li>
-
-  
-          <li>
-    Otherwise, if the suborigin-namespace portion of the suborigin pair is not
-    null:
-
-    
-            <ol>
-
-      
-              <li>
-        Let suffix be the string "+".
-      </li>
-              
-
-      
-              <li>
-        Append the suborigin-namespace portion of the suborigin pair to suffix.
-      </li>
-              
-
-      
-              <li>
-        Append suffix to the scheme part of the origin triple.
-      </li>
-              
-
-    
-            </ol>
-            
-  
-          </li>
-
-  
-          <li>
-    Proceed with step 1 of <a href="https://tools.ietf.org/html/rfc6454#section-6.2">Section 6.2 in the
-    Origin specification</a> <a data-biblio-type="normative" data-link-type="biblio" href="#biblio-rfc6454" title="RFC6454">[RFC6454]</a>.
-  </li>
-
-</ol>
-
-</section> 
-
-
-      <section>
-
-        <h2 class="heading settled" data-level="7" id="examples"><span class="secno">7. </span><span class="content">Examples</span><a class="self-link" href="#examples"></a></h2>
-
-
-        <h3 class="heading settled" data-level="7.1" id="case-studies"><span class="secno">7.1. </span><span class="content">Case Studies</span><a class="self-link" href="#case-studies"></a></h3>
-
-
-        <h4 class="heading settled" data-level="7.1.1" id="separating-applications"><span class="secno">7.1.1. </span><span class="content">Separation of Two Applications</span><a class="self-link" href="#separating-applications"></a></h4>
-Take a site, <code>https://example.com/</code>, that runs two applications, Chat
+     <li>
+       Otherwise, if the suborigin-namespace portion of the suborigin pair is not
+    null: 
+      <ol>
+       <li> Let suffix be the string "+". 
+       <li> Append the suborigin-namespace portion of the suborigin pair to suffix. 
+       <li> Append suffix to the scheme part of the origin triple. 
+      </ol>
+     <li> Proceed with step 1 of <a href="https://tools.ietf.org/html/rfc6454#section-6.2">Section 6.2 in the
+    Origin specification</a> <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a>. 
+    </ol>
+   </section>
+   <section>
+    <h2 class="heading settled" data-level="7" id="examples"><span class="secno">7. </span><span class="content">Examples</span><a class="self-link" href="#examples"></a></h2>
+    <h3 class="heading settled" data-level="7.1" id="case-studies"><span class="secno">7.1. </span><span class="content">Case Studies</span><a class="self-link" href="#case-studies"></a></h3>
+    <h4 class="heading settled" data-level="7.1.1" id="separating-applications"><span class="secno">7.1.1. </span><span class="content">Separation of Two Applications</span><a class="self-link" href="#separating-applications"></a></h4>
+     Take a site, <code>https://example.com/</code>, that runs two applications, Chat
 and Shopping, used, respectively, for instant messaging and Internet shopping.
 The former is hosted at <code>https://example.com/chat/</code>, and the latter
-is hosted at <code>https://example.com/shopping/</code>.
-
-
-        <p>The Shopping application has been very well tested and generally does not
+is hosted at <code>https://example.com/shopping/</code>. 
+    <p>The Shopping application has been very well tested and generally does not
 contain much untrusted content. In fact, it only takes simple text from
 advertisers, and that text only ever appears in HTML contexts, so the
 application is able to entity encode the text and stop nearly all cross-site
 scripting attacks on the application. Just in case, though, the developers have
-implemented a CSP that is served with pages at subpaths of
-<code>https://example.com/shopping/</code> that only allows scripts loaded from
-<code>scripts.example.com</code>.</p>
-
-
-        <p>Historically, <code>https://example.com/chat/</code> has been riddled with
+implemented a CSP that is served with pages at subpaths of <code>https://example.com/shopping/</code> that only allows scripts loaded from <code>scripts.example.com</code>.</p>
+    <p>Historically, <code>https://example.com/chat/</code> has been riddled with
 cross-site scripting attacks. The application takes untrusted content from a
 wider variety of sources and for added complexity, that content ends up in many
 more contexts, such as HTML tag attributes. On top of that, the developers never
 bothered creating a CSP for the application.</p>
-
-
-        <p>This is bad enough, but, unfortunately, it has led to the extremely bad
+    <p>This is bad enough, but, unfortunately, it has led to the extremely bad
 consequence of attackers using the low hanging fruit of Chat to attack Shopping,
 the more desirable target. Cross-site scripting Shopping allows an attacker to
 buy goods with the user’s account, so this is really the juicy target.</p>
-
-
-        <p>Since the applications are hosted on the same origin, these attacks have not
+    <p>Since the applications are hosted on the same origin, these attacks have not
 traditionally been that difficult. Once an attacker has executed code on Chat
-with an XSS, they open a new window or iframe at
-<code>example.com/shopping/</code>. Since this is at the same origin as Chat,
+with an XSS, they open a new window or iframe at <code>example.com/shopping/</code>. Since this is at the same origin as Chat,
 this allows the attacker to inject code through the <code>document</code> object
 of the window or iframe into the Shopping context, allowing the attacker to buy
 whatever they’d like.</p>
-
-
-        <p>For historical and branding reasons, both must be hosted on the
-<code>example.com</code> origin. Thus, while these two applications are
+    <p>For historical and branding reasons, both must be hosted on the <code>example.com</code> origin. Thus, while these two applications are
 completely separate, the company cannot split the products into two different
 origins (e.g. <code>examplechat.com</code> and <code>exampleshopping.com</code>)
-or different suborigins (e.g. <code>chat.example.com</code> and
-<code>shopping.example.com</code>).</p>
-
-
-        <p>To address this, the developers decide to serve both applications on two
-separate suborigins. For all HTTP requests to any subpath of <code>/chat</code>
-or <code>/shopping</code>, example.com includes a Content Security Policy
+or different suborigins (e.g. <code>chat.example.com</code> and <code>shopping.example.com</code>).</p>
+    <p>To address this, the developers decide to serve both applications on two
+separate suborigins. For all HTTP requests to any subpath of <code>/chat</code> or <code>/shopping</code>, example.com includes a Content Security Policy
 directive of <code>suborigin: chat</code> or <code>suborigin: shopping</code>,
 respectively.</p>
-
-
-        <p>This does not remove any of the XSS attacks on Chat. However, when an attacker
-injects code into Chat and opens a window or iframe to
-<code>example.com/shopping/</code>, they can no longer inject content through
+    <p>This does not remove any of the XSS attacks on Chat. However, when an attacker
+injects code into Chat and opens a window or iframe to <code>example.com/shopping/</code>, they can no longer inject content through
 the document as it will fail the same origin check. Of course, the application
 can still use <code>XMLHttpRequest</code> and <code>postMessage</code> to
 communicate with the document, but that will only be through well defined APIs.
 In short, the CSP of the Shopping application is now actually effective as the
 permissive Chat application is no longer a bypass of it.</p>
-
-
-        <h4 class="heading settled" data-level="7.1.2" id="other-case-study-studies"><span class="secno">7.1.2. </span><span class="content">Other Case Study/Studies</span><a class="self-link" href="#other-case-study-studies"></a></h4>
-
-
-        <p class="issue" id="issue-01e41379"><a class="self-link" href="#issue-01e41379"></a>TODO: Find out if anyone (perhaps lcamtuf or aaj?) would like to write in
+    <h4 class="heading settled" data-level="7.1.2" id="other-case-study-studies"><span class="secno">7.1.2. </span><span class="content">Other Case Study/Studies</span><a class="self-link" href="#other-case-study-studies"></a></h4>
+    <p class="issue" id="issue-01e41379"><a class="self-link" href="#issue-01e41379"></a> TODO: Find out if anyone (perhaps lcamtuf or aaj?) would like to write in
 another, real life case study.</p>
-
-
-        <h3 class="heading settled" data-level="7.2" id="practical-considerations"><span class="secno">7.2. </span><span class="content">Practical Considerations in Using Suborigins</span><a class="self-link" href="#practical-considerations"></a></h3>
-
-
-        <p>Using suborigins with a Web application should be relatively simple. At the most
-basic level, if you have an application hosted on
-<code>https://example.com/app/</code>, and all of its resources are hosted at
+    <h3 class="heading settled" data-level="7.2" id="practical-considerations"><span class="secno">7.2. </span><span class="content">Practical Considerations in Using Suborigins</span><a class="self-link" href="#practical-considerations"></a></h3>
+    <p>Using suborigins with a Web application should be relatively simple. At the most
+basic level, if you have an application hosted on <code>https://example.com/app/</code>, and all of its resources are hosted at
 subpaths of <code>/app</code>, it requires that the server set a Content
 Security Policy on all HTTP requests to subpaths of <code>/app</code> that
-contain the directive <code>suborigin: namespace</code>, where
-<code>namespace</code> is of the application’s choosing. This will ensure that
-the user agent loads all of these resources into the suborigin
-<code>namespace</code> and will enforce this boundary accordingly.</p>
-
-
-        <p>Additionally, if your application allows cross-origin requests, instead of
+contain the directive <code>suborigin: namespace</code>, where <code>namespace</code> is of the application’s choosing. This will ensure that
+the user agent loads all of these resources into the suborigin <code>namespace</code> and will enforce this boundary accordingly.</p>
+    <p>Additionally, if your application allows cross-origin requests, instead of
 adding the usual <code>Access-Control-Allow-Origin</code> header for
-cross-origin requests, the server must add the
-<code>Access-Control-Allow-Finer-Origin</code> and
-<code>Access-Control-Allow-Suborigin</code> headers, as defined in <a data-section="" href="#cors">§4.1 CORS</a>.</p>
-
-
-        <p>In the client-side portion of the application, if <code>postMessage</code> is
-used, the application must be modified so it does not check the
-<code>event.origin</code> field.  Instead, it should check
-<code>event.finerorigin</code> and additionally the <code>event.suborigin</code>
-fields, as they are defined in <a data-section="" href="#postmessage">§4.2 postMessage</a>.</p>
-
-
-        <p class="issue" id="issue-45bac813"><a class="self-link" href="#issue-45bac813"></a>TODO Write down any other practical ramifications of using suborigins
+cross-origin requests, the server must add the <code>Access-Control-Allow-Finer-Origin</code> and <code>Access-Control-Allow-Suborigin</code> headers, as defined in <a href="#cors">§4.1 CORS</a>.</p>
+    <p>In the client-side portion of the application, if <code>postMessage</code> is
+used, the application must be modified so it does not check the <code>event.origin</code> field.  Instead, it should check <code>event.finerorigin</code> and additionally the <code>event.suborigin</code> fields, as they are defined in <a href="#postmessage">§4.2 postMessage</a>.</p>
+    <p class="issue" id="issue-45bac813"><a class="self-link" href="#issue-45bac813"></a> TODO Write down any other practical ramifications of using suborigins
 here. For example, after we decide what permissions will be allowed by default
 in suborigins, point out that the application will be limited accordingly.</p>
-
-</section> 
-
-
-      <section>
-
-        <h2 class="heading settled" data-level="8" id="security-considerations"><span class="secno">8. </span><span class="content">Security Considerations</span><a class="self-link" href="#security-considerations"></a></h2>
-
-
-        <h3 class="heading settled" data-level="8.1" id="presentation-of-suborigins-to-users"><span class="secno">8.1. </span><span class="content">Presentation of Suborigins to Users</span><a class="self-link" href="#presentation-of-suborigins-to-users"></a></h3>
-
-
-        <p>A complication of suborigins is that while they provide a meaningful security
+   </section>
+   <section>
+    <h2 class="heading settled" data-level="8" id="security-considerations"><span class="secno">8. </span><span class="content">Security Considerations</span><a class="self-link" href="#security-considerations"></a></h2>
+    <h3 class="heading settled" data-level="8.1" id="presentation-of-suborigins-to-users"><span class="secno">8.1. </span><span class="content">Presentation of Suborigins to Users</span><a class="self-link" href="#presentation-of-suborigins-to-users"></a></h3>
+    <p>A complication of suborigins is that while they provide a meaningful security
 for an application, that boundary makes much less sense to a user. That is,
 traditional origins provide a security boundary at a physical level: separate
 scheme, hosts, and ports map to real boundaries external of a given application.
 However, suborigins as a boundary only makes sense <em>within the context of the
 program logic itself</em>, and there is no meaningful way for users to make
 decisions based on suborigins a priori.</p>
-
-
-        <p>Therefore, suborigins should be used only internally in a user agent and should
+    <p>Therefore, suborigins should be used only internally in a user agent and should
 not be presented to users at all. For example, suborigins should never be
 presented in link text or a URL bar.</p>
-
-
-        <h3 class="heading settled" data-level="8.2" id="not-overthrowing-same-origin-policy"><span class="secno">8.2. </span><span class="content">Not Overthrowing Same-origin Policy</span><a class="self-link" href="#not-overthrowing-same-origin-policy"></a></h3>
-
-
-        <p>Suborigins do not fundamentally change how the same-origin policy works. An
+    <h3 class="heading settled" data-level="8.2" id="not-overthrowing-same-origin-policy"><span class="secno">8.2. </span><span class="content">Not Overthrowing Same-origin Policy</span><a class="self-link" href="#not-overthrowing-same-origin-policy"></a></h3>
+    <p>Suborigins do not fundamentally change how the same-origin policy works. An
 application without suborigins should work identically to how it always has, and
 even in an application with suborigins, the same-origin policy still applies as
 always. In fact, suborigins have been defined within the context of the
 same-origin policy so that, in theory, serialized suborigins can be thought of
 as a just a special case of the traditional same-origin policy.</p>
-
-</section> 
-
-</main>
-
-    <h2 class="no-ref no-num heading settled" id="conformance"><span class="content">Conformance</span><a class="self-link" href="#conformance"></a></h2>
-
-
-    <h3 class="no-ref no-num heading settled" id="conventions"><span class="content">Document conventions</span><a class="self-link" href="#conventions"></a></h3>
-
-    
-    <p>Conformance requirements are expressed with a combination of
+   </section>
+  </main>
+  <h2 class="no-ref no-num heading settled" id="conformance"><span class="content">Conformance</span><a class="self-link" href="#conformance"></a></h2>
+  <h3 class="no-ref no-num heading settled" id="conventions"><span class="content">Document conventions</span><a class="self-link" href="#conventions"></a></h3>
+  <p>Conformance requirements are expressed with a combination of
     descriptive assertions and RFC 2119 terminology. The key words "MUST",
     "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT",
     "RECOMMENDED", "MAY", and "OPTIONAL" in the normative parts of this
     document are to be interpreted as described in RFC 2119.
     However, for readability, these words do not appear in all uppercase
-    letters in this specification.
-
-    </p>
-    <p>All of the text of this specification is normative except sections
-    explicitly marked as non-normative, examples, and notes. <a data-biblio-type="normative" data-link-type="biblio" href="#biblio-rfc2119" title="RFC2119">[RFC2119]</a></p>
-
-    
-    <p>Examples in this specification are introduced with the words "for example"
+    letters in this specification. </p>
+  <p>All of the text of this specification is normative except sections
+    explicitly marked as non-normative, examples, and notes. <a data-link-type="biblio" href="#biblio-rfc2119">[RFC2119]</a></p>
+  <p>Examples in this specification are introduced with the words "for example"
     or are set apart from the normative text with <code>class="example"</code>,
-    like this:
-
-    </p>
-    <div class="example">
-        
-      <p>This is an example of an informative example.</p>
-      
-    
-    </div>
-
-    
-    <p>Informative notes begin with the word "Note" and are set apart from the
-    normative text with <code>class="note"</code>, like this:
-
-    </p>
-    <p class="note" role="note">Note, this is an informative note.</p>
-
-
-    <h3 class="no-ref no-num heading settled" id="conformant-algorithms"><span class="content">Conformant Algorithms</span><a class="self-link" href="#conformant-algorithms"></a></h3>
-
-    
-    <p>Requirements phrased in the imperative as part of algorithms (such as
+    like this: </p>
+  <div class="example" id="example-f839f6c8">
+   <a class="self-link" href="#example-f839f6c8"></a> 
+   <p>This is an example of an informative example.</p>
+  </div>
+  <p>Informative notes begin with the word "Note" and are set apart from the
+    normative text with <code>class="note"</code>, like this: </p>
+  <p class="note" role="note">Note, this is an informative note.</p>
+  <h3 class="no-ref no-num heading settled" id="conformant-algorithms"><span class="content">Conformant Algorithms</span><a class="self-link" href="#conformant-algorithms"></a></h3>
+  <p>Requirements phrased in the imperative as part of algorithms (such as
     "strip any leading space characters" or "return false and abort these
     steps") are to be interpreted with the meaning of the key word ("must",
     "should", "may", etc) used in introducing the algorithm.</p>
-
-    
-    <p>Conformance requirements phrased as algorithms or specific steps can be
+  <p>Conformance requirements phrased as algorithms or specific steps can be
     implemented in any manner, so long as the end result is equivalent. In
     particular, the algorithms defined in this specification are intended to
     be easy to understand and are not intended to be performant. Implementers
     are encouraged to optimize.</p>
-
-
-    <h3 class="no-ref no-num heading settled" id="conformance-classes"><span class="content">Conformance Classes</span><a class="self-link" href="#conformance-classes"></a></h3>
-
-    
-    <p>A <dfn data-dfn-type="dfn" data-noexport="" id="conformant-user-agent">conformant user agent<a class="self-link" href="#conformant-user-agent"></a></dfn> must implement all the requirements
-    listed in this specification that are applicable to user agents.</p>
-
-    
-    <p>A <dfn data-dfn-type="dfn" data-noexport="" id="conformant-server">conformant server<a class="self-link" href="#conformant-server"></a></dfn> must implement all the requirements listed
-    in this specification that are applicable to servers.</p>
-
-
-
-
-    <h2 class="no-num heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
-    <h3 class="no-num heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
-    <dl>
-      <dt id="biblio-csp2" title="CSP2"><a class="self-link" href="#biblio-csp2"></a>[CSP2]</dt>
-      <dd>Mike West; Adam Barth; Dan Veditz. <a href="https://w3c.github.io/webappsec/content-security-policy/">Content Security Policy Level 2</a>. LCWD. URL: <a href="https://w3c.github.io/webappsec/content-security-policy/">https://w3c.github.io/webappsec/content-security-policy/</a></dd>
-      <dt id="biblio-html" title="HTML"><a class="self-link" href="#biblio-html"></a>[HTML]</dt>
-      <dd>Ian Hickson. <a href="https://html.spec.whatwg.org/">HTML</a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/">https://html.spec.whatwg.org/</a></dd>
-      <dt id="biblio-rfc6454" title="RFC6454"><a class="self-link" href="#biblio-rfc6454"></a>[RFC6454]</dt>
-      <dd>Adam Barth. <a href="http://www.ietf.org/rfc/rfc6454.txt">The Web Origin Concept</a>. RFC. URL: <a href="http://www.ietf.org/rfc/rfc6454.txt">http://www.ietf.org/rfc/rfc6454.txt</a></dd>
-      <dt id="biblio-unicode6" title="UNICODE6"><a class="self-link" href="#biblio-unicode6"></a>[UNICODE6]</dt>
-      <dd>The Unicode Consortium. <a href="http://www.unicode.org/versions/Unicode6.2.0/">The Unicode Standard, Version 6.2.0</a>. Defined by: The Unicode Standard, Version 6.2.0 URL: <a href="http://www.unicode.org/versions/Unicode6.2.0/">http://www.unicode.org/versions/Unicode6.2.0/</a></dd>
-      <dt id="biblio-cors" title="cors"><a class="self-link" href="#biblio-cors"></a>[cors]</dt>
-      <dd>Anne van Kesteren. <a href="http://www.w3.org/TR/cors/">Cross-Origin Resource Sharing</a>. 16 January 2014. REC. URL: <a href="http://www.w3.org/TR/cors/">http://www.w3.org/TR/cors/</a></dd>
-      <dt id="biblio-rfc0020" title="rfc0020"><a class="self-link" href="#biblio-rfc0020"></a>[rfc0020]</dt>
-      <dd>V.G. Cerf. <a href="http://www.ietf.org/rfc/rfc0020.txt">ASCII format for network interchange</a>. October 1969. Unknown. URL: <a href="http://www.ietf.org/rfc/rfc0020.txt">http://www.ietf.org/rfc/rfc0020.txt</a></dd>
-      <dt id="biblio-rfc2119" title="rfc2119"><a class="self-link" href="#biblio-rfc2119"></a>[rfc2119]</dt>
-      <dd>S. Bradner. <a href="http://www.ietf.org/rfc/rfc2119.txt">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="http://www.ietf.org/rfc/rfc2119.txt">http://www.ietf.org/rfc/rfc2119.txt</a></dd>
-      <dt id="biblio-webmessaging" title="webmessaging"><a class="self-link" href="#biblio-webmessaging"></a>[webmessaging]</dt>
-      <dd>Ian Hickson. <a href="http://www.w3.org/TR/webmessaging/">HTML5 Web Messaging</a>. 1 May 2012. CR. URL: <a href="http://www.w3.org/TR/webmessaging/">http://www.w3.org/TR/webmessaging/</a></dd></dl>
-    <h3 class="no-num heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
-    <dl>
-      <dt id="biblio-privilegeseparation" title="PRIVILEGESEPARATION"><a class="self-link" href="#biblio-privilegeseparation"></a>[PRIVILEGESEPARATION]</dt>
-      <dd>Devdatta Akhawe; Prateek Saxena; Dawn Song. <a href="https://www.usenix.org/system/files/conference/usenixsecurity12/sec12-final168.pdf">Privilege Separation in HTML5 Applications</a>. URL: <a href="https://www.usenix.org/system/files/conference/usenixsecurity12/sec12-final168.pdf">https://www.usenix.org/system/files/conference/usenixsecurity12/sec12-final168.pdf</a></dd></dl>
-    <h2 class="no-num heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
-    <ul class="indexlist">
-      <li>conformant server, <a href="#conformant-server" title="section Unnumbered section">Unnumbered section</a></li>
-      <li>conformant user agent, <a href="#conformant-user-agent" title="section Unnumbered section">Unnumbered section</a></li>
-      <li>origin, <a href="#origin" title="section 2.2">2.2</a></li>
-      <li>suborigin directive, <a href="#suborigin-directive" title="section 3.6">3.6</a></li>
-      <li>suborigin namespace, <a href="#suborigin-namespace" title="section 3.6">3.6</a></li></ul>
-    <h2 class="no-num heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
-    <div style="counter-reset:issue">
-      <div class="issue">Not sure how to actually refer to 'real origins'. This is a terrible
+  <h2 class="no-num heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
+  <h3 class="no-num heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
+  <ul class="indexlist">
+   <li><a href="#origin">origin</a><span>, in §2.2</span>
+   <li><a href="#suborigin-directive">suborigin directive</a><span>, in §3.6</span>
+   <li><a href="#suborigin-namespace">suborigin namespace</a><span>, in §3.6</span>
+  </ul>
+  <h2 class="no-num heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
+  <h3 class="no-num heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
+  <dl>
+   <dt id="biblio-csp2"><a class="self-link" href="#biblio-csp2"></a>[CSP2]
+   <dd>Mike West; Adam Barth; Dan Veditz. <a href="https://w3c.github.io/webappsec/specs/content-security-policy/">Content Security Policy Level 2</a>. CR. URL: <a href="https://w3c.github.io/webappsec/specs/content-security-policy/">https://w3c.github.io/webappsec/specs/content-security-policy/</a>
+   <dt id="biblio-html"><a class="self-link" href="#biblio-html"></a>[HTML]
+   <dd>Ian Hickson. <a href="https://html.spec.whatwg.org/multipage/">HTML Standard</a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
+   <dt id="biblio-rfc6454"><a class="self-link" href="#biblio-rfc6454"></a>[RFC6454]
+   <dd>Adam Barth. <a href="http://www.ietf.org/rfc/rfc6454.txt">The Web Origin Concept</a>. RFC. URL: <a href="http://www.ietf.org/rfc/rfc6454.txt">http://www.ietf.org/rfc/rfc6454.txt</a>
+   <dt id="biblio-unicode6"><a class="self-link" href="#biblio-unicode6"></a>[UNICODE6]
+   <dd>The Unicode Consortium. <a href="http://www.unicode.org/versions/Unicode6.2.0/">The Unicode Standard, Version 6.2.0</a>. URL: <a href="http://www.unicode.org/versions/Unicode6.2.0/">http://www.unicode.org/versions/Unicode6.2.0/</a>
+   <dt id="biblio-cors"><a class="self-link" href="#biblio-cors"></a>[CORS]
+   <dd>Anne van Kesteren. <a href="http://www.w3.org/TR/cors/">Cross-Origin Resource Sharing</a>. 16 January 2014. REC. URL: <a href="http://www.w3.org/TR/cors/">http://www.w3.org/TR/cors/</a>
+   <dt id="biblio-rfc0020"><a class="self-link" href="#biblio-rfc0020"></a>[RFC0020]
+   <dd>V.G. Cerf. <a href="https://tools.ietf.org/html/rfc20">ASCII format for network interchange</a>. October 1969. Internet Standard. URL: <a href="https://tools.ietf.org/html/rfc20">https://tools.ietf.org/html/rfc20</a>
+   <dt id="biblio-rfc2119"><a class="self-link" href="#biblio-rfc2119"></a>[RFC2119]
+   <dd>S. Bradner. <a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
+   <dt id="biblio-webmessaging"><a class="self-link" href="#biblio-webmessaging"></a>[WEBMESSAGING]
+   <dd>Ian Hickson. <a href="http://www.w3.org/TR/webmessaging/">HTML5 Web Messaging</a>. 19 May 2015. REC. URL: <a href="http://www.w3.org/TR/webmessaging/">http://www.w3.org/TR/webmessaging/</a>
+  </dl>
+  <h3 class="no-num heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
+  <dl>
+   <dt id="biblio-privilegeseparation"><a class="self-link" href="#biblio-privilegeseparation"></a>[PRIVILEGESEPARATION]
+   <dd>Devdatta Akhawe; Prateek Saxena; Dawn Song. <a href="https://www.usenix.org/system/files/conference/usenixsecurity12/sec12-final168.pdf">Privilege Separation in HTML5 Applications</a>. URL: <a href="https://www.usenix.org/system/files/conference/usenixsecurity12/sec12-final168.pdf">https://www.usenix.org/system/files/conference/usenixsecurity12/sec12-final168.pdf</a>
+  </dl>
+  <h2 class="no-num heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
+  <div style="counter-reset:issue">
+   <div class="issue"> Not sure how to actually refer to 'real origins'. This is a terrible
 name, and we need a better way to talk about them. Maybe physical origin?
 Traditional origin? (jww)<a href="#issue-e1a79dec"> ↵ </a></div>
-      <div class="issue">TODO(jww) This needs to be filled in once we have a pretty good handle on
+   <div class="issue"> TODO(jww) This needs to be filled in once we have a pretty good handle on
 the basic structure of this document. At that point, we should extract the terms
 defined throughout the spec and place them here.<a href="#issue-3c008d43"> ↵ </a></div>
-      <div class="issue">I don’t have a great idea for how to do this yet. Should it be as simple
+   <div class="issue"> I don’t have a great idea for how to do this yet. Should it be as simple
 as document.location.suborigin? Or should it be serialized into document.origin,
 plus a deserialization mechanism? (jww)<a href="#issue-56caee46"> ↵ </a></div>
-      <div class="issue">I expect that this will be a relatively controversial part of the
+   <div class="issue"> I expect that this will be a relatively controversial part of the
 proposal, but I think the concern is pretty important. In particular, a lot of
 the potential benefits of the proposal are eliminated if the Origin header is
 set with the broad, traditional origin as an isolated but compromised suborigin
@@ -1252,25 +1678,26 @@ said, we might be able to bypass a lot of these concerns by using the Origin
 header but putting the serialized suborigin as described above it its place.
 This would require monkey patching the Origin spec’s syntax of the Origin
 header.<a href="#issue-fac22004"> ↵ </a></div>
-      <div class="issue">Similar to the CORS case, another option is to set
-<code>event.origin</code> to the serialized namespace and then provide a
+   <div class="issue"> Similar to the CORS case, another option is to set <code>event.origin</code> to the serialized namespace and then provide a
 deserialization tool.<a href="#issue-89125c85"> ↵ </a></div>
-      <div class="issue">We need a story here. I basically think that workers should be treated as
+   <div class="issue"> We need a story here. I basically think that workers should be treated as
 if they’re in the same suborigin as whatever created them, but I’m also open to
 other suggestions. Particularly tricky are service workers, which for simplicity
 sake I suggest we treat as applying universally to all suborigins at a single
 physical origin since it works in terms of network requests, and suborigins are
 not relevant to network requests. Pull requests welcome.<a href="#issue-cc64826b"> ↵ </a></div>
-      <div class="issue">We need to discuss DOM storage, cookies, document.domain, etc. In
+   <div class="issue"> We need to discuss DOM storage, cookies, document.domain, etc. In
 particular, we should relate this to
 http://www.w3.org/TR/html5/browsers.html#sandboxing.<a href="#issue-f36cefaf"> ↵ </a></div>
-      <div class="issue">Since we’d like to make the claim that suborigins do not supersede the
+   <div class="issue"> Since we’d like to make the claim that suborigins do not supersede the
 same-origin policy, would it be worth defining suborigins purely in terms of
 being a unique scheme? That would make this section somewhat unnecessary since
 origin comparisons would be the same.<a href="#issue-8607a4d5"> ↵ </a></div>
-      <div class="issue">TODO: Find out if anyone (perhaps lcamtuf or aaj?) would like to write in
+   <div class="issue"> TODO: Find out if anyone (perhaps lcamtuf or aaj?) would like to write in
 another, real life case study.<a href="#issue-01e41379"> ↵ </a></div>
-      <div class="issue">TODO Write down any other practical ramifications of using suborigins
+   <div class="issue"> TODO Write down any other practical ramifications of using suborigins
 here. For example, after we decide what permissions will be allowed by default
-in suborigins, point out that the application will be limited accordingly.<a href="#issue-45bac813"> ↵ </a></div></div></body>
+in suborigins, point out that the application will be limited accordingly.<a href="#issue-45bac813"> ↵ </a></div>
+  </div>
+ </body>
 </html>
