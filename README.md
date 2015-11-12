@@ -1,5 +1,9 @@
 
 # Specification 'webappsec-suborigins'
 
-This is the repository for webappsec-suborigins. You're welcome to contribute! Let's make the Web rock our socks
-off!
+Editor's draft: https://metromoxie.github.io/webappsec/specs/suborigins/
+
+You can publish a new draft by typing `make publish` (which simply pushes
+the local `master` branch to GitHub's `gh-pages` branch).
+
+Pull requests happily reviewed.
