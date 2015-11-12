@@ -1004,11 +1004,13 @@
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
-     <dd><a class="u-url" href="https://metromoxie.github.io/webappsec/specs/suborigins/">https://metromoxie.github.io/webappsec/specs/suborigins/</a>
+     <dd><a class="u-url" href="https://metromoxie.github.io/webappsec-suborigins/">https://metromoxie.github.io/webappsec-suborigins/</a>
      <dt>Feedback:
      <dd><span><a href="mailto:public-webappsec@w3.org?subject=%5Bsuborigins%5D%20YOUR%20TOPIC%20HERE">public-webappsec@w3.org</a> with subject line “<kbd>[suborigins] <i data-lt="">… message topic …</i></kbd>” (<a href="http://lists.w3.org/Archives/Public/public-webappsec/" rel="discussion">archives</a>)</span>
+     <dt>Issue Tracking:
+     <dd><a href="https://github.com/metromoxie/webappsec-suborigins/issues/">GitHub</a>
      <dt class="editor">Editor:
-     <dd class="editor p-author h-card vcard"><a class="p-name fn u-email email" href="mailto:jww@google.com">Joel Weinberger</a> (<span class="p-org org">Google Inc.</span>)
+     <dd class="editor p-author h-card vcard"><a class="p-name fn u-url url" href="https://joelweinberger.us">Joel Weinberger</a> (<span class="p-org org">Google Inc.</span>) <a class="u-email email" href="mailto:jww@google.com">jww@google.com</a>
     </dl>
    </div>
    <div data-fill-with="warning"></div>
@@ -1017,7 +1019,10 @@
   </div>
   <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
   <div class="p-summary" data-fill-with="abstract">
-   <p>This specification defines a mechanism by which a server may specify a web resource response a new origin in the user agent which is a combination of the server’s origin and a specified namespace.</p>
+   <p>This specification defines a mechanism by which a server may specify a web
+
+resource response a new origin in the user agent which is a combination of the
+server’s origin and a specified namespace.</p>
   </div>
   <h2 class="no-num no-toc no-ref heading settled" id="status"><span class="content">Status of this document</span></h2>
   <div data-fill-with="status">
@@ -1637,11 +1642,9 @@ as a just a special case of the traditional same-origin policy.</p>
   <h3 class="no-num heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
    <dt id="biblio-csp2"><a class="self-link" href="#biblio-csp2"></a>[CSP2]
-   <dd>Mike West; Adam Barth; Dan Veditz. <a href="https://w3c.github.io/webappsec/specs/content-security-policy/">Content Security Policy Level 2</a>. CR. URL: <a href="https://w3c.github.io/webappsec/specs/content-security-policy/">https://w3c.github.io/webappsec/specs/content-security-policy/</a>
+   <dd>Mike West; Adam Barth; Daniel Veditz. <a href="http://www.w3.org/TR/CSP2/">Content Security Policy Level 2</a>. 21 July 2015. CR. URL: <a href="http://www.w3.org/TR/CSP2/">http://www.w3.org/TR/CSP2/</a>
    <dt id="biblio-html"><a class="self-link" href="#biblio-html"></a>[HTML]
    <dd>Ian Hickson. <a href="https://html.spec.whatwg.org/multipage/">HTML Standard</a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
-   <dt id="biblio-rfc6454"><a class="self-link" href="#biblio-rfc6454"></a>[RFC6454]
-   <dd>Adam Barth. <a href="http://www.ietf.org/rfc/rfc6454.txt">The Web Origin Concept</a>. RFC. URL: <a href="http://www.ietf.org/rfc/rfc6454.txt">http://www.ietf.org/rfc/rfc6454.txt</a>
    <dt id="biblio-unicode6"><a class="self-link" href="#biblio-unicode6"></a>[UNICODE6]
    <dd>The Unicode Consortium. <a href="http://www.unicode.org/versions/Unicode6.2.0/">The Unicode Standard, Version 6.2.0</a>. URL: <a href="http://www.unicode.org/versions/Unicode6.2.0/">http://www.unicode.org/versions/Unicode6.2.0/</a>
    <dt id="biblio-cors"><a class="self-link" href="#biblio-cors"></a>[CORS]
@@ -1650,6 +1653,8 @@ as a just a special case of the traditional same-origin policy.</p>
    <dd>V.G. Cerf. <a href="https://tools.ietf.org/html/rfc20">ASCII format for network interchange</a>. October 1969. Internet Standard. URL: <a href="https://tools.ietf.org/html/rfc20">https://tools.ietf.org/html/rfc20</a>
    <dt id="biblio-rfc2119"><a class="self-link" href="#biblio-rfc2119"></a>[RFC2119]
    <dd>S. Bradner. <a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
+   <dt id="biblio-rfc6454"><a class="self-link" href="#biblio-rfc6454"></a>[RFC6454]
+   <dd>A. Barth. <a href="https://tools.ietf.org/html/rfc6454">The Web Origin Concept</a>. December 2011. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc6454">https://tools.ietf.org/html/rfc6454</a>
    <dt id="biblio-webmessaging"><a class="self-link" href="#biblio-webmessaging"></a>[WEBMESSAGING]
    <dd>Ian Hickson. <a href="http://www.w3.org/TR/webmessaging/">HTML5 Web Messaging</a>. 19 May 2015. REC. URL: <a href="http://www.w3.org/TR/webmessaging/">http://www.w3.org/TR/webmessaging/</a>
   </dl>

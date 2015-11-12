@@ -1,14 +1,31 @@
-<h1>Suborigins</h1>
-
 <pre class='metadata'>
+Title: Suborigins
 Status: ED
-ED: https://metromoxie.github.io/webappsec/specs/suborigins/
+ED: https://metromoxie.github.io/webappsec-suborigins/
 Shortname: suborigins
 Level: 1
-Editor: Joel Weinberger, Google Inc., jww@google.com
-Abstract: This specification defines a mechanism by which a server may specify a web resource response a new origin in the user agent which is a combination of the server's origin and a specified namespace.
+Editor: Joel Weinberger, Google Inc., https://joelweinberger.us, jww@google.com
+Abstract:
+  This specification defines a mechanism by which a server may specify a web
+  resource response a new origin in the user agent which is a combination of the
+  server's origin and a specified namespace.
 Group: webappsec
 Indent: 2
+</pre>
+
+<pre class="biblio">
+{
+  "PRIVILEGESEPARATION": {
+    "title": "Privilege Separation in HTML5 Applications",
+    "href": "https://www.usenix.org/system/files/conference/usenixsecurity12/sec12-final168.pdf",
+    "authors": [
+      "Devdatta Akhawe",
+      "Prateek Saxena",
+      "Dawn Song"
+    ],
+    "publisher": "USENIX"
+  }
+}
 </pre>
 
 <section>
