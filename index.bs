@@ -6,6 +6,7 @@ Shortname: suborigins
 Repository: w3c/webappsec-suborigins
 Level: 1
 Editor: Joel Weinberger, Google Inc., https://joelweinberger.us, jww@google.com
+Editor: Devdatta Akhawe, Dropbox Inc., http://devd.me, dev.akhawe@gmail.com
 Abstract:
   This specification defines a mechanism by which a server may specify a web
   resource response a new origin in the user agent which is a combination of the
