@@ -1,8 +1,9 @@
 <pre class='metadata'>
 Title: Suborigins
 Status: ED
-ED: https://metromoxie.github.io/webappsec-suborigins/
+ED: https://w3c.github.io/webappsec-suborigins/
 Shortname: suborigins
+Repository: w3c/webappsec-suborigins
 Level: 1
 Editor: Joel Weinberger, Google Inc., https://joelweinberger.us, jww@google.com
 Abstract:
