@@ -7,9 +7,11 @@ Repository: w3c/webappsec-suborigins
 Level: 1
 Editor: Joel Weinberger, Google Inc., https://joelweinberger.us, jww@google.com
 Abstract:
-  This specification defines a mechanism by which a server may specify a web
-  resource response a new origin in the user agent which is a combination of the
-  server's origin and a specified namespace.
+  This specification defines a mechanism for creating a security boundary
+  between different applications running in the same-origin. It allows a server
+  to specify a namespace on a resources response which is used with the
+  scheme/host/port origin tuple to separate the resource load from other
+  resources at the scheme/host/port.
 Group: webappsec
 Indent: 2
 </pre>
