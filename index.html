@@ -1022,9 +1022,10 @@
    <p>This specification defines a mechanism for creating a security boundary
 
 between different applications running in the same-origin. It allows a server
-to specify a namespace on a resources response which is used with the
-scheme/host/port origin tuple to separate the resource load from other
-resources at the scheme/host/port.</p>
+to specify a namespace on a resource response which is paired with the
+scheme/host/port origin tuple. This new namespace plus origin tuple is used to
+extend the same-origin policy to create a security boundary between this
+resource load and resources in other namespaces.</p>
   </div>
   <h2 class="no-num no-toc no-ref heading settled" id="status"><span class="content">Status of this document</span></h2>
   <div data-fill-with="status">
