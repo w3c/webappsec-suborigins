@@ -89,7 +89,7 @@ Sandboxed frames can be used to completely separate untrusted content, but they
 pose a large problem for containing trusted but potentially buggy code because
 it is very difficult, by design, for them to communicate with other frames. The
 synthetic origins assigned in a sandboxed frame are random and unpredictable,
-making the use of <a>postMessage</a> and CORS [[CORS]] difficult. Moreover,
+making the use of <a>postMessage</a> and <a>CORS</a> difficult. Moreover,
 because they are by definition unique origins, with no relationship to the
 original origin, designing permissions for them to access resources of the
 original origin would be difficult.
@@ -140,7 +140,7 @@ We see effectively three different use cases for Per-page Suborigins:
    functional components into different suborigins. For example, Gmail might put
    the contacts widget, settings tab, and HTML message views in separate
    Per-page Suborigins. Such deployments may require relatively modest
-   refactorings to switch to `postMessage` and CORS where direct DOM access and
+   refactorings to switch to <a>`postMessage`</a> and <a>CORS</a> where direct DOM access and
    same-origin `XMLHttpRequest` are currently used, but we believe
    doing so is considerably easier than retrofitting CSP onto arbitrary code
    bases and can be done very incrementally.
@@ -221,6 +221,12 @@ This section defines several terms used throughout the document.
 
 The terms <dfn>origin</dfn>, <dfn>cross-origin</dfn>, and <dfn>same-origin</dfn>
 are defined by the Origin specification. [[!ORIGIN]]
+
+<dfn>CORS</dfn>, or <dfn>Cross-Origin Resource Sharing</dfn>, are defined by the
+CORS specification. [[!CORS]]
+
+<dfn>XMLHttpRequest</dfn>, or <dfn>XHR</dfn>, is defined by the XMLHttpRequest
+specification. [[!XHR]]
 
 The term <dfn>cross-site scripting</dfn>, or <dfn>XSS</dfn> for short, refers to
 a content injection attack where an attacker is able to execute malicious code
@@ -401,9 +407,7 @@ A resource's <dfn>suborigin namespace</dfn> is the value of the
 
 ## Accessing the Suborigin in JavaScript ## {#suborigin-in-js}
 
-Issue: I don't have a great idea for how to do this yet. Should it be as simple
-as document.location.suborigin? Or should it be serialized into document.origin,
-plus a deserialization mechanism? (jww)
+Issue: Fill this in with document.suborigin and document.origin explanations
 
 <!----------------------------------------------------------------------------->
 
@@ -413,11 +417,12 @@ Cross-origin (including cross-suborigin) communication is tricky when suborigins
 are involved because they need to be backwards compatible with user agents that
 do not support suborigins while providing origin-separation for user agents that
 do support suborigins. The following discussions discuss the three major
-cross-origin mechanisms that are relevant.
+cross-origin mechanisms that are relevant: <a>CORS</a>, <a>`postMessage`</a>,
+and Workers [[!WORKERS]].
 
-## CORS ## {#cors}
+## CORS ## {#cors-ac}
 
-For pages in a suborigin namespace, all `XMLHttpRequest`s to any URL
+For pages in a suborigin namespace, all <a>`XMLHttpRequest`</a>s to any URL
 should be treated as cross-origin, thus triggering CORS [[!CORS]] logic with
 special `Finer-Origin:` and `Suborigin:` headers added.
 Additionally, the `Origin:` header that is normally applied to
@@ -454,9 +459,9 @@ header but putting the serialized suborigin as described above it its place.
 This would require monkey patching the Origin spec's syntax of the Origin
 header.
 
-## `postMessage` ## {#postmessage}
+## `postMessage` ## {#postmessage-ac}
 
-Cross-origin messaging via `postMessage` [[!WebMessaging]] provides
+Cross-origin messaging via [[`postMessage`]] provides
 many of the same concerns as CORS. Namely, it is necessary for the recipient to
 see the suborigin namespace of the message sender so an appropriate access
 control decision can be made, and similarly, legacy applications should by
@@ -473,32 +478,43 @@ Issue: Similar to the CORS case, another option is to set
 `event.origin` to the serialized namespace and then provide a
 deserialization tool.
 
-## Workers ## {#workers}
+## Workers ## {#workers-ac}
 
-Issue: We need a story here. I basically think that workers should be treated as
-if they're in the same suborigin as whatever created them, but I'm also open to
-other suggestions. Particularly tricky are service workers, which for simplicity
-sake I suggest we treat as applying universally to all suborigins at a single
-physical origin since it works in terms of network requests, and suborigins are
-not relevant to network requests. Pull requests welcome.
+Issue: TODO(jww): There are many details and specifics to fill in here.
+
+Workers [[!WORKERS]] are given the security context of the creating Suborigin
+and all origin checks should check suborigins as well.
+
+The Service Worker [[!SERVICE-WORKERS]] registration API must not be accessible
+from suborigins. As a result of the above restriction on Workers, since a
+Service Worker cannot be created by a Suborigin, no Service Workers will be able
+to intercept the requests of a Suborigin.
+
+Note: This may change in the future, and Suborigins may eventually be allowed to
+register Service Workers, but for now, allowing the creation of Service Workers
+from Suborigins adds too many complications.
 
 <!----------------------------------------------------------------------------->
 
 # Impact on Web Platform # {#impact}
 
-Content inside a suborigin namespace is severely restricted in what the hosted
-content can do. The restrictions match the behavior of an iframe with the
-sandbox attribute set to the value of `allow-scripts` [[!HTML]].
-While more specifics are described below, the general idea here is to put
-suborigin namespaces in a "default secure" context. However, restrictions may be
-lifted going forward at a time when a way to whitelist particular Web platform
-permissions is well-defined.
+Content inside a suborigin namespace is restricted in the same way that other
+origins are restricted. There are some additional restrictions as well, in order
+to simplfy some complicated cases, and there are also some loosening of
+same-origin restrctions in order to facilitate and ease adoption of suborigins
+for developers.
 
 ## Relationship with Sensitive Permissions ## {#sensitive-permissions}
 
-Issue: We need to discuss DOM storage, cookies, document.domain, etc. In
-particular, we should relate this to
-http://www.w3.org/TR/html5/browsers.html#sandboxing.
+The `localStorage` [[!WEBSTORAGE]] API must not be accessible from a
+suborigin.
+
+Note: Similar to <a href="#workers-ac">Service Worker registration</a> as
+discussed above, this is not necessarily meant to be a permanent restriction,
+but a temporary restriction for practical purposes. It may be loosened in a
+future version of this spec.
+
+Issue: TODO(jww) Other restrictions? cookies? document.domain?
 
 <!----------------------------------------------------------------------------->
 
@@ -539,11 +555,6 @@ The suborigin of a resource is the value computed by the following algorithm:
 </ol>
 
 ## Comparing Suborigins ## {#comparing-suborigins}
-
-Issue: Since we'd like to make the claim that suborigins do not supersede the
-same-origin policy, would it be worth defining suborigins purely in terms of
-being a unique scheme? That would make this section somewhat unnecessary since
-origin comparisons would be the same.
 
 Two suborigins are "the same" if, and only if, they are identical. In
 particular:
@@ -683,17 +694,13 @@ Additionally, if your application allows cross-origin requests, instead of
 adding the usual `Access-Control-Allow-Origin` header for
 cross-origin requests, the server must add the
 `Access-Control-Allow-Finer-Origin` and
-`Access-Control-Allow-Suborigin` headers, as defined in [[#cors]].
+`Access-Control-Allow-Suborigin` headers, as defined in [[#cors-ac]].
 
 In the client-side portion of the application, if `postMessage` is
 used, the application must be modified so it does not check the
 `event.origin` field.  Instead, it should check
 `event.finerorigin` and additionally the `event.suborigin`
-fields, as they are defined in [[#postmessage]].
-
-Issue: TODO Write down any other practical ramifications of using suborigins
-here. For example, after we decide what permissions will be allowed by default
-in suborigins, point out that the application will be limited accordingly.
+fields, as they are defined in [[#postmessage-ac]].
 
 <!----------------------------------------------------------------------------->
 

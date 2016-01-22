@@ -1000,7 +1000,7 @@
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="http://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/Icons/w3c_home" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Suborigins</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2016-01-14">14 January 2016</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2016-01-21">21 January 2016</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1089,9 +1089,9 @@ resource load and resources in other namespaces.</p>
     <li>
      <a href="#access-control"><span class="secno">4</span> <span class="content">Access Control</span></a>
      <ul class="toc">
-      <li><a href="#cors"><span class="secno">4.1</span> <span class="content">CORS</span></a>
-      <li><a href="#postmessage"><span class="secno">4.2</span> <span class="content"><code>postMessage</code></span></a>
-      <li><a href="#workers"><span class="secno">4.3</span> <span class="content">Workers</span></a>
+      <li><a href="#cors-ac"><span class="secno">4.1</span> <span class="content">CORS</span></a>
+      <li><a href="#postmessage-ac"><span class="secno">4.2</span> <span class="content"><code>postMessage</code></span></a>
+      <li><a href="#workers-ac"><span class="secno">4.3</span> <span class="content">Workers</span></a>
      </ul>
     <li>
      <a href="#impact"><span class="secno">5</span> <span class="content">Impact on Web Platform</span></a>
@@ -1162,7 +1162,7 @@ those tools.</p>
 pose a large problem for containing trusted but potentially buggy code because
 it is very difficult, by design, for them to communicate with other frames. The
 synthetic origins assigned in a sandboxed frame are random and unpredictable,
-making the use of <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/comms.html#dom-messageport-postmessage">postMessage</a> and CORS <a data-link-type="biblio" href="#biblio-cors">[CORS]</a> difficult. Moreover,
+making the use of <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/comms.html#dom-messageport-postmessage">postMessage</a> and <a data-link-type="dfn" href="#cors">CORS</a> difficult. Moreover,
 because they are by definition unique origins, with no relationship to the
 original origin, designing permissions for them to access resources of the
 original origin would be difficult.</p>
@@ -1209,7 +1209,7 @@ Traditional origin? (jww)</p>
  functional components into different suborigins. For example, Gmail might put
  the contacts widget, settings tab, and HTML message views in separate
  Per-page Suborigins. Such deployments may require relatively modest
- refactorings to switch to <code>postMessage</code> and CORS where direct DOM access and
+ refactorings to switch to <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/comms.html#dom-messageport-postmessage"><code>postMessage</code></a> and <a data-link-type="dfn" href="#cors">CORS</a> where direct DOM access and
  same-origin <code>XMLHttpRequest</code> are currently used, but we believe
  doing so is considerably easier than retrofitting CSP onto arbitrary code
  bases and can be done very incrementally.</p>
@@ -1266,6 +1266,10 @@ the basic structure of this document. At that point, we should extract the terms
 defined throughout the spec and place them here.</p>
    <p>This section defines several terms used throughout the document.</p>
    <p>The terms <dfn data-dfn-type="dfn" data-noexport="" id="origin">origin<a class="self-link" href="#origin"></a></dfn>, <dfn data-dfn-type="dfn" data-noexport="" id="cross-origin">cross-origin<a class="self-link" href="#cross-origin"></a></dfn>, and <dfn data-dfn-type="dfn" data-noexport="" id="same-origin">same-origin<a class="self-link" href="#same-origin"></a></dfn> are defined by the Origin specification. <a data-link-type="biblio" href="#biblio-origin">[ORIGIN]</a></p>
+   <p><dfn data-dfn-type="dfn" data-noexport="" id="cors">CORS<a class="self-link" href="#cors"></a></dfn>, or <dfn data-dfn-type="dfn" data-noexport="" id="cross-origin-resource-sharing">Cross-Origin Resource Sharing<a class="self-link" href="#cross-origin-resource-sharing"></a></dfn>, are defined by the
+CORS specification. <a data-link-type="biblio" href="#biblio-cors">[CORS]</a></p>
+   <p><dfn data-dfn-type="dfn" data-noexport="" id="xmlhttprequest">XMLHttpRequest<a class="self-link" href="#xmlhttprequest"></a></dfn>, or <dfn data-dfn-type="dfn" data-noexport="" id="xhr">XHR<a class="self-link" href="#xhr"></a></dfn>, is defined by the XMLHttpRequest
+specification. <a data-link-type="biblio" href="#biblio-xhr">[XHR]</a></p>
    <p>The term <dfn data-dfn-type="dfn" data-noexport="" id="cross-site-scripting">cross-site scripting<a class="self-link" href="#cross-site-scripting"></a></dfn>, or <dfn data-dfn-type="dfn" data-noexport="" id="xss">XSS<a class="self-link" href="#xss"></a></dfn> for short, refers to
 a content injection attack where an attacker is able to execute malicious code
 in a victim origin. See the <a href="https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)">OWASP page on
@@ -1393,17 +1397,16 @@ directive-value = 1*( <a data-link-type="grammar" href="https://tools.ietf.org/h
 </pre>
    <p>A resource’s <dfn data-dfn-type="dfn" data-noexport="" id="suborigin-namespace">suborigin namespace<a class="self-link" href="#suborigin-namespace"></a></dfn> is the value of the <code>suborigin</code> directive.</p>
    <h3 class="heading settled" data-level="3.7" id="suborigin-in-js"><span class="secno">3.7. </span><span class="content">Accessing the Suborigin in JavaScript</span><a class="self-link" href="#suborigin-in-js"></a></h3>
-   <p class="issue" id="issue-56caee46"><a class="self-link" href="#issue-56caee46"></a> I don’t have a great idea for how to do this yet. Should it be as simple
-as document.location.suborigin? Or should it be serialized into document.origin,
-plus a deserialization mechanism? (jww)</p>
+   <p class="issue" id="issue-ab1237a6"><a class="self-link" href="#issue-ab1237a6"></a> Fill this in with document.suborigin and document.origin explanations</p>
    <h2 class="heading settled" data-level="4" id="access-control"><span class="secno">4. </span><span class="content">Access Control</span><a class="self-link" href="#access-control"></a></h2>
    <p>Cross-origin (including cross-suborigin) communication is tricky when suborigins
 are involved because they need to be backwards compatible with user agents that
 do not support suborigins while providing origin-separation for user agents that
 do support suborigins. The following discussions discuss the three major
-cross-origin mechanisms that are relevant.</p>
-   <h3 class="heading settled" data-level="4.1" id="cors"><span class="secno">4.1. </span><span class="content">CORS</span><a class="self-link" href="#cors"></a></h3>
-   <p>For pages in a suborigin namespace, all <code>XMLHttpRequest</code>s to any URL
+cross-origin mechanisms that are relevant: <a data-link-type="dfn" href="#cors">CORS</a>, <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/comms.html#dom-messageport-postmessage"><code>postMessage</code></a>,
+and Workers <a data-link-type="biblio" href="#biblio-workers">[WORKERS]</a>.</p>
+   <h3 class="heading settled" data-level="4.1" id="cors-ac"><span class="secno">4.1. </span><span class="content">CORS</span><a class="self-link" href="#cors-ac"></a></h3>
+   <p>For pages in a suborigin namespace, all <a data-link-type="dfn" href="#xmlhttprequest"><code>XMLHttpRequest</code></a>s to any URL
 should be treated as cross-origin, thus triggering CORS <a data-link-type="biblio" href="#biblio-cors">[CORS]</a> logic with
 special <code>Finer-Origin:</code> and <code>Suborigin:</code> headers added.
 Additionally, the <code>Origin:</code> header that is normally applied to
@@ -1431,8 +1434,8 @@ said, we might be able to bypass a lot of these concerns by using the Origin
 header but putting the serialized suborigin as described above it its place.
 This would require monkey patching the Origin spec’s syntax of the Origin
 header.</p>
-   <h3 class="heading settled" data-level="4.2" id="postmessage"><span class="secno">4.2. </span><span class="content"><code>postMessage</code></span><a class="self-link" href="#postmessage"></a></h3>
-   <p>Cross-origin messaging via <code>postMessage</code> <a data-link-type="biblio" href="#biblio-webmessaging">[WebMessaging]</a> provides
+   <h3 class="heading settled" data-level="4.2" id="postmessage-ac"><span class="secno">4.2. </span><span class="content"><code>postMessage</code></span><a class="self-link" href="#postmessage-ac"></a></h3>
+   <p>Cross-origin messaging via [[<code>postMessage</code>]] provides
 many of the same concerns as CORS. Namely, it is necessary for the recipient to
 see the suborigin namespace of the message sender so an appropriate access
 control decision can be made, and similarly, legacy applications should by
@@ -1444,25 +1447,31 @@ read, it is not treated as coming from any particular origin. Instead, new
 properties of <code>event.finerorigin</code> and <code>event.suborigin</code> should be set the scheme/host/port and suborigin namespace, respectively.</p>
    <p class="issue" id="issue-c76ee652"><a class="self-link" href="#issue-c76ee652"></a> Similar to the CORS case, another option is to set <code>event.origin</code> to the serialized namespace and then provide a
 deserialization tool.</p>
-   <h3 class="heading settled" data-level="4.3" id="workers"><span class="secno">4.3. </span><span class="content">Workers</span><a class="self-link" href="#workers"></a></h3>
-   <p class="issue" id="issue-cc64826b"><a class="self-link" href="#issue-cc64826b"></a> We need a story here. I basically think that workers should be treated as
-if they’re in the same suborigin as whatever created them, but I’m also open to
-other suggestions. Particularly tricky are service workers, which for simplicity
-sake I suggest we treat as applying universally to all suborigins at a single
-physical origin since it works in terms of network requests, and suborigins are
-not relevant to network requests. Pull requests welcome.</p>
+   <h3 class="heading settled" data-level="4.3" id="workers-ac"><span class="secno">4.3. </span><span class="content">Workers</span><a class="self-link" href="#workers-ac"></a></h3>
+   <p class="issue" id="issue-e6495be5"><a class="self-link" href="#issue-e6495be5"></a> TODO(jww): There are many details and specifics to fill in here.</p>
+   <p>Workers <a data-link-type="biblio" href="#biblio-workers">[WORKERS]</a> are given the security context of the creating Suborigin
+and all origin checks should check suborigins as well.</p>
+   <p>The Service Worker <a data-link-type="biblio" href="#biblio-service-workers">[SERVICE-WORKERS]</a> registration API must not be accessible
+from suborigins. As a result of the above restriction on Workers, since a
+Service Worker cannot be created by a Suborigin, no Service Workers will be able
+to intercept the requests of a Suborigin.</p>
+   <p class="note" role="note">Note: This may change in the future, and Suborigins may eventually be allowed to
+register Service Workers, but for now, allowing the creation of Service Workers
+from Suborigins adds too many complications.</p>
    <h2 class="heading settled" data-level="5" id="impact"><span class="secno">5. </span><span class="content">Impact on Web Platform</span><a class="self-link" href="#impact"></a></h2>
-   <p>Content inside a suborigin namespace is severely restricted in what the hosted
-content can do. The restrictions match the behavior of an iframe with the
-sandbox attribute set to the value of <code>allow-scripts</code> <a data-link-type="biblio" href="#biblio-html">[HTML]</a>.
-While more specifics are described below, the general idea here is to put
-suborigin namespaces in a "default secure" context. However, restrictions may be
-lifted going forward at a time when a way to whitelist particular Web platform
-permissions is well-defined.</p>
+   <p>Content inside a suborigin namespace is restricted in the same way that other
+origins are restricted. There are some additional restrictions as well, in order
+to simplfy some complicated cases, and there are also some loosening of
+same-origin restrctions in order to facilitate and ease adoption of suborigins
+for developers.</p>
    <h3 class="heading settled" data-level="5.1" id="sensitive-permissions"><span class="secno">5.1. </span><span class="content">Relationship with Sensitive Permissions</span><a class="self-link" href="#sensitive-permissions"></a></h3>
-   <p class="issue" id="issue-f36cefaf"><a class="self-link" href="#issue-f36cefaf"></a> We need to discuss DOM storage, cookies, document.domain, etc. In
-particular, we should relate this to
-http://www.w3.org/TR/html5/browsers.html#sandboxing.</p>
+   <p>The <code>localStorage</code> <a data-link-type="biblio" href="#biblio-webstorage">[WEBSTORAGE]</a> API must not be accessible from a
+suborigin.</p>
+   <p class="note" role="note">Note: Similar to <a href="#workers-ac">Service Worker registration</a> as
+discussed above, this is not necessarily meant to be a permanent restriction,
+but a temporary restriction for practical purposes. It may be loosened in a
+future version of this spec.</p>
+   <p class="issue" id="issue-b9fff968"><a class="self-link" href="#issue-b9fff968"></a> TODO(jww) Other restrictions? cookies? document.domain?</p>
    <h2 class="heading settled" data-level="6" id="framework"><span class="secno">6. </span><span class="content">Framework</span><a class="self-link" href="#framework"></a></h2>
    <p class="note" role="note">Note: These sections are tricky because, unlike traditional origins, we can’t
 define suborigins in terms of URIs. Since the suborigin namespace is defined in
@@ -1478,10 +1487,6 @@ a header, not in the URI, we need to define them in terms of resources.</p>
     <li> Return the pair <code>(origin, suborigin-namespace)</code>. 
    </ol>
    <h3 class="heading settled" data-level="6.2" id="comparing-suborigins"><span class="secno">6.2. </span><span class="content">Comparing Suborigins</span><a class="self-link" href="#comparing-suborigins"></a></h3>
-   <p class="issue" id="issue-8607a4d5"><a class="self-link" href="#issue-8607a4d5"></a> Since we’d like to make the claim that suborigins do not supersede the
-same-origin policy, would it be worth defining suborigins purely in terms of
-being a unique scheme? That would make this section somewhat unnecessary since
-origin comparisons would be the same.</p>
    <p>Two suborigins are "the same" if, and only if, they are identical. In
 particular:</p>
    <ul>
@@ -1557,12 +1562,9 @@ contain the directive <code>suborigin: namespace</code>, where <code>namespace</
 the user agent loads all of these resources into the suborigin <code>namespace</code> and will enforce this boundary accordingly.</p>
    <p>Additionally, if your application allows cross-origin requests, instead of
 adding the usual <code>Access-Control-Allow-Origin</code> header for
-cross-origin requests, the server must add the <code>Access-Control-Allow-Finer-Origin</code> and <code>Access-Control-Allow-Suborigin</code> headers, as defined in <a href="#cors">§4.1 CORS</a>.</p>
+cross-origin requests, the server must add the <code>Access-Control-Allow-Finer-Origin</code> and <code>Access-Control-Allow-Suborigin</code> headers, as defined in <a href="#cors-ac">§4.1 CORS</a>.</p>
    <p>In the client-side portion of the application, if <code>postMessage</code> is
-used, the application must be modified so it does not check the <code>event.origin</code> field.  Instead, it should check <code>event.finerorigin</code> and additionally the <code>event.suborigin</code> fields, as they are defined in <a href="#postmessage">§4.2 postMessage</a>.</p>
-   <p class="issue" id="issue-45bac813"><a class="self-link" href="#issue-45bac813"></a> TODO Write down any other practical ramifications of using suborigins
-here. For example, after we decide what permissions will be allowed by default
-in suborigins, point out that the application will be limited accordingly.</p>
+used, the application must be modified so it does not check the <code>event.origin</code> field.  Instead, it should check <code>event.finerorigin</code> and additionally the <code>event.suborigin</code> fields, as they are defined in <a href="#postmessage-ac">§4.2 postMessage</a>.</p>
    <h2 class="heading settled" data-level="8" id="security-considerations"><span class="secno">8. </span><span class="content">Security Considerations</span><a class="self-link" href="#security-considerations"></a></h2>
    <h3 class="heading settled" data-level="8.1" id="presentation-to-users"><span class="secno">8.1. </span><span class="content">Presentation of Suborigins to Users</span><a class="self-link" href="#presentation-to-users"></a></h3>
    <p>A complication of suborigins is that while they provide a meaningful security
@@ -1617,12 +1619,16 @@ as a just a special case of the traditional same-origin policy.</p>
   <h2 class="no-num heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
   <h3 class="no-num heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="indexlist">
+   <li><a href="#cors">CORS</a><span>, in §2</span>
    <li><a href="#cross-origin">cross-origin</a><span>, in §2</span>
+   <li><a href="#cross-origin-resource-sharing">Cross-Origin Resource Sharing</a><span>, in §2</span>
    <li><a href="#cross-site-scripting">cross-site scripting</a><span>, in §2</span>
    <li><a href="#origin">origin</a><span>, in §2</span>
    <li><a href="#same-origin">same-origin</a><span>, in §2</span>
    <li><a href="#suborigin-directive">suborigin directive</a><span>, in §3.6</span>
    <li><a href="#suborigin-namespace">suborigin namespace</a><span>, in §3.6</span>
+   <li><a href="#xhr">XHR</a><span>, in §2</span>
+   <li><a href="#xmlhttprequest">XMLHttpRequest</a><span>, in §2</span>
    <li><a href="#xss">XSS</a><span>, in §2</span>
   </ul>
   <h3 class="no-num heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
@@ -1659,6 +1665,8 @@ as a just a special case of the traditional same-origin policy.</p>
    <dd>A. Barth. <a href="https://tools.ietf.org/html/rfc6454">The Web Origin Concept</a>. December 2011. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc6454">https://tools.ietf.org/html/rfc6454</a>
    <dt id="biblio-unicode6"><a class="self-link" href="#biblio-unicode6"></a>[UNICODE6]
    <dd>The Unicode Consortium. <a href="http://www.unicode.org/versions/Unicode6.2.0/">The Unicode Standard, Version 6.2.0</a>. URL: <a href="http://www.unicode.org/versions/Unicode6.2.0/">http://www.unicode.org/versions/Unicode6.2.0/</a>
+   <dt id="biblio-xhr"><a class="self-link" href="#biblio-xhr"></a>[XHR]
+   <dd>Anne van Kesteren. <a href="https://xhr.spec.whatwg.org/">XMLHttpRequest Standard</a>. Living Standard. URL: <a href="https://xhr.spec.whatwg.org/">https://xhr.spec.whatwg.org/</a>
    <dt id="biblio-cors"><a class="self-link" href="#biblio-cors"></a>[CORS]
    <dd>Anne van Kesteren. <a href="http://www.w3.org/TR/cors/">Cross-Origin Resource Sharing</a>. 16 January 2014. REC. URL: <a href="http://www.w3.org/TR/cors/">http://www.w3.org/TR/cors/</a>
    <dt id="biblio-rfc0020"><a class="self-link" href="#biblio-rfc0020"></a>[RFC0020]
@@ -1667,10 +1675,14 @@ as a just a special case of the traditional same-origin policy.</p>
    <dd>S. Bradner. <a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
    <dt id="biblio-rfc6454"><a class="self-link" href="#biblio-rfc6454"></a>[RFC6454]
    <dd>A. Barth. <a href="https://tools.ietf.org/html/rfc6454">The Web Origin Concept</a>. December 2011. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc6454">https://tools.ietf.org/html/rfc6454</a>
+   <dt id="biblio-service-workers"><a class="self-link" href="#biblio-service-workers"></a>[SERVICE-WORKERS]
+   <dd>Alex Russell; Jungkee Song; Jake Archibald. <a href="http://www.w3.org/TR/service-workers/">Service Workers</a>. 25 June 2015. WD. URL: <a href="http://www.w3.org/TR/service-workers/">http://www.w3.org/TR/service-workers/</a>
    <dt id="biblio-url"><a class="self-link" href="#biblio-url"></a>[URL]
    <dd>Anne van Kesteren; Sam Ruby. <a href="http://www.w3.org/TR/url-1/">URL</a>. 9 December 2014. WD. URL: <a href="http://www.w3.org/TR/url-1/">http://www.w3.org/TR/url-1/</a>
-   <dt id="biblio-webmessaging"><a class="self-link" href="#biblio-webmessaging"></a>[WEBMESSAGING]
-   <dd>Ian Hickson. <a href="http://www.w3.org/TR/webmessaging/">HTML5 Web Messaging</a>. 19 May 2015. REC. URL: <a href="http://www.w3.org/TR/webmessaging/">http://www.w3.org/TR/webmessaging/</a>
+   <dt id="biblio-webstorage"><a class="self-link" href="#biblio-webstorage"></a>[WEBSTORAGE]
+   <dd>Ian Hickson. <a href="http://www.w3.org/TR/webstorage/">Web Storage (Second Edition)</a>. 9 June 2015. CR. URL: <a href="http://www.w3.org/TR/webstorage/">http://www.w3.org/TR/webstorage/</a>
+   <dt id="biblio-workers"><a class="self-link" href="#biblio-workers"></a>[WORKERS]
+   <dd>Ian Hickson. <a href="http://www.w3.org/TR/workers/">Web Workers</a>. 24 September 2015. WD. URL: <a href="http://www.w3.org/TR/workers/">http://www.w3.org/TR/workers/</a>
   </dl>
   <h3 class="no-num heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
   <dl>
@@ -1689,9 +1701,7 @@ example to each bullet above.<a href="#issue-9a0ddc8c"> ↵ </a></div>
    <div class="issue"> TODO(jww) This needs to be filled in once we have a pretty good handle on
 the basic structure of this document. At that point, we should extract the terms
 defined throughout the spec and place them here.<a href="#issue-3c008d43"> ↵ </a></div>
-   <div class="issue"> I don’t have a great idea for how to do this yet. Should it be as simple
-as document.location.suborigin? Or should it be serialized into document.origin,
-plus a deserialization mechanism? (jww)<a href="#issue-56caee46"> ↵ </a></div>
+   <div class="issue"> Fill this in with document.suborigin and document.origin explanations<a href="#issue-ab1237a6"> ↵ </a></div>
    <div class="issue"> I expect that this will be a relatively controversial part of the
 proposal, but I think the concern is pretty important. In particular, a lot of
 the potential benefits of the proposal are eliminated if the Origin header is
@@ -1703,25 +1713,11 @@ This would require monkey patching the Origin spec’s syntax of the Origin
 header.<a href="#issue-fac22004"> ↵ </a></div>
    <div class="issue"> Similar to the CORS case, another option is to set <code>event.origin</code> to the serialized namespace and then provide a
 deserialization tool.<a href="#issue-c76ee652"> ↵ </a></div>
-   <div class="issue"> We need a story here. I basically think that workers should be treated as
-if they’re in the same suborigin as whatever created them, but I’m also open to
-other suggestions. Particularly tricky are service workers, which for simplicity
-sake I suggest we treat as applying universally to all suborigins at a single
-physical origin since it works in terms of network requests, and suborigins are
-not relevant to network requests. Pull requests welcome.<a href="#issue-cc64826b"> ↵ </a></div>
-   <div class="issue"> We need to discuss DOM storage, cookies, document.domain, etc. In
-particular, we should relate this to
-http://www.w3.org/TR/html5/browsers.html#sandboxing.<a href="#issue-f36cefaf"> ↵ </a></div>
-   <div class="issue"> Since we’d like to make the claim that suborigins do not supersede the
-same-origin policy, would it be worth defining suborigins purely in terms of
-being a unique scheme? That would make this section somewhat unnecessary since
-origin comparisons would be the same.<a href="#issue-8607a4d5"> ↵ </a></div>
+   <div class="issue"> TODO(jww): There are many details and specifics to fill in here.<a href="#issue-e6495be5"> ↵ </a></div>
+   <div class="issue"> TODO(jww) Other restrictions? cookies? document.domain?<a href="#issue-b9fff968"> ↵ </a></div>
    <div class="issue"> TODO(jww): Fill in sub sections for the various security model opt-outs.
 This includes document.cookie access, how event.origin is serialized in
 postMessage, localStorage sharing<a href="#issue-913131a3"> ↵ </a></div>
-   <div class="issue"> TODO Write down any other practical ramifications of using suborigins
-here. For example, after we decide what permissions will be allowed by default
-in suborigins, point out that the application will be limited accordingly.<a href="#issue-45bac813"> ↵ </a></div>
   </div>
  </body>
 </html>
