@@ -443,27 +443,30 @@ must include a `Suborigin` header whose value is the context's suborigin name.
 Finally, the `Origin` header [[!ORIGIN]] value must use the serialized suborigin
 value instead of the serializied origin, as described in [[#serializing]].
 
-Similar changes are needed for responses from the server with the addition of
-an `Access-Control-Allow-Suborigin` response header. Its value must match the
+Similar changes are needed for responses from the server with the addition of an
+`Access-Control-Allow-Suborigin` response header. Its value must match the
 context's suborigin namespace value, or `*` to allow all suborigin namespaces.
+At the same time, the `Access-Control-Allow-Origin` response header value must
+be modified to use the serialized suborigin value instead of the serializied
+origin, as described in [[#serializing]].
 
 Issue: TODO(jww): Formal definition of the headers and responses w/grammars.
 Also need to be explicit about `*` having same limitations as
-`Access-Control-Allow-Origin` w/credentials.
+`Access-Control-Allow-Origin` w/credentials. Also need to describe opt-outs to
+use old-school Origin header and ACAO header.
 
 ## `postMessage` ## {#postmessage-ac}
 
 Cross-origin messaging via <a>`postMessage`</a> provides requires that the
 recipient be able to see the suborigin namespace of the message sender so an
-appropriate access control decision can be made. When a message is sent from a suborigin namespace, the receiver
-has the `event.origin` value set to `null` so if it is
-read, it is not treated as coming from any particular origin. Instead, new
-properties of `event.finerorigin` and `event.suborigin`
-should be set the scheme/host/port and suborigin namespace, respectively.
+appropriate access control decision can be made. When a message is sent from a
+suborigin namespace, the receiver has the `event.origin` value set to the
+serialized suborigin value instead of the serializied origin, as described in
+[[#serializing]]. Additionally, a new `suborigin` property must be added to the
+`MessageEvent` given to the receiver which contains the suborigin namespace
+value.
 
-Issue: Similar to the CORS case, another option is to set
-`event.origin` to the serialized namespace and then provide a
-deserialization tool.
+Issue: TODO(jww) Add opt-out so Origin header is traditional header.
 
 ## Workers ## {#workers-ac}
 
