@@ -570,94 +570,48 @@ string and to an ASCII [[!RFC0020]] string.
 The Unicode serialization of a suborigin is the value returned by the following
 algorithm:
 
-<ol>
-
-  <li>
-    If the origin portion of the suborigin pair is not a scheme/host/port
-    triple, then return the string
-      <pre>
-        null
-      </pre>
-
+1. If the origin portion of the suborigin pair is not a scheme/host/port
+   triple, then return the string
+    <pre>
+      null
+    </pre>
     (i.e., the code point sequence U+006E, U+0075, U+006C, U+006C) and abort
     these steps.
-  </li>
 
-  <li>
-    Otherwise, if the suborigin-namespace portion of the suborigin pair is not
-    null:
+2. Otherwise, if the suborigin namespace portion of the suborigin pair is not
+   null:
+   1. Let |prefix| be the suborigin namespace portion of the suborigin pair.
 
-    <ol>
+   2. Append the string "_" to |prefix|.
 
-      <li>
-        Let suffix be the string "+".
-      </li>
+   3. Prepend |prefix| to the host part of the origin triple.
 
-      <li>
-        Append the suborigin-namespace portion of the suborigin pair to suffix.
-      </li>
-
-      <li>
-        Append suffix to the scheme part of the origin triple.
-      </li>
-
-    </ol>
-  </li>
-
-  <li>
-    Proceed with step 1 of <a
-    href="https://tools.ietf.org/html/rfc6454#section-6.1">Section 6.1 in the
-    Origin specification</a> [[!RFC6454]].
-  </li>
-
-</ol>
+3. Proceed with step 1 of <a
+   href="https://tools.ietf.org/html/rfc6454#section-6.1">Section 6.1 in the
+   Origin specification</a> [[!RFC6454]].
 
 ### ASCII Serialization of a Suborigin ### {#ascii-serialization}
 
 The ASCII serialization of a suborigin is the value returned by the following
 algorithm:
 
-<ol>
-  <li>
-    If the origin portion of the suborigin pair is not a scheme/host/port
-    triple, then return the string
+1. If the origin portion of the suborigin pair is not a scheme/host/port
+   triple, then return the string
+   <pre>
+     null
+   </pre>
+  (i.e., the code point sequence U+006E, U+0075, U+006C, U+006C) and abort
+  these steps.
 
-      <pre>
-        null
-      </pre>
+2. Otherwise, if the suborigin-namespace portion of the suborigin pair is not
+   null:
+   1. Let suffix be the string "+".
+   2. Append the suborigin-namespace portion of the suborigin pair to suffix.
+   3. Append suffix to the scheme part of the origin triple.
 
-    (i.e., the code point sequence U+006E, U+0075, U+006C, U+006C) and abort
-    these steps.
-  </li>
-
-  <li>
-    Otherwise, if the suborigin-namespace portion of the suborigin pair is not
-    null:
-
-    <ol>
-
-      <li>
-        Let suffix be the string "+".
-      </li>
-
-      <li>
-        Append the suborigin-namespace portion of the suborigin pair to suffix.
-      </li>
-
-      <li>
-        Append suffix to the scheme part of the origin triple.
-      </li>
-
-    </ol>
-  </li>
-
-  <li>
-    Proceed with step 1 of <a
-    href="https://tools.ietf.org/html/rfc6454#section-6.2">Section 6.2 in the
-    Origin specification</a> [[!RFC6454]].
-  </li>
-
-</ol>
+3. Proceed with step 1 of <a
+   href="https://tools.ietf.org/html/rfc6454#section-6.2">Section 6.2 in the
+   Origin specification</a> [[!RFC6454]].
 
 ## Security Model Opt-Outs ## {#security-model-opt-outs}
 
