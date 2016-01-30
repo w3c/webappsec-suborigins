@@ -29,10 +29,23 @@ spec: ABNF; urlPrefix: https://tools.ietf.org/html/rfc5234
     text: DIGIT; url: appendix-B.1
     text: VCHAR; url: appendix-B.1
     text: WSP; url: appendix-B.1
+
+spec: CORS; urlPrefix: https://www.w3.org/TR/cors
+  type: dfn
+    text: cross-origin request with preflight; url: #cross-origin-request-with-preflight-0
+    text: simple cross-origin request; url: #simple-cross-origin-request
+
+spec: Fetch; urlPrefix: https://fetch.spec.whatwg.org
+  type: dfn
+    text: fetch; url: concept-fetch
+    text: request; url: concept-request
+    text: response type; url: concept-response-type
+
 spec: HTML; urlPrefix: https://html.spec.whatwg.org/multipage/
   type: dfn
     urlPrefix: comms.html
       text: postMessage; url: #dom-messageport-postmessage
+
 spec: URL; urlPrefix: https://url.spec.whatwg.org/
   type: dfn
     text: scheme; url: #syntax-url-scheme
@@ -355,23 +368,22 @@ and <a>port</a> of a traditional origin, plus a <a>suborigin namespace</a>.
 However, as mentioned above, suborigins are intended to fit within the framework
 of [[!RFC6454]].  Therefore, this specification provides a way of serializing a
 Suborigin bound resource into a traditional Origin. This is done by inserting
-the suborigin namespace into the scheme space of the Origin, thus creating a new
-scheme but maintaining all of the information about both the original scheme and
-the suborigin namespace. This is done by inserting a `+` into the URI after the
-scheme, followed by the suborigin namespace, then followed by the rest of the
-URI starting with `:`.
+the suborigin namespace into the host of the Origin, thus creating a new host
+but maintaining all of the information about both the original scheme, host,
+port, and the suborigin namespace. This is done by prepending the host name with
+the suborigin namespace followed by a "`_`" character.
 
 For example, if the resource is hosted at `https://example.com/` in
 the suborigin namespace `profile`, this would be serialized as
-`https+profile://example.com/`.
+`https://profile_example.com/`.
 
 Similarly, if a resource is hosted at `https://example.com:8080/` in
 the suborigin namespace `separate`, this would be serialized as
-`https+separate://example.com:8080/`.
+`https://separate_example.com:8080/`.
 
-Internally, the <a>suborigin namespace</a> must be tracked by the user agent. When
-the origin needs to be serialized for a resource, the user agent should follow
-the algorithm in [[#serializing]].
+Internally, the <a>suborigin namespace</a> must be tracked by the user agent.
+When the origin needs to be serialized for a resource, the user agent should
+follow the algorithm in [[#serializing]].
 
 ## Opting into a Suborigin ## {#opting-in}
 
@@ -407,7 +419,12 @@ A resource's <dfn>suborigin namespace</dfn> is the value of the
 
 ## Accessing the Suborigin in JavaScript ## {#suborigin-in-js}
 
-Issue: Fill this in with document.suborigin and document.origin explanations
+A `suborigin` property is added to the <a>document</a> object which
+<a>reflects</a> the value of the suborigin namespace for the current execution
+context. In there is no suborigin namespace, the value should be undefined.
+
+Additionally, the `origin` property of the <a>document</a> object should reflect
+the serialized value of the origin as returned by [[#serializing]].
 
 <!----------------------------------------------------------------------------->
 
@@ -422,61 +439,38 @@ and Workers [[!WORKERS]].
 
 ## CORS ## {#cors-ac}
 
-For pages in a suborigin namespace, all <a>`XMLHttpRequest`</a>s to any URL
-should be treated as cross-origin, thus triggering CORS [[!CORS]] logic with
-special `Finer-Origin:` and `Suborigin:` headers added.
-Additionally, the `Origin:` header that is normally applied to
-cross-origin requests should <em>not</em> be added. These header changes are
-needed so that a server that recognizes suborigins can see the suborigin
-namespace the request is coming from and apply the appropriate CORS headers as
-is appropriate, while legacy servers will not "accidentally" approve
-cross-origin requests because of an `Origin` header that provides an
-incomplete picture of the origin (that is, an origin without the suborigin).
+For pages in a suborigin namespace, all <a>`XMLHttpRequest`</a>s and
+<a>`fetch`</a> requests to any URL should be treated as cross-origin, thus
+triggering a <a>cross-origin request with preflight</a> for all non-<a>simple
+cross-origin requests</a>. Additionally, all requests from a suborigin namespace
+must include a `Suborigin` header whose value is the context's suborigin name.
+Finally, the `Origin` header [[!ORIGIN]] value must use the serialized suborigin
+value instead of the serializied origin, as described in [[#serializing]].
 
-The `Finer-Origin:` header takes a value identical to the Origin
-Header, as defined in [[!RFC6454]]. The `Suborigin:` header takes a
-string value that is the suborigin namespace. The former servers identically as
-the `Origin:` header, but in a purposefully backwards incompatible
-way, while the `Suborigin:` header allows a server to make a more
-nuanced access control choice. A user agent must not include more than one
-`Finer-Origin:` header and must not include more than one
-`Suborigin:` field.
+Similar changes are needed for responses from the server with the addition of an
+`Access-Control-Allow-Suborigin` response header. Its value must match the
+context's suborigin namespace value, or `*` to allow all suborigin namespaces.
+At the same time, the `Access-Control-Allow-Origin` response header value must
+be modified to use the serialized suborigin value instead of the serializied
+origin, as described in [[#serializing]].
 
-Similar changes are needed for responses from the server with the addition of
-`Access-Control-Allow-Finer-Origin` and
-`Access-Control-Allow-Suborigin` response headers. The former takes
-the same values as `Access-Control-Allow-Origin` as defined in
-[[!CORS]], while the later takes a string value that matches allowed suborigin
-namespaces, or `*` to allow all suborigin namespaces.
-
-Issue: I expect that this will be a relatively controversial part of the
-proposal, but I think the concern is pretty important. In particular, a lot of
-the potential benefits of the proposal are eliminated if the Origin header is
-set with the broad, traditional origin as an isolated but compromised suborigin
-could just request private information from the other origin. That having been
-said, we might be able to bypass a lot of these concerns by using the Origin
-header but putting the serialized suborigin as described above it its place.
-This would require monkey patching the Origin spec's syntax of the Origin
-header.
+Issue: TODO(jww): Formal definition of the headers and responses w/grammars.
+Also need to be explicit about `*` having same limitations as
+`Access-Control-Allow-Origin` w/credentials. Also need to describe opt-outs to
+use old-school Origin header and ACAO header.
 
 ## `postMessage` ## {#postmessage-ac}
 
-Cross-origin messaging via [[`postMessage`]] provides
-many of the same concerns as CORS. Namely, it is necessary for the recipient to
-see the suborigin namespace of the message sender so an appropriate access
-control decision can be made, and similarly, legacy applications should by
-default treat these messages as not coming from the traditional origin of the
-sender.
+Cross-origin messaging via <a>`postMessage`</a> provides requires that the
+recipient be able to see the suborigin namespace of the message sender so an
+appropriate access control decision can be made. When a message is sent from a
+suborigin namespace, the receiver has the `event.origin` value set to the
+serialized suborigin value instead of the serializied origin, as described in
+[[#serializing]]. Additionally, a new `suborigin` property must be added to the
+`MessageEvent` given to the receiver which contains the suborigin namespace
+value.
 
-To enforce this, when a message is sent from a suborigin namespace, the receiver
-has the `event.origin` value set to `null` so if it is
-read, it is not treated as coming from any particular origin. Instead, new
-properties of `event.finerorigin` and `event.suborigin`
-should be set the scheme/host/port and suborigin namespace, respectively.
-
-Issue: Similar to the CORS case, another option is to set
-`event.origin` to the serialized namespace and then provide a
-deserialization tool.
+Issue: TODO(jww) Add opt-out so Origin header is traditional header.
 
 ## Workers ## {#workers-ac}
 
@@ -581,94 +575,48 @@ string and to an ASCII [[!RFC0020]] string.
 The Unicode serialization of a suborigin is the value returned by the following
 algorithm:
 
-<ol>
-
-  <li>
-    If the origin portion of the suborigin pair is not a scheme/host/port
-    triple, then return the string
-      <pre>
-        null
-      </pre>
-
+1. If the origin portion of the suborigin pair is not a scheme/host/port
+   triple, then return the string
+    <pre>
+      null
+    </pre>
     (i.e., the code point sequence U+006E, U+0075, U+006C, U+006C) and abort
     these steps.
-  </li>
 
-  <li>
-    Otherwise, if the suborigin-namespace portion of the suborigin pair is not
-    null:
+2. Otherwise, if the suborigin namespace portion of the suborigin pair is not
+   null:
+   1. Let |prefix| be the suborigin namespace portion of the suborigin pair.
 
-    <ol>
+   2. Append the string "_" to |prefix|.
 
-      <li>
-        Let suffix be the string "+".
-      </li>
+   3. Prepend |prefix| to the host part of the origin triple.
 
-      <li>
-        Append the suborigin-namespace portion of the suborigin pair to suffix.
-      </li>
-
-      <li>
-        Append suffix to the scheme part of the origin triple.
-      </li>
-
-    </ol>
-  </li>
-
-  <li>
-    Proceed with step 1 of <a
-    href="https://tools.ietf.org/html/rfc6454#section-6.1">Section 6.1 in the
-    Origin specification</a> [[!RFC6454]].
-  </li>
-
-</ol>
+3. Proceed with step 1 of <a
+   href="https://tools.ietf.org/html/rfc6454#section-6.1">Section 6.1 in the
+   Origin specification</a> [[!RFC6454]].
 
 ### ASCII Serialization of a Suborigin ### {#ascii-serialization}
 
 The ASCII serialization of a suborigin is the value returned by the following
 algorithm:
 
-<ol>
-  <li>
-    If the origin portion of the suborigin pair is not a scheme/host/port
-    triple, then return the string
+1. If the origin portion of the suborigin pair is not a scheme/host/port
+   triple, then return the string
+   <pre>
+     null
+   </pre>
+  (i.e., the code point sequence U+006E, U+0075, U+006C, U+006C) and abort
+  these steps.
 
-      <pre>
-        null
-      </pre>
+2. Otherwise, if the suborigin-namespace portion of the suborigin pair is not
+   null:
+   1. Let suffix be the string "+".
+   2. Append the suborigin-namespace portion of the suborigin pair to suffix.
+   3. Append suffix to the scheme part of the origin triple.
 
-    (i.e., the code point sequence U+006E, U+0075, U+006C, U+006C) and abort
-    these steps.
-  </li>
-
-  <li>
-    Otherwise, if the suborigin-namespace portion of the suborigin pair is not
-    null:
-
-    <ol>
-
-      <li>
-        Let suffix be the string "+".
-      </li>
-
-      <li>
-        Append the suborigin-namespace portion of the suborigin pair to suffix.
-      </li>
-
-      <li>
-        Append suffix to the scheme part of the origin triple.
-      </li>
-
-    </ol>
-  </li>
-
-  <li>
-    Proceed with step 1 of <a
-    href="https://tools.ietf.org/html/rfc6454#section-6.2">Section 6.2 in the
-    Origin specification</a> [[!RFC6454]].
-  </li>
-
-</ol>
+3. Proceed with step 1 of <a
+   href="https://tools.ietf.org/html/rfc6454#section-6.2">Section 6.2 in the
+   Origin specification</a> [[!RFC6454]].
 
 ## Security Model Opt-Outs ## {#security-model-opt-outs}
 
@@ -720,7 +668,7 @@ Therefore, suborigins should be used only internally in a user agent and should
 not be presented to users at all. For example, suborigins should never be
 presented in link text or a URL bar.
 
-## Not Overthrowing Same-origin Policy ## {#not-overthrowing-sop}
+## Not Overthrowing Same-Origin Policy ## {#not-overthrowing-sop}
 
 Suborigins do not fundamentally change how the same-origin policy works. An
 application without suborigins should work identically to how it always has, and
