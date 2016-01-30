@@ -1000,7 +1000,7 @@
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="http://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/Icons/w3c_home" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Suborigins</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2016-01-27">27 January 2016</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2016-01-29">29 January 2016</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1362,18 +1362,17 @@ and <a data-link-type="dfn" href="https://url.spec.whatwg.org/#syntax-url-port">
 However, as mentioned above, suborigins are intended to fit within the framework
 of <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a>.  Therefore, this specification provides a way of serializing a
 Suborigin bound resource into a traditional Origin. This is done by inserting
-the suborigin namespace into the scheme space of the Origin, thus creating a new
-scheme but maintaining all of the information about both the original scheme and
-the suborigin namespace. This is done by inserting a <code>+</code> into the URI after the
-scheme, followed by the suborigin namespace, then followed by the rest of the
-URI starting with <code>:</code>.</p>
+the suborigin namespace into the host of the Origin, thus creating a new host
+but maintaining all of the information about both the original scheme, host,
+port, and the suborigin namespace. This is done by prepending the host name with
+the suborigin namespace followed by a "<code>_</code>" character.</p>
    <p>For example, if the resource is hosted at <code>https://example.com/</code> in
-the suborigin namespace <code>profile</code>, this would be serialized as <code>https+profile://example.com/</code>.</p>
+the suborigin namespace <code>profile</code>, this would be serialized as <code>https://profile_example.com/</code>.</p>
    <p>Similarly, if a resource is hosted at <code>https://example.com:8080/</code> in
-the suborigin namespace <code>separate</code>, this would be serialized as <code>https+separate://example.com:8080/</code>.</p>
-   <p>Internally, the <a data-link-type="dfn" href="#suborigin-namespace">suborigin namespace</a> must be tracked by the user agent. When
-the origin needs to be serialized for a resource, the user agent should follow
-the algorithm in <a href="#serializing">§6.3 Serializing Suborigins</a>.</p>
+the suborigin namespace <code>separate</code>, this would be serialized as <code>https://separate_example.com:8080/</code>.</p>
+   <p>Internally, the <a data-link-type="dfn" href="#suborigin-namespace">suborigin namespace</a> must be tracked by the user agent.
+When the origin needs to be serialized for a resource, the user agent should
+follow the algorithm in <a href="#serializing">§6.3 Serializing Suborigins</a>.</p>
    <h3 class="heading settled" data-level="3.5" id="opting-in"><span class="secno">3.5. </span><span class="content">Opting into a Suborigin</span><a class="self-link" href="#opting-in"></a></h3>
    <p>Unlike the <code>sandbox</code> attribute, suborigin namespaces are predictable and
 controllable. Because of this, potentially untrusted content cannot opt into

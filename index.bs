@@ -368,23 +368,22 @@ and <a>port</a> of a traditional origin, plus a <a>suborigin namespace</a>.
 However, as mentioned above, suborigins are intended to fit within the framework
 of [[!RFC6454]].  Therefore, this specification provides a way of serializing a
 Suborigin bound resource into a traditional Origin. This is done by inserting
-the suborigin namespace into the scheme space of the Origin, thus creating a new
-scheme but maintaining all of the information about both the original scheme and
-the suborigin namespace. This is done by inserting a `+` into the URI after the
-scheme, followed by the suborigin namespace, then followed by the rest of the
-URI starting with `:`.
+the suborigin namespace into the host of the Origin, thus creating a new host
+but maintaining all of the information about both the original scheme, host,
+port, and the suborigin namespace. This is done by prepending the host name with
+the suborigin namespace followed by a "`_`" character.
 
 For example, if the resource is hosted at `https://example.com/` in
 the suborigin namespace `profile`, this would be serialized as
-`https+profile://example.com/`.
+`https://profile_example.com/`.
 
 Similarly, if a resource is hosted at `https://example.com:8080/` in
 the suborigin namespace `separate`, this would be serialized as
-`https+separate://example.com:8080/`.
+`https://separate_example.com:8080/`.
 
-Internally, the <a>suborigin namespace</a> must be tracked by the user agent. When
-the origin needs to be serialized for a resource, the user agent should follow
-the algorithm in [[#serializing]].
+Internally, the <a>suborigin namespace</a> must be tracked by the user agent.
+When the origin needs to be serialized for a resource, the user agent should
+follow the algorithm in [[#serializing]].
 
 ## Opting into a Suborigin ## {#opting-in}
 
