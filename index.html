@@ -1396,7 +1396,10 @@ directive-value = 1*( <a data-link-type="grammar" href="https://tools.ietf.org/h
 </pre>
    <p>A resource’s <dfn data-dfn-type="dfn" data-noexport="" id="suborigin-namespace">suborigin namespace<a class="self-link" href="#suborigin-namespace"></a></dfn> is the value of the <code>suborigin</code> directive.</p>
    <h3 class="heading settled" data-level="3.7" id="suborigin-in-js"><span class="secno">3.7. </span><span class="content">Accessing the Suborigin in JavaScript</span><a class="self-link" href="#suborigin-in-js"></a></h3>
-   <p class="issue" id="issue-ab1237a6"><a class="self-link" href="#issue-ab1237a6"></a> Fill this in with document.suborigin and document.origin explanations</p>
+   <p>A <code>suborigin</code> property is added to the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-document">document</a> object which <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-reflect">reflects</a> the value of the suborigin namespace for the current execution
+context. In there is no suborigin namespace, the value should be undefined.</p>
+   <p>Additionally, the <code>origin</code> property of the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-document">document</a> object should reflect
+the serialized value of the origin as returned by <a href="#serializing">§6.3 Serializing Suborigins</a>.</p>
    <h2 class="heading settled" data-level="4" id="access-control"><span class="secno">4. </span><span class="content">Access Control</span><a class="self-link" href="#access-control"></a></h2>
    <p>Cross-origin (including cross-suborigin) communication is tricky when suborigins
 are involved because they need to be backwards compatible with user agents that
@@ -1650,6 +1653,12 @@ as a just a special case of the traditional same-origin policy.</p>
      <li><a href="https://url.spec.whatwg.org/#syntax-url-port">port</a>
      <li><a href="https://url.spec.whatwg.org/#syntax-url-scheme">scheme</a>
     </ul>
+   <li>
+    <a data-link-type="biblio" href="#biblio-dom-ls">[dom-ls]</a> defines the following terms:
+    <ul>
+     <li><a href="https://dom.spec.whatwg.org/#concept-document">document</a>
+     <li><a href="https://dom.spec.whatwg.org/#concept-reflect">reflect</a>
+    </ul>
   </ul>
   <h2 class="no-num heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
   <h3 class="no-num heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
@@ -1670,6 +1679,8 @@ as a just a special case of the traditional same-origin policy.</p>
    <dd>Anne van Kesteren. <a href="https://xhr.spec.whatwg.org/">XMLHttpRequest Standard</a>. Living Standard. URL: <a href="https://xhr.spec.whatwg.org/">https://xhr.spec.whatwg.org/</a>
    <dt id="biblio-cors"><a class="self-link" href="#biblio-cors"></a>[CORS]
    <dd>Anne van Kesteren. <a href="http://www.w3.org/TR/cors/">Cross-Origin Resource Sharing</a>. 16 January 2014. REC. URL: <a href="http://www.w3.org/TR/cors/">http://www.w3.org/TR/cors/</a>
+   <dt id="biblio-dom-ls"><a class="self-link" href="#biblio-dom-ls"></a>[DOM-LS]
+   <dd>Document Object Model URL: <a href="https://dom.spec.whatwg.org/">https://dom.spec.whatwg.org/</a>
    <dt id="biblio-rfc0020"><a class="self-link" href="#biblio-rfc0020"></a>[RFC0020]
    <dd>V.G. Cerf. <a href="https://tools.ietf.org/html/rfc20">ASCII format for network interchange</a>. October 1969. Internet Standard. URL: <a href="https://tools.ietf.org/html/rfc20">https://tools.ietf.org/html/rfc20</a>
    <dt id="biblio-rfc2119"><a class="self-link" href="#biblio-rfc2119"></a>[RFC2119]
@@ -1702,7 +1713,6 @@ example to each bullet above.<a href="#issue-9a0ddc8c"> ↵ </a></div>
    <div class="issue"> TODO(jww) This needs to be filled in once we have a pretty good handle on
 the basic structure of this document. At that point, we should extract the terms
 defined throughout the spec and place them here.<a href="#issue-3c008d43"> ↵ </a></div>
-   <div class="issue"> Fill this in with document.suborigin and document.origin explanations<a href="#issue-ab1237a6"> ↵ </a></div>
    <div class="issue"> TODO(jww): Formal definition of the headers and responses w/grammars.
 Also need to be explicit about <code>*</code> having same limitations as <code>Access-Control-Allow-Origin</code> w/credentials. Also need to describe opt-outs to
 use old-school Origin header and ACAO header.<a href="#issue-e6b1aedf"> ↵ </a></div>

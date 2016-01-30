@@ -419,7 +419,12 @@ A resource's <dfn>suborigin namespace</dfn> is the value of the
 
 ## Accessing the Suborigin in JavaScript ## {#suborigin-in-js}
 
-Issue: Fill this in with document.suborigin and document.origin explanations
+A `suborigin` property is added to the <a>document</a> object which
+<a>reflects</a> the value of the suborigin namespace for the current execution
+context. In there is no suborigin namespace, the value should be undefined.
+
+Additionally, the `origin` property of the <a>document</a> object should reflect
+the serialized value of the origin as returned by [[#serializing]].
 
 <!----------------------------------------------------------------------------->
 
