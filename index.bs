@@ -663,7 +663,7 @@ Therefore, suborigins should be used only internally in a user agent and should
 not be presented to users at all. For example, suborigins should never be
 presented in link text or a URL bar.
 
-## Not Overthrowing Same-origin Policy ## {#not-overthrowing-sop}
+## Not Overthrowing Same-Origin Policy ## {#not-overthrowing-sop}
 
 Suborigins do not fundamentally change how the same-origin policy works. An
 application without suborigins should work identically to how it always has, and
