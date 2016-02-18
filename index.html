@@ -1000,7 +1000,7 @@
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="http://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/Icons/w3c_home" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Suborigins</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2016-01-29">29 January 2016</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2016-02-18">18 February 2016</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1220,8 +1220,8 @@ Traditional origin? (jww)</p>
  cannot be used to immediately infect other users or read their personal
  messages stored within the account.</p>
    </ol>
-   <div class="example" id="example-ead41676">
-    <a class="self-link" href="#example-ead41676"></a> <code>https://example.com/</code> runs two applications, Chat and Shopping, used,
+   <div class="example" id="example-3334caf3">
+    <a class="self-link" href="#example-3334caf3"></a> <code>https://example.com</code> runs two applications, Chat and Shopping, used,
   respectively, for instant messaging and Internet shopping.  The former is
   hosted at <code>https://example.com/chat/</code>, and the latter is hosted at <code>https://example.com/shopping/</code>. 
     <p>The Shopping application has been very well tested and generally does not
@@ -1366,10 +1366,10 @@ the suborigin namespace into the host of the Origin, thus creating a new host
 but maintaining all of the information about both the original scheme, host,
 port, and the suborigin namespace. This is done by prepending the host name with
 the suborigin namespace followed by a "<code>_</code>" character.</p>
-   <p>For example, if the resource is hosted at <code>https://example.com/</code> in
-the suborigin namespace <code>profile</code>, this would be serialized as <code>https://profile_example.com/</code>.</p>
-   <p>Similarly, if a resource is hosted at <code>https://example.com:8080/</code> in
-the suborigin namespace <code>separate</code>, this would be serialized as <code>https://separate_example.com:8080/</code>.</p>
+   <p>For example, if the resource is hosted at <code>https://example.com</code> in
+the suborigin namespace <code>profile</code>, this would be serialized as <code>https://profile_example.com</code>.</p>
+   <p>Similarly, if a resource is hosted at <code>https://example.com:8080</code> in
+the suborigin namespace <code>separate</code>, this would be serialized as <code>https://separate_example.com:8080</code>.</p>
    <p>Internally, the <a data-link-type="dfn" href="#suborigin-namespace">suborigin namespace</a> must be tracked by the user agent.
 When the origin needs to be serialized for a resource, the user agent should
 follow the algorithm in <a href="#serializing">§6.3 Serializing Suborigins</a>.</p>
