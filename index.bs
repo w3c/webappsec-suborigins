@@ -75,7 +75,6 @@ spec: URL; urlPrefix: https://url.spec.whatwg.org/
 }
 </pre>
 
-<!----------------------------------------------------------------------------->
 # Introduction # {#intro}
 
 <em>This section is not normative.</em>
@@ -222,8 +221,6 @@ We see effectively three different use cases for Per-page Suborigins:
 Issue: TODO: We probably should add additional examples, or perhaps match an
 example to each bullet above.
 
-<!----------------------------------------------------------------------------->
-
 # Key Concepts and Terminology # {#terms}
 
 Issue: TODO(jww) This needs to be filled in once we have a pretty good handle on
@@ -250,8 +247,6 @@ Cross-site Scripting</a> for more information.
 ## Grammatical Concepts ## {#grammar}
 The Augmented Backus-Naur Form (ABNF) notation used in this document is
 specified in RFC5234. [[!ABNF]]
-
-<!----------------------------------------------------------------------------->
 
 # Defining a Suborigin # {#defining-suborigin}
 
@@ -426,8 +421,6 @@ context. In there is no suborigin namespace, the value should be undefined.
 Additionally, the `origin` property of the <a>document</a> object should reflect
 the serialized value of the origin as returned by [[#serializing]].
 
-<!----------------------------------------------------------------------------->
-
 # Access Control # {#access-control}
 
 Cross-origin (including cross-suborigin) communication is tricky when suborigins
@@ -488,8 +481,6 @@ Note: This may change in the future, and Suborigins may eventually be allowed to
 register Service Workers, but for now, allowing the creation of Service Workers
 from Suborigins adds too many complications.
 
-<!----------------------------------------------------------------------------->
-
 # Impact on Web Platform # {#impact}
 
 Content inside a suborigin namespace is restricted in the same way that other
@@ -509,8 +500,6 @@ but a temporary restriction for practical purposes. It may be loosened in a
 future version of this spec.
 
 Issue: TODO(jww) Other restrictions? cookies? document.domain?
-
-<!----------------------------------------------------------------------------->
 
 # Framework # {#framework}
 
@@ -624,8 +613,6 @@ Issue: TODO(jww): Fill in sub sections for the various security model opt-outs.
 This includes document.cookie access, how event.origin is serialized in
 postMessage, localStorage sharing
 
-<!----------------------------------------------------------------------------->
-
 # Practical Considerations in Using Suborigins # {#practical-considerations}
 
 Using suborigins with a Web application should be relatively simple. At the most
@@ -649,8 +636,6 @@ used, the application must be modified so it does not check the
 `event.origin` field.  Instead, it should check
 `event.finerorigin` and additionally the `event.suborigin`
 fields, as they are defined in [[#postmessage-ac]].
-
-<!----------------------------------------------------------------------------->
 
 # Security Considerations # {#security-considerations}
 
