@@ -146,9 +146,9 @@ companies with large portfolios of disparate products all under the same domain.
 
 We see effectively three different use cases for Per-page Suborigins:
 
-1. Separating distinct applications served, due to deployment issues, from the same
-   domain but do not need to extensively interact with other content. Examples
-   include marketing campaigns, simple search UIs, and so on.
+1. Separating distinct applications served from the same domain due to
+   deployment issues but do not need to extensively interact with other
+   content. Examples include marketing campaigns, simple search UIs, and so on.
 
 2. Enable secure isolation at modular boundaries within a larger web
    application by splitting the functional components into different
@@ -364,10 +364,10 @@ to ease the use of Suborigins in legacy applications are also presented. See
 ## Representation of Suborigins ## {#representation}
 
 At an abstract level, a suborigin consists of the <a>scheme</a>, <a>host</a>,
-and <a>port</a> of a physical (traditional) origin, plus a <a>suborigin namespace</a>.
+and <a>port</a> of a physical origin, plus a <a>suborigin namespace</a>.
 However, as mentioned above, suborigins are intended to fit within the framework
 of [[!RFC6454]].  Therefore, this specification provides a way of serializing a
-Suborigin bound resource into a physical (traditional) origin. This is done by inserting
+Suborigin bound resource into a physical origin. This is done by inserting
 the suborigin namespace into the host of the Origin, thus creating a new host
 but maintaining all of the information about both the original scheme, host,
 port, and the suborigin namespace. The serialization format prepends the host name with
@@ -381,13 +381,13 @@ Similarly, a resource hosted at `https://example.com:8080/` in
 the suborigin namespace `separate` would be serialized as
 `https://separate_example.com:8080/`.
 
-Internally, the user agent just track the <a>suborigin namespace</a> of the resource.
+Internally, the user agent just tracks the <a>suborigin namespace</a> of the resource.
 When the origin needs to be serialized, the user agent should
 follow the algorithm in [[#serializing]].
 
-Note that the underscore character is not a valid character for hostnames used
+Note: The underscore character is not a valid character for hostnames used
 on the web [[!RFC1123]] and as a result, the serialization above cannot collide
-with existing hostnames.
+with valid existing hostnames.
 
 ## Opting into a Suborigin ## {#opting-in}
 
@@ -411,7 +411,7 @@ following HTTP header in the response:
 
 Suborigins are defined by a <dfn>suborigin</dfn> HTTP response header. The syntax
 for the name and value of the header are described by the following ABNF
-grammar (RFC5234):
+grammar [[!RFC5234]]:
 
 <pre dfn-type="grammar" link-type="grammar">
     suborigin = 1*( <a>ALPHA</a> / <a>DIGIT</a> / "-" )
@@ -523,7 +523,7 @@ The suborigin of a resource is the value computed by the following algorithm:
 
   <li>
     If the HTTP response of the resource contains a valid
-    <pre>suborigin</pre> header, then let `suborigin-namespace` be the
+    [suborigin] header, then let `suborigin-namespace` be the
     value of the header.
   </li>
 
