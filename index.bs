@@ -164,7 +164,7 @@ We see effectively three different use cases for Per-page Suborigins:
    messages stored within the account.
 
 <div class="example">
-  `https://example.com/` runs two applications, Chat and Shopping, used,
+  `https://example.com` runs two applications, Chat and Shopping, used,
   respectively, for instant messaging and Internet shopping.  The former is
   hosted at `https://example.com/chat/`, and the latter is hosted at
   `https://example.com/shopping/`.
@@ -368,13 +368,13 @@ but maintaining all of the information about both the original scheme, host,
 port, and the suborigin namespace. This is done by prepending the host name with
 the suborigin namespace followed by a "`_`" character.
 
-For example, if the resource is hosted at `https://example.com/` in
+For example, if the resource is hosted at `https://example.com` in
 the suborigin namespace `profile`, this would be serialized as
-`https://profile_example.com/`.
+`https://profile_example.com`.
 
-Similarly, if a resource is hosted at `https://example.com:8080/` in
+Similarly, if a resource is hosted at `https://example.com:8080` in
 the suborigin namespace `separate`, this would be serialized as
-`https://separate_example.com:8080/`.
+`https://separate_example.com:8080`.
 
 Internally, the <a>suborigin namespace</a> must be tracked by the user agent.
 When the origin needs to be serialized for a resource, the user agent should
