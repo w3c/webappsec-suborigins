@@ -8,12 +8,12 @@ Level: 1
 Editor: Joel Weinberger, Google Inc., https://joelweinberger.us, jww@google.com
 Editor: Devdatta Akhawe, Dropbox Inc., http://devd.me, dev.akhawe@gmail.com
 Abstract:
-  This specification defines a mechanism for creating a security boundary
-  between different applications running in the same-origin. It allows a server
-  to specify a namespace on a resource response which is paired with the
-  scheme/host/port origin tuple. This new namespace plus origin tuple is used to
-  extend the same-origin policy to create a security boundary between this
-  resource load and resources in other namespaces.
+  This specification defines a mechanism for programmatically defining origins
+  to isolate different applications running in the same physical origin. It
+  allows a server to specify a namespace on a resource response which is paired
+  with the scheme/host/port origin tuple. User agents extend the same-origin
+  policy with this new namespace plus origin tuple to create a security
+  boundary between this resource and resources in other namespaces.
 Group: webappsec
 Indent: 2
 Markup Shorthands: css off, markdown on
@@ -97,7 +97,7 @@ Policy (CSP) [[CSP2]]. Both are powerful but have shortcomings and there are
 many external developers building legacy applications that find they cannot use
 those tools.
 
-Sandboxed frames can be used to completely separate untrusted content, but they
+Application developers can use sandboxed frames to completely isolate untrusted content, but they
 pose a large problem for containing trusted but potentially buggy code because
 it is very difficult, by design, for them to communicate with other frames. The
 synthetic origins assigned in a sandboxed frame are random and unpredictable,
@@ -105,6 +105,15 @@ making the use of <a>postMessage</a> and <a>CORS</a> difficult. Moreover,
 because they are by definition unique origins, with no relationship to the
 original origin, designing permissions for them to access resources of the
 original origin would be difficult.
+
+Issue: TODO: Problems with CSP sandbox goes well beyond this. synthetic origins
+via CSP sandbox do not let you persist state. This makes it impossible to port
+an old webpage to run unprivileged. Further, since sandbox inherits on all
+iframes within so you can't insert an iframe to say a widget since that gets
+sandboxed too and so would need to be rewritten to support such a scenario.
+This significantly complicates adoption. This probably needs to go into a new
+section This significantly complicates adoption. This probably needs to go into
+a new section.
 
 Content Security Policy is also promising but is generally incompatible with
 current website design. Many notable companies found it impractical to retrofit
@@ -115,7 +124,7 @@ companies with large portfolios of disparate products all under the same domain.
 
 ## Goals ## {#goals}
 
-* Provide a way for different applications hosted at the same real origin to
+* Provide a way for different applications hosted at the same physical origin to
   separate their content into separate logical origins. For example,
   `https://foobar.com/application` and `https://foobar.com/widget`, today, are,
   by definition, in the same origin, even if they are different applications.
@@ -126,57 +135,47 @@ companies with large portfolios of disparate products all under the same domain.
 * Similarly, provide a way for content authors to split their applications
   into logical modules with origin level separation without using different real
   origins. Content authors should not have to choose between putting all of
-  their content in the same origin, on different real origins, or putting
+  their content in the same origin, on different physical origins, or putting
   content in anonymous unique origins (sandboxes).
 
 * Provide safe defaults but also make it as simple as possible to retrofit
-  legacy applications on the same real origin with minimal programmatic changes.
+  legacy applications on the same physical origin with minimal programmatic changes.
   This includes providing security-model opt-outs where necessary.
-
-Issue: Not sure how to actually refer to 'real origins'. This is a terrible
-name, and we need a better way to talk about them. Maybe physical origin?
-Traditional origin? (jww)
 
 ## Use Cases/Examples ## {#usecases}
 
 We see effectively three different use cases for Per-page Suborigins:
 
-1. Separating distinct applications that happen to be served from the same
-   domain but do not need to extensively interact with other content. Examples
-   include marketing campaigns, simple search UIs, and so on. This use requires
-   very little engineering effort and faces very few constraints; the
-   applications may use `XMLHttpRequest` and `postMessage` to communicate with
-   their host domain as required.
+1. Separating distinct applications served from the same domain due to
+   deployment issues but do not need to extensively interact with other
+   content. Examples include marketing campaigns, simple search UIs, and so on.
 
-2. Allowing for modularity within a larger web application by splitting the
-   functional components into different suborigins. For example, Gmail might put
-   the contacts widget, settings tab, and HTML message views in separate
-   Per-page Suborigins. Such deployments may require relatively modest
-   refactorings to switch to <a>`postMessage`</a> and <a>CORS</a> where direct DOM access and
-   same-origin `XMLHttpRequest` are currently used, but we believe
-   doing so is considerably easier than retrofitting CSP onto arbitrary code
-   bases and can be done very incrementally.
+2. Enable secure isolation at modular boundaries within a larger web
+   application by splitting the functional components into different
+   suborigins. For example, a blogging application might isolate the main blog
+   viewership module, the admin module, and the authoring module via separate
+   suborigins.
 
 3. Similar to (2), applications with many users can split information relating
-   to different users into their own suborigin. For example, Twitter might put
-   each user profile into a unique suborigin so that an XSS within one profile
-   cannot be used to immediately infect other users or read their personal
-   messages stored within the account.
+   to different users into their own suborigin. For example, a social network
+   might put each user profile into a unique suborigin so that an XSS within
+   one profile cannot be used to immediately infect other users or read their
+   personal messages stored within the account.
 
 <div class="example">
-  `https://example.com` runs two applications, Chat and Shopping, used,
-  respectively, for instant messaging and Internet shopping.  The former is
-  hosted at `https://example.com/chat/`, and the latter is hosted at
+  `https://example.com/` runs two applications, Chat and Shopping, used,
+  respectively, for instant messaging and Internet shopping.  The site adminstrator runs 
+  the former at `https://example.com/chat/`, and the latter at
   `https://example.com/shopping/`.
 
   The Shopping application has been very well tested and generally does not
   contain much untrusted content. In fact, it only takes simple text from
   advertisers, and that text only ever appears in HTML contexts, so the
   application is able to entity encode the text and stop nearly all cross-site
-  scripting attacks on the application. Just in case, though, the developers
-  have implemented a CSP that is served with pages at subpaths of
-  `https://example.com/shopping/` that only allows scripts loaded from
-  `scripts.example.com`.
+  scripting attacks on the application. Further, the developers have also
+  enabled a strong Content Security Policy to mitigate potential XSS concerns
+  on all pages under `https://example.com/shopping/`. The CSP policy only allows scripts
+  from `scripts.example.com`.
 
   Historically, `https://example.com/chat/` has been riddled with cross-site
   scripting attacks. The application takes untrusted content from a wider
@@ -190,14 +189,14 @@ We see effectively three different use cases for Per-page Suborigins:
   attacker to buy goods with the user's account, so this is really the juicy
   target.
 
-  Since the applications are hosted on the same origin, these attacks have not
+  Since the applications share the same physical origin, these attacks have not
   traditionally been that difficult. Once an attacker has executed code on Chat
   with an XSS, they open a new window or iframe at `example.com/shopping/`.
   Since this is at the same origin as Chat, this allows the attacker to inject
   code through the `document` object of the window or iframe into the Shopping
   context, allowing the attacker to buy whatever they'd like.
 
-  For historical and branding reasons, both must be hosted on the `example.com`
+  Historical and branding reasons require hosting both applications on the `example.com`
   origin. Thus, while these two applications are completely separate, the
   company cannot split the products into two different origins (e.g.
   `examplechat.com` and `exampleshopping.com`) or different suborigins (e.g.
@@ -205,8 +204,8 @@ We see effectively three different use cases for Per-page Suborigins:
 
   To address this, the developers decide to serve both applications on two
   separate suborigins. For all HTTP requests to any subpath of `/chat` or
-  `/shopping`, example.com includes a Content Security Policy directive of
-  `suborigin: chat` or `suborigin: shopping`, respectively.
+  `/shopping`, example.com includes a header `suborigin: chat` or `suborigin:
+  shopping`, respectively.
 
   This does not remove any of the XSS attacks on Chat. However, when an attacker
   injects code into Chat and opens a window or iframe to
@@ -255,13 +254,15 @@ As defined in [[!ORIGIN]], two URIs are in the <a>same-origin</a> if they share
 the same <a>scheme</a>, <a>host</a>, and <a>port</a>.  If URIs are same-origin,
 then they share the same authority and can access all of each others resources.
 
-This has been a successful mechanism for privilege separation on the Web.
-However, it does limit the ability of a URI to separate itself into a new
-protection domain as it automatically shares authority with all other identical
-origins, which are defined by physical, rather than programatic, properties.
-While it is possible to setup unique domains and ports for different parts of
-the same application (scheme is more difficult to separate out), there are a
-diverse set of practical problems in doing so.
+Compared to per-user isolation in traditional operating systems, the
+same-origin policy isolates distinct applications identified by their origins.
+This has been a successful isolation mechanism on the Web.  However, it does
+limit the flexibility of a page to separate itself into a new protection domain
+as it automatically shares authority with all other identical origins. These origins
+are defined by physical, rather than programmatic, properties.  While it is
+possible to setup unique domains and ports for different parts of the same
+application (scheme is more difficult to separate out), there are a diverse set
+of practical problems in doing so.
 
 Suborigins provide a mechanism for creating this type of separation
 programatically. Any resources may provide, in a manner detailed below, a string
@@ -285,7 +286,7 @@ fundamentally separate, there are many reasons for hosting them on the same
 origin, including historical links, branding, and performance.  However, from
 security perspective, this means that a compromise of one application is a
 compromise of the other since the only security boundary in the browser is the
-origin, and both applications are hosted on the same origin.  Thus, even if
+origin, and both applications run in the same origin.  Thus, even if
 Google Search were to successful implement a strong Content Security Policy
 [[CSP2]], if Google Maps were to have an XSS vulnerability, it would be
 equivalent to having an XSS on Google Search as well, negating Google Search's
@@ -335,6 +336,10 @@ document on
 the attacker should not be able to control any document on
 `example.com` not in the `foo` namespace.
 
+Issue: TODO(devd): Should we also assert that attacker on main/parent origin
+cannot compromise the app in sub-origin?
+
+
 ### Out of Scope Attacker ### {#threat-model-out-of-scope}
 
 This tool is purely for modularity and meant to be an application security tool.
@@ -359,26 +364,30 @@ to ease the use of Suborigins in legacy applications are also presented. See
 ## Representation of Suborigins ## {#representation}
 
 At an abstract level, a suborigin consists of the <a>scheme</a>, <a>host</a>,
-and <a>port</a> of a traditional origin, plus a <a>suborigin namespace</a>.
+and <a>port</a> of a physical origin, plus a <a>suborigin namespace</a>.
 However, as mentioned above, suborigins are intended to fit within the framework
 of [[!RFC6454]].  Therefore, this specification provides a way of serializing a
-Suborigin bound resource into a traditional Origin. This is done by inserting
+Suborigin bound resource into a physical origin. This is done by inserting
 the suborigin namespace into the host of the Origin, thus creating a new host
 but maintaining all of the information about both the original scheme, host,
-port, and the suborigin namespace. This is done by prepending the host name with
+port, and the suborigin namespace. The serialization format prepends the host name with
 the suborigin namespace followed by a "`_`" character.
 
-For example, if the resource is hosted at `https://example.com` in
-the suborigin namespace `profile`, this would be serialized as
-`https://profile_example.com`.
+For example, a resource hosted at `https://example.com/` in
+the suborigin namespace `profile` would be serialized as
+`https://profile_example.com/`.
 
-Similarly, if a resource is hosted at `https://example.com:8080` in
-the suborigin namespace `separate`, this would be serialized as
-`https://separate_example.com:8080`.
+Similarly, a resource hosted at `https://example.com:8080/` in
+the suborigin namespace `separate` would be serialized as
+`https://separate_example.com:8080/`.
 
-Internally, the <a>suborigin namespace</a> must be tracked by the user agent.
-When the origin needs to be serialized for a resource, the user agent should
+Internally, the user agent just tracks the <a>suborigin namespace</a> of the resource.
+When the origin needs to be serialized, the user agent should
 follow the algorithm in [[#serializing]].
+
+Note: The underscore character is not a valid character for hostnames used
+on the web [[!RFC1123]] and as a result, the serialization above cannot collide
+with valid existing hostnames.
 
 ## Opting into a Suborigin ## {#opting-in}
 
@@ -386,31 +395,31 @@ Unlike the `sandbox` attribute, suborigin namespaces are predictable and
 controllable. Because of this, potentially untrusted content cannot opt into
 suborigins, unlike iframe sandboxes. If they could, then an XSS on a site could
 enter a specific suborigin and access all of its resources, thus violating the
-privilege separation suborigins are intended to protect. To prevent this, the
-server (rather than a resource itself) is treated as the only authoritative
-source of the suborigin namespace of a resource. This is implemented through an
-additional header-only Content Security Policy directive `suborigin`, which
-takes a string value that is the namespace. For example, to put a resource in
-the `testing` suborigin namespace, the server would specify the following
-directive in the CSP header:
+isolation suborigins intend to provide. To prevent this, the
+server (rather than a resource itself) is the only authoritative
+source of the suborigin namespace of a resource. The server communicates the
+suborigin of a resource to the user agent through a new `suborigin` header,
+which takes a string value that is the namespace. For example, to put a
+resource in the `testing` suborigin namespace, the server would specify the
+following HTTP header in the response:
 
 <pre>
   suborigin: testing
 </pre>
 
-## The `suborigin` Directive ## {#the-suborigin-directive}
+## The `suborigin` header ## {#the-suborigin-header}
 
-Suborigins are defined by a <dfn>suborigin directive</dfn> in the Content
-Security Policy [[!CSP2]] of the resource. The syntax for the name and value of
-the directive are described by the following ABNF grammar:
+Suborigins are defined by a <dfn>suborigin</dfn> HTTP response header. The syntax
+for the name and value of the header are described by the following ABNF
+grammar [[!RFC5234]]:
 
 <pre dfn-type="grammar" link-type="grammar">
-  directive-name  = "suborigin"
-  directive-value = 1*( <a>ALPHA</a> / <a>DIGIT</a> / "-" )
+    suborigin = 1*( <a>ALPHA</a> / <a>DIGIT</a> / "-" )
 </pre>
 
-A resource's <dfn>suborigin namespace</dfn> is the value of the
-`suborigin` directive.
+A resource's <dfn>suborigin namespace</dfn> is the value of the `suborigin`
+header. User agents MUST ignore multiple suborigin headers and only apply
+the first.
 
 ## Accessing the Suborigin in JavaScript ## {#suborigin-in-js}
 
@@ -429,6 +438,9 @@ do not support suborigins while providing origin-separation for user agents that
 do support suborigins. The following discussions discuss the three major
 cross-origin mechanisms that are relevant: <a>CORS</a>, <a>`postMessage`</a>,
 and Workers [[!WORKERS]].
+
+Issue: TODO(devd): Making things specific to XHR or CORS is weird. We should
+just make all fetches inside a suborigin CORS fetches and be done with it.
 
 ## CORS ## {#cors-ac}
 
@@ -449,37 +461,31 @@ origin, as described in [[#serializing]].
 
 Issue: TODO(jww): Formal definition of the headers and responses w/grammars.
 Also need to be explicit about `*` having same limitations as
-`Access-Control-Allow-Origin` w/credentials. Also need to describe opt-outs to
-use old-school Origin header and ACAO header.
+`Access-Control-Allow-Origin` w/credentials. 
 
 ## `postMessage` ## {#postmessage-ac}
 
-Cross-origin messaging via <a>`postMessage`</a> provides requires that the
-recipient be able to see the suborigin namespace of the message sender so an
-appropriate access control decision can be made. When a message is sent from a
+Cross-origin messaging via <a>`postMessage`</a> requires that the
+recipient be able to see the suborigin namespace of the message sender so it can make an
+appropriate access control decision. When a message is sent from a
 suborigin namespace, the receiver has the `event.origin` value set to the
 serialized suborigin value instead of the serializied origin, as described in
 [[#serializing]]. Additionally, a new `suborigin` property must be added to the
 `MessageEvent` given to the receiver which contains the suborigin namespace
 value.
 
-Issue: TODO(jww) Add opt-out so Origin header is traditional header.
 
 ## Workers ## {#workers-ac}
 
-Issue: TODO(jww): There are many details and specifics to fill in here.
+User agents MUST refuse to create or execute any workers in a page executing in
+a sub-origin.
 
-Workers [[!WORKERS]] are given the security context of the creating Suborigin
-and all origin checks should check suborigins as well.
-
-The Service Worker [[!SERVICE-WORKERS]] registration API must not be accessible
-from suborigins. As a result of the above restriction on Workers, since a
-Service Worker cannot be created by a Suborigin, no Service Workers will be able
-to intercept the requests of a Suborigin.
 
 Note: This may change in the future, and Suborigins may eventually be allowed to
-register Service Workers, but for now, allowing the creation of Service Workers
-from Suborigins adds too many complications.
+register Service Workers, but, for now, allowing the creation of any workers,
+including service workers and shared workers, from suborigins adds too many
+complications. Applications can still create workers by iframing a page not in
+a suborigin.
 
 # Impact on Web Platform # {#impact}
 
@@ -491,19 +497,16 @@ for developers.
 
 ## Relationship with Sensitive Permissions ## {#sensitive-permissions}
 
-The `localStorage` [[!WEBSTORAGE]] API must not be accessible from a
-suborigin.
+User agents MUST prevent a page running in a suborigin from accessing stateful
+mechanisms (e.g., localStorage, sessionStorage, document.cookie) tied to the
+parent, physical origin. Instead, the user agent SHOULD create a new object
+tied to the namespaced suborigin.
 
-Note: Similar to <a href="#workers-ac">Service Worker registration</a> as
-discussed above, this is not necessarily meant to be a permanent restriction,
-but a temporary restriction for practical purposes. It may be loosened in a
-future version of this spec.
-
-Issue: TODO(jww) Other restrictions? cookies? document.domain?
+User agents MUST ignore modifications to the document.domain property of the page.
 
 # Framework # {#framework}
 
-Note: These sections are tricky because, unlike traditional origins, we can't
+Note: These sections are tricky because, unlike physical origins, we can't
 define suborigins in terms of URIs. Since the suborigin namespace is defined in
 a header, not in the URI, we need to define them in terms of resources.
 
@@ -520,11 +523,9 @@ The suborigin of a resource is the value computed by the following algorithm:
   </li>
 
   <li>
-    If the Content Security Policy of the resource contains a valid
-    <a>suborigin directive</a> in the <a
-    href="https://www.w3.org/TR/CSP2/#policy-syntax">directive list</a>
-    [[!CSP2]], then let `suborigin-namespace` be the
-    `directive-value`.
+    If the HTTP response of the resource contains a valid
+    [suborigin] header, then let `suborigin-namespace` be the
+    value of the header.
   </li>
 
   <li>
@@ -609,9 +610,10 @@ algorithm:
 
 ## Security Model Opt-Outs ## {#security-model-opt-outs}
 
-Issue: TODO(jww): Fill in sub sections for the various security model opt-outs.
+Issue: TODO: Fill in sub sections for the various security model opt-outs.
 This includes document.cookie access, how event.origin is serialized in
-postMessage, localStorage sharing
+postMessage, localStorage sharing, how to use old-school Origin header and ACAO
+header.
 
 # Practical Considerations in Using Suborigins # {#practical-considerations}
 
@@ -620,7 +622,7 @@ basic level, if you have an application hosted on
 `https://example.com/app/`, and all of its resources are hosted at
 subpaths of `/app`, it requires that the server set a Content
 Security Policy on all HTTP requests to subpaths of `/app` that
-contain the directive `suborigin: namespace`, where
+contain the header `suborigin: namespace`, where
 `namespace` is of the application's choosing. This will ensure that
 the user agent loads all of these resources into the suborigin
 `namespace` and will enforce this boundary accordingly.
@@ -643,21 +645,21 @@ fields, as they are defined in [[#postmessage-ac]].
 
 A complication of suborigins is that while they provide a meaningful security
 for an application, that boundary makes much less sense to a user. That is,
-traditional origins provide a security boundary at a physical level: separate
+physical origins provide a security boundary at a physical level: separate
 scheme, hosts, and ports map to real boundaries external of a given application.
 However, suborigins as a boundary only makes sense <em>within the context of the
 program logic itself</em>, and there is no meaningful way for users to make
 decisions based on suborigins a priori.
 
-Therefore, suborigins should be used only internally in a user agent and should
-not be presented to users at all. For example, suborigins should never be
-presented in link text or a URL bar.
+Therefore, suborigins should be used only internally in a user agent and MUST
+NOT be presented to users at all. For example, user agents must never present
+suborigins in link text or a URL bar.
 
 ## Not Overthrowing Same-Origin Policy ## {#not-overthrowing-sop}
 
 Suborigins do not fundamentally change how the same-origin policy works. An
 application without suborigins should work identically to how it always has, and
 even in an application with suborigins, the same-origin policy still applies as
-always. In fact, suborigins have been defined within the context of the
+always. In fact, this document defines suborigins within the context of the
 same-origin policy so that, in theory, serialized suborigins can be thought of
 as a just a special case of the traditional same-origin policy.
