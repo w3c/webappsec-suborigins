@@ -482,9 +482,10 @@ a sub-origin.
 
 
 Note: This may change in the future, and Suborigins may eventually be allowed to
-register Service Workers, but for now, allowing the creation of (Service)
-Workers from Suborigins adds too many complications. Applications can still
-create workers by iframing a page not in a suborigin.
+register Service Workers, but, for now, allowing the creation of any workers,
+including service workers and shared workers, from suborigins adds too many
+complications. Applications can still create workers by iframing a page not in
+a suborigin.
 
 # Impact on Web Platform # {#impact}
 
