@@ -418,8 +418,8 @@ grammar [[!RFC5234]]:
 </pre>
 
 A resource's <dfn>suborigin namespace</dfn> is the value of the `suborigin`
-header. User agents MUST ignore multiple suborigin headers and only apply
-the first.
+header. If a user agent receives multiple suborigin headers, it MUST ignore 
+every header other than the last.
 
 ## Accessing the Suborigin in JavaScript ## {#suborigin-in-js}
 
