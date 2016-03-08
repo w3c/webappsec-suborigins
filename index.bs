@@ -247,6 +247,11 @@ Cross-site Scripting</a> for more information.
 The Augmented Backus-Naur Form (ABNF) notation used in this document is
 specified in RFC5234. [[!ABNF]]
 
+Lowercase characters, the `a-z` portion of <a>ALPHA</a>, are defined by the grammar:
+<pre dfn-type="grammar" link-type="grammar">
+    <dfn>LOWERALPHA</dfn> = %x61-7A   ; a-z
+</pre>
+
 # Defining a Suborigin # {#defining-suborigin}
 
 Origins are a mechanism for user agents to group URIs into protection domains.
@@ -414,7 +419,7 @@ for the name and value of the header are described by the following ABNF
 grammar [[!RFC5234]]:
 
 <pre dfn-type="grammar" link-type="grammar">
-    suborigin = 1*( <a>ALPHA</a> / <a>DIGIT</a> / "-" )
+    suborigin = 1*( <a>LOWERALPHA</a> / <a>DIGIT</a> / "-" )
 </pre>
 
 A resource's <dfn>suborigin namespace</dfn> is the value of the `suborigin`
