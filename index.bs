@@ -22,6 +22,7 @@ Markup Shorthands: css off, markdown on
 <pre class="anchors">
 spec: ABNF; urlPrefix: https://tools.ietf.org/html/rfc5234
   type: dfn
+    text: ALPHA; url: appendix-B.1
     text: VCHAR; url: appendix-B.1
     text: WSP; url: appendix-B.1
   type: grammar
