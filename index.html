@@ -1000,7 +1000,7 @@
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="http://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/Icons/w3c_home" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Suborigins</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2016-03-09">9 March 2016</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2016-03-11">11 March 2016</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1402,10 +1402,16 @@ following HTTP header in the response:</p>
    <p>Suborigins are defined by a <dfn data-dfn-type="dfn" data-noexport="" id="suborigin">suborigin<a class="self-link" href="#suborigin"></a></dfn> HTTP response header. The syntax
 for the name and value of the header are described by the following ABNF
 grammar <a data-link-type="biblio" href="#biblio-rfc5234">[RFC5234]</a>:</p>
-<pre>suborigin = 1*( <a data-link-type="grammar" href="#grammardef-loweralpha">LOWERALPHA</a> / <a data-link-type="grammar" href="https://tools.ietf.org/html/rfc5234#appendix-B.1">DIGIT</a> / "-" )
+<pre><dfn data-dfn-type="grammar" data-export="" id="grammardef-suborigin-name">suborigin-name<a class="self-link" href="#grammardef-suborigin-name"></a></dfn> = 1*( <a data-link-type="grammar" href="#grammardef-loweralpha">LOWERALPHA</a> / <a data-link-type="grammar" href="https://tools.ietf.org/html/rfc5234#appendix-B.1">DIGIT</a> / "-" )
+<dfn data-dfn-type="grammar" data-export="" id="grammardef-suborigin-policy-option">suborigin-policy-option<a class="self-link" href="#grammardef-suborigin-policy-option"></a></dfn> = "'unsafe-postmessage-send'"
+                          / "'unsafe-postmessage-receive'"
+                          / "'unsafe-cookies'"
+<dfn data-dfn-type="grammar" data-export="" id="grammardef-suborigin-policy-list">suborigin-policy-list<a class="self-link" href="#grammardef-suborigin-policy-list"></a></dfn> = 1*(<a data-link-type="grammar" href="https://tools.ietf.org/html/rfc7230#section-3.2.3">OWS</a> <a data-link-type="grammar" href="#grammardef-suborigin-policy-option">suborigin-policy-option</a> <a data-link-type="grammar" href="https://tools.ietf.org/html/rfc7230#section-3.2.3">OWS</a> ";")
+<dfn data-dfn-type="grammar" data-export="" id="grammardef-suborigin-header">suborigin-header<a class="self-link" href="#grammardef-suborigin-header"></a></dfn> = <a data-link-type="grammar" href="#grammardef-suborigin-name">suborigin-name</a> [ <a data-link-type="grammar" href="https://tools.ietf.org/html/rfc7230#section-3.2.3">RWS</a> <a data-link-type="grammar" href="#grammardef-suborigin-policy-list">suborigin-policy-list</a> ]
 </pre>
-   <p>A resource’s <dfn data-dfn-type="dfn" data-noexport="" id="suborigin-namespace">suborigin namespace<a class="self-link" href="#suborigin-namespace"></a></dfn> is the value of the <code>suborigin</code> header. User agents MUST ignore multiple suborigin headers and only apply
-the first.</p>
+   <p>User agents MUST ignore multiple suborigin headers and only apply the first.</p>
+   <p>A resource’s <dfn data-dfn-type="dfn" data-noexport="" id="suborigin-namespace">suborigin namespace<a class="self-link" href="#suborigin-namespace"></a></dfn> is the value of the <a data-link-type="grammar" href="#grammardef-suborigin-name">suborigin-name</a> in the <code>suborigin</code> header.</p>
+   <p>A resource’s <dfn data-dfn-type="dfn" data-noexport="" id="suborigin-policy">suborigin policy<a class="self-link" href="#suborigin-policy"></a></dfn> is the list of individual <a data-link-type="grammar" href="#grammardef-suborigin-policy-option">suborigin-policy-option</a> values in the <code>suborigin</code> header’s <a data-link-type="grammar" href="#grammardef-suborigin-policy-list">suborigin-policy-list</a>.</p>
    <h3 class="heading settled" data-level="3.7" id="suborigin-in-js"><span class="secno">3.7. </span><span class="content">Accessing the Suborigin in JavaScript</span><a class="self-link" href="#suborigin-in-js"></a></h3>
    <p>A <code>suborigin</code> property is added to the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-document">document</a> object which <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-reflect">reflects</a> the value of the suborigin namespace for the current execution
 context. In there is no suborigin namespace, the value should be undefined.</p>
@@ -1549,10 +1555,68 @@ these steps.</p>
  Origin specification</a> <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a>.</p>
    </ol>
    <h3 class="heading settled" data-level="6.4" id="security-model-opt-outs"><span class="secno">6.4. </span><span class="content">Security Model Opt-Outs</span><a class="self-link" href="#security-model-opt-outs"></a></h3>
-   <p class="issue" id="issue-e7f074e1"><a class="self-link" href="#issue-e7f074e1"></a> TODO: Fill in sub sections for the various security model opt-outs.
-This includes document.cookie access, how event.origin is serialized in
-postMessage, localStorage sharing, how to use old-school Origin header and ACAO
-header.</p>
+   <p>For backwards compatibility, Suborigins provide several opt-opts from the
+standard security model. A developer can choose to use these opt-outs by
+specifying a <a data-link-type="dfn" href="#suborigin-policy">suborigin policy</a> in <a href="#the-suborigin-header">the
+suborigin header</a></p>
+   <p>Since these opt-outs weaken the security model of suborigins, developers SHOULD
+NOT use these options unless they are required to make their application work.</p>
+   <p>The values of <a data-link-type="grammar" href="#grammardef-suborigin-policy-option">suborigin-policy-option</a> that may be
+present in a <a data-link-type="dfn" href="#suborigin-policy">suborigin policy</a> have the following effects:</p>
+   <ul>
+    <li data-md="">
+     <p>'<dfn data-dfn-type="dfn" data-noexport="" id="unsafe-postmessage-receive"><code>unsafe-postmessage-receive</code><a class="self-link" href="#unsafe-postmessage-receive"></a></dfn>' When a message is sent <i>to</i> a
+frame with a <code>postMessage</code> <code>target</code> of a serialized physical origin, but not a
+serialized suborigin, if the frame has an execution context with a suborigin
+where the scheme, host, and port match the <code>target</code>, but it also has a
+suborigin namespace, if <a data-link-type="dfn" href="#unsafe-postmessage-receive"><code>unsafe-postmessage-receive</code></a> is set, it will
+still receive the message.</p>
+     <div class="example" id="unsafe-postmessage-send-ex">
+      <a class="self-link" href="#unsafe-postmessage-send-ex"></a> <code>https://example.com</code> runs a map API at <code>https://example.com/maps</code> which is
+embedded by many other websites. It provides a <code>postMessage()</code> API to place
+markers on the map at locations the embedder chooses. 
+      <p>The developer would like to run <code>https://example.com/maps</code> in a suborigin
+namespace "maps".  However, when embedders send messages to the embedded
+frame, because they are legacy uses from before the use of suborigins, they
+send essages with a <code>target</code> of <code>https://example.com</code>, <em>not</em> <code>https://maps_example.com</code>. Since the developer would still like this frame to
+be able to provide the API to these legacy embedders, it can serve the frame
+with the <a data-link-type="dfn" href="#unsafe-postmessage-receive"><code>unsafe-postmessage-receive</code></a> directive, which will allow the
+frame to receive messages on behalf of <code>https://example.com</code>, even though it is
+at <code>https://maps_example.com</code>.</p>
+     </div>
+    <li data-md="">
+     <p>'<dfn data-dfn-type="dfn" data-noexport="" id="unsafe-postmessage-send"><code>unsafe-postmessage-send</code><a class="self-link" href="#unsafe-postmessage-send"></a></dfn>' When a message is sent <i>from</i> a suborigin
+namespace with <a data-link-type="dfn" href="#unsafe-postmessage-send"><code>unsafe-postmessage-send</code></a> set, the <code>event.origin</code> value
+of the receiver should be set to the serialized physical origin, not the
+serialized suborigin value. However, the <code>event.suborigin</code> field should still
+be set to the name of the suborigin namespace.</p>
+     <div class="example" id="example-70449592">
+      <a class="self-link" href="#example-70449592"></a> Continuing the case in the above example, <code>https://example.com/maps</code> is a
+mapping application that is commonly embedded in other sites. It provides a <code>postMessage()</code> based API to place locations of the embedder’s choosing on the
+map. <code>httsp://example.com</code> would like to run the application in a suborigin
+named "maps". 
+      <p>In response to queries to the API, <code>https://example.com/maps</code> may send
+messages back to the embedder if, for example, a user clicks on one of the
+locations. However, since the embedder may be legacy and not be aware of
+suborigins, when it checks the <code>event.origin</code> protery of the <code>MesseageEvent</code>,
+if it sees <code>https://maps_example.com</code> as the origin, it will reject the
+message as a potential attack. Thus, <code>https://example.com</code> may use the <a data-link-type="dfn" href="#unsafe-postmessage-send"><code>unsafe-postmessage-send</code></a> directive to allow its messages to appear
+with the origin of the physical origin, in this case <code>https://example.com</code>.</p>
+     </div>
+    <li data-md="">
+     <p>'<dfn data-dfn-type="dfn" data-noexport="" id="unsafe-cookies"><code>unsafe-cookies</code><a class="self-link" href="#unsafe-cookies"></a></dfn>' When an execution context with a suborigin
+namespace has <a data-link-type="dfn" href="#unsafe-cookies"><code>unsafe-cookies</code></a> set, the
+execution context should not have a fresh cookie jar for the suborigin
+namespace, and instead, the cookie jar should be shared with the null
+suborigin for the execution context.</p>
+     <p class="issue" id="issue-9e5170b2"><a class="self-link" href="#issue-9e5170b2"></a> TODO: Flesh out document.cookie vs set cookie use cases. Also, write an
+example that makes clear that this is extremely dangerous and should not be
+used if you have Real Deal auth and csrf cookies used.</p>
+   </ul>
+   <p class="issue" id="issue-3e7a08cf"><a class="self-link" href="#issue-3e7a08cf"></a> TODO: These opt-out descriptions should probably be moved to the
+individual sections where the behaviors are discussed (i.e. postMessage and
+cookies). These just need to be fleshed out anyway, and examples and reasons
+need to be given.</p>
    <h2 class="heading settled" data-level="7" id="practical-considerations"><span class="secno">7. </span><span class="content">Practical Considerations in Using Suborigins</span><a class="self-link" href="#practical-considerations"></a></h2>
    <p>Using suborigins with a Web application should be relatively simple. At the most
 basic level, if you have an application hosted on <code>https://example.com/app/</code>, and all of its resources are hosted at
@@ -1627,7 +1691,15 @@ as a just a special case of the traditional same-origin policy.</p>
    <li><a href="#origin">origin</a><span>, in §2</span>
    <li><a href="#same-origin">same-origin</a><span>, in §2</span>
    <li><a href="#suborigin">suborigin</a><span>, in §3.6</span>
+   <li><a href="#grammardef-suborigin-header">suborigin-header</a><span>, in §3.6</span>
+   <li><a href="#grammardef-suborigin-name">suborigin-name</a><span>, in §3.6</span>
    <li><a href="#suborigin-namespace">suborigin namespace</a><span>, in §3.6</span>
+   <li><a href="#suborigin-policy">suborigin policy</a><span>, in §3.6</span>
+   <li><a href="#grammardef-suborigin-policy-list">suborigin-policy-list</a><span>, in §3.6</span>
+   <li><a href="#grammardef-suborigin-policy-option">suborigin-policy-option</a><span>, in §3.6</span>
+   <li><a href="#unsafe-cookies">unsafe-cookies</a><span>, in §6.4</span>
+   <li><a href="#unsafe-postmessage-receive">unsafe-postmessage-receive</a><span>, in §6.4</span>
+   <li><a href="#unsafe-postmessage-send">unsafe-postmessage-send</a><span>, in §6.4</span>
    <li><a href="#xhr">XHR</a><span>, in §2</span>
    <li><a href="#xmlhttprequest">XMLHttpRequest</a><span>, in §2</span>
    <li><a href="#xss">XSS</a><span>, in §2</span>
@@ -1655,6 +1727,12 @@ as a just a special case of the traditional same-origin policy.</p>
     <a data-link-type="biblio" href="#biblio-html">[HTML]</a> defines the following terms:
     <ul>
      <li><a href="https://html.spec.whatwg.org/multipage/comms.html#dom-messageport-postmessage">postmessage</a>
+    </ul>
+   <li>
+    <span>[HTTP]</span> defines the following terms:
+    <ul>
+     <li><a href="https://tools.ietf.org/html/rfc7230#section-3.2.3">ows</a>
+     <li><a href="https://tools.ietf.org/html/rfc7230#section-3.2.3">rws</a>
     </ul>
    <li>
     <a data-link-type="biblio" href="#biblio-url">[url]</a> defines the following terms:
@@ -1734,10 +1812,13 @@ cannot compromise the app in sub-origin?<a href="#issue-ace20ff1"> ↵ </a></div
 just make all fetches inside a suborigin CORS fetches and be done with it.<a href="#issue-d5c3193c"> ↵ </a></div>
    <div class="issue"> TODO(jww): Formal definition of the headers and responses w/grammars.
 Also need to be explicit about <code>*</code> having same limitations as <code>Access-Control-Allow-Origin</code> w/credentials.<a href="#issue-282a2442"> ↵ </a></div>
-   <div class="issue"> TODO: Fill in sub sections for the various security model opt-outs.
-This includes document.cookie access, how event.origin is serialized in
-postMessage, localStorage sharing, how to use old-school Origin header and ACAO
-header.<a href="#issue-e7f074e1"> ↵ </a></div>
+   <div class="issue"> TODO: Flesh out document.cookie vs set cookie use cases. Also, write an
+example that makes clear that this is extremely dangerous and should not be
+used if you have Real Deal auth and csrf cookies used.<a href="#issue-9e5170b2"> ↵ </a></div>
+   <div class="issue"> TODO: These opt-out descriptions should probably be moved to the
+individual sections where the behaviors are discussed (i.e. postMessage and
+cookies). These just need to be fleshed out anyway, and examples and reasons
+need to be given.<a href="#issue-3e7a08cf"> ↵ </a></div>
   </div>
  </body>
 </html>

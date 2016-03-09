@@ -47,6 +47,11 @@ spec: HTML; urlPrefix: https://html.spec.whatwg.org/multipage/
     urlPrefix: comms.html
       text: postMessage; url: #dom-messageport-postmessage
 
+spec: HTTP; urlPrefix: https://tools.ietf.org/html/rfc7230
+  type: grammar
+    text: OWS; url: section-3.2.3
+    text: RWS; url: section-3.2.3
+
 spec: URL; urlPrefix: https://url.spec.whatwg.org/
   type: dfn
     text: scheme; url: #syntax-url-scheme
@@ -420,13 +425,22 @@ for the name and value of the header are described by the following ABNF
 grammar [[!RFC5234]]:
 
 <pre dfn-type="grammar" link-type="grammar">
-    suborigin = 1*( <a>LOWERALPHA</a> / <a>DIGIT</a> / "-" )
+    <dfn>suborigin-name</dfn> = 1*( <a>LOWERALPHA</a> / <a>DIGIT</a> / "-" )
+    <dfn>suborigin-policy-option</dfn> = "'unsafe-postmessage-send'"
+                              / "'unsafe-postmessage-receive'"
+                              / "'unsafe-cookies'"
+    <dfn>suborigin-policy-list</dfn> = 1*(<a>OWS</a> <a>suborigin-policy-option</a> <a>OWS</a> ";")
+    <dfn>suborigin-header</dfn> = <a>suborigin-name</a> [ <a>RWS</a> <a>suborigin-policy-list</a> ]
 </pre>
 
-A resource's <dfn>suborigin namespace</dfn> is the value of the `suborigin`
-header. User agents MUST ignore multiple suborigin headers and only apply
-the first.
+User agents MUST ignore multiple suborigin headers and only apply the first.
 
+A resource's <dfn>suborigin namespace</dfn> is the value of the
+<a link-type="grammar">suborigin-name</a> in the `suborigin` header.
+
+A resource's <dfn>suborigin policy</dfn> is the list of individual
+<a link-type="grammar">suborigin-policy-option</a> values in the `suborigin`
+header's  <a link-type="grammar">suborigin-policy-list</a>.
 ## Accessing the Suborigin in JavaScript ## {#suborigin-in-js}
 
 A `suborigin` property is added to the <a>document</a> object which
@@ -616,10 +630,77 @@ algorithm:
 
 ## Security Model Opt-Outs ## {#security-model-opt-outs}
 
-Issue: TODO: Fill in sub sections for the various security model opt-outs.
-This includes document.cookie access, how event.origin is serialized in
-postMessage, localStorage sharing, how to use old-school Origin header and ACAO
-header.
+For backwards compatibility, Suborigins provide several opt-opts from the
+standard security model. A developer can choose to use these opt-outs by
+specifying a <a>suborigin policy</a> in <a href="#the-suborigin-header">the
+suborigin header</a>
+
+Since these opt-outs weaken the security model of suborigins, developers SHOULD
+NOT use these options unless they are required to make their application work.
+
+The values of <a link-type="grammar">suborigin-policy-option</a> that may be
+present in a <a>suborigin policy</a> have the following effects:
+
+* '<dfn>`unsafe-postmessage-receive`</dfn>' When a message is sent <i>to</i> a
+  frame with a `postMessage` `target` of a serialized physical origin, but not a
+  serialized suborigin, if the frame has an execution context with a suborigin
+  where the scheme, host, and port match the `target`, but it also has a
+  suborigin namespace, if <a>`unsafe-postmessage-receive`</a> is set, it will
+  still receive the message.
+
+  <div class="example" id="unsafe-postmessage-send-ex">
+  `https://example.com` runs a map API at `https://example.com/maps` which is
+  embedded by many other websites. It provides a `postMessage()` API to place
+  markers on the map at locations the embedder chooses.
+
+  The developer would like to run `https://example.com/maps` in a suborigin
+  namespace "maps".  However, when embedders send messages to the embedded
+  frame, because they are legacy uses from before the use of suborigins, they
+  send essages with a `target` of `https://example.com`, <em>not</em>
+  `https://maps_example.com`. Since the developer would still like this frame to
+  be able to provide the API to these legacy embedders, it can serve the frame
+  with the <a>`unsafe-postmessage-receive`</a> directive, which will allow the
+  frame to receive messages on behalf of `https://example.com`, even though it is
+  at `https://maps_example.com`.
+  </div>
+
+* '<dfn>`unsafe-postmessage-send`</dfn>' When a message is sent <i>from</i> a suborigin
+  namespace with <a>`unsafe-postmessage-send`</a> set, the `event.origin` value
+  of the receiver should be set to the serialized physical origin, not the
+  serialized suborigin value. However, the `event.suborigin` field should still
+  be set to the name of the suborigin namespace.
+
+  <div class="example">
+  Continuing the case in the above example, `https://example.com/maps` is a
+  mapping application that is commonly embedded in other sites. It provides a
+  `postMessage()` based API to place locations of the embedder's choosing on the
+  map. `httsp://example.com` would like to run the application in a suborigin
+  named "maps".
+
+  In response to queries to the API, `https://example.com/maps` may send
+  messages back to the embedder if, for example, a user clicks on one of the
+  locations. However, since the embedder may be legacy and not be aware of
+  suborigins, when it checks the `event.origin` protery of the `MesseageEvent`,
+  if it sees `https://maps_example.com` as the origin, it will reject the
+  message as a potential attack. Thus, `https://example.com` may use the
+  <a>`unsafe-postmessage-send`</a> directive to allow its messages to appear
+  with the origin of the physical origin, in this case `https://example.com`.
+  </div>
+
+* '<dfn>`unsafe-cookies`</dfn>' When an execution context with a suborigin
+  namespace has <a>`unsafe-cookies`</a> set, the
+  execution context should not have a fresh cookie jar for the suborigin
+  namespace, and instead, the cookie jar should be shared with the null
+  suborigin for the execution context.
+
+  Issue: TODO: Flesh out document.cookie vs set cookie use cases. Also, write an
+  example that makes clear that this is extremely dangerous and should not be
+  used if you have Real Deal auth and csrf cookies used.
+
+Issue: TODO: These opt-out descriptions should probably be moved to the
+individual sections where the behaviors are discussed (i.e. postMessage and
+cookies). These just need to be fleshed out anyway, and examples and reasons
+need to be given.
 
 # Practical Considerations in Using Suborigins # {#practical-considerations}
 
