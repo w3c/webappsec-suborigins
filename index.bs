@@ -445,7 +445,7 @@ header's  <a link-type="grammar">suborigin-policy-list</a>.
 
 A `suborigin` property is added to the <a>document</a> object which
 <a>reflects</a> the value of the suborigin namespace for the current execution
-context. In there is no suborigin namespace, the value should be undefined.
+context. If there is no suborigin namespace, the value should be undefined.
 
 Additionally, the `origin` property of the <a>document</a> object should reflect
 the serialized value of the origin as returned by [[#serializing]].
