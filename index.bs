@@ -47,6 +47,12 @@ spec: HTML; urlPrefix: https://html.spec.whatwg.org/multipage/
     urlPrefix: comms.html
       text: postMessage; url: #dom-messageport-postmessage
 
+spec: HTML51; urlPrefix: http://www.w3.org/TR/html51/
+  type: dfn
+    urlPrefix: dom.html
+      text: cookie-averse; url: #cookie-averse
+      text: resource metadata management; url: #resource-metadata-management
+
 spec: HTTP; urlPrefix: https://tools.ietf.org/html/rfc7230
   type: grammar
     text: OWS; url: section-3.2.3
@@ -57,6 +63,10 @@ spec: URL; urlPrefix: https://url.spec.whatwg.org/
     text: scheme; url: #syntax-url-scheme
     text: host; url: #syntax-host
     text: port; url: #syntax-url-port
+</pre>
+
+<pre class="link-defaults">
+spec:dom-ls; type:interface; text:Document
 </pre>
 
 <pre class="biblio">
@@ -374,15 +384,16 @@ to ease the use of Suborigins in legacy applications are also presented. See
 
 ## Representation of Suborigins ## {#representation}
 
-At an abstract level, a suborigin consists of the <a>scheme</a>, <a>host</a>,
-and <a>port</a> of a physical origin, plus a <a>suborigin namespace</a>.
-However, as mentioned above, suborigins are intended to fit within the framework
-of [[!RFC6454]].  Therefore, this specification provides a way of serializing a
-Suborigin bound resource into a physical origin. This is done by inserting
-the suborigin namespace into the host of the Origin, thus creating a new host
-but maintaining all of the information about both the original scheme, host,
-port, and the suborigin namespace. The serialization format prepends the host name with
-the suborigin namespace followed by a "`_`" character.
+At an abstract level, a suborigin consists of the <dfn>physical origin</dfn>,
+which is a <a>scheme</a>, <a>host</a>, and <a>port</a>, plus a <a>suborigin
+namespace</a>.  However, as mentioned above, suborigins are intended to fit
+within the framework of [[!RFC6454]].  Therefore, this specification provides a
+way of serializing a Suborigin bound resource into a physical origin. This is
+done by inserting the suborigin namespace into the host of the Origin, thus
+creating a new host but maintaining all of the information about both the
+original scheme, host, port, and the suborigin namespace. The serialization
+format prepends the host name with the suborigin namespace followed by a "`_`"
+character.
 
 For example, a resource hosted at `https://example.com/` in
 the suborigin namespace `profile` would be serialized as
@@ -628,6 +639,33 @@ algorithm:
    href="https://tools.ietf.org/html/rfc6454#section-6.2">Section 6.2 in the
    Origin specification</a> [[!RFC6454]].
 
+## Interactions with the DOM ## {#dom-interactions}
+
+### Cookies ### {#cookies}
+
+Append the following to the list of conditions of {{Document}} objects that are
+<a>cookie-averse</a> in Section 3.1.2 of HTML5's <a>resource metadata
+management</a>:
+
+* A {{Document}} who has a non-empty <a>suborigin namespace</a>, unless the <a
+  link-type="grammar">suborigin-policy-option</a> for the {{Document}} contains
+  the '<a>`unsafe-cookies`</a>' value.
+
+Modify the paragraph following this list to read "scheme/host/port/suborigin
+tuple" instead of "scheme/host/port tuple".
+
+Note: A <a>cookie-averse</a> {{Document}} object has the property that direct
+access to `document.cookie` returns the empty string, and assigning to
+`document.cookie` has no effect whatsoever. However, that network cookies are
+not affected and documents with different <a>suborigin namespaces</a> on the
+same <a>physical origin</a> share the same cookies on the network.
+
+Note: For practical purposes, this means that a developer cannot use
+`document.cookie` directly because assignment and reading of the object are both
+no-ops. However, a <a lt="cookie-averse">cookie-averse</a> {{Document}} may
+still use getters and setters on the `cookie` property of the `document` object
+and, in that way, may still simulate cookie access.
+
 ## Security Model Opt-Outs ## {#security-model-opt-outs}
 
 For backwards compatibility, Suborigins provide several opt-opts from the
@@ -693,9 +731,9 @@ present in a <a>suborigin policy</a> have the following effects:
   namespace, and instead, the cookie jar should be shared with the null
   suborigin for the execution context.
 
-  Issue: TODO: Flesh out document.cookie vs set cookie use cases. Also, write an
-  example that makes clear that this is extremely dangerous and should not be
-  used if you have Real Deal auth and csrf cookies used.
+  Issue: TODO: Write an example that makes clear that this is extremely
+  dangerous and should not be used if you have Real Deal auth and csrf cookies
+  used.
 
 Issue: TODO: These opt-out descriptions should probably be moved to the
 individual sections where the behaviors are discussed (i.e. postMessage and

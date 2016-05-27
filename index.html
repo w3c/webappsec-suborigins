@@ -1000,7 +1000,7 @@
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="http://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/Icons/w3c_home" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Suborigins</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2016-03-11">11 March 2016</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2016-05-26">26 May 2016</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1109,7 +1109,12 @@ boundary between this resource and resources in other namespaces.</p>
         <li><a href="#unicode-serialization"><span class="secno">6.3.1</span> <span class="content">Unicode Serialization of a Suborigin</span></a>
         <li><a href="#ascii-serialization"><span class="secno">6.3.2</span> <span class="content">ASCII Serialization of a Suborigin</span></a>
        </ul>
-      <li><a href="#security-model-opt-outs"><span class="secno">6.4</span> <span class="content">Security Model Opt-Outs</span></a>
+      <li>
+       <a href="#dom-interactions"><span class="secno">6.4</span> <span class="content">Interactions with the DOM</span></a>
+       <ul class="toc">
+        <li><a href="#cookies"><span class="secno">6.4.1</span> <span class="content">Cookies</span></a>
+       </ul>
+      <li><a href="#security-model-opt-outs"><span class="secno">6.5</span> <span class="content">Security Model Opt-Outs</span></a>
      </ul>
     <li><a href="#practical-considerations"><span class="secno">7</span> <span class="content">Practical Considerations in Using Suborigins</span></a>
     <li>
@@ -1363,17 +1368,18 @@ Origins. From the user agent’s  perspective, two resources in different
 Suborigins are simply in different Origins, and the relationship between the two
 resources should be the same as any other two differing origins as described in <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a>. However, given the impracticalities this may impart on some
 applications who might want to adopt Suborigins, a few security-model opt-outs
-to ease the use of Suborigins in legacy applications are also presented. See <a href="#security-model-opt-outs">§6.4 Security Model Opt-Outs</a> for more information.</p>
+to ease the use of Suborigins in legacy applications are also presented. See <a href="#security-model-opt-outs">§6.5 Security Model Opt-Outs</a> for more information.</p>
    <h3 class="heading settled" data-level="3.4" id="representation"><span class="secno">3.4. </span><span class="content">Representation of Suborigins</span><a class="self-link" href="#representation"></a></h3>
-   <p>At an abstract level, a suborigin consists of the <a data-link-type="dfn" href="https://url.spec.whatwg.org/#syntax-url-scheme">scheme</a>, <a data-link-type="dfn" href="https://url.spec.whatwg.org/#syntax-host">host</a>,
-and <a data-link-type="dfn" href="https://url.spec.whatwg.org/#syntax-url-port">port</a> of a physical origin, plus a <a data-link-type="dfn" href="#suborigin-namespace">suborigin namespace</a>.
-However, as mentioned above, suborigins are intended to fit within the framework
-of <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a>.  Therefore, this specification provides a way of serializing a
-Suborigin bound resource into a physical origin. This is done by inserting
-the suborigin namespace into the host of the Origin, thus creating a new host
-but maintaining all of the information about both the original scheme, host,
-port, and the suborigin namespace. The serialization format prepends the host name with
-the suborigin namespace followed by a "<code>_</code>" character.</p>
+   <p>At an abstract level, a suborigin consists of the <dfn data-dfn-type="dfn" data-noexport="" id="physical-origin">physical origin<a class="self-link" href="#physical-origin"></a></dfn>,
+which is a <a data-link-type="dfn" href="https://url.spec.whatwg.org/#syntax-url-scheme">scheme</a>, <a data-link-type="dfn" href="https://url.spec.whatwg.org/#syntax-host">host</a>, and <a data-link-type="dfn" href="https://url.spec.whatwg.org/#syntax-url-port">port</a>, plus a <a data-link-type="dfn" href="#suborigin-namespace">suborigin
+namespace</a>.  However, as mentioned above, suborigins are intended to fit
+within the framework of <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a>.  Therefore, this specification provides a
+way of serializing a Suborigin bound resource into a physical origin. This is
+done by inserting the suborigin namespace into the host of the Origin, thus
+creating a new host but maintaining all of the information about both the
+original scheme, host, port, and the suborigin namespace. The serialization
+format prepends the host name with the suborigin namespace followed by a "<code>_</code>"
+character.</p>
    <p>For example, a resource hosted at <code>https://example.com/</code> in
 the suborigin namespace <code>profile</code> would be serialized as <code>https://profile_example.com/</code>.</p>
    <p>Similarly, a resource hosted at <code>https://example.com:8080/</code> in
@@ -1554,7 +1560,26 @@ these steps.</p>
      <p>Proceed with step 1 of <a href="https://tools.ietf.org/html/rfc6454#section-6.2">Section 6.2 in the
  Origin specification</a> <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a>.</p>
    </ol>
-   <h3 class="heading settled" data-level="6.4" id="security-model-opt-outs"><span class="secno">6.4. </span><span class="content">Security Model Opt-Outs</span><a class="self-link" href="#security-model-opt-outs"></a></h3>
+   <h3 class="heading settled" data-level="6.4" id="dom-interactions"><span class="secno">6.4. </span><span class="content">Interactions with the DOM</span><a class="self-link" href="#dom-interactions"></a></h3>
+   <h4 class="heading settled" data-level="6.4.1" id="cookies"><span class="secno">6.4.1. </span><span class="content">Cookies</span><a class="self-link" href="#cookies"></a></h4>
+   <p>Append the following to the list of conditions of <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document">Document</a></code> objects that are <a data-link-type="dfn" href="http://www.w3.org/TR/html51/dom.html#cookie-averse">cookie-averse</a> in Section 3.1.2 of HTML5’s <a data-link-type="dfn" href="http://www.w3.org/TR/html51/dom.html#resource-metadata-management">resource metadata
+management</a>:</p>
+   <ul>
+    <li data-md="">
+     <p>A <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document">Document</a></code> who has a non-empty <a data-link-type="dfn" href="#suborigin-namespace">suborigin namespace</a>, unless the <a data-link-type="grammar" href="#grammardef-suborigin-policy-option">suborigin-policy-option</a> for the <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document">Document</a></code> contains
+the '<a data-link-type="dfn" href="#unsafe-cookies"><code>unsafe-cookies</code></a>' value.</p>
+   </ul>
+   <p>Modify the paragraph following this list to read "scheme/host/port/suborigin
+tuple" instead of "scheme/host/port tuple".</p>
+   <p class="note" role="note">Note: A <a data-link-type="dfn" href="http://www.w3.org/TR/html51/dom.html#cookie-averse">cookie-averse</a> <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document">Document</a></code> object has the property that direct
+access to <code>document.cookie</code> returns the empty string, and assigning to <code>document.cookie</code> has no effect whatsoever. However, that network cookies are
+not affected and documents with different <a data-link-type="dfn" href="#suborigin-namespace">suborigin namespaces</a> on the
+same <a data-link-type="dfn" href="#physical-origin">physical origin</a> share the same cookies on the network.</p>
+   <p class="note" role="note">Note: For practical purposes, this means that a developer cannot use <code>document.cookie</code> directly because assignment and reading of the object are both
+no-ops. However, a <a data-link-type="dfn" href="http://www.w3.org/TR/html51/dom.html#cookie-averse">cookie-averse</a> <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document">Document</a></code> may
+still use getters and setters on the <code>cookie</code> property of the <code>document</code> object
+and, in that way, may still simulate cookie access.</p>
+   <h3 class="heading settled" data-level="6.5" id="security-model-opt-outs"><span class="secno">6.5. </span><span class="content">Security Model Opt-Outs</span><a class="self-link" href="#security-model-opt-outs"></a></h3>
    <p>For backwards compatibility, Suborigins provide several opt-opts from the
 standard security model. A developer can choose to use these opt-outs by
 specifying a <a data-link-type="dfn" href="#suborigin-policy">suborigin policy</a> in <a href="#the-suborigin-header">the
@@ -1609,9 +1634,9 @@ namespace has <a data-link-type="dfn" href="#unsafe-cookies"><code>unsafe-cookie
 execution context should not have a fresh cookie jar for the suborigin
 namespace, and instead, the cookie jar should be shared with the null
 suborigin for the execution context.</p>
-     <p class="issue" id="issue-9e5170b2"><a class="self-link" href="#issue-9e5170b2"></a> TODO: Flesh out document.cookie vs set cookie use cases. Also, write an
-example that makes clear that this is extremely dangerous and should not be
-used if you have Real Deal auth and csrf cookies used.</p>
+     <p class="issue" id="issue-6dd4fe49"><a class="self-link" href="#issue-6dd4fe49"></a> TODO: Write an example that makes clear that this is extremely
+dangerous and should not be used if you have Real Deal auth and csrf cookies
+used.</p>
    </ul>
    <p class="issue" id="issue-3e7a08cf"><a class="self-link" href="#issue-3e7a08cf"></a> TODO: These opt-out descriptions should probably be moved to the
 individual sections where the behaviors are discussed (i.e. postMessage and
@@ -1689,6 +1714,7 @@ as a just a special case of the traditional same-origin policy.</p>
    <li><a href="#cross-site-scripting">cross-site scripting</a><span>, in §2</span>
    <li><a href="#grammardef-loweralpha">LOWERALPHA</a><span>, in §2.1</span>
    <li><a href="#origin">origin</a><span>, in §2</span>
+   <li><a href="#physical-origin">physical origin</a><span>, in §3.4</span>
    <li><a href="#same-origin">same-origin</a><span>, in §2</span>
    <li><a href="#suborigin">suborigin</a><span>, in §3.6</span>
    <li><a href="#grammardef-suborigin-header">suborigin-header</a><span>, in §3.6</span>
@@ -1697,9 +1723,9 @@ as a just a special case of the traditional same-origin policy.</p>
    <li><a href="#suborigin-policy">suborigin policy</a><span>, in §3.6</span>
    <li><a href="#grammardef-suborigin-policy-list">suborigin-policy-list</a><span>, in §3.6</span>
    <li><a href="#grammardef-suborigin-policy-option">suborigin-policy-option</a><span>, in §3.6</span>
-   <li><a href="#unsafe-cookies">unsafe-cookies</a><span>, in §6.4</span>
-   <li><a href="#unsafe-postmessage-receive">unsafe-postmessage-receive</a><span>, in §6.4</span>
-   <li><a href="#unsafe-postmessage-send">unsafe-postmessage-send</a><span>, in §6.4</span>
+   <li><a href="#unsafe-cookies">unsafe-cookies</a><span>, in §6.5</span>
+   <li><a href="#unsafe-postmessage-receive">unsafe-postmessage-receive</a><span>, in §6.5</span>
+   <li><a href="#unsafe-postmessage-send">unsafe-postmessage-send</a><span>, in §6.5</span>
    <li><a href="#xhr">XHR</a><span>, in §2</span>
    <li><a href="#xmlhttprequest">XMLHttpRequest</a><span>, in §2</span>
    <li><a href="#xss">XSS</a><span>, in §2</span>
@@ -1729,6 +1755,12 @@ as a just a special case of the traditional same-origin policy.</p>
      <li><a href="https://html.spec.whatwg.org/multipage/comms.html#dom-messageport-postmessage">postmessage</a>
     </ul>
    <li>
+    <a data-link-type="biblio" href="#biblio-html51">[html51]</a> defines the following terms:
+    <ul>
+     <li><a href="http://www.w3.org/TR/html51/dom.html#cookie-averse">cookie-averse</a>
+     <li><a href="http://www.w3.org/TR/html51/dom.html#resource-metadata-management">resource metadata management</a>
+    </ul>
+   <li>
     <span>[HTTP]</span> defines the following terms:
     <ul>
      <li><a href="https://tools.ietf.org/html/rfc7230#section-3.2.3">ows</a>
@@ -1744,6 +1776,7 @@ as a just a special case of the traditional same-origin policy.</p>
    <li>
     <a data-link-type="biblio" href="#biblio-dom-ls">[dom-ls]</a> defines the following terms:
     <ul>
+     <li><a href="https://dom.spec.whatwg.org/#document">Document</a>
      <li><a href="https://dom.spec.whatwg.org/#concept-document">document</a>
      <li><a href="https://dom.spec.whatwg.org/#concept-reflect">reflect</a>
     </ul>
@@ -1767,6 +1800,8 @@ as a just a special case of the traditional same-origin policy.</p>
    <dd>Anne van Kesteren. <a href="http://www.w3.org/TR/cors/">Cross-Origin Resource Sharing</a>. 16 January 2014. REC. URL: <a href="http://www.w3.org/TR/cors/">http://www.w3.org/TR/cors/</a>
    <dt id="biblio-dom-ls"><a class="self-link" href="#biblio-dom-ls"></a>[DOM-LS]
    <dd>Document Object Model URL: <a href="https://dom.spec.whatwg.org/">https://dom.spec.whatwg.org/</a>
+   <dt id="biblio-html51"><a class="self-link" href="#biblio-html51"></a>[HTML51]
+   <dd>Simon Pieters; et al. <a href="http://www.w3.org/TR/html51/">HTML 5.1</a>. 8 October 2015. WD. URL: <a href="http://www.w3.org/TR/html51/">http://www.w3.org/TR/html51/</a>
    <dt id="biblio-rfc0020"><a class="self-link" href="#biblio-rfc0020"></a>[RFC0020]
    <dd>V.G. Cerf. <a href="https://tools.ietf.org/html/rfc20">ASCII format for network interchange</a>. October 1969. Internet Standard. URL: <a href="https://tools.ietf.org/html/rfc20">https://tools.ietf.org/html/rfc20</a>
    <dt id="biblio-rfc1123"><a class="self-link" href="#biblio-rfc1123"></a>[RFC1123]
@@ -1812,9 +1847,9 @@ cannot compromise the app in sub-origin?<a href="#issue-ace20ff1"> ↵ </a></div
 just make all fetches inside a suborigin CORS fetches and be done with it.<a href="#issue-d5c3193c"> ↵ </a></div>
    <div class="issue"> TODO(jww): Formal definition of the headers and responses w/grammars.
 Also need to be explicit about <code>*</code> having same limitations as <code>Access-Control-Allow-Origin</code> w/credentials.<a href="#issue-282a2442"> ↵ </a></div>
-   <div class="issue"> TODO: Flesh out document.cookie vs set cookie use cases. Also, write an
-example that makes clear that this is extremely dangerous and should not be
-used if you have Real Deal auth and csrf cookies used.<a href="#issue-9e5170b2"> ↵ </a></div>
+   <div class="issue"> TODO: Write an example that makes clear that this is extremely
+dangerous and should not be used if you have Real Deal auth and csrf cookies
+used.<a href="#issue-6dd4fe49"> ↵ </a></div>
    <div class="issue"> TODO: These opt-out descriptions should probably be moved to the
 individual sections where the behaviors are discussed (i.e. postMessage and
 cookies). These just need to be fleshed out anyway, and examples and reasons
