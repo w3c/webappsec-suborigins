@@ -245,7 +245,7 @@ defined throughout the spec and place them here.
 This section defines several terms used throughout the document.
 
 The terms <dfn>origin</dfn>, <dfn>cross-origin</dfn>, and <dfn>same-origin</dfn>
-are defined by the Origin specification. [[!ORIGIN]]
+are defined by the Origin specification. [[!RFC6454]]
 
 <dfn>CORS</dfn>, or <dfn>Cross-Origin Resource Sharing</dfn>, are defined by the
 CORS specification. [[!CORS]]
@@ -261,7 +261,7 @@ Cross-site Scripting</a> for more information.
 
 ## Grammatical Concepts ## {#grammar}
 The Augmented Backus-Naur Form (ABNF) notation used in this document is
-specified in RFC5234. [[!ABNF]]
+specified in RFC5234. [[!RFC5234]]
 
 Lowercase characters, the `a-z` portion of <a>ALPHA</a>, are defined by the grammar:
 <pre dfn-type="grammar" link-type="grammar">
@@ -271,7 +271,7 @@ Lowercase characters, the `a-z` portion of <a>ALPHA</a>, are defined by the gram
 # Defining a Suborigin # {#defining-suborigin}
 
 Origins are a mechanism for user agents to group URIs into protection domains.
-As defined in [[!ORIGIN]], two URIs are in the <a>same-origin</a> if they share
+As defined in [[!RFC6454]], two URIs are in the <a>same-origin</a> if they share
 the same <a>scheme</a>, <a>host</a>, and <a>port</a>.  If URIs are same-origin,
 then they share the same authority and can access all of each others resources.
 
@@ -480,7 +480,7 @@ For pages in a suborigin namespace, all <a>`XMLHttpRequest`</a>s and
 triggering a <a>cross-origin request with preflight</a> for all non-<a>simple
 cross-origin requests</a>. Additionally, all requests from a suborigin namespace
 must include a `Suborigin` header whose value is the context's suborigin name.
-Finally, the `Origin` header [[!ORIGIN]] value must use the serialized suborigin
+Finally, the `Origin` header [[!RFC6454]] value must use the serialized suborigin
 value instead of the serializied origin, as described in [[#serializing]].
 
 Similar changes are needed for responses from the server with the addition of an
