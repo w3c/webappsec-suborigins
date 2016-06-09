@@ -440,8 +440,8 @@ grammar [[!RFC5234]]:
     <dfn>suborigin-policy-option</dfn> = "'unsafe-postmessage-send'"
                               / "'unsafe-postmessage-receive'"
                               / "'unsafe-cookies'"
-    <dfn>suborigin-policy-list</dfn> = 1*(<a>OWS</a> <a>suborigin-policy-option</a> <a>OWS</a> ";")
-    <dfn>suborigin-header</dfn> = <a>suborigin-name</a> [ <a>RWS</a> <a>suborigin-policy-list</a> ]
+    <dfn>suborigin-policy-list</dfn> = 1*(<a>RWS</a> <a>suborigin-policy-option</a> <a>OWS</a>)
+    <dfn>suborigin-header</dfn> = <a>suborigin-name</a> [ <a>suborigin-policy-list</a> ]
 </pre>
 
 User agents MUST ignore multiple suborigin headers and only apply the first.
