@@ -1457,8 +1457,9 @@ boundary between this resource and resources in other namespaces.</p>
       <li>
        <a href="#serializing"><span class="secno">6.3</span> <span class="content">Serializing Suborigins</span></a>
        <ol class="toc">
-        <li><a href="#unicode-serialization"><span class="secno">6.3.1</span> <span class="content">Unicode Serialization of a Suborigin</span></a>
-        <li><a href="#ascii-serialization"><span class="secno">6.3.2</span> <span class="content">ASCII Serialization of a Suborigin</span></a>
+        <li><a href="#update-triple"><span class="secno">6.3.1</span> <span class="content">Update Scheme/Host/Port Triple with Suborigin</span></a>
+        <li><a href="#unicode-serialization"><span class="secno">6.3.2</span> <span class="content">Unicode Serialization of a Suborigin</span></a>
+        <li><a href="#ascii-serialization"><span class="secno">6.3.3</span> <span class="content">ASCII Serialization of a Suborigin</span></a>
        </ol>
       <li>
        <a href="#dom-interactions"><span class="secno">6.4</span> <span class="content">Interactions with the DOM</span></a>
@@ -1848,7 +1849,16 @@ This includes providing security-model opt-outs where necessary.</p>
    <p>Two resources are the same-origin if their suborigins are the same.</p>
    <h3 class="heading settled" data-level="6.3" id="serializing"><span class="secno">6.3. </span><span class="content">Serializing Suborigins</span><a class="self-link" href="#serializing"></a></h3>
    <p>This section defines how to serialize an origin to a unicode <a data-link-type="biblio" href="#biblio-unicode6">[Unicode6]</a> string and to an ASCII <a data-link-type="biblio" href="#biblio-rfc0020">[RFC0020]</a> string.</p>
-   <h4 class="heading settled" data-level="6.3.1" id="unicode-serialization"><span class="secno">6.3.1. </span><span class="content">Unicode Serialization of a Suborigin</span><a class="self-link" href="#unicode-serialization"></a></h4>
+   <h4 class="heading settled" data-level="6.3.1" id="update-triple"><span class="secno">6.3.1. </span><span class="content">Update Scheme/Host/Port Triple with Suborigin</span><a class="self-link" href="#update-triple"></a></h4>
+   <ol>
+    <li data-md="">
+     <p>Let <var>prefix</var> be the suborigin namespace portion of the suborigin pair.</p>
+    <li data-md="">
+     <p>Prepend the string "$" and append the string "$" to <var>prefix</var>.</p>
+    <li data-md="">
+     <p>Prepend <var>prefix</var> to the host part of the origin triple.</p>
+   </ol>
+   <h4 class="heading settled" data-level="6.3.2" id="unicode-serialization"><span class="secno">6.3.2. </span><span class="content">Unicode Serialization of a Suborigin</span><a class="self-link" href="#unicode-serialization"></a></h4>
    <p>The Unicode serialization of a suborigin is the value returned by the following
   algorithm:</p>
    <ol>
@@ -1861,20 +1871,12 @@ This includes providing security-model opt-outs where necessary.</p>
   these steps.</p>
     <li data-md="">
      <p>Otherwise, if the suborigin namespace portion of the suborigin pair is not
- null:</p>
-     <ol>
-      <li data-md="">
-       <p>Let <var>prefix</var> be the suborigin namespace portion of the suborigin pair.</p>
-      <li data-md="">
-       <p>Append the string "_" to <var>prefix</var>.</p>
-      <li data-md="">
-       <p>Prepend <var>prefix</var> to the host part of the origin triple.</p>
-     </ol>
+ null, <a href="#update-triple">§6.3.1 Update Scheme/Host/Port Triple with Suborigin</a>.</p>
     <li data-md="">
      <p>Proceed with step 1 of <a href="https://tools.ietf.org/html/rfc6454#section-6.1">Section 6.1 in the
  Origin specification</a> <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a>.</p>
    </ol>
-   <h4 class="heading settled" data-level="6.3.2" id="ascii-serialization"><span class="secno">6.3.2. </span><span class="content">ASCII Serialization of a Suborigin</span><a class="self-link" href="#ascii-serialization"></a></h4>
+   <h4 class="heading settled" data-level="6.3.3" id="ascii-serialization"><span class="secno">6.3.3. </span><span class="content">ASCII Serialization of a Suborigin</span><a class="self-link" href="#ascii-serialization"></a></h4>
    <p>The ASCII serialization of a suborigin is the value returned by the following
   algorithm:</p>
    <ol>
@@ -1886,16 +1888,8 @@ This includes providing security-model opt-outs where necessary.</p>
      <p>(i.e., the code point sequence U+006E, U+0075, U+006C, U+006C) and abort
 these steps.</p>
     <li data-md="">
-     <p>Otherwise, if the suborigin-namespace portion of the suborigin pair is not
- null:</p>
-     <ol>
-      <li data-md="">
-       <p>Let suffix be the string "+".</p>
-      <li data-md="">
-       <p>Append the suborigin-namespace portion of the suborigin pair to suffix.</p>
-      <li data-md="">
-       <p>Append suffix to the scheme part of the origin triple.</p>
-     </ol>
+     <p>Otherwise, if the suborigin namespace portion of the suborigin pair is not
+ null, <a href="#update-triple">§6.3.1 Update Scheme/Host/Port Triple with Suborigin</a>.</p>
     <li data-md="">
      <p>Proceed with step 1 of <a href="https://tools.ietf.org/html/rfc6454#section-6.2">Section 6.2 in the
  Origin specification</a> <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a>.</p>

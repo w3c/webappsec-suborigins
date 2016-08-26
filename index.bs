@@ -591,6 +591,14 @@ spec:dom-ls; type:interface; text:Document
   This section defines how to serialize an origin to a unicode [[!Unicode6]]
   string and to an ASCII [[!RFC0020]] string.
 
+  ### Update Scheme/Host/Port Triple with Suborigin ### {#update-triple}
+
+  1. Let |prefix| be the suborigin namespace portion of the suborigin pair.
+
+  2. Prepend the string "$" and append the string "$" to |prefix|.
+
+  3. Prepend |prefix| to the host part of the origin triple.
+
   ### Unicode Serialization of a Suborigin ### {#unicode-serialization}
 
   The Unicode serialization of a suborigin is the value returned by the following
@@ -605,12 +613,7 @@ spec:dom-ls; type:interface; text:Document
       these steps.
 
   2. Otherwise, if the suborigin namespace portion of the suborigin pair is not
-     null:
-     1. Let |prefix| be the suborigin namespace portion of the suborigin pair.
-
-     2. Append the string "_" to |prefix|.
-
-     3. Prepend |prefix| to the host part of the origin triple.
+     null, [[#update-triple]].
 
   3. Proceed with step 1 of <a
      href="https://tools.ietf.org/html/rfc6454#section-6.1">Section 6.1 in the
@@ -629,11 +632,8 @@ spec:dom-ls; type:interface; text:Document
     (i.e., the code point sequence U+006E, U+0075, U+006C, U+006C) and abort
     these steps.
 
-  2. Otherwise, if the suborigin-namespace portion of the suborigin pair is not
-     null:
-     1. Let suffix be the string "+".
-     2. Append the suborigin-namespace portion of the suborigin pair to suffix.
-     3. Append suffix to the scheme part of the origin triple.
+  2. Otherwise, if the suborigin namespace portion of the suborigin pair is not
+     null, [[#update-triple]].
 
   3. Proceed with step 1 of <a
      href="https://tools.ietf.org/html/rfc6454#section-6.2">Section 6.2 in the
