@@ -34,6 +34,7 @@
  *   - .note       for informative notes             (div, p, span, aside, details)
  *   - .example    for informative examples          (div, p, pre, span)
  *   - .issue      for issues                        (div, p, span)
+ *   - .assertion  for assertions                    (div, p, span)
  *   - .advisement for loud normative statements     (div, p, strong)
  *   - .annoying-warning for spec obsoletion notices (div, aside, details)
  *
@@ -48,9 +49,9 @@
  *   - ::before styled for CSS-generated issue/example/figure numbers:
  *     -> Documents wishing to use this only need to add
  *        figcaption::before,
- *        .caption::before { content: "Figure "  counter(figure);  }
- *        .example::before { content: "Example " counter(example); }
- *        .issue::before   { content: "Issue "   counter(issue);   }
+ *        .caption::before { content: "Figure "  counter(figure) " ";  }
+ *        .example::before { content: "Example " counter(example) " "; }
+ *        .issue::before   { content: "Issue "   counter(issue) " ";   }
  *
  * Header Stuff (ignore, just don't conflict with these classes)
  *   - .head for the header
@@ -456,7 +457,7 @@
 		font-style: normal;
 	}
 	dt dfn code, code.idl {
-		font-size: inherit;
+		font-size: normal;
 	}
 	dfn var {
 		font-style: normal;
@@ -597,7 +598,7 @@
 /*                             Colored Boxes                                  */
 /******************************************************************************/
 
-	.issue, .note, .example, .advisement, blockquote {
+	.issue, .note, .example, .assertion, .advisement, blockquote {
 		padding: .5em;
 		border: .5em;
 		border-left-style: solid;
@@ -612,6 +613,7 @@
 	.note,
 	.example,
 	.advisement,
+	.assertion,
 	blockquote {
 		margin: 1em auto;
 	}
@@ -644,7 +646,7 @@
 		padding-right: 1em;
 		text-transform: uppercase;
 	}
-	/* Add .issue::before { content: "Issue " counter(issue); } for autogen numbers,
+	/* Add .issue::before { content: "Issue " counter(issue) " "; } for autogen numbers,
 	   or use class="marker" to mark up the issue number in source. */
 
 /** Example *******************************************************************/
@@ -662,7 +664,7 @@
 		min-width: 7.5em;
 		display: block;
 	}
-	/* Add .example::before { content: "Example " counter(example); } for autogen numbers,
+	/* Add .example::before { content: "Example " counter(example) " "; } for autogen numbers,
 	   or use class="marker" to mark up the example number in source. */
 
 /** Non-normative Note ********************************************************/
@@ -689,6 +691,14 @@
 	}
 	details.note[open] > summary {
 		border-bottom: 1px silver solid;
+	}
+
+/** Assertion Box *************************************************************/
+	/*  for assertions in algorithms */
+
+	.assertion {
+		border-color: #AAA;
+		background: #EEE;
 	}
 
 /** Advisement Box ************************************************************/
@@ -1185,11 +1195,11 @@ Possible extra rowspan handling
                 content: "Invalid Example" counter(example);
             }
 
-            figure {
+            figcaption {
                 counter-increment: figure;
             }
             figcaption:not(.no-marker)::before {
-                content: "Figure " counter(figure);
+                content: "Figure " counter(figure) " ";
             }</style>
 <style>/* style-dfn-panel */
 
@@ -1338,15 +1348,15 @@ Possible extra rowspan handling
             }</style>
  <body class="h-entry">
   <div class="head">
-   <p data-fill-with="logo"><a class="logo" href="http://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
+   <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Suborigins</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2016-06-08">8 June 2016</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2016-08-26">26 August 2016</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
      <dd><a class="u-url" href="https://w3c.github.io/webappsec-suborigins/">https://w3c.github.io/webappsec-suborigins/</a>
      <dt>Feedback:
-     <dd><span><a href="mailto:public-webappsec@w3.org?subject=%5Bsuborigins%5D%20YOUR%20TOPIC%20HERE">public-webappsec@w3.org</a> with subject line “<kbd>[suborigins] <i data-lt="">… message topic …</i></kbd>” (<a href="http://lists.w3.org/Archives/Public/public-webappsec/" rel="discussion">archives</a>)</span>
+     <dd><span><a href="mailto:public-webappsec@w3.org?subject=%5Bsuborigins%5D%20YOUR%20TOPIC%20HERE">public-webappsec@w3.org</a> with subject line “<kbd>[suborigins] <i data-lt="">… message topic …</i></kbd>” (<a href="https://lists.w3.org/Archives/Public/public-webappsec/" rel="discussion">archives</a>)</span>
      <dt>Issue Tracking:
      <dd><a href="https://github.com/w3c/webappsec-suborigins/issues/">GitHub</a>
      <dd><a href="#issues-index">Inline In Spec</a>
@@ -1356,7 +1366,7 @@ Possible extra rowspan handling
     </dl>
    </div>
    <div data-fill-with="warning"></div>
-   <p class="copyright" data-fill-with="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2016 <a href="http://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup> (<a href="http://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>, <a href="http://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>). W3C <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply. </p>
+   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2016 <a href="https://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup> (<a href="https://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>, <a href="https://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>, <a href="https://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>). W3C <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply. </p>
    <hr title="Separator for header">
   </div>
   <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
@@ -1376,19 +1386,19 @@ boundary between this resource and resources in other namespaces.</p>
 	Its publication here does not imply endorsement of its contents by W3C.
 	Don’t cite this document other than as work in progress. </p>
    <p> <strong>Changes to this document may be tracked at <a href="https://github.com/w3c/webappsec">https://github.com/w3c/webappsec</a>.</strong> </p>
-   <p> The (<a href="http://lists.w3.org/Archives/Public/public-webappsec/">archived</a>) public mailing list <a href="mailto:public-webappsec@w3.org?Subject=%5Bsuborigins%5D%20PUT%20SUBJECT%20HERE">public-webappsec@w3.org</a> (see <a href="http://www.w3.org/Mail/Request">instructions</a>)
+   <p> The (<a href="https://lists.w3.org/Archives/Public/public-webappsec/">archived</a>) public mailing list <a href="mailto:public-webappsec@w3.org?Subject=%5Bsuborigins%5D%20PUT%20SUBJECT%20HERE">public-webappsec@w3.org</a> (see <a href="https://www.w3.org/Mail/Request">instructions</a>)
 	is preferred for discussion of this specification.
 	When sending e-mail,
 	please put the text “suborigins” in the subject,
 	preferably like this:
 	“[suborigins] <em>…summary of comment…</em>” </p>
-   <p> This document was produced by the <a href="http://www.w3.org/2011/webappsec/">Web Application Security Working Group</a>. </p>
+   <p> This document was produced by the <a href="https://www.w3.org/2011/webappsec/">Web Application Security Working Group</a>. </p>
    <p> This document was produced by a group operating under
-	the <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/">5 February 2004 W3C Patent Policy</a>.
-	W3C maintains a <a href="http://www.w3.org/2004/01/pp-impl/49309/status" rel="disclosure">public list of any patent disclosures</a> made in connection with the deliverables of the group;
+	the <a href="https://www.w3.org/Consortium/Patent-Policy-20040205/">5 February 2004 W3C Patent Policy</a>.
+	W3C maintains a <a href="https://www.w3.org/2004/01/pp-impl/49309/status" rel="disclosure">public list of any patent disclosures</a> made in connection with the deliverables of the group;
 	that page also includes instructions for disclosing a patent.
-	An individual who has actual knowledge of a patent which the individual believes contains <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">Essential Claim(s)</a> must disclose the information in accordance with <a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure">section 6 of the W3C Patent Policy</a>. </p>
-   <p> This document is governed by the <a href="http://www.w3.org/2015/Process-20150901/" id="w3c_process_revision">1 September 2015 W3C Process Document</a>. </p>
+	An individual who has actual knowledge of a patent which the individual believes contains <a href="https://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">Essential Claim(s)</a> must disclose the information in accordance with <a href="https://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure">section 6 of the W3C Patent Policy</a>. </p>
+   <p> This document is governed by the <a href="https://www.w3.org/2015/Process-20150901/" id="w3c_process_revision">1 September 2015 W3C Process Document</a>. </p>
    <p></p>
   </div>
   <div data-fill-with="at-risk"></div>
@@ -1457,19 +1467,6 @@ boundary between this resource and resources in other namespaces.</p>
        </ol>
       <li><a href="#security-model-opt-outs"><span class="secno">6.5</span> <span class="content">Security Model Opt-Outs</span></a>
      </ol>
-    <li><a href="#practical-considerations"><span class="secno">7</span> <span class="content">Practical Considerations in Using Suborigins</span></a>
-    <li>
-     <a href="#security-considerations"><span class="secno">8</span> <span class="content">Security Considerations</span></a>
-     <ol class="toc">
-      <li><a href="#presentation-to-users"><span class="secno">8.1</span> <span class="content">Presentation of Suborigins to Users</span></a>
-      <li><a href="#not-overthrowing-sop"><span class="secno">8.2</span> <span class="content">Not Overthrowing Same-Origin Policy</span></a>
-     </ol>
-    <li>
-     <a href="#conformance"><span class="secno"></span> <span class="content">Conformance</span></a>
-     <ol class="toc">
-      <li><a href="#conventions"><span class="secno"></span> <span class="content">Document conventions</span></a>
-      <li><a href="#conformant-algorithms"><span class="secno"></span> <span class="content">Conformant Algorithms</span></a>
-     </ol>
     <li>
      <a href="#index"><span class="secno"></span> <span class="content">Index</span></a>
      <ol class="toc">
@@ -1489,50 +1486,52 @@ boundary between this resource and resources in other namespaces.</p>
    <h2 class="heading settled" data-level="1" id="intro"><span class="secno">1. </span><span class="content">Introduction</span><a class="self-link" href="#intro"></a></h2>
    <p><em>This section is not normative.</em></p>
    <p>Currently, web applications are almost always compartmentalized by using
-separate host names to establish separate web origins. This is useful for
-helping to prevent XSS and other cross-origin attacks, but has many unintended
-consequences. For example, it causes latency due to additional DNS lookups,
-removes the ability to use single-origin features (such as the
-history.pushState API), and creates cryptic host name changes in the user
-experience. Perhaps most importantly, it results in an extremely inflexible
-architecture that, once rolled out, cannot be easily and transparently changed
-later on.</p>
+  separate host names to establish separate web origins. This is useful for
+  helping to prevent XSS and other cross-origin attacks, but has many unintended
+  consequences. For example, it causes latency due to additional DNS lookups,
+  removes the ability to use single-origin features (such as the
+  history.pushState API), and creates cryptic host name changes in the user
+  experience. Perhaps most importantly, it results in an extremely inflexible
+  architecture that, once rolled out, cannot be easily and transparently changed
+  later on.</p>
    <p>There are several mechanisms for reducing the attack surface for XSS without
-creating separate host-name based origins, but each pose their own problems.
-Per-page Suborigins is an attempt to fill some of those gaps. Two of the most
-notable mechanisms are Sandboxed IFrames <a data-link-type="biblio" href="#biblio-iframesandbox">[IFrameSandbox]</a> and Content Security
-Policy (CSP) <a data-link-type="biblio" href="#biblio-csp2">[CSP2]</a>. Both are powerful but have shortcomings and there are
-many external developers building legacy applications that find they cannot use
-those tools.</p>
+  creating separate host-name based origins, but each pose their own problems.
+  Per-page Suborigins is an attempt to fill some of those gaps. Two of the most
+  notable mechanisms are Sandboxed IFrames <a data-link-type="biblio" href="#biblio-iframesandbox">[IFrameSandbox]</a> and Content Security
+  Policy (CSP) <a data-link-type="biblio" href="#biblio-csp2">[CSP2]</a>. Both are powerful but have shortcomings and there are
+  many external developers building legacy applications that find they cannot use
+  those tools.</p>
    <p>Application developers can use sandboxed frames to completely isolate untrusted content, but they
-pose a large problem for containing trusted but potentially buggy code because
-it is very difficult, by design, for them to communicate with other frames. The
-synthetic origins assigned in a sandboxed frame are random and unpredictable,
-making the use of <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/comms.html#dom-messageport-postmessage">postMessage</a> and <a data-link-type="dfn" href="#cors" id="ref-for-cors-1">CORS</a> difficult. Moreover,
-because they are by definition unique origins, with no relationship to the
-original origin, designing permissions for them to access resources of the
-original origin would be difficult.</p>
-   <p class="issue" id="issue-081d98d7"><a class="self-link" href="#issue-081d98d7"></a> TODO: Problems with CSP sandbox goes well beyond this. synthetic origins
-via CSP sandbox do not let you persist state. This makes it impossible to port
-an old webpage to run unprivileged. Further, since sandbox inherits on all
-iframes within so you can’t insert an iframe to say a widget since that gets
-sandboxed too and so would need to be rewritten to support such a scenario.
-This significantly complicates adoption. This probably needs to go into a new
-section This significantly complicates adoption. This probably needs to go into
-a new section.</p>
+  pose a large problem for containing trusted but potentially buggy code because
+  it is very difficult, by design, for them to communicate with other frames. The
+  synthetic origins assigned in a sandboxed frame are random and unpredictable,
+  making the use of <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/comms.html#dom-messageport-postmessage">postMessage</a> and <a data-link-type="dfn" href="#cors" id="ref-for-cors-1">CORS</a> difficult. Moreover,
+  because they are by definition unique origins, with no relationship to the
+  original origin, designing permissions for them to access resources of the
+  original origin would be difficult.</p>
+   <p class="issue" id="issue-009fcd8b"><a class="self-link" href="#issue-009fcd8b"></a> TODO: Problems with CSP sandbox goes well beyond this. synthetic origins
+  via CSP sandbox do not let you persist state. This makes it impossible to port
+  an old webpage to run unprivileged. Further, since sandbox inherits on all
+  iframes within so you can’t insert an iframe to say a widget since that gets
+  sandboxed too and so would need to be rewritten to support such a scenario.
+  This significantly complicates adoption. This probably needs to go into a new
+  section This significantly complicates adoption. This probably needs to go into
+  a new section.</p>
    <p>Content Security Policy is also promising but is generally incompatible with
-current website design. Many notable companies found it impractical to retrofit
-most of their applications with it. On top of this, until all applications
-hosted within a single origin are simultaneously put behind CSP, the mechanism
-offers limited incremental benefits, which is especially problematic for
-companies with large portfolios of disparate products all under the same domain.</p>
+  current website design. Many notable companies found it impractical to retrofit
+  most of their applications with it. On top of this, until all applications
+  hosted within a single origin are simultaneously put behind CSP, the mechanism
+  offers limited incremental benefits, which is especially problematic for
+  companies with large portfolios of disparate products all under the same domain.</p>
    <h3 class="heading settled" data-level="1.1" id="goals"><span class="secno">1.1. </span><span class="content">Goals</span><a class="self-link" href="#goals"></a></h3>
    <ul>
     <li data-md="">
      <p>Provide a way for different applications hosted at the same physical origin to
-separate their content into separate logical origins. For example, <code>https://foobar.com/application</code> and <code>https://foobar.com/widget</code>, today, are,
+separate their content into separate logical origins. For example,
+`https://foobar.com/application<code>and</code>https://foobar.com/widget<code>, today, are,
 by definition, in the same origin, even if they are different applications.
-Thus an XSS at <code>https://foobar.com/application</code> means an XSS at <code>https://foobar.com/widget</code>, even if <code>https://foobar.com/widget</code> is
+Thus an XSS at</code>https://foobar.com/application<code>means an XSS at
+`https://foobar.com/widget</code>, even if <code>https://foobar.com/widget</code> is
 "protected" by a strong Content Security Policy.</p>
     <li data-md="">
      <p>Similarly, provide a way for content authors to split their applications
@@ -1565,274 +1564,274 @@ This includes providing security-model opt-outs where necessary.</p>
  one profile cannot be used to immediately infect other users or read their
  personal messages stored within the account.</p>
    </ol>
-   <div class="example" id="example-a934c896">
-    <a class="self-link" href="#example-a934c896"></a> <code>https://example.com/</code> runs two applications, Chat and Shopping, used,
-  respectively, for instant messaging and Internet shopping.  The site adminstrator runs 
-  the former at <code>https://example.com/chat/</code>, and the latter at <code>https://example.com/shopping/</code>. 
+   <div class="example" id="example-4aa2b593">
+    <a class="self-link" href="#example-4aa2b593"></a> <code>https://example.com/</code> runs two applications, Chat and Shopping, used,
+    respectively, for instant messaging and Internet shopping.  The site adminstrator runs 
+    the former at <code>https://example.com/chat/</code>, and the latter at <code>https://example.com/shopping/</code>. 
     <p>The Shopping application has been very well tested and generally does not
-  contain much untrusted content. In fact, it only takes simple text from
-  advertisers, and that text only ever appears in HTML contexts, so the
-  application is able to entity encode the text and stop nearly all cross-site
-  scripting attacks on the application. Further, the developers have also
-  enabled a strong Content Security Policy to mitigate potential XSS concerns
-  on all pages under <code>https://example.com/shopping/</code>. The CSP policy only allows scripts
-  from <code>scripts.example.com</code>.</p>
+    contain much untrusted content. In fact, it only takes simple text from
+    advertisers, and that text only ever appears in HTML contexts, so the
+    application is able to entity encode the text and stop nearly all cross-site
+    scripting attacks on the application. Further, the developers have also
+    enabled a strong Content Security Policy to mitigate potential XSS concerns
+    on all pages under <code>https://example.com/shopping/</code>. The CSP policy only allows scripts
+    from <code>scripts.example.com</code>.</p>
     <p>Historically, <code>https://example.com/chat/</code> has been riddled with cross-site
-  scripting attacks. The application takes untrusted content from a wider
-  variety of sources and for added complexity, that content ends up in many more
-  contexts, such as HTML tag attributes. On top of that, the developers never
-  bothered creating a CSP for the application.</p>
+    scripting attacks. The application takes untrusted content from a wider
+    variety of sources and for added complexity, that content ends up in many more
+    contexts, such as HTML tag attributes. On top of that, the developers never
+    bothered creating a CSP for the application.</p>
     <p>This is bad enough, but, unfortunately, it has led to the extremely bad
-  consequence of attackers using the low hanging fruit of Chat to attack
-  Shopping, the more desirable target. Cross-site scripting Shopping allows an
-  attacker to buy goods with the user’s account, so this is really the juicy
-  target.</p>
+    consequence of attackers using the low hanging fruit of Chat to attack
+    Shopping, the more desirable target. Cross-site scripting Shopping allows an
+    attacker to buy goods with the user’s account, so this is really the juicy
+    target.</p>
     <p>Since the applications share the same physical origin, these attacks have not
-  traditionally been that difficult. Once an attacker has executed code on Chat
-  with an XSS, they open a new window or iframe at <code>example.com/shopping/</code>.
-  Since this is at the same origin as Chat, this allows the attacker to inject
-  code through the <code>document</code> object of the window or iframe into the Shopping
-  context, allowing the attacker to buy whatever they’d like.</p>
+    traditionally been that difficult. Once an attacker has executed code on Chat
+    with an XSS, they open a new window or iframe at <code>example.com/shopping/</code>.
+    Since this is at the same origin as Chat, this allows the attacker to inject
+    code through the <code>document</code> object of the window or iframe into the Shopping
+    context, allowing the attacker to buy whatever they’d like.</p>
     <p>Historical and branding reasons require hosting both applications on the <code>example.com</code> origin. Thus, while these two applications are completely separate, the
-  company cannot split the products into two different origins (e.g. <code>examplechat.com</code> and <code>exampleshopping.com</code>) or different suborigins (e.g. <code>chat.example.com</code> and <code>shopping.example.com</code>).</p>
+    company cannot split the products into two different origins (e.g. <code>examplechat.com</code> and <code>exampleshopping.com</code>) or different suborigins (e.g. <code>chat.example.com</code> and <code>shopping.example.com</code>).</p>
     <p>To address this, the developers decide to serve both applications on two
-  separate suborigins. For all HTTP requests to any subpath of <code>/chat</code> or <code>/shopping</code>, example.com includes a header <code>suborigin: chat</code> or <code>suborigin: shopping</code>, respectively.</p>
+    separate suborigins. For all HTTP requests to any subpath of <code>/chat</code> or <code>/shopping</code>, example.com includes a header <code>suborigin: chat</code> or <code>suborigin: shopping</code>, respectively.</p>
     <p>This does not remove any of the XSS attacks on Chat. However, when an attacker
-  injects code into Chat and opens a window or iframe to <code>example.com/shopping/</code>, they can no longer inject content through the
-  document as it will fail the same origin check. Of course, the application can
-  still use <code>XMLHttpRequest</code> and <code>postMessage</code> to communicate with the document,
-  but that will only be through well defined APIs.  In short, the CSP of the
-  Shopping application is now actually effective as the permissive Chat
-  application is no longer a bypass of it.</p>
+    injects code into Chat and opens a window or iframe to <code>example.com/shopping/</code>, they can no longer inject content through the
+    document as it will fail the same origin check. Of course, the application can
+    still use <code>XMLHttpRequest</code> and <code>postMessage</code> to communicate with the document,
+    but that will only be through well defined APIs.  In short, the CSP of the
+    Shopping application is now actually effective as the permissive Chat
+    application is no longer a bypass of it.</p>
    </div>
-   <p class="issue" id="issue-9a0ddc8c"><a class="self-link" href="#issue-9a0ddc8c"></a> TODO: We probably should add additional examples, or perhaps match an
-example to each bullet above.</p>
+   <p class="issue" id="issue-e95eddb7"><a class="self-link" href="#issue-e95eddb7"></a> TODO: We probably should add additional examples, or perhaps match an
+  example to each bullet above.</p>
    <h2 class="heading settled" data-level="2" id="terms"><span class="secno">2. </span><span class="content">Key Concepts and Terminology</span><a class="self-link" href="#terms"></a></h2>
-   <p class="issue" id="issue-3c008d43"><a class="self-link" href="#issue-3c008d43"></a> TODO(jww) This needs to be filled in once we have a pretty good handle on
-the basic structure of this document. At that point, we should extract the terms
-defined throughout the spec and place them here.</p>
+   <p class="issue" id="issue-a80ab0c3"><a class="self-link" href="#issue-a80ab0c3"></a> TODO(jww) This needs to be filled in once we have a pretty good handle on
+  the basic structure of this document. At that point, we should extract the terms
+  defined throughout the spec and place them here.</p>
    <p>This section defines several terms used throughout the document.</p>
    <p>The terms <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="origin">origin</dfn>, <dfn data-dfn-type="dfn" data-noexport="" id="cross-origin">cross-origin<a class="self-link" href="#cross-origin"></a></dfn>, and <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="same-origin">same-origin</dfn> are defined by the Origin specification. <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a></p>
    <p><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="cors">CORS</dfn>, or <dfn data-dfn-type="dfn" data-noexport="" id="cross-origin-resource-sharing">Cross-Origin Resource Sharing<a class="self-link" href="#cross-origin-resource-sharing"></a></dfn>, are defined by the
-CORS specification. <a data-link-type="biblio" href="#biblio-cors">[CORS]</a></p>
+  CORS specification. <a data-link-type="biblio" href="#biblio-cors">[CORS]</a></p>
    <p><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="xmlhttprequest">XMLHttpRequest</dfn>, or <dfn data-dfn-type="dfn" data-noexport="" id="xhr">XHR<a class="self-link" href="#xhr"></a></dfn>, is defined by the XMLHttpRequest
-specification. <a data-link-type="biblio" href="#biblio-xhr">[XHR]</a></p>
+  specification. <a data-link-type="biblio" href="#biblio-xhr">[XHR]</a></p>
    <p>The term <dfn data-dfn-type="dfn" data-noexport="" id="cross-site-scripting">cross-site scripting<a class="self-link" href="#cross-site-scripting"></a></dfn>, or <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="xss">XSS</dfn> for short, refers to
-a content injection attack where an attacker is able to execute malicious code
-in a victim origin. See the <a href="https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)">OWASP page on
-Cross-site Scripting</a> for more information.</p>
+  a content injection attack where an attacker is able to execute malicious code
+  in a victim origin. See the <a href="https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)">OWASP page on
+  Cross-site Scripting</a> for more information.</p>
    <h3 class="heading settled" data-level="2.1" id="grammar"><span class="secno">2.1. </span><span class="content">Grammatical Concepts</span><a class="self-link" href="#grammar"></a></h3>
     The Augmented Backus-Naur Form (ABNF) notation used in this document is
-specified in RFC5234. <a data-link-type="biblio" href="#biblio-rfc5234">[RFC5234]</a> 
+  specified in RFC5234. <a data-link-type="biblio" href="#biblio-rfc5234">[RFC5234]</a> 
    <p>Lowercase characters, the <code>a-z</code> portion of <a data-link-type="dfn" href="https://tools.ietf.org/html/rfc5234#appendix-B.1">ALPHA</a>, are defined by the grammar:</p>
 <pre><dfn class="dfn-paneled" data-dfn-type="grammar" data-export="" id="grammardef-loweralpha">LOWERALPHA</dfn> = %x61-7A   ; a-z
 </pre>
    <h2 class="heading settled" data-level="3" id="defining-suborigin"><span class="secno">3. </span><span class="content">Defining a Suborigin</span><a class="self-link" href="#defining-suborigin"></a></h2>
    <p>Origins are a mechanism for user agents to group URIs into protection domains.
-As defined in <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a>, two URIs are in the <a data-link-type="dfn" href="#same-origin" id="ref-for-same-origin-1">same-origin</a> if they share
-the same <a data-link-type="dfn" href="https://url.spec.whatwg.org/#syntax-url-scheme">scheme</a>, <a data-link-type="dfn" href="https://url.spec.whatwg.org/#syntax-host">host</a>, and <a data-link-type="dfn" href="https://url.spec.whatwg.org/#syntax-url-port">port</a>.  If URIs are same-origin,
-then they share the same authority and can access all of each others resources.</p>
+  As defined in <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a>, two URIs are in the <a data-link-type="dfn" href="#same-origin" id="ref-for-same-origin-1">same-origin</a> if they share
+  the same <a data-link-type="dfn" href="https://url.spec.whatwg.org/#syntax-url-scheme">scheme</a>, <a data-link-type="dfn" href="https://url.spec.whatwg.org/#syntax-host">host</a>, and <a data-link-type="dfn" href="https://url.spec.whatwg.org/#syntax-url-port">port</a>.  If URIs are same-origin,
+  then they share the same authority and can access all of each others resources.</p>
    <p>Compared to per-user isolation in traditional operating systems, the
-same-origin policy isolates distinct applications identified by their origins.
-This has been a successful isolation mechanism on the Web.  However, it does
-limit the flexibility of a page to separate itself into a new protection domain
-as it automatically shares authority with all other identical origins. These origins
-are defined by physical, rather than programmatic, properties.  While it is
-possible to setup unique domains and ports for different parts of the same
-application (scheme is more difficult to separate out), there are a diverse set
-of practical problems in doing so.</p>
+  same-origin policy isolates distinct applications identified by their origins.
+  This has been a successful isolation mechanism on the Web.  However, it does
+  limit the flexibility of a page to separate itself into a new protection domain
+  as it automatically shares authority with all other identical origins. These origins
+  are defined by physical, rather than programmatic, properties.  While it is
+  possible to setup unique domains and ports for different parts of the same
+  application (scheme is more difficult to separate out), there are a diverse set
+  of practical problems in doing so.</p>
    <p>Suborigins provide a mechanism for creating this type of separation
-programatically. Any resources may provide, in a manner detailed below, a string
-value <a data-link-type="dfn" href="#suborigin-namespace" id="ref-for-suborigin-namespace-1">suborigin namespace</a>.  If either of two URIs provide a suborigin
-namespace, then the two URIs are in the <a data-link-type="dfn" href="#same-origin" id="ref-for-same-origin-2">same-origin</a> if and only if they
-share the same <a data-link-type="dfn" href="https://url.spec.whatwg.org/#syntax-url-scheme">scheme</a>, <a data-link-type="dfn" href="https://url.spec.whatwg.org/#syntax-host">host</a>, <a data-link-type="dfn" href="https://url.spec.whatwg.org/#syntax-url-port">port</a>, and <a data-link-type="dfn" href="#suborigin-namespace" id="ref-for-suborigin-namespace-2">suborigin
-namespace</a>.</p>
+  programatically. Any resources may provide, in a manner detailed below, a string
+  value <a data-link-type="dfn" href="#suborigin-namespace" id="ref-for-suborigin-namespace-1">suborigin namespace</a>.  If either of two URIs provide a suborigin
+  namespace, then the two URIs are in the <a data-link-type="dfn" href="#same-origin" id="ref-for-same-origin-2">same-origin</a> if and only if they
+  share the same <a data-link-type="dfn" href="https://url.spec.whatwg.org/#syntax-url-scheme">scheme</a>, <a data-link-type="dfn" href="https://url.spec.whatwg.org/#syntax-host">host</a>, <a data-link-type="dfn" href="https://url.spec.whatwg.org/#syntax-url-port">port</a>, and <a data-link-type="dfn" href="#suborigin-namespace" id="ref-for-suborigin-namespace-2">suborigin
+  namespace</a>.</p>
    <p>Q. In today’s Web, can’t a site get the effective same protection domain simply
-by hosting their content at different subdomains?</p>
+  by hosting their content at different subdomains?</p>
    <p>A. Yes, but there are many practical reasons why this is difficult:</p>
    <h3 class="heading settled" data-level="3.1" id="difficulties"><span class="secno">3.1. </span><span class="content">Difficulties using subdomains</span><a class="self-link" href="#difficulties"></a></h3>
    <h4 class="heading settled" data-level="3.1.1" id="separate-applications-same-origin"><span class="secno">3.1.1. </span><span class="content">Separate applications, same origin</span><a class="self-link" href="#separate-applications-same-origin"></a></h4>
     Google runs Search and Maps on the same domain, respectively <code>https://www.google.com</code> and <code>https://www.google.com/maps</code>. While these two applications are
-fundamentally separate, there are many reasons for hosting them on the same
-origin, including historical links, branding, and performance.  However, from
-security perspective, this means that a compromise of one application is a
-compromise of the other since the only security boundary in the browser is the
-origin, and both applications run in the same origin.  Thus, even if
-Google Search were to successful implement a strong Content Security Policy <a data-link-type="biblio" href="#biblio-csp2">[CSP2]</a>, if Google Maps were to have an XSS vulnerability, it would be
-equivalent to having an XSS on Google Search as well, negating Google Search’s
-security measures. 
+  fundamentally separate, there are many reasons for hosting them on the same
+  origin, including historical links, branding, and performance.  However, from
+  security perspective, this means that a compromise of one application is a
+  compromise of the other since the only security boundary in the browser is the
+  origin, and both applications run in the same origin.  Thus, even if
+  Google Search were to successful implement a strong Content Security Policy <a data-link-type="biblio" href="#biblio-csp2">[CSP2]</a>, if Google Maps were to have an XSS vulnerability, it would be
+  equivalent to having an XSS on Google Search as well, negating Google Search’s
+  security measures. 
    <h4 class="heading settled" data-level="3.1.2" id="separation-in-single-application"><span class="secno">3.1.2. </span><span class="content">Separation within a single application</span><a class="self-link" href="#separation-in-single-application"></a></h4>
     Separation is sometimes desirable within a single application because of the
-presence of untrusted data. Take, for example, a social networking site with
-many different user profiles. Each profile contains lots of untrusted content
-created by a single user but it’s all hosted on a single origin. In order to
-separate untrusted content, the application might want a way to put all profile
-information into separate logical origins while all being hosted at the same
-physical origin. Furthermore, all content within a profile should be able to
-access all other content within the same origin, even if displayed in unique
-frames. 
+  presence of untrusted data. Take, for example, a social networking site with
+  many different user profiles. Each profile contains lots of untrusted content
+  created by a single user but it’s all hosted on a single origin. In order to
+  separate untrusted content, the application might want a way to put all profile
+  information into separate logical origins while all being hosted at the same
+  physical origin. Furthermore, all content within a profile should be able to
+  access all other content within the same origin, even if displayed in unique
+  frames. 
    <p>This type of privilege separation within an application has been shown to be
-valuable and reasonable for applications to do by work such as
-Privilege Separation in HTML5 Applications by Akhawe et al <a data-link-type="biblio" href="#biblio-privilegeseparation">[PRIVILEGESEPARATION]</a>. However, these systems rely on cross frame messaging
-using <code>postMessage</code> even for content in the same trust boundary since
-they utilize <code>sandbox</code>. This provides much of the motivation for the
-named container nature of suborigins.</p>
+  valuable and reasonable for applications to do by work such as
+  Privilege Separation in HTML5 Applications by Akhawe et al <a data-link-type="biblio" href="#biblio-privilegeseparation">[PRIVILEGESEPARATION]</a>. However, these systems rely on cross frame messaging
+  using <code>postMessage</code> even for content in the same trust boundary since
+  they utilize <code>sandbox</code>. This provides much of the motivation for the
+  named container nature of suborigins.</p>
    <h3 class="heading settled" data-level="3.2" id="threat-model"><span class="secno">3.2. </span><span class="content">Threat Model</span><a class="self-link" href="#threat-model"></a></h3>
    <p><a data-link-type="dfn" href="#origin" id="ref-for-origin-1">Origins</a> and the <a href="http://www.w3.org/Security/wiki/Same_Origin_Policy">Same-Origin Policy</a> have provided a strong defense against
-malicious applications. Instead of giving the application the power of the user,
-applications on the Web are limited to a unique space that is defined by their
-host. However, by tying the origin to the physical host, this has limited the
-power of developers.</p>
+  malicious applications. Instead of giving the application the power of the user,
+  applications on the Web are limited to a unique space that is defined by their
+  host. However, by tying the origin to the physical host, this has limited the
+  power of developers.</p>
    <p>Suborigins attempt to provide developers with tool to contain two different
-principles that are on the same host. Suborigins allow two or more applications
-or modules to be hosted at the same origin but use the same origin policy to
-separate them from each other.</p>
+  principles that are on the same host. Suborigins allow two or more applications
+  or modules to be hosted at the same origin but use the same origin policy to
+  separate them from each other.</p>
    <h4 class="heading settled" data-level="3.2.1" id="threat-model-cross-doc"><span class="secno">3.2.1. </span><span class="content">Cross-Document Attacker</span><a class="self-link" href="#threat-model-cross-doc"></a></h4>
    <p>An attacker that is able to compromise one document should not be able to
-control another document that is on the same host but delivered in a different
-suborigin namespace. If an attacker is able to <a data-link-type="dfn" href="#xss" id="ref-for-xss-1">XSS</a>, for example, a
-document on <code>example.com</code> delivered in the suborigin namespace <code>foo</code>,
-the attacker should not be able to control any document on <code>example.com</code> not in the <code>foo</code> namespace.</p>
-   <p class="issue" id="issue-ace20ff1"><a class="self-link" href="#issue-ace20ff1"></a> TODO(devd): Should we also assert that attacker on main/parent origin
-cannot compromise the app in sub-origin?</p>
+  control another document that is on the same host but delivered in a different
+  suborigin namespace. If an attacker is able to <a data-link-type="dfn" href="#xss" id="ref-for-xss-1">XSS</a>, for example, a
+  document on <code>example.com</code> delivered in the suborigin namespace <code>foo</code>,
+  the attacker should not be able to control any document on <code>example.com</code> not in the <code>foo</code> namespace.</p>
+   <p class="issue" id="issue-6aca9ca3"><a class="self-link" href="#issue-6aca9ca3"></a> TODO(devd): Should we also assert that attacker on main/parent origin
+  cannot compromise the app in sub-origin?</p>
    <h4 class="heading settled" data-level="3.2.2" id="threat-model-out-of-scope"><span class="secno">3.2.2. </span><span class="content">Out of Scope Attacker</span><a class="self-link" href="#threat-model-out-of-scope"></a></h4>
    <p>This tool is purely for modularity and meant to be an application security tool.
-It is <em>not</em> meant to help users differentiate between two different
-applications at the same host, as reflected by the fact that user agents may not
-put the suborigin in user-visible UI. Additionally, suborigins cannot protect
-against colluding malicious or compromised applications.</p>
+  It is <em>not</em> meant to help users differentiate between two different
+  applications at the same host, as reflected by the fact that user agents may not
+  put the suborigin in user-visible UI. Additionally, suborigins cannot protect
+  against colluding malicious or compromised applications.</p>
    <h3 class="heading settled" data-level="3.3" id="suborigins-vs-origins"><span class="secno">3.3. </span><span class="content">Relationship of Suborigins to Origins</span><a class="self-link" href="#suborigins-vs-origins"></a></h3>
    <p>Suborigins, in fact, do not provide any new authority to resources. Suborigins
-simply provide <em>an additional way to construct Origins</em>. That is,
-Suborigins do not supercede Origins or provide any additional authority above
-Origins. From the user agent’s  perspective, two resources in different
-Suborigins are simply in different Origins, and the relationship between the two
-resources should be the same as any other two differing origins as described in <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a>. However, given the impracticalities this may impart on some
-applications who might want to adopt Suborigins, a few security-model opt-outs
-to ease the use of Suborigins in legacy applications are also presented. See <a href="#security-model-opt-outs">§6.5 Security Model Opt-Outs</a> for more information.</p>
+  simply provide <em>an additional way to construct Origins</em>. That is,
+  Suborigins do not supercede Origins or provide any additional authority above
+  Origins. From the user agent’s  perspective, two resources in different
+  Suborigins are simply in different Origins, and the relationship between the two
+  resources should be the same as any other two differing origins as described in <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a>. However, given the impracticalities this may impart on some
+  applications who might want to adopt Suborigins, a few security-model opt-outs
+  to ease the use of Suborigins in legacy applications are also presented. See <a href="#security-model-opt-outs">§6.5 Security Model Opt-Outs</a> for more information.</p>
    <h3 class="heading settled" data-level="3.4" id="representation"><span class="secno">3.4. </span><span class="content">Representation of Suborigins</span><a class="self-link" href="#representation"></a></h3>
    <p>At an abstract level, a suborigin consists of the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="physical-origin">physical origin</dfn>,
-which is a <a data-link-type="dfn" href="https://url.spec.whatwg.org/#syntax-url-scheme">scheme</a>, <a data-link-type="dfn" href="https://url.spec.whatwg.org/#syntax-host">host</a>, and <a data-link-type="dfn" href="https://url.spec.whatwg.org/#syntax-url-port">port</a>, plus a <a data-link-type="dfn" href="#suborigin-namespace" id="ref-for-suborigin-namespace-3">suborigin
-namespace</a>.  However, as mentioned above, suborigins are intended to fit
-within the framework of <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a>.  Therefore, this specification provides a
-way of serializing a Suborigin bound resource into a physical origin. This is
-done by inserting the suborigin namespace into the host of the Origin, thus
-creating a new host but maintaining all of the information about both the
-original scheme, host, port, and the suborigin namespace. The serialization
-format prepends the host name with the suborigin namespace followed by a "<code>_</code>"
-character.</p>
+  which is a <a data-link-type="dfn" href="https://url.spec.whatwg.org/#syntax-url-scheme">scheme</a>, <a data-link-type="dfn" href="https://url.spec.whatwg.org/#syntax-host">host</a>, and <a data-link-type="dfn" href="https://url.spec.whatwg.org/#syntax-url-port">port</a>, plus a <a data-link-type="dfn" href="#suborigin-namespace" id="ref-for-suborigin-namespace-3">suborigin
+  namespace</a>.  However, as mentioned above, suborigins are intended to fit
+  within the framework of <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a>.  Therefore, this specification provides a
+  way of serializing a Suborigin bound resource into a physical origin. This is
+  done by inserting the suborigin namespace into the host of the Origin, thus
+  creating a new host but maintaining all of the information about both the
+  original scheme, host, port, and the suborigin namespace. The serialization
+  format prepends the host name with the suborigin namespace followed by a "<code>_</code>"
+  character.</p>
    <p>For example, a resource hosted at <code>https://example.com/</code> in
-the suborigin namespace <code>profile</code> would be serialized as <code>https://profile_example.com/</code>.</p>
+  the suborigin namespace <code>profile</code> would be serialized as <code>https://profile_example.com/</code>.</p>
    <p>Similarly, a resource hosted at <code>https://example.com:8080/</code> in
-the suborigin namespace <code>separate</code> would be serialized as <code>https://separate_example.com:8080/</code>.</p>
+  the suborigin namespace <code>separate</code> would be serialized as <code>https://separate_example.com:8080/</code>.</p>
    <p>Internally, the user agent just tracks the <a data-link-type="dfn" href="#suborigin-namespace" id="ref-for-suborigin-namespace-4">suborigin namespace</a> of the resource.
-When the origin needs to be serialized, the user agent should
-follow the algorithm in <a href="#serializing">§6.3 Serializing Suborigins</a>.</p>
+  When the origin needs to be serialized, the user agent should
+  follow the algorithm in <a href="#serializing">§6.3 Serializing Suborigins</a>.</p>
    <p class="note" role="note">Note: The underscore character is not a valid character for hostnames used
-on the web <a data-link-type="biblio" href="#biblio-rfc1123">[RFC1123]</a> and as a result, the serialization above cannot collide
-with valid existing hostnames.</p>
+  on the web <a data-link-type="biblio" href="#biblio-rfc1123">[RFC1123]</a> and as a result, the serialization above cannot collide
+  with valid existing hostnames.</p>
    <h3 class="heading settled" data-level="3.5" id="opting-in"><span class="secno">3.5. </span><span class="content">Opting into a Suborigin</span><a class="self-link" href="#opting-in"></a></h3>
    <p>Unlike the <code>sandbox</code> attribute, suborigin namespaces are predictable and
-controllable. Because of this, potentially untrusted content cannot opt into
-suborigins, unlike iframe sandboxes. If they could, then an XSS on a site could
-enter a specific suborigin and access all of its resources, thus violating the
-isolation suborigins intend to provide. To prevent this, the
-server (rather than a resource itself) is the only authoritative
-source of the suborigin namespace of a resource. The server communicates the
-suborigin of a resource to the user agent through a new <code>suborigin</code> header,
-which takes a string value that is the namespace. For example, to put a
-resource in the <code>testing</code> suborigin namespace, the server would specify the
-following HTTP header in the response:</p>
+  controllable. Because of this, potentially untrusted content cannot opt into
+  suborigins, unlike iframe sandboxes. If they could, then an XSS on a site could
+  enter a specific suborigin and access all of its resources, thus violating the
+  isolation suborigins intend to provide. To prevent this, the
+  server (rather than a resource itself) is the only authoritative
+  source of the suborigin namespace of a resource. The server communicates the
+  suborigin of a resource to the user agent through a new <code>suborigin</code> header,
+  which takes a string value that is the namespace. For example, to put a
+  resource in the <code>testing</code> suborigin namespace, the server would specify the
+  following HTTP header in the response:</p>
 <pre>suborigin: testing
 </pre>
    <h3 class="heading settled" data-level="3.6" id="the-suborigin-header"><span class="secno">3.6. </span><span class="content">The <code>suborigin</code> header</span><a class="self-link" href="#the-suborigin-header"></a></h3>
    <p>Suborigins are defined by a <dfn data-dfn-type="dfn" data-noexport="" id="suborigin">suborigin<a class="self-link" href="#suborigin"></a></dfn> HTTP response header. The syntax
-for the name and value of the header are described by the following ABNF
-grammar <a data-link-type="biblio" href="#biblio-rfc5234">[RFC5234]</a>:</p>
+  for the name and value of the header are described by the following ABNF
+  grammar <a data-link-type="biblio" href="#biblio-rfc5234">[RFC5234]</a>:</p>
 <pre><dfn class="dfn-paneled" data-dfn-type="grammar" data-export="" id="grammardef-suborigin-name">suborigin-name</dfn> = 1*( <a data-link-type="grammar" href="#grammardef-loweralpha" id="ref-for-grammardef-loweralpha-1">LOWERALPHA</a> / <a data-link-type="grammar" href="https://tools.ietf.org/html/rfc5234#appendix-B.1">DIGIT</a> / "-" )
 <dfn class="dfn-paneled" data-dfn-type="grammar" data-export="" id="grammardef-suborigin-policy-option">suborigin-policy-option</dfn> = "'unsafe-postmessage-send'"
                           / "'unsafe-postmessage-receive'"
                           / "'unsafe-cookies'"
-<dfn class="dfn-paneled" data-dfn-type="grammar" data-export="" id="grammardef-suborigin-policy-list">suborigin-policy-list</dfn> = 1*(<a data-link-type="grammar" href="https://tools.ietf.org/html/rfc7230#section-3.2.3">OWS</a> <a data-link-type="grammar" href="#grammardef-suborigin-policy-option" id="ref-for-grammardef-suborigin-policy-option-1">suborigin-policy-option</a> <a data-link-type="grammar" href="https://tools.ietf.org/html/rfc7230#section-3.2.3">OWS</a> ";")
-<dfn data-dfn-type="grammar" data-export="" id="grammardef-suborigin-header">suborigin-header<a class="self-link" href="#grammardef-suborigin-header"></a></dfn> = <a data-link-type="grammar" href="#grammardef-suborigin-name" id="ref-for-grammardef-suborigin-name-1">suborigin-name</a> [ <a data-link-type="grammar" href="https://tools.ietf.org/html/rfc7230#section-3.2.3">RWS</a> <a data-link-type="grammar" href="#grammardef-suborigin-policy-list" id="ref-for-grammardef-suborigin-policy-list-1">suborigin-policy-list</a> ]
+<dfn class="dfn-paneled" data-dfn-type="grammar" data-export="" id="grammardef-suborigin-policy-list">suborigin-policy-list</dfn> = 1*(<a data-link-type="grammar" href="https://tools.ietf.org/html/rfc7230#section-3.2.3">RWS</a> <a data-link-type="grammar" href="#grammardef-suborigin-policy-option" id="ref-for-grammardef-suborigin-policy-option-1">suborigin-policy-option</a> <a data-link-type="grammar" href="https://tools.ietf.org/html/rfc7230#section-3.2.3">OWS</a>)
+<dfn data-dfn-type="grammar" data-export="" id="grammardef-suborigin-header">suborigin-header<a class="self-link" href="#grammardef-suborigin-header"></a></dfn> = <a data-link-type="grammar" href="#grammardef-suborigin-name" id="ref-for-grammardef-suborigin-name-1">suborigin-name</a> [ <a data-link-type="grammar" href="#grammardef-suborigin-policy-list" id="ref-for-grammardef-suborigin-policy-list-1">suborigin-policy-list</a> ]
 </pre>
    <p>User agents MUST ignore multiple suborigin headers and only apply the first.</p>
    <p>A resource’s <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="suborigin-namespace">suborigin namespace</dfn> is the value of the <a data-link-type="grammar" href="#grammardef-suborigin-name" id="ref-for-grammardef-suborigin-name-2">suborigin-name</a> in the <code>suborigin</code> header.</p>
    <p>A resource’s <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="suborigin-policy">suborigin policy</dfn> is the list of individual <a data-link-type="grammar" href="#grammardef-suborigin-policy-option" id="ref-for-grammardef-suborigin-policy-option-2">suborigin-policy-option</a> values in the <code>suborigin</code> header’s <a data-link-type="grammar" href="#grammardef-suborigin-policy-list" id="ref-for-grammardef-suborigin-policy-list-2">suborigin-policy-list</a>.</p>
    <h3 class="heading settled" data-level="3.7" id="suborigin-in-js"><span class="secno">3.7. </span><span class="content">Accessing the Suborigin in JavaScript</span><a class="self-link" href="#suborigin-in-js"></a></h3>
    <p>A <code>suborigin</code> property is added to the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-document">document</a> object which <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-reflect">reflects</a> the value of the suborigin namespace for the current execution
-context. If there is no suborigin namespace, the value should be undefined.</p>
+  context. If there is no suborigin namespace, the value should be undefined.</p>
    <p>Additionally, the <code>origin</code> property of the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-document">document</a> object should reflect
-the serialized value of the origin as returned by <a href="#serializing">§6.3 Serializing Suborigins</a>.</p>
+  the serialized value of the origin as returned by <a href="#serializing">§6.3 Serializing Suborigins</a>.</p>
    <h2 class="heading settled" data-level="4" id="access-control"><span class="secno">4. </span><span class="content">Access Control</span><a class="self-link" href="#access-control"></a></h2>
    <p>Cross-origin (including cross-suborigin) communication is tricky when suborigins
-are involved because they need to be backwards compatible with user agents that
-do not support suborigins while providing origin-separation for user agents that
-do support suborigins. The following discussions discuss the three major
-cross-origin mechanisms that are relevant: <a data-link-type="dfn" href="#cors" id="ref-for-cors-2">CORS</a>, <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/comms.html#dom-messageport-postmessage"><code>postMessage</code></a>,
-and Workers <a data-link-type="biblio" href="#biblio-workers">[WORKERS]</a>.</p>
-   <p class="issue" id="issue-d5c3193c"><a class="self-link" href="#issue-d5c3193c"></a> TODO(devd): Making things specific to XHR or CORS is weird. We should
-just make all fetches inside a suborigin CORS fetches and be done with it.</p>
+  are involved because they need to be backwards compatible with user agents that
+  do not support suborigins while providing origin-separation for user agents that
+  do support suborigins. The following discussions discuss the three major
+  cross-origin mechanisms that are relevant: <a data-link-type="dfn" href="#cors" id="ref-for-cors-2">CORS</a>, <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/comms.html#dom-messageport-postmessage"><code>postMessage</code></a>,
+  and Workers <a data-link-type="biblio" href="#biblio-workers">[WORKERS]</a>.</p>
+   <p class="issue" id="issue-49a8418d"><a class="self-link" href="#issue-49a8418d"></a> TODO(devd): Making things specific to XHR or CORS is weird. We should
+  just make all fetches inside a suborigin CORS fetches and be done with it.</p>
    <h3 class="heading settled" data-level="4.1" id="cors-ac"><span class="secno">4.1. </span><span class="content">CORS</span><a class="self-link" href="#cors-ac"></a></h3>
    <p>For pages in a suborigin namespace, all <a data-link-type="dfn" href="#xmlhttprequest" id="ref-for-xmlhttprequest-1"><code>XMLHttpRequest</code></a>s and <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-fetch"><code>fetch</code></a> requests to any URL should be treated as cross-origin, thus
-triggering a <a data-link-type="dfn" href="https://www.w3.org/TR/cors#cross-origin-request-with-preflight-0">cross-origin request with preflight</a> for all non-<a data-link-type="dfn" href="https://www.w3.org/TR/cors#simple-cross-origin-request">simple
-cross-origin requests</a>. Additionally, all requests from a suborigin namespace
-must include a <code>Suborigin</code> header whose value is the context’s suborigin name.
-Finally, the <code>Origin</code> header <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a> value must use the serialized suborigin
-value instead of the serializied origin, as described in <a href="#serializing">§6.3 Serializing Suborigins</a>.</p>
+  triggering a <a data-link-type="dfn" href="https://www.w3.org/TR/cors#cross-origin-request-with-preflight-0">cross-origin request with preflight</a> for all non-<a data-link-type="dfn" href="https://www.w3.org/TR/cors#simple-cross-origin-request">simple
+  cross-origin requests</a>. Additionally, all requests from a suborigin namespace
+  must include a <code>Suborigin</code> header whose value is the context’s suborigin name.
+  Finally, the <code>Origin</code> header <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a> value must use the serialized suborigin
+  value instead of the serializied origin, as described in <a href="#serializing">§6.3 Serializing Suborigins</a>.</p>
    <p>Similar changes are needed for responses from the server with the addition of an <code>Access-Control-Allow-Suborigin</code> response header. Its value must match the
-context’s suborigin namespace value, or <code>*</code> to allow all suborigin namespaces.
-At the same time, the <code>Access-Control-Allow-Origin</code> response header value must
-be modified to use the serialized suborigin value instead of the serializied
-origin, as described in <a href="#serializing">§6.3 Serializing Suborigins</a>.</p>
-   <p class="issue" id="issue-282a2442"><a class="self-link" href="#issue-282a2442"></a> TODO(jww): Formal definition of the headers and responses w/grammars.
-Also need to be explicit about <code>*</code> having same limitations as <code>Access-Control-Allow-Origin</code> w/credentials.</p>
+  context’s suborigin namespace value, or <code>*</code> to allow all suborigin namespaces.
+  At the same time, the <code>Access-Control-Allow-Origin</code> response header value must
+  be modified to use the serialized suborigin value instead of the serializied
+  origin, as described in <a href="#serializing">§6.3 Serializing Suborigins</a>.</p>
+   <p class="issue" id="issue-daf4a3ea"><a class="self-link" href="#issue-daf4a3ea"></a> TODO(jww): Formal definition of the headers and responses w/grammars.
+  Also need to be explicit about <code>*</code> having same limitations as <code>Access-Control-Allow-Origin</code> w/credentials.</p>
    <h3 class="heading settled" data-level="4.2" id="postmessage-ac"><span class="secno">4.2. </span><span class="content"><code>postMessage</code></span><a class="self-link" href="#postmessage-ac"></a></h3>
    <p>Cross-origin messaging via <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/comms.html#dom-messageport-postmessage"><code>postMessage</code></a> requires that the
-recipient be able to see the suborigin namespace of the message sender so it can make an
-appropriate access control decision. When a message is sent from a
-suborigin namespace, the receiver has the <code>event.origin</code> value set to the
-serialized suborigin value instead of the serializied origin, as described in <a href="#serializing">§6.3 Serializing Suborigins</a>. Additionally, a new <code>suborigin</code> property must be added to the <code>MessageEvent</code> given to the receiver which contains the suborigin namespace
-value.</p>
+  recipient be able to see the suborigin namespace of the message sender so it can make an
+  appropriate access control decision. When a message is sent from a
+  suborigin namespace, the receiver has the <code>event.origin</code> value set to the
+  serialized suborigin value instead of the serializied origin, as described in <a href="#serializing">§6.3 Serializing Suborigins</a>. Additionally, a new <code>suborigin</code> property must be added to the <code>MessageEvent</code> given to the receiver which contains the suborigin namespace
+  value.</p>
    <h3 class="heading settled" data-level="4.3" id="workers-ac"><span class="secno">4.3. </span><span class="content">Workers</span><a class="self-link" href="#workers-ac"></a></h3>
    <p>User agents MUST refuse to create or execute any workers in a page executing in
-a sub-origin.</p>
+  a sub-origin.</p>
    <p class="note" role="note">Note: This may change in the future, and Suborigins may eventually be allowed to
-register Service Workers, but, for now, allowing the creation of any workers,
-including service workers and shared workers, from suborigins adds too many
-complications. Applications can still create workers by iframing a page not in
-a suborigin.</p>
+  register Service Workers, but, for now, allowing the creation of any workers,
+  including service workers and shared workers, from suborigins adds too many
+  complications. Applications can still create workers by iframing a page not in
+  a suborigin.</p>
    <h2 class="heading settled" data-level="5" id="impact"><span class="secno">5. </span><span class="content">Impact on Web Platform</span><a class="self-link" href="#impact"></a></h2>
    <p>Content inside a suborigin namespace is restricted in the same way that other
-origins are restricted. There are some additional restrictions as well, in order
-to simplfy some complicated cases, and there are also some loosening of
-same-origin restrctions in order to facilitate and ease adoption of suborigins
-for developers.</p>
+  origins are restricted. There are some additional restrictions as well, in order
+  to simplfy some complicated cases, and there are also some loosening of
+  same-origin restrctions in order to facilitate and ease adoption of suborigins
+  for developers.</p>
    <h3 class="heading settled" data-level="5.1" id="sensitive-permissions"><span class="secno">5.1. </span><span class="content">Relationship with Sensitive Permissions</span><a class="self-link" href="#sensitive-permissions"></a></h3>
    <p>User agents MUST prevent a page running in a suborigin from accessing stateful
-mechanisms (e.g., localStorage, sessionStorage, document.cookie) tied to the
-parent, physical origin. Instead, the user agent SHOULD create a new object
-tied to the namespaced suborigin.</p>
+  mechanisms (e.g., localStorage, sessionStorage, document.cookie) tied to the
+  parent, physical origin. Instead, the user agent SHOULD create a new object
+  tied to the namespaced suborigin.</p>
    <p>User agents MUST ignore modifications to the document.domain property of the page.</p>
    <h2 class="heading settled" data-level="6" id="framework"><span class="secno">6. </span><span class="content">Framework</span><a class="self-link" href="#framework"></a></h2>
    <p class="note" role="note">Note: These sections are tricky because, unlike physical origins, we can’t
-define suborigins in terms of URIs. Since the suborigin namespace is defined in
-a header, not in the URI, we need to define them in terms of resources.</p>
+  define suborigins in terms of URIs. Since the suborigin namespace is defined in
+  a header, not in the URI, we need to define them in terms of resources.</p>
    <h3 class="heading settled" data-level="6.1" id="suborigin-of-resource"><span class="secno">6.1. </span><span class="content">Suborigin of a Resource</span><a class="self-link" href="#suborigin-of-resource"></a></h3>
    <p>The suborigin of a resource is the value computed by the following algorithm:</p>
    <ol>
     <li> Let origin be the triple result from starting with step 1 of Section 4 of
-    the <a href="https://tools.ietf.org/html/rfc6454#section-4">Section 4</a> of
-    of the Origin specification. <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a> 
+      the <a href="https://tools.ietf.org/html/rfc6454#section-4">Section 4</a> of
+      of the Origin specification. <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a> 
     <li> If the HTTP response of the resource contains a valid
-    [suborigin] header, then let <code>suborigin-namespace</code> be the
-    value of the header. 
+      [suborigin] header, then let <code>suborigin-namespace</code> be the
+      value of the header. 
     <li> Otherwise, let <code>suborigin-namespace</code> be <code>null</code>. 
     <li> Return the pair <code>(origin, suborigin-namespace)</code>. 
    </ol>
    <h3 class="heading settled" data-level="6.2" id="comparing-suborigins"><span class="secno">6.2. </span><span class="content">Comparing Suborigins</span><a class="self-link" href="#comparing-suborigins"></a></h3>
    <p>Two suborigins are "the same" if, and only if, they are identical. In
-particular:</p>
+  particular:</p>
    <ul>
     <li data-md="">
      <p>If the origin portions of the suborigin pairs are scheme/host/port triples,
@@ -1851,7 +1850,7 @@ particular:</p>
    <p>This section defines how to serialize an origin to a unicode <a data-link-type="biblio" href="#biblio-unicode6">[Unicode6]</a> string and to an ASCII <a data-link-type="biblio" href="#biblio-rfc0020">[RFC0020]</a> string.</p>
    <h4 class="heading settled" data-level="6.3.1" id="unicode-serialization"><span class="secno">6.3.1. </span><span class="content">Unicode Serialization of a Suborigin</span><a class="self-link" href="#unicode-serialization"></a></h4>
    <p>The Unicode serialization of a suborigin is the value returned by the following
-algorithm:</p>
+  algorithm:</p>
    <ol>
     <li data-md="">
      <p>If the origin portion of the suborigin pair is not a scheme/host/port
@@ -1877,7 +1876,7 @@ algorithm:</p>
    </ol>
    <h4 class="heading settled" data-level="6.3.2" id="ascii-serialization"><span class="secno">6.3.2. </span><span class="content">ASCII Serialization of a Suborigin</span><a class="self-link" href="#ascii-serialization"></a></h4>
    <p>The ASCII serialization of a suborigin is the value returned by the following
-algorithm:</p>
+  algorithm:</p>
    <ol>
     <li data-md="">
      <p>If the origin portion of the suborigin pair is not a scheme/host/port
@@ -1904,31 +1903,31 @@ these steps.</p>
    <h3 class="heading settled" data-level="6.4" id="dom-interactions"><span class="secno">6.4. </span><span class="content">Interactions with the DOM</span><a class="self-link" href="#dom-interactions"></a></h3>
    <h4 class="heading settled" data-level="6.4.1" id="cookies"><span class="secno">6.4.1. </span><span class="content">Cookies</span><a class="self-link" href="#cookies"></a></h4>
    <p>Append the following to the list of conditions of <code class="idl"><a data-link-type="idl">Document</a></code> objects that are <a data-link-type="dfn" href="http://www.w3.org/TR/html51/dom.html#cookie-averse">cookie-averse</a> in Section 3.1.2 of HTML5’s <a data-link-type="dfn" href="http://www.w3.org/TR/html51/dom.html#resource-metadata-management">resource metadata
-management</a>:</p>
+  management</a>:</p>
    <ul>
     <li data-md="">
      <p>A <code class="idl"><a data-link-type="idl">Document</a></code> who has a non-empty <a data-link-type="dfn" href="#suborigin-namespace" id="ref-for-suborigin-namespace-5">suborigin namespace</a>, unless the <a data-link-type="grammar" href="#grammardef-suborigin-policy-option" id="ref-for-grammardef-suborigin-policy-option-3">suborigin-policy-option</a> for the <code class="idl"><a data-link-type="idl">Document</a></code> contains
-the '<a data-link-type="dfn" href="#unsafe-cookies" id="ref-for-unsafe-cookies-1"><code>unsafe-cookies</code></a>' value.</p>
+the '<a data-link-type="dfn"><code>unsafe-cookies</code></a>' value.</p>
    </ul>
    <p>Modify the paragraph following this list to read "scheme/host/port/suborigin
-tuple" instead of "scheme/host/port tuple".</p>
+  tuple" instead of "scheme/host/port tuple".</p>
    <p class="note" role="note">Note: A <a data-link-type="dfn" href="http://www.w3.org/TR/html51/dom.html#cookie-averse">cookie-averse</a> <code class="idl"><a data-link-type="idl">Document</a></code> object has the property that direct
-access to <code>document.cookie</code> returns the empty string, and assigning to <code>document.cookie</code> has no effect whatsoever. However, that network cookies are
-not affected and documents with different <a data-link-type="dfn" href="#suborigin-namespace" id="ref-for-suborigin-namespace-6">suborigin namespaces</a> on the
-same <a data-link-type="dfn" href="#physical-origin" id="ref-for-physical-origin-1">physical origin</a> share the same cookies on the network.</p>
+  access to <code>document.cookie</code> returns the empty string, and assigning to <code>document.cookie</code> has no effect whatsoever. However, that network cookies are
+  not affected and documents with different <a data-link-type="dfn" href="#suborigin-namespace" id="ref-for-suborigin-namespace-6">suborigin namespaces</a> on the
+  same <a data-link-type="dfn" href="#physical-origin" id="ref-for-physical-origin-1">physical origin</a> share the same cookies on the network.</p>
    <p class="note" role="note">Note: For practical purposes, this means that a developer cannot use <code>document.cookie</code> directly because assignment and reading of the object are both
-no-ops. However, a <a data-link-type="dfn" href="http://www.w3.org/TR/html51/dom.html#cookie-averse">cookie-averse</a> <code class="idl"><a data-link-type="idl">Document</a></code> may
-still use getters and setters on the <code>cookie</code> property of the <code>document</code> object
-and, in that way, may still simulate cookie access.</p>
+  no-ops. However, a <a data-link-type="dfn" href="http://www.w3.org/TR/html51/dom.html#cookie-averse">cookie-averse</a> <code class="idl"><a data-link-type="idl">Document</a></code> may
+  still use getters and setters on the <code>cookie</code> property of the <code>document</code> object
+  and, in that way, may still simulate cookie access.</p>
    <h3 class="heading settled" data-level="6.5" id="security-model-opt-outs"><span class="secno">6.5. </span><span class="content">Security Model Opt-Outs</span><a class="self-link" href="#security-model-opt-outs"></a></h3>
    <p>For backwards compatibility, Suborigins provide several opt-opts from the
-standard security model. A developer can choose to use these opt-outs by
-specifying a <a data-link-type="dfn" href="#suborigin-policy" id="ref-for-suborigin-policy-1">suborigin policy</a> in <a href="#the-suborigin-header">the
-suborigin header</a></p>
+  standard security model. A developer can choose to use these opt-outs by
+  specifying a <a data-link-type="dfn" href="#suborigin-policy" id="ref-for-suborigin-policy-1">suborigin policy</a> in <a href="#the-suborigin-header">the
+  suborigin header</a></p>
    <p>Since these opt-outs weaken the security model of suborigins, developers SHOULD
-NOT use these options unless they are required to make their application work.</p>
+  NOT use these options unless they are required to make their application work.</p>
    <p>The values of <a data-link-type="grammar" href="#grammardef-suborigin-policy-option" id="ref-for-grammardef-suborigin-policy-option-4">suborigin-policy-option</a> that may be
-present in a <a data-link-type="dfn" href="#suborigin-policy" id="ref-for-suborigin-policy-2">suborigin policy</a> have the following effects:</p>
+  present in a <a data-link-type="dfn" href="#suborigin-policy" id="ref-for-suborigin-policy-2">suborigin policy</a> have the following effects:</p>
    <ul>
     <li data-md="">
      <p>'<dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="unsafe-postmessage-receive"><code>unsafe-postmessage-receive</code></dfn>' When a message is sent <i>to</i> a
@@ -1938,17 +1937,18 @@ where the scheme, host, and port match the <code>target</code>, but it also has 
 suborigin namespace, if <a data-link-type="dfn" href="#unsafe-postmessage-receive" id="ref-for-unsafe-postmessage-receive-1"><code>unsafe-postmessage-receive</code></a> is set, it will
 still receive the message.</p>
      <div class="example" id="unsafe-postmessage-send-ex">
-      <a class="self-link" href="#unsafe-postmessage-send-ex"></a> <code>https://example.com</code> runs a map API at <code>https://example.com/maps</code> which is
-embedded by many other websites. It provides a <code>postMessage()</code> API to place
-markers on the map at locations the embedder chooses. 
-      <p>The developer would like to run <code>https://example.com/maps</code> in a suborigin
-namespace "maps".  However, when embedders send messages to the embedded
+      <a class="self-link" href="#unsafe-postmessage-send-ex"></a> `https://example.com<code>runs a map API at</code>https://example.com/maps<code>which is
+embedded by many other websites. It provides a</code>postMessage()<code>API to place
+markers on the map at locations the embedder chooses. &lt;p>The developer would like to run</code>https://example.com/maps<code>in a suborigin
+namespace "maps". However, when embedders send messages to the embedded
 frame, because they are legacy uses from before the use of suborigins, they
-send essages with a <code>target</code> of <code>https://example.com</code>, <em>not</em> <code>https://maps_example.com</code>. Since the developer would still like this frame to
+send essages with a</code>target<code>of</code>https://example.com<code>, &lt;em>not&lt;/em>
+`https://maps_example.com</code>. Since the developer would still like this frame to
 be able to provide the API to these legacy embedders, it can serve the frame
 with the <a data-link-type="dfn" href="#unsafe-postmessage-receive" id="ref-for-unsafe-postmessage-receive-2"><code>unsafe-postmessage-receive</code></a> directive, which will allow the
 frame to receive messages on behalf of <code>https://example.com</code>, even though it is
-at <code>https://maps_example.com</code>.</p>
+at <code>https://maps_example.com</code>.
+      <p></p>
      </div>
     <li data-md="">
      <p>'<dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="unsafe-postmessage-send"><code>unsafe-postmessage-send</code></dfn>' When a message is sent <i>from</i> a suborigin
@@ -1956,97 +1956,32 @@ namespace with <a data-link-type="dfn" href="#unsafe-postmessage-send" id="ref-f
 of the receiver should be set to the serialized physical origin, not the
 serialized suborigin value. However, the <code>event.suborigin</code> field should still
 be set to the name of the suborigin namespace.</p>
-     <div class="example" id="example-70449592">
-      <a class="self-link" href="#example-70449592"></a> Continuing the case in the above example, <code>https://example.com/maps</code> is a
-mapping application that is commonly embedded in other sites. It provides a <code>postMessage()</code> based API to place locations of the embedder’s choosing on the
-map. <code>httsp://example.com</code> would like to run the application in a suborigin
-named "maps". 
-      <p>In response to queries to the API, <code>https://example.com/maps</code> may send
+     <div class="example" id="example-ced7c6be"><a class="self-link" href="#example-ced7c6be"></a> Continuing the case in the above example, <code>https://example.com/maps</code> is a
+mapping application that is commonly embedded in other sites. It provides a
+`postMessage()<code>based API to place locations of the embedder's choosing on the
+map.</code>httsp://example.com<code>would like to run the application in a suborigin
+named "maps". &lt;p>In response to queries to the API,</code>https://example.com/maps<code>may send
 messages back to the embedder if, for example, a user clicks on one of the
 locations. However, since the embedder may be legacy and not be aware of
-suborigins, when it checks the <code>event.origin</code> protery of the <code>MesseageEvent</code>,
-if it sees <code>https://maps_example.com</code> as the origin, it will reject the
-message as a potential attack. Thus, <code>https://example.com</code> may use the <a data-link-type="dfn" href="#unsafe-postmessage-send" id="ref-for-unsafe-postmessage-send-2"><code>unsafe-postmessage-send</code></a> directive to allow its messages to appear
-with the origin of the physical origin, in this case <code>https://example.com</code>.</p>
-     </div>
-    <li data-md="">
-     <p>'<dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="unsafe-cookies"><code>unsafe-cookies</code></dfn>' When an execution context with a suborigin
-namespace has <a data-link-type="dfn" href="#unsafe-cookies" id="ref-for-unsafe-cookies-2"><code>unsafe-cookies</code></a> set, the
+suborigins, when it checks the</code>event.origin<code>protery of the</code>MesseageEvent<code>,
+if it sees</code>https://maps_example.com<code>as the origin, it will reject the
+message as a potential attack. Thus,</code>https://example.com<code>may use the
+&lt;a></code>unsafe-postmessage-send<code>&lt;/a> directive to allow its messages to appear
+with the origin of the physical origin, in this case</code>https://example.com<code>.&lt;/p>
+&lt;/div> &lt;/li>&lt;li data-md>&lt;p>'&lt;dfn></code>unsafe-cookies<code>&lt;/dfn>' When an execution context with a suborigin
+namespace has &lt;a></code>unsafe-cookies<code>&lt;/a> set, the
 execution context should not have a fresh cookie jar for the suborigin
 namespace, and instead, the cookie jar should be shared with the null
-suborigin for the execution context.</p>
-     <p class="issue" id="issue-6dd4fe49"><a class="self-link" href="#issue-6dd4fe49"></a> TODO: Write an example that makes clear that this is extremely
+suborigin for the execution context.&lt;/p> &lt;p class='replace-with-issue-class'> TODO: Write an example that makes clear that this is extremely
 dangerous and should not be used if you have Real Deal auth and csrf cookies
-used.</p>
+used.&lt;/p>
+&lt;/li>&lt;/ul>
+&lt;p class='replace-with-issue-class'> TODO: These opt-out descriptions should probably be moved to the individual sections where the behaviors are discussed (i.e. postMessage and cookies). These just need to be fleshed out anyway, and examples and reasons need to be given.&lt;/p> &lt;h2 id='practical-considerations'>Practical Considerations in Using Suborigins&lt;/h2> &lt;p>Using suborigins with a Web application should be relatively simple. At the most basic level, if you have an application hosted on</code>https://example.com/app/<code>, and all of its resources are hosted at subpaths of</code>/app<code>, it requires that the server set a Content Security Policy on all HTTP requests to subpaths of</code>/app<code>that contain the header</code>suborigin: namespace<code>, where</code>namespace<code>is of the application's choosing. This will ensure that the user agent loads all of these resources into the suborigin</code>namespace<code>and will enforce this boundary accordingly.&lt;/p> &lt;p>Additionally, if your application allows cross-origin requests, instead of adding the usual</code>Access-Control-Allow-Origin<code>header for cross-origin requests, the server must add the</code>Access-Control-Allow-Finer-Origin<code>and</code>Access-Control-Allow-Suborigin<code>headers, as defined in [[#cors-ac]].&lt;/p> &lt;p>In the client-side portion of the application, if</code>postMessage<code>is used, the application must be modified so it does not check the</code>event.origin<code>field. Instead, it should check</code>event.finerorigin<code>and additionally the</code>event.suborigin<code>fields, as they are defined in [[#postmessage-ac]].&lt;/p> &lt;h2 id='security-considerations'>Security Considerations&lt;/h2> &lt;h3 id='presentation-to-users'>Presentation of Suborigins to Users&lt;/h3> &lt;p>A complication of suborigins is that while they provide a meaningful security for an application, that boundary makes much less sense to a user. That is, physical origins provide a security boundary at a physical level: separate scheme, hosts, and ports map to real boundaries external of a given application. However, suborigins as a boundary only makes sense &lt;em>within the context of the program logic itself&lt;/em>, and there is no meaningful way for users to make decisions based on suborigins a priori.&lt;/p> &lt;p>Therefore, suborigins should be used only internally in a user agent and MUST NOT be presented to users at all. For example, user agents must never present suborigins in link text or a URL bar.&lt;/p> &lt;h3 id='not-overthrowing-sop'>Not Overthrowing Same-Origin Policy&lt;/h3> &lt;p>Suborigins do not fundamentally change how the same-origin policy works. An application without suborigins should work identically to how it always has, and even in an application with suborigins, the same-origin policy still applies as always. In fact, this document defines suborigins within the context of the same-origin policy so that, in theory, serialized suborigins can be thought of as a just a special case of the traditional same-origin policy.&lt;/p> &lt;/main>
+&lt;h2 id="conformance" class="no-ref no-num">Conformance&lt;/h2> &lt;h3 id="conventions" class="no-ref no-num">Document conventions&lt;/h3> &lt;p>Conformance requirements are expressed with a combination of descriptive assertions and RFC 2119 terminology. The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in the normative parts of this document are to be interpreted as described in RFC 2119. However, for readability, these words do not appear in all uppercase letters in this specification. &lt;p>All of the text of this specification is normative except sections explicitly marked as non-normative, examples, and notes. [[!RFC2119]]&lt;/p> &lt;p>Examples in this specification are introduced with the words “for example” or are set apart from the normative text with &lt;code>class="example"&lt;/code>, like this: &lt;div class="example"> &lt;p>This is an example of an informative example.&lt;/p> &lt;/div> &lt;p>Informative notes begin with the word “Note” and are set apart from the normative text with &lt;code>class="note"&lt;/code>, like this: &lt;p class="note">Note, this is an informative note.&lt;/p> &lt;h3 id="conformant-algorithms" class="no-ref no-num">Conformant Algorithms&lt;/h3> &lt;p>Requirements phrased in the imperative as part of algorithms (such as "strip any leading space characters" or "return false and abort these steps") are to be interpreted with the meaning of the key word ("must", "should", "may", etc) used in introducing the algorithm.&lt;/p> &lt;p>Conformance requirements phrased as algorithms or specific steps can be implemented in any manner, so long as the end result is equivalent. In particular, the algorithms defined in this specification are intended to be easy to understand and are not intended to be performant. Implementers are encouraged to optimize.&lt;/p> &lt;/body>
+&lt;script src="https://www.w3.org/scripts/TR/2016/fixup.js">&lt;/script>
+&lt;/html></code></div>
    </ul>
-   <p class="issue" id="issue-3e7a08cf"><a class="self-link" href="#issue-3e7a08cf"></a> TODO: These opt-out descriptions should probably be moved to the
-individual sections where the behaviors are discussed (i.e. postMessage and
-cookies). These just need to be fleshed out anyway, and examples and reasons
-need to be given.</p>
-   <h2 class="heading settled" data-level="7" id="practical-considerations"><span class="secno">7. </span><span class="content">Practical Considerations in Using Suborigins</span><a class="self-link" href="#practical-considerations"></a></h2>
-   <p>Using suborigins with a Web application should be relatively simple. At the most
-basic level, if you have an application hosted on <code>https://example.com/app/</code>, and all of its resources are hosted at
-subpaths of <code>/app</code>, it requires that the server set a Content
-Security Policy on all HTTP requests to subpaths of <code>/app</code> that
-contain the header <code>suborigin: namespace</code>, where <code>namespace</code> is of the application’s choosing. This will ensure that
-the user agent loads all of these resources into the suborigin <code>namespace</code> and will enforce this boundary accordingly.</p>
-   <p>Additionally, if your application allows cross-origin requests, instead of
-adding the usual <code>Access-Control-Allow-Origin</code> header for
-cross-origin requests, the server must add the <code>Access-Control-Allow-Finer-Origin</code> and <code>Access-Control-Allow-Suborigin</code> headers, as defined in <a href="#cors-ac">§4.1 CORS</a>.</p>
-   <p>In the client-side portion of the application, if <code>postMessage</code> is
-used, the application must be modified so it does not check the <code>event.origin</code> field.  Instead, it should check <code>event.finerorigin</code> and additionally the <code>event.suborigin</code> fields, as they are defined in <a href="#postmessage-ac">§4.2 postMessage</a>.</p>
-   <h2 class="heading settled" data-level="8" id="security-considerations"><span class="secno">8. </span><span class="content">Security Considerations</span><a class="self-link" href="#security-considerations"></a></h2>
-   <h3 class="heading settled" data-level="8.1" id="presentation-to-users"><span class="secno">8.1. </span><span class="content">Presentation of Suborigins to Users</span><a class="self-link" href="#presentation-to-users"></a></h3>
-   <p>A complication of suborigins is that while they provide a meaningful security
-for an application, that boundary makes much less sense to a user. That is,
-physical origins provide a security boundary at a physical level: separate
-scheme, hosts, and ports map to real boundaries external of a given application.
-However, suborigins as a boundary only makes sense <em>within the context of the
-program logic itself</em>, and there is no meaningful way for users to make
-decisions based on suborigins a priori.</p>
-   <p>Therefore, suborigins should be used only internally in a user agent and MUST
-NOT be presented to users at all. For example, user agents must never present
-suborigins in link text or a URL bar.</p>
-   <h3 class="heading settled" data-level="8.2" id="not-overthrowing-sop"><span class="secno">8.2. </span><span class="content">Not Overthrowing Same-Origin Policy</span><a class="self-link" href="#not-overthrowing-sop"></a></h3>
-   <p>Suborigins do not fundamentally change how the same-origin policy works. An
-application without suborigins should work identically to how it always has, and
-even in an application with suborigins, the same-origin policy still applies as
-always. In fact, this document defines suborigins within the context of the
-same-origin policy so that, in theory, serialized suborigins can be thought of
-as a just a special case of the traditional same-origin policy.</p>
   </main>
-  <h2 class="no-ref no-num heading settled" id="conformance"><span class="content">Conformance</span><a class="self-link" href="#conformance"></a></h2>
-  <h3 class="no-ref no-num heading settled" id="conventions"><span class="content">Document conventions</span><a class="self-link" href="#conventions"></a></h3>
-  <p>Conformance requirements are expressed with a combination of
-    descriptive assertions and RFC 2119 terminology. The key words “MUST”,
-    “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”,
-    “RECOMMENDED”, “MAY”, and “OPTIONAL” in the normative parts of this
-    document are to be interpreted as described in RFC 2119.
-    However, for readability, these words do not appear in all uppercase
-    letters in this specification. </p>
-  <p>All of the text of this specification is normative except sections
-    explicitly marked as non-normative, examples, and notes. <a data-link-type="biblio" href="#biblio-rfc2119">[RFC2119]</a></p>
-  <p>Examples in this specification are introduced with the words “for example”
-    or are set apart from the normative text with <code>class="example"</code>,
-    like this: </p>
-  <div class="example" id="example-f839f6c8">
-   <a class="self-link" href="#example-f839f6c8"></a> 
-   <p>This is an example of an informative example.</p>
-  </div>
-  <p>Informative notes begin with the word “Note” and are set apart from the
-    normative text with <code>class="note"</code>, like this: </p>
-  <p class="note" role="note">Note, this is an informative note.</p>
-  <h3 class="no-ref no-num heading settled" id="conformant-algorithms"><span class="content">Conformant Algorithms</span><a class="self-link" href="#conformant-algorithms"></a></h3>
-  <p>Requirements phrased in the imperative as part of algorithms (such as
-    "strip any leading space characters" or "return false and abort these
-    steps") are to be interpreted with the meaning of the key word ("must",
-    "should", "may", etc) used in introducing the algorithm.</p>
-  <p>Conformance requirements phrased as algorithms or specific steps can be
-    implemented in any manner, so long as the end result is equivalent. In
-    particular, the algorithms defined in this specification are intended to
-    be easy to understand and are not intended to be performant. Implementers
-    are encouraged to optimize.</p>
-<script src="https://www.w3.org/scripts/TR/2016/fixup.js"></script>
   <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
   <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
@@ -2065,7 +2000,6 @@ as a just a special case of the traditional same-origin policy.</p>
    <li><a href="#suborigin-policy">suborigin policy</a><span>, in §3.6</span>
    <li><a href="#grammardef-suborigin-policy-list">suborigin-policy-list</a><span>, in §3.6</span>
    <li><a href="#grammardef-suborigin-policy-option">suborigin-policy-option</a><span>, in §3.6</span>
-   <li><a href="#unsafe-cookies">unsafe-cookies</a><span>, in §6.5</span>
    <li><a href="#unsafe-postmessage-receive">unsafe-postmessage-receive</a><span>, in §6.5</span>
    <li><a href="#unsafe-postmessage-send">unsafe-postmessage-send</a><span>, in §6.5</span>
    <li><a href="#xhr">XHR</a><span>, in §2</span>
@@ -2126,19 +2060,17 @@ as a just a special case of the traditional same-origin policy.</p>
   <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
    <dt id="biblio-cors">[CORS]
-   <dd>Anne van Kesteren. <a href="http://www.w3.org/TR/cors/">Cross-Origin Resource Sharing</a>. 16 January 2014. REC. URL: <a href="http://www.w3.org/TR/cors/">http://www.w3.org/TR/cors/</a>
+   <dd>Anne van Kesteren. <a href="https://www.w3.org/TR/cors/">Cross-Origin Resource Sharing</a>. 16 January 2014. REC. URL: <a href="https://www.w3.org/TR/cors/">https://www.w3.org/TR/cors/</a>
    <dt id="biblio-fetch">[FETCH]
    <dd>Anne van Kesteren. <a href="https://fetch.spec.whatwg.org/">Fetch Standard</a>. Living Standard. URL: <a href="https://fetch.spec.whatwg.org/">https://fetch.spec.whatwg.org/</a>
    <dt id="biblio-html">[HTML]
    <dd>Ian Hickson. <a href="https://html.spec.whatwg.org/multipage/">HTML Standard</a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
    <dt id="biblio-html51">[HTML51]
-   <dd>Steve Faulkner; et al. <a href="https://w3c.github.io/html/">HTML 5.1</a>. 2 June 2016. WD. URL: <a href="https://w3c.github.io/html/">https://w3c.github.io/html/</a>
+   <dd>Steve Faulkner; et al. <a href="https://w3c.github.io/html/">HTML 5.1</a>. 21 June 2016. CR. URL: <a href="https://w3c.github.io/html/">https://w3c.github.io/html/</a>
    <dt id="biblio-rfc0020">[RFC0020]
    <dd>V.G. Cerf. <a href="https://tools.ietf.org/html/rfc20">ASCII format for network interchange</a>. October 1969. Internet Standard. URL: <a href="https://tools.ietf.org/html/rfc20">https://tools.ietf.org/html/rfc20</a>
    <dt id="biblio-rfc1123">[RFC1123]
    <dd>R. Braden, Ed.. <a href="https://tools.ietf.org/html/rfc1123">Requirements for Internet Hosts - Application and Support</a>. October 1989. Internet Standard. URL: <a href="https://tools.ietf.org/html/rfc1123">https://tools.ietf.org/html/rfc1123</a>
-   <dt id="biblio-rfc2119">[RFC2119]
-   <dd>S. Bradner. <a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
    <dt id="biblio-rfc5234">[RFC5234]
    <dd>D. Crocker, Ed.; P. Overell. <a href="https://tools.ietf.org/html/rfc5234">Augmented BNF for Syntax Specifications: ABNF</a>. January 2008. Internet Standard. URL: <a href="https://tools.ietf.org/html/rfc5234">https://tools.ietf.org/html/rfc5234</a>
    <dt id="biblio-rfc6454">[RFC6454]
@@ -2148,7 +2080,7 @@ as a just a special case of the traditional same-origin policy.</p>
    <dt id="biblio-whatwg-dom">[WHATWG-DOM]
    <dd>Anne van Kesteren. <a href="https://dom.spec.whatwg.org/">DOM Standard</a>. Living Standard. URL: <a href="https://dom.spec.whatwg.org/">https://dom.spec.whatwg.org/</a>
    <dt id="biblio-whatwg-url">[WHATWG-URL]
-   <dd>Anne van Kesteren; Sam Ruby. <a href="https://url.spec.whatwg.org/">URL Standard</a>. Living Standard. URL: <a href="https://url.spec.whatwg.org/">https://url.spec.whatwg.org/</a>
+   <dd>Anne van Kesteren. <a href="https://url.spec.whatwg.org/">URL Standard</a>. Living Standard. URL: <a href="https://url.spec.whatwg.org/">https://url.spec.whatwg.org/</a>
    <dt id="biblio-workers">[WORKERS]
    <dd>Ian Hickson. <a href="https://html.spec.whatwg.org/multipage/workers.html">Web Workers</a>. 24 September 2015. WD. URL: <a href="https://html.spec.whatwg.org/multipage/workers.html">https://html.spec.whatwg.org/multipage/workers.html</a>
    <dt id="biblio-xhr">[XHR]
@@ -2166,31 +2098,24 @@ as a just a special case of the traditional same-origin policy.</p>
   <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
    <div class="issue"> TODO: Problems with CSP sandbox goes well beyond this. synthetic origins
-via CSP sandbox do not let you persist state. This makes it impossible to port
-an old webpage to run unprivileged. Further, since sandbox inherits on all
-iframes within so you can’t insert an iframe to say a widget since that gets
-sandboxed too and so would need to be rewritten to support such a scenario.
-This significantly complicates adoption. This probably needs to go into a new
-section This significantly complicates adoption. This probably needs to go into
-a new section.<a href="#issue-081d98d7"> ↵ </a></div>
+  via CSP sandbox do not let you persist state. This makes it impossible to port
+  an old webpage to run unprivileged. Further, since sandbox inherits on all
+  iframes within so you can’t insert an iframe to say a widget since that gets
+  sandboxed too and so would need to be rewritten to support such a scenario.
+  This significantly complicates adoption. This probably needs to go into a new
+  section This significantly complicates adoption. This probably needs to go into
+  a new section.<a href="#issue-009fcd8b"> ↵ </a></div>
    <div class="issue"> TODO: We probably should add additional examples, or perhaps match an
-example to each bullet above.<a href="#issue-9a0ddc8c"> ↵ </a></div>
+  example to each bullet above.<a href="#issue-e95eddb7"> ↵ </a></div>
    <div class="issue"> TODO(jww) This needs to be filled in once we have a pretty good handle on
-the basic structure of this document. At that point, we should extract the terms
-defined throughout the spec and place them here.<a href="#issue-3c008d43"> ↵ </a></div>
+  the basic structure of this document. At that point, we should extract the terms
+  defined throughout the spec and place them here.<a href="#issue-a80ab0c3"> ↵ </a></div>
    <div class="issue"> TODO(devd): Should we also assert that attacker on main/parent origin
-cannot compromise the app in sub-origin?<a href="#issue-ace20ff1"> ↵ </a></div>
+  cannot compromise the app in sub-origin?<a href="#issue-6aca9ca3"> ↵ </a></div>
    <div class="issue"> TODO(devd): Making things specific to XHR or CORS is weird. We should
-just make all fetches inside a suborigin CORS fetches and be done with it.<a href="#issue-d5c3193c"> ↵ </a></div>
+  just make all fetches inside a suborigin CORS fetches and be done with it.<a href="#issue-49a8418d"> ↵ </a></div>
    <div class="issue"> TODO(jww): Formal definition of the headers and responses w/grammars.
-Also need to be explicit about <code>*</code> having same limitations as <code>Access-Control-Allow-Origin</code> w/credentials.<a href="#issue-282a2442"> ↵ </a></div>
-   <div class="issue"> TODO: Write an example that makes clear that this is extremely
-dangerous and should not be used if you have Real Deal auth and csrf cookies
-used.<a href="#issue-6dd4fe49"> ↵ </a></div>
-   <div class="issue"> TODO: These opt-out descriptions should probably be moved to the
-individual sections where the behaviors are discussed (i.e. postMessage and
-cookies). These just need to be fleshed out anyway, and examples and reasons
-need to be given.<a href="#issue-3e7a08cf"> ↵ </a></div>
+  Also need to be explicit about <code>*</code> having same limitations as <code>Access-Control-Allow-Origin</code> w/credentials.<a href="#issue-daf4a3ea"> ↵ </a></div>
   </div>
   <aside class="dfn-panel" data-for="origin">
    <b><a href="#origin">#origin</a></b><b>Referenced in:</b>
@@ -2278,14 +2203,7 @@ need to be given.<a href="#issue-3e7a08cf"> ↵ </a></div>
   <aside class="dfn-panel" data-for="unsafe-postmessage-send">
    <b><a href="#unsafe-postmessage-send">#unsafe-postmessage-send</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-unsafe-postmessage-send-1">6.5. Security Model Opt-Outs</a> <a href="#ref-for-unsafe-postmessage-send-2">(2)</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="unsafe-cookies">
-   <b><a href="#unsafe-cookies">#unsafe-cookies</a></b><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-unsafe-cookies-1">6.4.1. Cookies</a>
-    <li><a href="#ref-for-unsafe-cookies-2">6.5. Security Model Opt-Outs</a>
+    <li><a href="#ref-for-unsafe-postmessage-send-1">6.5. Security Model Opt-Outs</a>
    </ul>
   </aside>
 <script>/* script-dfn-panel */
