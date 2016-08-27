@@ -1457,8 +1457,9 @@ boundary between this resource and resources in other namespaces.</p>
       <li>
        <a href="#serializing"><span class="secno">6.3</span> <span class="content">Serializing Suborigins</span></a>
        <ol class="toc">
-        <li><a href="#unicode-serialization"><span class="secno">6.3.1</span> <span class="content">Unicode Serialization of a Suborigin</span></a>
-        <li><a href="#ascii-serialization"><span class="secno">6.3.2</span> <span class="content">ASCII Serialization of a Suborigin</span></a>
+        <li><a href="#update-triple"><span class="secno">6.3.1</span> <span class="content">Update Scheme/Host/Port Triple with Suborigin</span></a>
+        <li><a href="#unicode-serialization"><span class="secno">6.3.2</span> <span class="content">Unicode Serialization of a Suborigin</span></a>
+        <li><a href="#ascii-serialization"><span class="secno">6.3.3</span> <span class="content">ASCII Serialization of a Suborigin</span></a>
        </ol>
       <li>
        <a href="#dom-interactions"><span class="secno">6.4</span> <span class="content">Interactions with the DOM</span></a>
@@ -1718,12 +1719,12 @@ This includes providing security-model opt-outs where necessary.</p>
   done by inserting the suborigin namespace into the host of the Origin, thus
   creating a new host but maintaining all of the information about both the
   original scheme, host, port, and the suborigin namespace. The serialization
-  format prepends the host name with the suborigin namespace followed by a "<code>_</code>"
-  character.</p>
+  format prepends the host name with a "<code>$</code>" character followed by the suborigin
+  namespace followed by another "<code>$</code>" character.</p>
    <p>For example, a resource hosted at <code>https://example.com/</code> in
-  the suborigin namespace <code>profile</code> would be serialized as <code>https://profile_example.com/</code>.</p>
+  the suborigin namespace <code>profile</code> would be serialized as <code>https://$profile$example.com/</code>.</p>
    <p>Similarly, a resource hosted at <code>https://example.com:8080/</code> in
-  the suborigin namespace <code>separate</code> would be serialized as <code>https://separate_example.com:8080/</code>.</p>
+  the suborigin namespace <code>separate</code> would be serialized as <code>https://$separate$example.com:8080/</code>.</p>
    <p>Internally, the user agent just tracks the <a data-link-type="dfn" href="#suborigin-namespace" id="ref-for-suborigin-namespace-4">suborigin namespace</a> of the resource.
   When the origin needs to be serialized, the user agent should
   follow the algorithm in <a href="#serializing">§6.3 Serializing Suborigins</a>.</p>
@@ -1848,7 +1849,16 @@ This includes providing security-model opt-outs where necessary.</p>
    <p>Two resources are the same-origin if their suborigins are the same.</p>
    <h3 class="heading settled" data-level="6.3" id="serializing"><span class="secno">6.3. </span><span class="content">Serializing Suborigins</span><a class="self-link" href="#serializing"></a></h3>
    <p>This section defines how to serialize an origin to a unicode <a data-link-type="biblio" href="#biblio-unicode6">[Unicode6]</a> string and to an ASCII <a data-link-type="biblio" href="#biblio-rfc0020">[RFC0020]</a> string.</p>
-   <h4 class="heading settled" data-level="6.3.1" id="unicode-serialization"><span class="secno">6.3.1. </span><span class="content">Unicode Serialization of a Suborigin</span><a class="self-link" href="#unicode-serialization"></a></h4>
+   <h4 class="heading settled" data-level="6.3.1" id="update-triple"><span class="secno">6.3.1. </span><span class="content">Update Scheme/Host/Port Triple with Suborigin</span><a class="self-link" href="#update-triple"></a></h4>
+   <ol>
+    <li data-md="">
+     <p>Let <var>prefix</var> be the suborigin namespace portion of the suborigin pair.</p>
+    <li data-md="">
+     <p>Prepend the string "$" and append the string "$" to <var>prefix</var>.</p>
+    <li data-md="">
+     <p>Prepend <var>prefix</var> to the host part of the origin triple.</p>
+   </ol>
+   <h4 class="heading settled" data-level="6.3.2" id="unicode-serialization"><span class="secno">6.3.2. </span><span class="content">Unicode Serialization of a Suborigin</span><a class="self-link" href="#unicode-serialization"></a></h4>
    <p>The Unicode serialization of a suborigin is the value returned by the following
   algorithm:</p>
    <ol>
@@ -1861,20 +1871,12 @@ This includes providing security-model opt-outs where necessary.</p>
   these steps.</p>
     <li data-md="">
      <p>Otherwise, if the suborigin namespace portion of the suborigin pair is not
- null:</p>
-     <ol>
-      <li data-md="">
-       <p>Let <var>prefix</var> be the suborigin namespace portion of the suborigin pair.</p>
-      <li data-md="">
-       <p>Append the string "_" to <var>prefix</var>.</p>
-      <li data-md="">
-       <p>Prepend <var>prefix</var> to the host part of the origin triple.</p>
-     </ol>
+ null, <a href="#update-triple">§6.3.1 Update Scheme/Host/Port Triple with Suborigin</a>.</p>
     <li data-md="">
      <p>Proceed with step 1 of <a href="https://tools.ietf.org/html/rfc6454#section-6.1">Section 6.1 in the
  Origin specification</a> <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a>.</p>
    </ol>
-   <h4 class="heading settled" data-level="6.3.2" id="ascii-serialization"><span class="secno">6.3.2. </span><span class="content">ASCII Serialization of a Suborigin</span><a class="self-link" href="#ascii-serialization"></a></h4>
+   <h4 class="heading settled" data-level="6.3.3" id="ascii-serialization"><span class="secno">6.3.3. </span><span class="content">ASCII Serialization of a Suborigin</span><a class="self-link" href="#ascii-serialization"></a></h4>
    <p>The ASCII serialization of a suborigin is the value returned by the following
   algorithm:</p>
    <ol>
@@ -1886,16 +1888,8 @@ This includes providing security-model opt-outs where necessary.</p>
      <p>(i.e., the code point sequence U+006E, U+0075, U+006C, U+006C) and abort
 these steps.</p>
     <li data-md="">
-     <p>Otherwise, if the suborigin-namespace portion of the suborigin pair is not
- null:</p>
-     <ol>
-      <li data-md="">
-       <p>Let suffix be the string "+".</p>
-      <li data-md="">
-       <p>Append the suborigin-namespace portion of the suborigin pair to suffix.</p>
-      <li data-md="">
-       <p>Append suffix to the scheme part of the origin triple.</p>
-     </ol>
+     <p>Otherwise, if the suborigin namespace portion of the suborigin pair is not
+ null, <a href="#update-triple">§6.3.1 Update Scheme/Host/Port Triple with Suborigin</a>.</p>
     <li data-md="">
      <p>Proceed with step 1 of <a href="https://tools.ietf.org/html/rfc6454#section-6.2">Section 6.2 in the
  Origin specification</a> <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a>.</p>
@@ -1936,39 +1930,37 @@ serialized suborigin, if the frame has an execution context with a suborigin
 where the scheme, host, and port match the <code>target</code>, but it also has a
 suborigin namespace, if <a data-link-type="dfn" href="#unsafe-postmessage-receive" id="ref-for-unsafe-postmessage-receive-1"><code>unsafe-postmessage-receive</code></a> is set, it will
 still receive the message.</p>
-     <div class="example" id="unsafe-postmessage-send-ex">
-      <a class="self-link" href="#unsafe-postmessage-send-ex"></a> `https://example.com<code>runs a map API at</code>https://example.com/maps<code>which is
+     <div class="example" id="unsafe-postmessage-send-ex"><a class="self-link" href="#unsafe-postmessage-send-ex"></a> `https://example.com<code>runs a map API at</code>https://example.com/maps<code>which is
 embedded by many other websites. It provides a</code>postMessage()<code>API to place
 markers on the map at locations the embedder chooses. &lt;p>The developer would like to run</code>https://example.com/maps<code>in a suborigin
 namespace "maps". However, when embedders send messages to the embedded
 frame, because they are legacy uses from before the use of suborigins, they
 send essages with a</code>target<code>of</code>https://example.com<code>, &lt;em>not&lt;/em>
-`https://maps_example.com</code>. Since the developer would still like this frame to
-be able to provide the API to these legacy embedders, it can serve the frame
-with the <a data-link-type="dfn" href="#unsafe-postmessage-receive" id="ref-for-unsafe-postmessage-receive-2"><code>unsafe-postmessage-receive</code></a> directive, which will allow the
-frame to receive messages on behalf of <code>https://example.com</code>, even though it is
-at <code>https://maps_example.com</code>.
-      <p></p>
-     </div>
+`https://$maps$example.com</code>. Since the developer would still like this frame
+to be able to provide the API to these legacy embedders, it can serve the
+frame with the <a data-link-type="dfn" href="#unsafe-postmessage-receive" id="ref-for-unsafe-postmessage-receive-2"><code>unsafe-postmessage-receive</code></a> directive, which will
+allow the frame to receive messages on behalf of <code>https://example.com</code>, even
+though it is at <code>https://$maps$example.com</code>. </div>
+     <p></p>
     <li data-md="">
-     <p>'<dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="unsafe-postmessage-send"><code>unsafe-postmessage-send</code></dfn>' When a message is sent <i>from</i> a suborigin
-namespace with <a data-link-type="dfn" href="#unsafe-postmessage-send" id="ref-for-unsafe-postmessage-send-1"><code>unsafe-postmessage-send</code></a> set, the <code>event.origin</code> value
-of the receiver should be set to the serialized physical origin, not the
-serialized suborigin value. However, the <code>event.suborigin</code> field should still
-be set to the name of the suborigin namespace.</p>
-     <div class="example" id="example-ced7c6be"><a class="self-link" href="#example-ced7c6be"></a> Continuing the case in the above example, <code>https://example.com/maps</code> is a
+     <p>'<dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="unsafe-postmessage-send"><code>unsafe-postmessage-send</code></dfn>' When a message is sent <i>from</i> a
+suborigin namespace with <a data-link-type="dfn" href="#unsafe-postmessage-send" id="ref-for-unsafe-postmessage-send-1"><code>unsafe-postmessage-send</code></a> set, the
+`event.origin<code>value of the receiver should be set to the serialized
+physical origin, not the serialized suborigin value. However, the
+`event.suborigin</code> field should still be set to the name of the suborigin
+namespace.</p>
+     <div class="example" id="example-ac559904"><a class="self-link" href="#example-ac559904"></a> Continuing the case in the above example, <code>https://example.com/maps</code> is a
 mapping application that is commonly embedded in other sites. It provides a
 `postMessage()<code>based API to place locations of the embedder's choosing on the
 map.</code>httsp://example.com<code>would like to run the application in a suborigin
 named "maps". &lt;p>In response to queries to the API,</code>https://example.com/maps<code>may send
 messages back to the embedder if, for example, a user clicks on one of the
 locations. However, since the embedder may be legacy and not be aware of
-suborigins, when it checks the</code>event.origin<code>protery of the</code>MesseageEvent<code>,
-if it sees</code>https://maps_example.com<code>as the origin, it will reject the
-message as a potential attack. Thus,</code>https://example.com<code>may use the
-&lt;a></code>unsafe-postmessage-send<code>&lt;/a> directive to allow its messages to appear
-with the origin of the physical origin, in this case</code>https://example.com<code>.&lt;/p>
-&lt;/div> &lt;/li>&lt;li data-md>&lt;p>'&lt;dfn></code>unsafe-cookies<code>&lt;/dfn>' When an execution context with a suborigin
+suborigins, when it checks the</code>event.origin<code>protery of the
+`MesseageEvent</code>, if it sees <code>https://$maps$example.com</code> as the origin, it
+will reject the message as a potential attack. Thus, <code>https://example.com</code> may use the <a data-link-type="dfn" href="#unsafe-postmessage-send" id="ref-for-unsafe-postmessage-send-2"><code>unsafe-postmessage-send</code></a> directive to allow its messages
+to appear with the origin of the physical origin, in this case
+`https://example.com<code>. &lt;/div>&lt;/p> &lt;/li>&lt;li data-md>&lt;p>'&lt;dfn></code>unsafe-cookies<code>&lt;/dfn>' When an execution context with a suborigin
 namespace has &lt;a></code>unsafe-cookies<code>&lt;/a> set, the
 execution context should not have a fresh cookie jar for the suborigin
 namespace, and instead, the cookie jar should be shared with the null
@@ -2203,7 +2195,7 @@ used.&lt;/p>
   <aside class="dfn-panel" data-for="unsafe-postmessage-send">
    <b><a href="#unsafe-postmessage-send">#unsafe-postmessage-send</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-unsafe-postmessage-send-1">6.5. Security Model Opt-Outs</a>
+    <li><a href="#ref-for-unsafe-postmessage-send-1">6.5. Security Model Opt-Outs</a> <a href="#ref-for-unsafe-postmessage-send-2">(2)</a>
    </ul>
   </aside>
 <script>/* script-dfn-panel */
