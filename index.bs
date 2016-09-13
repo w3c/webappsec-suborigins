@@ -392,16 +392,16 @@ spec:dom-ls; type:interface; text:Document
   done by inserting the suborigin namespace into the host of the Origin, thus
   creating a new host but maintaining all of the information about both the
   original scheme, host, port, and the suborigin namespace. The serialization
-  format prepends the host name with a "`$`" character followed by the suborigin
-  namespace followed by another "`$`" character.
+  format appends the string "-so" to the scheme and prepends the host name with
+  the suborigin namespace followed by a "." character.
 
   For example, a resource hosted at `https://example.com/` in
   the suborigin namespace `profile` would be serialized as
-  `https://$profile$example.com/`.
+  `https-so://profile.example.com/`.
 
   Similarly, a resource hosted at `https://example.com:8080/` in
   the suborigin namespace `separate` would be serialized as
-  `https://$separate$example.com:8080/`.
+  `https-so://separate.example.com:8080/`.
 
   Internally, the user agent just tracks the <a>suborigin namespace</a> of the resource.
   When the origin needs to be serialized, the user agent should
@@ -591,13 +591,18 @@ spec:dom-ls; type:interface; text:Document
   This section defines how to serialize an origin to a unicode [[!Unicode6]]
   string and to an ASCII [[!RFC0020]] string.
 
-  ### Update Scheme/Host/Port Triple with Suborigin ### {#update-triple}
+  ### Update Scheme/Host/Port Triple with Suborigin for Serialization ### {#update-triple}
 
-  1. Let |prefix| be the suborigin namespace portion of the suborigin pair.
+  Given a suborigin pair |pair|, the scheme/host/port triple of |pair| is
+  updated for serialization by the following algorithm:
 
-  2. Prepend the string "$" and append the string "$" to |prefix|.
+  1. Let |prefix| be the suborigin namespace portion of |pair|.
 
-  3. Prepend |prefix| to the host part of the origin triple.
+  2. Append the string "." to |prefix|.
+
+  3. Prepend |prefix| to the host part of the origin triple in |pair|.
+
+  4. Append the string "-so" to the scheme part of the origin triple in |pair|.
 
   ### Unicode Serialization of a Suborigin ### {#unicode-serialization}
 
@@ -695,11 +700,12 @@ spec:dom-ls; type:interface; text:Document
     namespace "maps".  However, when embedders send messages to the embedded
     frame, because they are legacy uses from before the use of suborigins, they
     send essages with a `target` of `https://example.com`, <em>not</em>
-    `https://$maps$example.com`. Since the developer would still like this frame
-    to be able to provide the API to these legacy embedders, it can serve the
-    frame with the <a>`unsafe-postmessage-receive`</a> directive, which will
+    `https-so://maps.example.com`. Since the developer would still like this
+    frame to be able to provide the API to these legacy embedders, it can serve
+    the frame with the <a>`unsafe-postmessage-receive`</a> directive, which will
     allow the frame to receive messages on behalf of `https://example.com`, even
-    though it is at `https://$maps$example.com`.  </div>
+    though it is at `https-so://maps.example.com`.
+    </div>
 
   * '<dfn>`unsafe-postmessage-send`</dfn>' When a message is sent <i>from</i> a
     suborigin namespace with <a>`unsafe-postmessage-send`</a> set, the
@@ -719,11 +725,12 @@ spec:dom-ls; type:interface; text:Document
     messages back to the embedder if, for example, a user clicks on one of the
     locations. However, since the embedder may be legacy and not be aware of
     suborigins, when it checks the `event.origin` protery of the
-    `MesseageEvent`, if it sees `https://$maps$example.com` as the origin, it
+    `MesseageEvent`, if it sees `https-so://maps.example.com` as the origin, it
     will reject the message as a potential attack. Thus, `https://example.com`
     may use the <a>`unsafe-postmessage-send`</a> directive to allow its messages
     to appear with the origin of the physical origin, in this case
-    `https://example.com`.  </div>
+    `https://example.com`.
+    </div>
 
   * '<dfn>`unsafe-cookies`</dfn>' When an execution context with a suborigin
     namespace has <a>`unsafe-cookies`</a> set, the
