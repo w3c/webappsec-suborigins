@@ -1794,7 +1794,7 @@ This includes providing security-model opt-outs where necessary.</p>
   do not support suborigins while providing origin-separation for user agents that
   do support suborigins. The following discussions discuss the three major
   cross-origin mechanisms that are relevant: <a data-link-type="dfn" href="#cors" id="ref-for-cors-2">CORS</a>, <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/comms.html#dom-messageport-postmessage"><code>postMessage</code></a>,
-  and Workers <a data-link-type="biblio" href="#biblio-workers">[WORKERS]</a>.</p>
+  and workers <a data-link-type="biblio" href="#biblio-workers">[WORKERS]</a>.</p>
    <p class="issue" id="issue-49a8418d"><a class="self-link" href="#issue-49a8418d"></a> TODO(devd): Making things specific to XHR or CORS is weird. We should
   just make all fetches inside a suborigin CORS fetches and be done with it.</p>
    <h3 class="heading settled" data-level="4.1" id="cors-ac"><span class="secno">4.1. </span><span class="content">CORS</span><a class="self-link" href="#cors-ac"></a></h3>
@@ -1821,11 +1821,11 @@ This includes providing security-model opt-outs where necessary.</p>
    <h3 class="heading settled" data-level="4.3" id="workers-ac"><span class="secno">4.3. </span><span class="content">Workers</span><a class="self-link" href="#workers-ac"></a></h3>
    <p>User agents MUST refuse to create or execute any workers in a page executing in
   a sub-origin.</p>
-   <p class="note" role="note">Note: This may change in the future, and Suborigins may eventually be allowed to
-  register Service Workers, but, for now, allowing the creation of any workers,
+   <p class="note" role="note">Note: This may change in the future, and suborigins may eventually be allowed to
+  register service workers, but, for now, allowing the creation of any workers,
   including service workers and shared workers, from suborigins adds too many
-  complications. Applications can still create workers by iframing a page not in
-  a suborigin.</p>
+  complications. Applications can still create workers by creating an iframe of
+  a page not in a suborigin.</p>
    <h2 class="heading settled" data-level="5" id="impact"><span class="secno">5. </span><span class="content">Impact on Web Platform</span><a class="self-link" href="#impact"></a></h2>
    <p>Content inside a suborigin namespace is restricted in the same way that other
   origins are restricted. There are some additional restrictions as well, in order

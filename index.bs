@@ -468,7 +468,7 @@ spec:dom-ls; type:interface; text:Document
   do not support suborigins while providing origin-separation for user agents that
   do support suborigins. The following discussions discuss the three major
   cross-origin mechanisms that are relevant: <a>CORS</a>, <a>`postMessage`</a>,
-  and Workers [[!WORKERS]].
+  and workers [[!WORKERS]].
 
   Issue: TODO(devd): Making things specific to XHR or CORS is weird. We should
   just make all fetches inside a suborigin CORS fetches and be done with it.
@@ -512,11 +512,11 @@ spec:dom-ls; type:interface; text:Document
   a sub-origin.
 
 
-  Note: This may change in the future, and Suborigins may eventually be allowed to
-  register Service Workers, but, for now, allowing the creation of any workers,
+  Note: This may change in the future, and suborigins may eventually be allowed to
+  register service workers, but, for now, allowing the creation of any workers,
   including service workers and shared workers, from suborigins adds too many
-  complications. Applications can still create workers by iframing a page not in
-  a suborigin.
+  complications. Applications can still create workers by creating an iframe of
+  a page not in a suborigin.
 
   # Impact on Web Platform # {#impact}
 
