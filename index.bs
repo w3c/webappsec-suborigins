@@ -591,13 +591,18 @@ spec:dom-ls; type:interface; text:Document
   This section defines how to serialize an origin to a unicode [[!Unicode6]]
   string and to an ASCII [[!RFC0020]] string.
 
-  ### Update Scheme/Host/Port Triple with Suborigin ### {#update-triple}
+  ### Update Scheme/Host/Port Triple with Suborigin for Serialization ### {#update-triple}
 
-  1. Let |prefix| be the suborigin namespace portion of the suborigin pair.
+  Given a suborigin pair |pair|, the scheme/host/port triple of |pair| is
+  updated for serialization by the following algorithm:
 
-  2. Prepend the string "$" and append the string "$" to |prefix|.
+  1. Let |prefix| be the suborigin namespace portion of |pair|.
 
-  3. Prepend |prefix| to the host part of the origin triple.
+  2. Append the string "." to |prefix|.
+
+  3. Prepend |prefix| to the host part of the origin triple in |pair|.
+
+  4. Append the string "-so" to the scheme part of the origin triple in |pair|.
 
   ### Unicode Serialization of a Suborigin ### {#unicode-serialization}
 

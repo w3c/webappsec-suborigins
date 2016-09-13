@@ -414,6 +414,19 @@
 	 border-left: 0.5em solid #DEF;
 	}
 
+	/* Put nice boxes around each algorithm. */
+	[data-algorithm]:not(.heading) {
+	  padding: .5em;
+	  border: thin solid #ddd; border-radius: .5em;
+	  margin: .5em 0;
+	}
+	[data-algorithm]:not(.heading) > :first-child {
+	  margin-top: 0;
+	}
+	[data-algorithm]:not(.heading) > :last-child {
+	  margin-bottom: 0;
+	}
+
 	/* Style for switch/case <dl>s */
 	dl.switch > dd > ol.only,
 	dl.switch > dd > .only > ol {
@@ -1350,7 +1363,7 @@ Possible extra rowspan handling
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Suborigins</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2016-08-26">26 August 2016</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2016-09-13">13 September 2016</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1457,7 +1470,7 @@ boundary between this resource and resources in other namespaces.</p>
       <li>
        <a href="#serializing"><span class="secno">6.3</span> <span class="content">Serializing Suborigins</span></a>
        <ol class="toc">
-        <li><a href="#update-triple"><span class="secno">6.3.1</span> <span class="content">Update Scheme/Host/Port Triple with Suborigin</span></a>
+        <li><a href="#update-triple"><span class="secno">6.3.1</span> <span class="content">Update Scheme/Host/Port Triple with Suborigin for Serialization</span></a>
         <li><a href="#unicode-serialization"><span class="secno">6.3.2</span> <span class="content">Unicode Serialization of a Suborigin</span></a>
         <li><a href="#ascii-serialization"><span class="secno">6.3.3</span> <span class="content">ASCII Serialization of a Suborigin</span></a>
        </ol>
@@ -1467,6 +1480,19 @@ boundary between this resource and resources in other namespaces.</p>
         <li><a href="#cookies"><span class="secno">6.4.1</span> <span class="content">Cookies</span></a>
        </ol>
       <li><a href="#security-model-opt-outs"><span class="secno">6.5</span> <span class="content">Security Model Opt-Outs</span></a>
+     </ol>
+    <li><a href="#practical-considerations"><span class="secno">7</span> <span class="content">Practical Considerations in Using Suborigins</span></a>
+    <li>
+     <a href="#security-considerations"><span class="secno">8</span> <span class="content">Security Considerations</span></a>
+     <ol class="toc">
+      <li><a href="#presentation-to-users"><span class="secno">8.1</span> <span class="content">Presentation of Suborigins to Users</span></a>
+      <li><a href="#not-overthrowing-sop"><span class="secno">8.2</span> <span class="content">Not Overthrowing Same-Origin Policy</span></a>
+     </ol>
+    <li>
+     <a href="#conformance"><span class="secno"></span> <span class="content">Conformance</span></a>
+     <ol class="toc">
+      <li><a href="#conventions"><span class="secno"></span> <span class="content">Document conventions</span></a>
+      <li><a href="#conformant-algorithms"><span class="secno"></span> <span class="content">Conformant Algorithms</span></a>
      </ol>
     <li>
      <a href="#index"><span class="secno"></span> <span class="content">Index</span></a>
@@ -1528,11 +1554,9 @@ boundary between this resource and resources in other namespaces.</p>
    <ul>
     <li data-md="">
      <p>Provide a way for different applications hosted at the same physical origin to
-separate their content into separate logical origins. For example,
-`https://foobar.com/application<code>and</code>https://foobar.com/widget<code>, today, are,
+separate their content into separate logical origins. For example, <code>https://foobar.com/application</code> and <code>https://foobar.com/widget</code>, today, are,
 by definition, in the same origin, even if they are different applications.
-Thus an XSS at</code>https://foobar.com/application<code>means an XSS at
-`https://foobar.com/widget</code>, even if <code>https://foobar.com/widget</code> is
+Thus an XSS at <code>https://foobar.com/application</code> means an XSS at <code>https://foobar.com/widget</code>, even if <code>https://foobar.com/widget</code> is
 "protected" by a strong Content Security Policy.</p>
     <li data-md="">
      <p>Similarly, provide a way for content authors to split their applications
@@ -1849,14 +1873,18 @@ This includes providing security-model opt-outs where necessary.</p>
    <p>Two resources are the same-origin if their suborigins are the same.</p>
    <h3 class="heading settled" data-level="6.3" id="serializing"><span class="secno">6.3. </span><span class="content">Serializing Suborigins</span><a class="self-link" href="#serializing"></a></h3>
    <p>This section defines how to serialize an origin to a unicode <a data-link-type="biblio" href="#biblio-unicode6">[Unicode6]</a> string and to an ASCII <a data-link-type="biblio" href="#biblio-rfc0020">[RFC0020]</a> string.</p>
-   <h4 class="heading settled" data-level="6.3.1" id="update-triple"><span class="secno">6.3.1. </span><span class="content">Update Scheme/Host/Port Triple with Suborigin</span><a class="self-link" href="#update-triple"></a></h4>
+   <h4 class="heading settled" data-level="6.3.1" id="update-triple"><span class="secno">6.3.1. </span><span class="content">Update Scheme/Host/Port Triple with Suborigin for Serialization</span><a class="self-link" href="#update-triple"></a></h4>
+   <p>Given a suborigin pair <var>pair</var>, the scheme/host/port triple of <var>pair</var> is
+  updated for serialization by the following algorithm:</p>
    <ol>
     <li data-md="">
-     <p>Let <var>prefix</var> be the suborigin namespace portion of the suborigin pair.</p>
+     <p>Let <var>prefix</var> be the suborigin namespace portion of <var>pair</var>.</p>
     <li data-md="">
-     <p>Prepend the string "$" and append the string "$" to <var>prefix</var>.</p>
+     <p>Append the string "." to <var>prefix</var>.</p>
     <li data-md="">
-     <p>Prepend <var>prefix</var> to the host part of the origin triple.</p>
+     <p>Prepend <var>prefix</var> to the host part of the origin triple in <var>pair</var>.</p>
+    <li data-md="">
+     <p>Append the string "-so" to the scheme part of the origin triple in <var>pair</var>.</p>
    </ol>
    <h4 class="heading settled" data-level="6.3.2" id="unicode-serialization"><span class="secno">6.3.2. </span><span class="content">Unicode Serialization of a Suborigin</span><a class="self-link" href="#unicode-serialization"></a></h4>
    <p>The Unicode serialization of a suborigin is the value returned by the following
@@ -1871,7 +1899,7 @@ This includes providing security-model opt-outs where necessary.</p>
   these steps.</p>
     <li data-md="">
      <p>Otherwise, if the suborigin namespace portion of the suborigin pair is not
- null, <a href="#update-triple">§6.3.1 Update Scheme/Host/Port Triple with Suborigin</a>.</p>
+ null, <a href="#update-triple">§6.3.1 Update Scheme/Host/Port Triple with Suborigin for Serialization</a>.</p>
     <li data-md="">
      <p>Proceed with step 1 of <a href="https://tools.ietf.org/html/rfc6454#section-6.1">Section 6.1 in the
  Origin specification</a> <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a>.</p>
@@ -1889,7 +1917,7 @@ This includes providing security-model opt-outs where necessary.</p>
 these steps.</p>
     <li data-md="">
      <p>Otherwise, if the suborigin namespace portion of the suborigin pair is not
- null, <a href="#update-triple">§6.3.1 Update Scheme/Host/Port Triple with Suborigin</a>.</p>
+ null, <a href="#update-triple">§6.3.1 Update Scheme/Host/Port Triple with Suborigin for Serialization</a>.</p>
     <li data-md="">
      <p>Proceed with step 1 of <a href="https://tools.ietf.org/html/rfc6454#section-6.2">Section 6.2 in the
  Origin specification</a> <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a>.</p>
@@ -1901,7 +1929,7 @@ these steps.</p>
    <ul>
     <li data-md="">
      <p>A <code class="idl"><a data-link-type="idl">Document</a></code> who has a non-empty <a data-link-type="dfn" href="#suborigin-namespace" id="ref-for-suborigin-namespace-5">suborigin namespace</a>, unless the <a data-link-type="grammar" href="#grammardef-suborigin-policy-option" id="ref-for-grammardef-suborigin-policy-option-3">suborigin-policy-option</a> for the <code class="idl"><a data-link-type="idl">Document</a></code> contains
-the '<a data-link-type="dfn"><code>unsafe-cookies</code></a>' value.</p>
+the '<a data-link-type="dfn" href="#unsafe-cookies" id="ref-for-unsafe-cookies-1"><code>unsafe-cookies</code></a>' value.</p>
    </ul>
    <p>Modify the paragraph following this list to read "scheme/host/port/suborigin
   tuple" instead of "scheme/host/port tuple".</p>
@@ -1930,50 +1958,118 @@ serialized suborigin, if the frame has an execution context with a suborigin
 where the scheme, host, and port match the <code>target</code>, but it also has a
 suborigin namespace, if <a data-link-type="dfn" href="#unsafe-postmessage-receive" id="ref-for-unsafe-postmessage-receive-1"><code>unsafe-postmessage-receive</code></a> is set, it will
 still receive the message.</p>
-     <div class="example" id="unsafe-postmessage-send-ex"><a class="self-link" href="#unsafe-postmessage-send-ex"></a> `https://example.com<code>runs a map API at</code>https://example.com/maps<code>which is
-embedded by many other websites. It provides a</code>postMessage()<code>API to place
-markers on the map at locations the embedder chooses. &lt;p>The developer would like to run</code>https://example.com/maps<code>in a suborigin
-namespace "maps". However, when embedders send messages to the embedded
+     <div class="example" id="unsafe-postmessage-send-ex">
+      <a class="self-link" href="#unsafe-postmessage-send-ex"></a> <code>https://example.com</code> runs a map API at <code>https://example.com/maps</code> which is
+embedded by many other websites. It provides a <code>postMessage()</code> API to place
+markers on the map at locations the embedder chooses. 
+      <p>The developer would like to run <code>https://example.com/maps</code> in a suborigin
+namespace "maps".  However, when embedders send messages to the embedded
 frame, because they are legacy uses from before the use of suborigins, they
-send essages with a</code>target<code>of</code>https://example.com<code>, &lt;em>not&lt;/em>
-`https://$maps$example.com</code>. Since the developer would still like this frame
+send essages with a <code>target</code> of <code>https://example.com</code>, <em>not</em> <code>https://$maps$example.com</code>. Since the developer would still like this frame
 to be able to provide the API to these legacy embedders, it can serve the
 frame with the <a data-link-type="dfn" href="#unsafe-postmessage-receive" id="ref-for-unsafe-postmessage-receive-2"><code>unsafe-postmessage-receive</code></a> directive, which will
 allow the frame to receive messages on behalf of <code>https://example.com</code>, even
-though it is at <code>https://$maps$example.com</code>. </div>
+though it is at <code>https://$maps$example.com</code>. </p>
+     </div>
      <p></p>
     <li data-md="">
      <p>'<dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="unsafe-postmessage-send"><code>unsafe-postmessage-send</code></dfn>' When a message is sent <i>from</i> a
-suborigin namespace with <a data-link-type="dfn" href="#unsafe-postmessage-send" id="ref-for-unsafe-postmessage-send-1"><code>unsafe-postmessage-send</code></a> set, the
-`event.origin<code>value of the receiver should be set to the serialized
-physical origin, not the serialized suborigin value. However, the
-`event.suborigin</code> field should still be set to the name of the suborigin
+suborigin namespace with <a data-link-type="dfn" href="#unsafe-postmessage-send" id="ref-for-unsafe-postmessage-send-1"><code>unsafe-postmessage-send</code></a> set, the <code>event.origin</code> value of the receiver should be set to the serialized
+physical origin, not the serialized suborigin value. However, the <code>event.suborigin</code> field should still be set to the name of the suborigin
 namespace.</p>
-     <div class="example" id="example-ac559904"><a class="self-link" href="#example-ac559904"></a> Continuing the case in the above example, <code>https://example.com/maps</code> is a
-mapping application that is commonly embedded in other sites. It provides a
-`postMessage()<code>based API to place locations of the embedder's choosing on the
-map.</code>httsp://example.com<code>would like to run the application in a suborigin
-named "maps". &lt;p>In response to queries to the API,</code>https://example.com/maps<code>may send
+     <div class="example" id="example-37ace668">
+      <a class="self-link" href="#example-37ace668"></a> Continuing the case in the above example, <code>https://example.com/maps</code> is a
+mapping application that is commonly embedded in other sites. It provides a <code>postMessage()</code> based API to place locations of the embedder’s choosing on the
+map. <code>httsp://example.com</code> would like to run the application in a suborigin
+named "maps". 
+      <p>In response to queries to the API, <code>https://example.com/maps</code> may send
 messages back to the embedder if, for example, a user clicks on one of the
 locations. However, since the embedder may be legacy and not be aware of
-suborigins, when it checks the</code>event.origin<code>protery of the
-`MesseageEvent</code>, if it sees <code>https://$maps$example.com</code> as the origin, it
+suborigins, when it checks the <code>event.origin</code> protery of the <code>MesseageEvent</code>, if it sees <code>https://$maps$example.com</code> as the origin, it
 will reject the message as a potential attack. Thus, <code>https://example.com</code> may use the <a data-link-type="dfn" href="#unsafe-postmessage-send" id="ref-for-unsafe-postmessage-send-2"><code>unsafe-postmessage-send</code></a> directive to allow its messages
-to appear with the origin of the physical origin, in this case
-`https://example.com<code>. &lt;/div>&lt;/p> &lt;/li>&lt;li data-md>&lt;p>'&lt;dfn></code>unsafe-cookies<code>&lt;/dfn>' When an execution context with a suborigin
-namespace has &lt;a></code>unsafe-cookies<code>&lt;/a> set, the
+to appear with the origin of the physical origin, in this case <code>https://example.com</code>. </p>
+     </div>
+     <p></p>
+    <li data-md="">
+     <p>'<dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="unsafe-cookies"><code>unsafe-cookies</code></dfn>' When an execution context with a suborigin
+namespace has <a data-link-type="dfn" href="#unsafe-cookies" id="ref-for-unsafe-cookies-2"><code>unsafe-cookies</code></a> set, the
 execution context should not have a fresh cookie jar for the suborigin
 namespace, and instead, the cookie jar should be shared with the null
-suborigin for the execution context.&lt;/p> &lt;p class='replace-with-issue-class'> TODO: Write an example that makes clear that this is extremely
+suborigin for the execution context.</p>
+     <p class="issue" id="issue-6dd4fe49"><a class="self-link" href="#issue-6dd4fe49"></a> TODO: Write an example that makes clear that this is extremely
 dangerous and should not be used if you have Real Deal auth and csrf cookies
-used.&lt;/p>
-&lt;/li>&lt;/ul>
-&lt;p class='replace-with-issue-class'> TODO: These opt-out descriptions should probably be moved to the individual sections where the behaviors are discussed (i.e. postMessage and cookies). These just need to be fleshed out anyway, and examples and reasons need to be given.&lt;/p> &lt;h2 id='practical-considerations'>Practical Considerations in Using Suborigins&lt;/h2> &lt;p>Using suborigins with a Web application should be relatively simple. At the most basic level, if you have an application hosted on</code>https://example.com/app/<code>, and all of its resources are hosted at subpaths of</code>/app<code>, it requires that the server set a Content Security Policy on all HTTP requests to subpaths of</code>/app<code>that contain the header</code>suborigin: namespace<code>, where</code>namespace<code>is of the application's choosing. This will ensure that the user agent loads all of these resources into the suborigin</code>namespace<code>and will enforce this boundary accordingly.&lt;/p> &lt;p>Additionally, if your application allows cross-origin requests, instead of adding the usual</code>Access-Control-Allow-Origin<code>header for cross-origin requests, the server must add the</code>Access-Control-Allow-Finer-Origin<code>and</code>Access-Control-Allow-Suborigin<code>headers, as defined in [[#cors-ac]].&lt;/p> &lt;p>In the client-side portion of the application, if</code>postMessage<code>is used, the application must be modified so it does not check the</code>event.origin<code>field. Instead, it should check</code>event.finerorigin<code>and additionally the</code>event.suborigin<code>fields, as they are defined in [[#postmessage-ac]].&lt;/p> &lt;h2 id='security-considerations'>Security Considerations&lt;/h2> &lt;h3 id='presentation-to-users'>Presentation of Suborigins to Users&lt;/h3> &lt;p>A complication of suborigins is that while they provide a meaningful security for an application, that boundary makes much less sense to a user. That is, physical origins provide a security boundary at a physical level: separate scheme, hosts, and ports map to real boundaries external of a given application. However, suborigins as a boundary only makes sense &lt;em>within the context of the program logic itself&lt;/em>, and there is no meaningful way for users to make decisions based on suborigins a priori.&lt;/p> &lt;p>Therefore, suborigins should be used only internally in a user agent and MUST NOT be presented to users at all. For example, user agents must never present suborigins in link text or a URL bar.&lt;/p> &lt;h3 id='not-overthrowing-sop'>Not Overthrowing Same-Origin Policy&lt;/h3> &lt;p>Suborigins do not fundamentally change how the same-origin policy works. An application without suborigins should work identically to how it always has, and even in an application with suborigins, the same-origin policy still applies as always. In fact, this document defines suborigins within the context of the same-origin policy so that, in theory, serialized suborigins can be thought of as a just a special case of the traditional same-origin policy.&lt;/p> &lt;/main>
-&lt;h2 id="conformance" class="no-ref no-num">Conformance&lt;/h2> &lt;h3 id="conventions" class="no-ref no-num">Document conventions&lt;/h3> &lt;p>Conformance requirements are expressed with a combination of descriptive assertions and RFC 2119 terminology. The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in the normative parts of this document are to be interpreted as described in RFC 2119. However, for readability, these words do not appear in all uppercase letters in this specification. &lt;p>All of the text of this specification is normative except sections explicitly marked as non-normative, examples, and notes. [[!RFC2119]]&lt;/p> &lt;p>Examples in this specification are introduced with the words “for example” or are set apart from the normative text with &lt;code>class="example"&lt;/code>, like this: &lt;div class="example"> &lt;p>This is an example of an informative example.&lt;/p> &lt;/div> &lt;p>Informative notes begin with the word “Note” and are set apart from the normative text with &lt;code>class="note"&lt;/code>, like this: &lt;p class="note">Note, this is an informative note.&lt;/p> &lt;h3 id="conformant-algorithms" class="no-ref no-num">Conformant Algorithms&lt;/h3> &lt;p>Requirements phrased in the imperative as part of algorithms (such as "strip any leading space characters" or "return false and abort these steps") are to be interpreted with the meaning of the key word ("must", "should", "may", etc) used in introducing the algorithm.&lt;/p> &lt;p>Conformance requirements phrased as algorithms or specific steps can be implemented in any manner, so long as the end result is equivalent. In particular, the algorithms defined in this specification are intended to be easy to understand and are not intended to be performant. Implementers are encouraged to optimize.&lt;/p> &lt;/body>
-&lt;script src="https://www.w3.org/scripts/TR/2016/fixup.js">&lt;/script>
-&lt;/html></code></div>
+used.</p>
    </ul>
+   <p class="issue" id="issue-01de7cd9"><a class="self-link" href="#issue-01de7cd9"></a> TODO: These opt-out descriptions should probably be moved to the
+  individual sections where the behaviors are discussed (i.e. postMessage and
+  cookies). These just need to be fleshed out anyway, and examples and reasons
+  need to be given.</p>
+   <h2 class="heading settled" data-level="7" id="practical-considerations"><span class="secno">7. </span><span class="content">Practical Considerations in Using Suborigins</span><a class="self-link" href="#practical-considerations"></a></h2>
+   <p>Using suborigins with a Web application should be relatively simple. At the most
+  basic level, if you have an application hosted on <code>https://example.com/app/</code>,
+  and all of its resources are hosted at subpaths of <code>/app</code>, it requires that the
+  server set a Content Security Policy on all HTTP requests to subpaths of <code>/app</code> that contain the header <code>suborigin: namespace</code>, where <code>namespace</code> is of the
+  application’s choosing. This will ensure that the user agent loads all of these
+  resources into the suborigin <code>namespace</code> and will enforce this boundary
+  accordingly.</p>
+   <p>Additionally, if your application allows cross-origin requests, instead of
+  adding the usual <code>Access-Control-Allow-Origin</code> header for cross-origin requests,
+  the server must add the <code>Access-Control-Allow-Finer-Origin</code> and <code>Access-Control-Allow-Suborigin</code> headers, as defined in <a href="#cors-ac">§4.1 CORS</a>.</p>
+   <p>In the client-side portion of the application, if <code>postMessage</code> is used, the
+  application must be modified so it does not check the <code>event.origin</code> field.
+  Instead, it should check <code>event.finerorigin</code> and additionally the <code>event.suborigin</code> fields, as they are defined in <a href="#postmessage-ac">§4.2 postMessage</a>.</p>
+   <h2 class="heading settled" data-level="8" id="security-considerations"><span class="secno">8. </span><span class="content">Security Considerations</span><a class="self-link" href="#security-considerations"></a></h2>
+   <h3 class="heading settled" data-level="8.1" id="presentation-to-users"><span class="secno">8.1. </span><span class="content">Presentation of Suborigins to Users</span><a class="self-link" href="#presentation-to-users"></a></h3>
+   <p>A complication of suborigins is that while they provide a meaningful security
+  for an application, that boundary makes much less sense to a user. That is,
+  physical origins provide a security boundary at a physical level: separate
+  scheme, hosts, and ports map to real boundaries external of a given application.
+  However, suborigins as a boundary only makes sense <em>within the context of the
+  program logic itself</em>, and there is no meaningful way for users to make
+  decisions based on suborigins a priori.</p>
+   <p>Therefore, suborigins should be used only internally in a user agent and MUST
+  NOT be presented to users at all. For example, user agents must never present
+  suborigins in link text or a URL bar.</p>
+   <h3 class="heading settled" data-level="8.2" id="not-overthrowing-sop"><span class="secno">8.2. </span><span class="content">Not Overthrowing Same-Origin Policy</span><a class="self-link" href="#not-overthrowing-sop"></a></h3>
+   <p>Suborigins do not fundamentally change how the same-origin policy works. An
+  application without suborigins should work identically to how it always has, and
+  even in an application with suborigins, the same-origin policy still applies as
+  always. In fact, this document defines suborigins within the context of the
+  same-origin policy so that, in theory, serialized suborigins can be thought of
+  as a just a special case of the traditional same-origin policy.</p>
   </main>
+  <h2 class="no-ref no-num heading settled" id="conformance"><span class="content">Conformance</span><a class="self-link" href="#conformance"></a></h2>
+  <h3 class="no-ref no-num heading settled" id="conventions"><span class="content">Document conventions</span><a class="self-link" href="#conventions"></a></h3>
+  <p>Conformance requirements are expressed with a combination of
+    descriptive assertions and RFC 2119 terminology. The key words “MUST”,
+    “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”,
+    “RECOMMENDED”, “MAY”, and “OPTIONAL” in the normative parts of this
+    document are to be interpreted as described in RFC 2119.
+    However, for readability, these words do not appear in all uppercase
+    letters in this specification. </p>
+  <p>All of the text of this specification is normative except sections
+    explicitly marked as non-normative, examples, and notes. <a data-link-type="biblio" href="#biblio-rfc2119">[RFC2119]</a></p>
+  <p>Examples in this specification are introduced with the words “for example”
+    or are set apart from the normative text with <code>class="example"</code>,
+    like this: </p>
+  <div class="example" id="example-f839f6c8">
+   <a class="self-link" href="#example-f839f6c8"></a> 
+   <p>This is an example of an informative example.</p>
+  </div>
+  <p>Informative notes begin with the word “Note” and are set apart from the
+    normative text with <code>class="note"</code>, like this: </p>
+  <p class="note" role="note">Note, this is an informative note.</p>
+  <h3 class="no-ref no-num heading settled" id="conformant-algorithms"><span class="content">Conformant Algorithms</span><a class="self-link" href="#conformant-algorithms"></a></h3>
+  <p>Requirements phrased in the imperative as part of algorithms (such as
+    "strip any leading space characters" or "return false and abort these
+    steps") are to be interpreted with the meaning of the key word ("must",
+    "should", "may", etc) used in introducing the algorithm.</p>
+  <p>Conformance requirements phrased as algorithms or specific steps can be
+    implemented in any manner, so long as the end result is equivalent. In
+    particular, the algorithms defined in this specification are intended to
+    be easy to understand and are not intended to be performant. Implementers
+    are encouraged to optimize.</p>
+<script src="https://www.w3.org/scripts/TR/2016/fixup.js"></script>
   <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
   <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
@@ -1992,6 +2088,7 @@ used.&lt;/p>
    <li><a href="#suborigin-policy">suborigin policy</a><span>, in §3.6</span>
    <li><a href="#grammardef-suborigin-policy-list">suborigin-policy-list</a><span>, in §3.6</span>
    <li><a href="#grammardef-suborigin-policy-option">suborigin-policy-option</a><span>, in §3.6</span>
+   <li><a href="#unsafe-cookies">unsafe-cookies</a><span>, in §6.5</span>
    <li><a href="#unsafe-postmessage-receive">unsafe-postmessage-receive</a><span>, in §6.5</span>
    <li><a href="#unsafe-postmessage-send">unsafe-postmessage-send</a><span>, in §6.5</span>
    <li><a href="#xhr">XHR</a><span>, in §2</span>
@@ -2013,6 +2110,12 @@ used.&lt;/p>
      <li><a href="https://www.w3.org/TR/cors#simple-cross-origin-request">simple cross-origin request</a>
     </ul>
    <li>
+    <a data-link-type="biblio">[WHATWG-DOM]</a> defines the following terms:
+    <ul>
+     <li><a href="https://dom.spec.whatwg.org/#concept-document">document</a>
+     <li><a href="https://dom.spec.whatwg.org/#concept-reflect">reflect</a>
+    </ul>
+   <li>
     <a data-link-type="biblio">[FETCH]</a> defines the following terms:
     <ul>
      <li><a href="https://fetch.spec.whatwg.org#concept-fetch">fetch</a>
@@ -2029,7 +2132,7 @@ used.&lt;/p>
      <li><a href="http://www.w3.org/TR/html51/dom.html#resource-metadata-management">resource metadata management</a>
     </ul>
    <li>
-    <a data-link-type="biblio">[HTTP]</a> defines the following terms:
+    <a data-link-type="biblio">[http]</a> defines the following terms:
     <ul>
      <li><a href="https://tools.ietf.org/html/rfc7230#section-3.2.3">ows</a>
      <li><a href="https://tools.ietf.org/html/rfc7230#section-3.2.3">rws</a>
@@ -2040,12 +2143,6 @@ used.&lt;/p>
      <li><a href="https://url.spec.whatwg.org/#syntax-host">host</a>
      <li><a href="https://url.spec.whatwg.org/#syntax-url-port">port</a>
      <li><a href="https://url.spec.whatwg.org/#syntax-url-scheme">scheme</a>
-    </ul>
-   <li>
-    <a data-link-type="biblio">[WHATWG-DOM]</a> defines the following terms:
-    <ul>
-     <li><a href="https://dom.spec.whatwg.org/#concept-document">document</a>
-     <li><a href="https://dom.spec.whatwg.org/#concept-reflect">reflect</a>
     </ul>
   </ul>
   <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
@@ -2063,6 +2160,8 @@ used.&lt;/p>
    <dd>V.G. Cerf. <a href="https://tools.ietf.org/html/rfc20">ASCII format for network interchange</a>. October 1969. Internet Standard. URL: <a href="https://tools.ietf.org/html/rfc20">https://tools.ietf.org/html/rfc20</a>
    <dt id="biblio-rfc1123">[RFC1123]
    <dd>R. Braden, Ed.. <a href="https://tools.ietf.org/html/rfc1123">Requirements for Internet Hosts - Application and Support</a>. October 1989. Internet Standard. URL: <a href="https://tools.ietf.org/html/rfc1123">https://tools.ietf.org/html/rfc1123</a>
+   <dt id="biblio-rfc2119">[RFC2119]
+   <dd>S. Bradner. <a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
    <dt id="biblio-rfc5234">[RFC5234]
    <dd>D. Crocker, Ed.; P. Overell. <a href="https://tools.ietf.org/html/rfc5234">Augmented BNF for Syntax Specifications: ABNF</a>. January 2008. Internet Standard. URL: <a href="https://tools.ietf.org/html/rfc5234">https://tools.ietf.org/html/rfc5234</a>
    <dt id="biblio-rfc6454">[RFC6454]
@@ -2108,6 +2207,13 @@ used.&lt;/p>
   just make all fetches inside a suborigin CORS fetches and be done with it.<a href="#issue-49a8418d"> ↵ </a></div>
    <div class="issue"> TODO(jww): Formal definition of the headers and responses w/grammars.
   Also need to be explicit about <code>*</code> having same limitations as <code>Access-Control-Allow-Origin</code> w/credentials.<a href="#issue-daf4a3ea"> ↵ </a></div>
+   <div class="issue"> TODO: Write an example that makes clear that this is extremely
+dangerous and should not be used if you have Real Deal auth and csrf cookies
+used.<a href="#issue-6dd4fe49"> ↵ </a></div>
+   <div class="issue"> TODO: These opt-out descriptions should probably be moved to the
+  individual sections where the behaviors are discussed (i.e. postMessage and
+  cookies). These just need to be fleshed out anyway, and examples and reasons
+  need to be given.<a href="#issue-01de7cd9"> ↵ </a></div>
   </div>
   <aside class="dfn-panel" data-for="origin">
    <b><a href="#origin">#origin</a></b><b>Referenced in:</b>
@@ -2196,6 +2302,13 @@ used.&lt;/p>
    <b><a href="#unsafe-postmessage-send">#unsafe-postmessage-send</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-unsafe-postmessage-send-1">6.5. Security Model Opt-Outs</a> <a href="#ref-for-unsafe-postmessage-send-2">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="unsafe-cookies">
+   <b><a href="#unsafe-cookies">#unsafe-cookies</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-unsafe-cookies-1">6.4.1. Cookies</a>
+    <li><a href="#ref-for-unsafe-cookies-2">6.5. Security Model Opt-Outs</a>
    </ul>
   </aside>
 <script>/* script-dfn-panel */
