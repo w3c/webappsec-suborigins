@@ -1363,7 +1363,7 @@ Possible extra rowspan handling
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Suborigins</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2016-09-13">13 September 2016</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2016-09-23">23 September 2016</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1460,7 +1460,11 @@ boundary between this resource and resources in other namespaces.</p>
     <li>
      <a href="#impact"><span class="secno">5</span> <span class="content">Impact on Web Platform</span></a>
      <ol class="toc">
-      <li><a href="#sensitive-permissions"><span class="secno">5.1</span> <span class="content">Relationship with Sensitive Permissions</span></a>
+      <li>
+       <a href="#sensitive-permissions"><span class="secno">5.1</span> <span class="content">Relationship with Sensitive Permissions</span></a>
+       <ol class="toc">
+        <li><a href="#websockets"><span class="secno">5.1.1</span> <span class="content">Modifications to WebSockets</span></a>
+       </ol>
      </ol>
     <li>
      <a href="#framework"><span class="secno">6</span> <span class="content">Framework</span></a>
@@ -1770,7 +1774,7 @@ This includes providing security-model opt-outs where necessary.</p>
 <pre>suborigin: testing
 </pre>
    <h3 class="heading settled" data-level="3.6" id="the-suborigin-header"><span class="secno">3.6. </span><span class="content">The <code>suborigin</code> header</span><a class="self-link" href="#the-suborigin-header"></a></h3>
-   <p>Suborigins are defined by a <dfn data-dfn-type="dfn" data-noexport="" id="suborigin">suborigin<a class="self-link" href="#suborigin"></a></dfn> HTTP response header. The syntax
+   <p>Suborigins are defined by a <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="suborigin">suborigin</dfn> HTTP response header. The syntax
   for the name and value of the header are described by the following ABNF
   grammar <a data-link-type="biblio" href="#biblio-rfc5234">[RFC5234]</a>:</p>
 <pre><dfn class="dfn-paneled" data-dfn-type="grammar" data-export="" id="grammardef-suborigin-name">suborigin-name</dfn> = 1*( <a data-link-type="grammar" href="#grammardef-loweralpha" id="ref-for-grammardef-loweralpha-1">LOWERALPHA</a> / <a data-link-type="grammar" href="https://tools.ietf.org/html/rfc5234#appendix-B.1">DIGIT</a> / "-" )
@@ -1838,6 +1842,15 @@ This includes providing security-model opt-outs where necessary.</p>
   parent, physical origin. Instead, the user agent SHOULD create a new object
   tied to the namespaced suborigin.</p>
    <p>User agents MUST ignore modifications to the document.domain property of the page.</p>
+   <h4 class="heading settled" data-level="5.1.1" id="websockets"><span class="secno">5.1.1. </span><span class="content">Modifications to WebSockets</span><a class="self-link" href="#websockets"></a></h4>
+   <p>The <a href="https://www.w3.org/TR/websockets/#the-websocket-interface"><code>WebSocket()</code> constructor algrithm</a> <a data-link-type="biblio" href="#biblio-websockets">[WebSockets]</a> is modified as follows:</p>
+   <p>After  the current step 1, perform the following step:</p>
+   <ol start="2">
+    <li data-md="">
+     <p>If the <a href="https://www.w3.org/TR/html51/webappapis.html#environment-settings-object">origin property</a> of the <em>client</em>’s <a href="https://www.w3.org/TR/html51/webappapis.html#relevant-settings-object">relevant settings object</a> has a <a data-link-type="dfn" href="#suborigin" id="ref-for-suborigin-1">suborigin</a>, throw a <a href="https://www.w3.org/TR/WebIDL-1/#h-idl-domexception-error-names">SecurityError exception</a>.</p>
+   </ol>
+   <p class="note" role="note">Note: Suborigins are likely to allow WebSockets in the future, but are
+  disabled until it can be decided how they should be protected.</p>
    <h2 class="heading settled" data-level="6" id="framework"><span class="secno">6. </span><span class="content">Framework</span><a class="self-link" href="#framework"></a></h2>
    <p class="note" role="note">Note: These sections are tricky because, unlike physical origins, we can’t
   define suborigins in terms of URIs. Since the suborigin namespace is defined in
@@ -2153,7 +2166,7 @@ used.</p>
    <dt id="biblio-html">[HTML]
    <dd>Ian Hickson. <a href="https://html.spec.whatwg.org/multipage/">HTML Standard</a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
    <dt id="biblio-html51">[HTML51]
-   <dd>Steve Faulkner; et al. <a href="https://w3c.github.io/html/">HTML 5.1</a>. 21 June 2016. CR. URL: <a href="https://w3c.github.io/html/">https://w3c.github.io/html/</a>
+   <dd>Steve Faulkner; et al. <a href="https://w3c.github.io/html/">HTML 5.1</a>. 15 September 2016. PR. URL: <a href="https://w3c.github.io/html/">https://w3c.github.io/html/</a>
    <dt id="biblio-rfc0020">[RFC0020]
    <dd>V.G. Cerf. <a href="https://tools.ietf.org/html/rfc20">ASCII format for network interchange</a>. October 1969. Internet Standard. URL: <a href="https://tools.ietf.org/html/rfc20">https://tools.ietf.org/html/rfc20</a>
    <dt id="biblio-rfc1123">[RFC1123]
@@ -2166,6 +2179,8 @@ used.</p>
    <dd>A. Barth. <a href="https://tools.ietf.org/html/rfc6454">The Web Origin Concept</a>. December 2011. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc6454">https://tools.ietf.org/html/rfc6454</a>
    <dt id="biblio-unicode6">[Unicode6]
    <dd>The Unicode Consortium. <a href="http://www.unicode.org/versions/Unicode6.2.0/">The Unicode Standard, Version 6.2.0</a>. URL: <a href="http://www.unicode.org/versions/Unicode6.2.0/">http://www.unicode.org/versions/Unicode6.2.0/</a>
+   <dt id="biblio-websockets">[WebSockets]
+   <dd>Ian Hickson. <a href="https://www.w3.org/TR/websockets/">The WebSocket API</a>. 20 September 2012. CR. URL: <a href="https://www.w3.org/TR/websockets/">https://www.w3.org/TR/websockets/</a>
    <dt id="biblio-whatwg-dom">[WHATWG-DOM]
    <dd>Anne van Kesteren. <a href="https://dom.spec.whatwg.org/">DOM Standard</a>. Living Standard. URL: <a href="https://dom.spec.whatwg.org/">https://dom.spec.whatwg.org/</a>
    <dt id="biblio-whatwg-url">[WHATWG-URL]
@@ -2254,6 +2269,12 @@ used.<a href="#issue-6dd4fe49"> ↵ </a></div>
    <b><a href="#physical-origin">#physical-origin</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-physical-origin-1">6.4.1. Cookies</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="suborigin">
+   <b><a href="#suborigin">#suborigin</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-suborigin-1">5.1.1. Modifications to WebSockets</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="grammardef-suborigin-name">
