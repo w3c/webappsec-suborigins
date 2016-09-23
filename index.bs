@@ -535,6 +535,23 @@ spec:dom-ls; type:interface; text:Document
 
   User agents MUST ignore modifications to the document.domain property of the page.
 
+  ### Modifications to WebSockets ### {#websockets}
+
+  The <a
+  href="https://www.w3.org/TR/websockets/#the-websocket-interface">`WebSocket()`
+  constructor algrithm</a> [[!WebSockets]] is modified as follows:
+  
+  After  the current step 1, perform the following step:
+
+  2. If the <a href="https://www.w3.org/TR/html51/webappapis.html#environment-settings-object">origin property</a>
+     of the <em>client</em>'s
+     <a href="https://www.w3.org/TR/html51/webappapis.html#relevant-settings-object">relevant settings object</a>
+     has a <a>suborigin</a>, throw a
+     <a href="https://www.w3.org/TR/WebIDL-1/#h-idl-domexception-error-names">SecurityError exception</a>.
+
+  Note: Suborigins are likely to allow WebSockets in the future, but are
+  disabled until it can be decided how they should be protected.
+
   # Framework # {#framework}
 
   Note: These sections are tricky because, unlike physical origins, we can't
