@@ -382,6 +382,9 @@ spec:dom-ls; type:interface; text:Document
   to ease the use of Suborigins in legacy applications are also presented. See
   [[#security-model-opt-outs]] for more information.
 
+  Issue: TODO: Figure out if this all will require updates to the HTML spec's
+  origin definition.
+
   ## Representation of Suborigins ## {#representation}
 
   At an abstract level, a suborigin consists of the <dfn>physical origin</dfn>,
@@ -410,6 +413,9 @@ spec:dom-ls; type:interface; text:Document
   Note: The underscore character is not a valid character for hostnames used
   on the web [[!RFC1123]] and as a result, the serialization above cannot collide
   with valid existing hostnames.
+
+  Issue: TODO: Determine how the serialization should relate to the URL spec:
+  https://url.spec.whatwg.org/#host-parsing
 
   ## Opting into a Suborigin ## {#opting-in}
 
@@ -461,6 +467,8 @@ spec:dom-ls; type:interface; text:Document
   Additionally, the `origin` property of the <a>document</a> object should reflect
   the serialized value of the origin as returned by [[#serializing]].
 
+  Issue: TODO(jww): Need to write the formal IDL for this.
+
   # Access Control # {#access-control}
 
   Cross-origin (including cross-suborigin) communication is tricky when suborigins
@@ -496,20 +504,27 @@ spec:dom-ls; type:interface; text:Document
 
   ## `postMessage` ## {#postmessage-ac}
 
-  Cross-origin messaging via <a>`postMessage`</a> requires that the
-  recipient be able to see the suborigin namespace of the message sender so it can make an
-  appropriate access control decision. When a message is sent from a
-  suborigin namespace, the receiver has the `event.origin` value set to the
-  serialized suborigin value instead of the serializied origin, as described in
-  [[#serializing]]. Additionally, a new `suborigin` property must be added to the
-  `MessageEvent` given to the receiver which contains the suborigin namespace
-  value.
+  Cross-origin messaging via <a>`postMessage`</a> requires that the recipient be
+  able to see the suborigin namespace of the message sender so it can make an
+  appropriate access control decision. When a message is sent from a suborigin
+  namespace, the receiver has the `event.origin` value set to the serialized
+  suborigin value instead of the serializied origin, as described in
+  [[#serializing]]. Additionally, a new `suborigin` property must be added to
+  the `MessageEvent` given to the receiver which contains the suborigin
+  namespace value.
+
+  Issue: TODO(jww): Formalize by updating the <a>postMessage</a> algorithm
 
 
   ## Workers ## {#workers-ac}
 
   User agents MUST refuse to create or execute any workers in a page executing in
   a sub-origin.
+
+  Issue: TODO: Formalize. Not sure what this will look like yet. Chrome and
+  Opera don't allow creation of workers from sandbox'd iframes/the 'null'
+  origin, but not sure if this formalized in a spec. If it is, should probably
+  just update whatever disallows creation from sandbox.
 
 
   Note: This may change in the future, and suborigins may eventually be allowed to
@@ -533,7 +548,12 @@ spec:dom-ls; type:interface; text:Document
   parent, physical origin. Instead, the user agent SHOULD create a new object
   tied to the namespaced suborigin.
 
-  User agents MUST ignore modifications to the document.domain property of the page.
+  User agents MUST ignore modifications to the document.domain property of the
+  page.
+
+  Issue: TODO: This section should probably be broken up. At the very least,
+  needs to be formalized. Maybe just stick with creating a new execution
+  context, and then carving out the weird exceptions?
 
   ### Modifications to WebSockets ### {#websockets}
 
@@ -755,7 +775,7 @@ spec:dom-ls; type:interface; text:Document
     namespace, and instead, the cookie jar should be shared with the null
     suborigin for the execution context.
 
-    Issue: TODO: Write an example that makes clear that this is extremely
+    Issue: TODO(devd): Write an example that makes clear that this is extremely
     dangerous and should not be used if you have Real Deal auth and csrf cookies
     used.
 
@@ -785,6 +805,9 @@ spec:dom-ls; type:interface; text:Document
   Instead, it should check `event.finerorigin` and additionally the
    `event.suborigin` fields, as they are defined in [[#postmessage-ac]].
 
+  Issue: TODO(devd): Flesh out the above and make sure it covers all it needs to
+  cover.
+
   # Security Considerations # {#security-considerations}
 
   ## Presentation of Suborigins to Users ## {#presentation-to-users}
@@ -809,3 +832,8 @@ spec:dom-ls; type:interface; text:Document
   always. In fact, this document defines suborigins within the context of the
   same-origin policy so that, in theory, serialized suborigins can be thought of
   as a just a special case of the traditional same-origin policy.
+ 
+  ## Problems with Serialized Representation ## {#serialization-concerns}
+
+  Issue: TODO: Need to list concerns with serialization, e.g. apps that don't
+  recognize the suborigin serialization, esp. if they blacklist origins.
