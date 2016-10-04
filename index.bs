@@ -836,4 +836,4 @@ spec:dom-ls; type:interface; text:Document
   ## Problems with Serialized Representation ## {#serialization-concerns}
 
   Issue: TODO: Need to list concerns with serialization, e.g. apps that don't
-  recognize the suborigin serialization, esp. if they blacklist origins.
+  recognize the suborigin serialization, esp. if they blocklist origins.
