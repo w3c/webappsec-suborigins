@@ -782,15 +782,20 @@ spec:dom-ls; type:interface; text:Document
     dangerous and should not be used if you have Real Deal auth and csrf cookies
     used.
 
-   * '<dfn>`unsafe-include-credentials`</dfn>' All cross-origin requests will
-     include <a>credentials</a>. In particular, when this option is set in an
-     execution context, all cross-origin <a>requests</a> from that execution
-     context will have their <a>credentials mode</a> set to "`include`".  See <a
+   * '<dfn>`unsafe-include-credentials`</dfn>' All cross-origin requests to the
+     <a>physical origin</a> for the execution context will include
+     <a>credentials</a>. In particular, when this option is set in an execution
+     context, all cross-origin <a>requests</a> from that execution context to
+     the <a>physical origin</a> will have their <a>credentials mode</a> set to
+     "`include`". Additionally, if the <a>credentials mode</a> is
+     programmitically set, it will still be overriden to be set to "`include`".
+
+     See <a
      href="https://fetch.spec.whatwg.org/#cors-protocol-and-credentials">CORS
      protocol and credentials</a> for more on including credentials and the
      implications of including credentials in requests.
  
-     Issue: TODO(jww): Provide an example of why this might be needed.
+     Issue: TODO(jww,aaj): Provide an example of why this might be needed.
 
   Issue: TODO: These opt-out descriptions should probably be moved to the
   individual sections where the behaviors are discussed (i.e. postMessage and
