@@ -790,11 +790,14 @@ spec:dom-ls; type:interface; text:Document
      "`include`". Additionally, if the <a>credentials mode</a> is
      programmitically set, it will still be overriden to be set to "`include`".
 
-     See <a
+     Note: This applies to <em>all</em> cross-origin requests, not just
+     `xmlHttpRequests` and `fetch` requests. Thus all cross-origin elements on
+     the page, including, for example, image tags, will have the equivalement of
+     the `crossorigin` attribute set to "`use-credentials`". See <a
      href="https://fetch.spec.whatwg.org/#cors-protocol-and-credentials">CORS
      protocol and credentials</a> for more on including credentials and the
      implications of including credentials in requests.
- 
+
      Issue: TODO(jww,aaj): Provide an example of why this might be needed.
 
   Issue: TODO: These opt-out descriptions should probably be moved to the
