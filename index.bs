@@ -729,7 +729,7 @@ spec:dom-ls; type:interface; text:Document
     <a>requests</a> will have their <a>credentials mode</a> set to "`include`".
     See <a
     href="https://fetch.spec.whatwg.org/#cors-protocol-and-credentials">CORS
-    protocol and credentials</a> for mor 
+    protocol and credentials</a> for more on including credentials.
 
   * '<dfn>`unsafe-cookies`</dfn>' When an execution context with a suborigin
     namespace has <a>`unsafe-cookies`</a> set, the
@@ -749,11 +749,10 @@ spec:dom-ls; type:interface; text:Document
     namespace.
 
     <div class="example">
-    Continuing the case in the above example, `https://example.com/maps` is a
-    mapping application that is commonly embedded in other sites. It provides a
-    `postMessage()` based API to place locations of the embedder's
-    choosing on the map. `https://example.com` would like to run the application
-    in a suborigin named "maps".
+    `https://example.com/maps` is a mapping application that is commonly
+    embedded in other sites. It provides a `postMessage()` based API to place
+    locations of the embedder's choosing on the map. `https://example.com` would
+    like to run the application in a suborigin named "maps".
 
     In response to queries to the API, `https://example.com/maps` may send
     messages back to the embedder if, for example, a user clicks on one of the
@@ -774,9 +773,10 @@ spec:dom-ls; type:interface; text:Document
     still receive the message.
 
     <div class="example" id="unsafe-postmessage-send-ex">
-    `https://example.com` runs a map API at `https://example.com/maps` which is
-    embedded by many other websites. It provides a `postMessage()` API to place
-    markers on the map at locations the embedder chooses.
+    Continuing the example from above, assume `https://example.com` runs a map
+    API at `https://example.com/maps` which is embedded by many other websites.
+    It provides a `postMessage()` API to place markers on the map at locations
+    the embedder chooses.
 
     The developer would like to run `https://example.com/maps` in a suborigin
     namespace "maps".  However, when embedders send messages to the embedded

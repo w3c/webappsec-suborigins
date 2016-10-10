@@ -1985,7 +1985,7 @@ the '<a data-link-type="dfn" href="#unsafe-cookies" id="ref-for-unsafe-cookies-1
      <p>'<dfn data-dfn-type="dfn" data-noexport="" id="force-include-credentials"><code>force-include-credentials</code><a class="self-link" href="#force-include-credentials"></a></dfn>' All cross-origin requests will
 include <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#credentials">credentials</a>. In particular, when this option is set, all <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-request">requests</a> will have their <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-request-credentials-mode">credentials mode</a> set to "<code>include</code>".
 See <a href="https://fetch.spec.whatwg.org/#cors-protocol-and-credentials">CORS
-protocol and credentials</a> for mor</p>
+protocol and credentials</a> for more on including credentials.</p>
     <li data-md="">
      <p>'<dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="unsafe-cookies"><code>unsafe-cookies</code></dfn>' When an execution context with a suborigin
 namespace has <a data-link-type="dfn" href="#unsafe-cookies" id="ref-for-unsafe-cookies-2"><code>unsafe-cookies</code></a> set, the
@@ -2000,11 +2000,11 @@ used.</p>
 suborigin namespace with <a data-link-type="dfn" href="#unsafe-postmessage-send" id="ref-for-unsafe-postmessage-send-1"><code>unsafe-postmessage-send</code></a> set, the <code>event.origin</code> value of the receiver should be set to the serialized
 physical origin, not the serialized suborigin value. However, the <code>event.suborigin</code> field should still be set to the name of the suborigin
 namespace.</p>
-     <div class="example" id="example-231b0547">
-      <a class="self-link" href="#example-231b0547"></a> Continuing the case in the above example, <code>https://example.com/maps</code> is a
-mapping application that is commonly embedded in other sites. It provides a <code>postMessage()</code> based API to place locations of the embedder’s
-choosing on the map. <code>https://example.com</code> would like to run the application
-in a suborigin named "maps". 
+     <div class="example" id="example-b711d6b9">
+      <a class="self-link" href="#example-b711d6b9"></a> <code>https://example.com/maps</code> is a mapping application that is commonly
+embedded in other sites. It provides a <code>postMessage()</code> based API to place
+locations of the embedder’s choosing on the map. <code>https://example.com</code> would
+like to run the application in a suborigin named "maps". 
       <p>In response to queries to the API, <code>https://example.com/maps</code> may send
 messages back to the embedder if, for example, a user clicks on one of the
 locations. However, since the embedder may be legacy and not be aware of
@@ -2020,9 +2020,10 @@ where the scheme, host, and port match the <code>target</code>, but it also has 
 suborigin namespace, if <a data-link-type="dfn" href="#unsafe-postmessage-receive" id="ref-for-unsafe-postmessage-receive-1"><code>unsafe-postmessage-receive</code></a> is set, it will
 still receive the message.</p>
      <div class="example" id="unsafe-postmessage-send-ex">
-      <a class="self-link" href="#unsafe-postmessage-send-ex"></a> <code>https://example.com</code> runs a map API at <code>https://example.com/maps</code> which is
-embedded by many other websites. It provides a <code>postMessage()</code> API to place
-markers on the map at locations the embedder chooses. 
+      <a class="self-link" href="#unsafe-postmessage-send-ex"></a> Continuing the example from above, assume <code>https://example.com</code> runs a map
+API at <code>https://example.com/maps</code> which is embedded by many other websites.
+It provides a <code>postMessage()</code> API to place markers on the map at locations
+the embedder chooses. 
       <p>The developer would like to run <code>https://example.com/maps</code> in a suborigin
 namespace "maps".  However, when embedders send messages to the embedded
 frame, because they are legacy uses from before the use of suborigins, they
