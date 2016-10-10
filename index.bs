@@ -731,6 +731,8 @@ spec:dom-ls; type:interface; text:Document
     href="https://fetch.spec.whatwg.org/#cors-protocol-and-credentials">CORS
     protocol and credentials</a> for more on including credentials.
 
+    Issue: TODO(jww): Provide an example of why this might be needed.
+
   * '<dfn>`unsafe-cookies`</dfn>' When an execution context with a suborigin
     namespace has <a>`unsafe-cookies`</a> set, the
     execution context should not have a fresh cookie jar for the suborigin

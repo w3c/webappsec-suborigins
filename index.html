@@ -1986,6 +1986,7 @@ the '<a data-link-type="dfn" href="#unsafe-cookies" id="ref-for-unsafe-cookies-1
 include <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#credentials">credentials</a>. In particular, when this option is set, all <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-request">requests</a> will have their <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-request-credentials-mode">credentials mode</a> set to "<code>include</code>".
 See <a href="https://fetch.spec.whatwg.org/#cors-protocol-and-credentials">CORS
 protocol and credentials</a> for more on including credentials.</p>
+     <p class="issue" id="issue-eae464e1"><a class="self-link" href="#issue-eae464e1"></a> TODO(jww): Provide an example of why this might be needed.</p>
     <li data-md="">
      <p>'<dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="unsafe-cookies"><code>unsafe-cookies</code></dfn>' When an execution context with a suborigin
 namespace has <a data-link-type="dfn" href="#unsafe-cookies" id="ref-for-unsafe-cookies-2"><code>unsafe-cookies</code></a> set, the
@@ -2265,6 +2266,7 @@ though it is at <code>https-so://maps.example.com</code>.</p>
    <div class="issue"> TODO: This section should probably be broken up. At the very least,
   needs to be formalized. Maybe just stick with creating a new execution
   context, and then carving out the weird exceptions?<a href="#issue-73e47fd0"> ↵ </a></div>
+   <div class="issue"> TODO(jww): Provide an example of why this might be needed.<a href="#issue-eae464e1"> ↵ </a></div>
    <div class="issue"> TODO(devd): Write an example that makes clear that this is extremely
 dangerous and should not be used if you have Real Deal auth and csrf cookies
 used.<a href="#issue-a4bfe642"> ↵ </a></div>
