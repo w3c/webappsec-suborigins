@@ -38,6 +38,8 @@ spec: CORS; urlPrefix: https://www.w3.org/TR/cors
 
 spec: Fetch; urlPrefix: https://fetch.spec.whatwg.org
   type: dfn
+    text: credentials; url: credentials
+    text: credentials mode; url: concept-request-credentials-mode
     text: fetch; url: concept-fetch
     text: request; url: concept-request
     text: response type; url: concept-response-type
@@ -722,6 +724,13 @@ spec:dom-ls; type:interface; text:Document
   The values of <a link-type="grammar">suborigin-policy-option</a> that may be
   present in a <a>suborigin policy</a> have the following effects:
 
+  * '<dfn>`force-include-credentials`</dfn>' All cross-origin requests will
+    include <a>credentials</a>. In particular, when this option is set, all
+    <a>requests</a> will have their <a>credentials mode</a> set to "`include`".
+    See <a
+    href="https://fetch.spec.whatwg.org/#cors-protocol-and-credentials">CORS
+    protocol and credentials</a> for mor 
+
   * '<dfn>`unsafe-cookies`</dfn>' When an execution context with a suborigin
     namespace has <a>`unsafe-cookies`</a> set, the
     execution context should not have a fresh cookie jar for the suborigin
@@ -742,14 +751,14 @@ spec:dom-ls; type:interface; text:Document
     <div class="example">
     Continuing the case in the above example, `https://example.com/maps` is a
     mapping application that is commonly embedded in other sites. It provides a
-    `postMessage()` based API to place locations of the embedder's choosing on the
-    map. `httsp://example.com` would like to run the application in a suborigin
-    named "maps".
+    `postMessage()` based API to place locations of the embedder's
+    choosing on the map. `https://example.com` would like to run the application
+    in a suborigin named "maps".
 
     In response to queries to the API, `https://example.com/maps` may send
     messages back to the embedder if, for example, a user clicks on one of the
     locations. However, since the embedder may be legacy and not be aware of
-    suborigins, when it checks the `event.origin` protery of the
+    suborigins, when it checks the `event.origin` property of the
     `MesseageEvent`, if it sees `https-so://maps.example.com` as the origin, it
     will reject the message as a potential attack. Thus, `https://example.com`
     may use the <a>`unsafe-postmessage-send`</a> directive to allow its messages

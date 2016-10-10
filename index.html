@@ -1982,6 +1982,11 @@ the '<a data-link-type="dfn" href="#unsafe-cookies" id="ref-for-unsafe-cookies-1
   present in a <a data-link-type="dfn" href="#suborigin-policy" id="ref-for-suborigin-policy-2">suborigin policy</a> have the following effects:</p>
    <ul>
     <li data-md="">
+     <p>'<dfn data-dfn-type="dfn" data-noexport="" id="force-include-credentials"><code>force-include-credentials</code><a class="self-link" href="#force-include-credentials"></a></dfn>' All cross-origin requests will
+include <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#credentials">credentials</a>. In particular, when this option is set, all <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-request">requests</a> will have their <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-request-credentials-mode">credentials mode</a> set to "<code>include</code>".
+See <a href="https://fetch.spec.whatwg.org/#cors-protocol-and-credentials">CORS
+protocol and credentials</a> for mor</p>
+    <li data-md="">
      <p>'<dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="unsafe-cookies"><code>unsafe-cookies</code></dfn>' When an execution context with a suborigin
 namespace has <a data-link-type="dfn" href="#unsafe-cookies" id="ref-for-unsafe-cookies-2"><code>unsafe-cookies</code></a> set, the
 execution context should not have a fresh cookie jar for the suborigin
@@ -1995,15 +2000,15 @@ used.</p>
 suborigin namespace with <a data-link-type="dfn" href="#unsafe-postmessage-send" id="ref-for-unsafe-postmessage-send-1"><code>unsafe-postmessage-send</code></a> set, the <code>event.origin</code> value of the receiver should be set to the serialized
 physical origin, not the serialized suborigin value. However, the <code>event.suborigin</code> field should still be set to the name of the suborigin
 namespace.</p>
-     <div class="example" id="example-4e02913e">
-      <a class="self-link" href="#example-4e02913e"></a> Continuing the case in the above example, <code>https://example.com/maps</code> is a
-mapping application that is commonly embedded in other sites. It provides a <code>postMessage()</code> based API to place locations of the embedder’s choosing on the
-map. <code>httsp://example.com</code> would like to run the application in a suborigin
-named "maps". 
+     <div class="example" id="example-231b0547">
+      <a class="self-link" href="#example-231b0547"></a> Continuing the case in the above example, <code>https://example.com/maps</code> is a
+mapping application that is commonly embedded in other sites. It provides a <code>postMessage()</code> based API to place locations of the embedder’s
+choosing on the map. <code>https://example.com</code> would like to run the application
+in a suborigin named "maps". 
       <p>In response to queries to the API, <code>https://example.com/maps</code> may send
 messages back to the embedder if, for example, a user clicks on one of the
 locations. However, since the embedder may be legacy and not be aware of
-suborigins, when it checks the <code>event.origin</code> protery of the <code>MesseageEvent</code>, if it sees <code>https-so://maps.example.com</code> as the origin, it
+suborigins, when it checks the <code>event.origin</code> property of the <code>MesseageEvent</code>, if it sees <code>https-so://maps.example.com</code> as the origin, it
 will reject the message as a potential attack. Thus, <code>https://example.com</code> may use the <a data-link-type="dfn" href="#unsafe-postmessage-send" id="ref-for-unsafe-postmessage-send-2"><code>unsafe-postmessage-send</code></a> directive to allow its messages
 to appear with the origin of the physical origin, in this case <code>https://example.com</code>.</p>
      </div>
@@ -2110,6 +2115,7 @@ though it is at <code>https-so://maps.example.com</code>.</p>
    <li><a href="#cross-origin">cross-origin</a><span>, in §2</span>
    <li><a href="#cross-origin-resource-sharing">Cross-Origin Resource Sharing</a><span>, in §2</span>
    <li><a href="#cross-site-scripting">cross-site scripting</a><span>, in §2</span>
+   <li><a href="#force-include-credentials">force-include-credentials</a><span>, in §6.5</span>
    <li><a href="#grammardef-loweralpha">LOWERALPHA</a><span>, in §2.1</span>
    <li><a href="#origin">origin</a><span>, in §2</span>
    <li><a href="#physical-origin">physical origin</a><span>, in §3.4</span>
@@ -2151,7 +2157,10 @@ though it is at <code>https-so://maps.example.com</code>.</p>
    <li>
     <a data-link-type="biblio">[FETCH]</a> defines the following terms:
     <ul>
+     <li><a href="https://fetch.spec.whatwg.org#credentials">credentials</a>
+     <li><a href="https://fetch.spec.whatwg.org#concept-request-credentials-mode">credentials mode</a>
      <li><a href="https://fetch.spec.whatwg.org#concept-fetch">fetch</a>
+     <li><a href="https://fetch.spec.whatwg.org#concept-request">request</a>
     </ul>
    <li>
     <a data-link-type="biblio">[HTML]</a> defines the following terms:
