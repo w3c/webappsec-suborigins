@@ -443,9 +443,10 @@ spec:dom-ls; type:interface; text:Document
 
   <pre dfn-type="grammar" link-type="grammar">
       <dfn>suborigin-name</dfn> = 1*( <a>LOWERALPHA</a> / <a>DIGIT</a> / "-" )
-      <dfn>suborigin-policy-option</dfn> = "'unsafe-postmessage-send'"
-                                / "'unsafe-postmessage-receive'"
+      <dfn>suborigin-policy-option</dfn> = "'force-include-credentials'"
                                 / "'unsafe-cookies'"
+                                / "'unsafe-postmessage-receive'"
+                                / "'unsafe-postmessage-send'"
       <dfn>suborigin-policy-list</dfn> = 1*(<a>RWS</a> <a>suborigin-policy-option</a> <a>OWS</a>)
       <dfn>suborigin-header</dfn> = <a>suborigin-name</a> [ <a>suborigin-policy-list</a> ]
   </pre>
@@ -721,28 +722,15 @@ spec:dom-ls; type:interface; text:Document
   The values of <a link-type="grammar">suborigin-policy-option</a> that may be
   present in a <a>suborigin policy</a> have the following effects:
 
-  * '<dfn>`unsafe-postmessage-receive`</dfn>' When a message is sent <i>to</i> a
-    frame with a `postMessage` `target` of a serialized physical origin, but not a
-    serialized suborigin, if the frame has an execution context with a suborigin
-    where the scheme, host, and port match the `target`, but it also has a
-    suborigin namespace, if <a>`unsafe-postmessage-receive`</a> is set, it will
-    still receive the message.
+  * '<dfn>`unsafe-cookies`</dfn>' When an execution context with a suborigin
+    namespace has <a>`unsafe-cookies`</a> set, the
+    execution context should not have a fresh cookie jar for the suborigin
+    namespace, and instead, the cookie jar should be shared with the null
+    suborigin for the execution context.
 
-    <div class="example" id="unsafe-postmessage-send-ex">
-    `https://example.com` runs a map API at `https://example.com/maps` which is
-    embedded by many other websites. It provides a `postMessage()` API to place
-    markers on the map at locations the embedder chooses.
-
-    The developer would like to run `https://example.com/maps` in a suborigin
-    namespace "maps".  However, when embedders send messages to the embedded
-    frame, because they are legacy uses from before the use of suborigins, they
-    send essages with a `target` of `https://example.com`, <em>not</em>
-    `https-so://maps.example.com`. Since the developer would still like this
-    frame to be able to provide the API to these legacy embedders, it can serve
-    the frame with the <a>`unsafe-postmessage-receive`</a> directive, which will
-    allow the frame to receive messages on behalf of `https://example.com`, even
-    though it is at `https-so://maps.example.com`.
-    </div>
+    Issue: TODO(devd): Write an example that makes clear that this is extremely
+    dangerous and should not be used if you have Real Deal auth and csrf cookies
+    used.
 
   * '<dfn>`unsafe-postmessage-send`</dfn>' When a message is sent <i>from</i> a
     suborigin namespace with <a>`unsafe-postmessage-send`</a> set, the
@@ -769,15 +757,28 @@ spec:dom-ls; type:interface; text:Document
     `https://example.com`.
     </div>
 
-  * '<dfn>`unsafe-cookies`</dfn>' When an execution context with a suborigin
-    namespace has <a>`unsafe-cookies`</a> set, the
-    execution context should not have a fresh cookie jar for the suborigin
-    namespace, and instead, the cookie jar should be shared with the null
-    suborigin for the execution context.
+  * '<dfn>`unsafe-postmessage-receive`</dfn>' When a message is sent <i>to</i> a
+    frame with a `postMessage` `target` of a serialized physical origin, but not a
+    serialized suborigin, if the frame has an execution context with a suborigin
+    where the scheme, host, and port match the `target`, but it also has a
+    suborigin namespace, if <a>`unsafe-postmessage-receive`</a> is set, it will
+    still receive the message.
 
-    Issue: TODO(devd): Write an example that makes clear that this is extremely
-    dangerous and should not be used if you have Real Deal auth and csrf cookies
-    used.
+    <div class="example" id="unsafe-postmessage-send-ex">
+    `https://example.com` runs a map API at `https://example.com/maps` which is
+    embedded by many other websites. It provides a `postMessage()` API to place
+    markers on the map at locations the embedder chooses.
+
+    The developer would like to run `https://example.com/maps` in a suborigin
+    namespace "maps".  However, when embedders send messages to the embedded
+    frame, because they are legacy uses from before the use of suborigins, they
+    send essages with a `target` of `https://example.com`, <em>not</em>
+    `https-so://maps.example.com`. Since the developer would still like this
+    frame to be able to provide the API to these legacy embedders, it can serve
+    the frame with the <a>`unsafe-postmessage-receive`</a> directive, which will
+    allow the frame to receive messages on behalf of `https://example.com`, even
+    though it is at `https-so://maps.example.com`.
+    </div>
 
   Issue: TODO: These opt-out descriptions should probably be moved to the
   individual sections where the behaviors are discussed (i.e. postMessage and
