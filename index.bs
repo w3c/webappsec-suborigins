@@ -38,6 +38,8 @@ spec: CORS; urlPrefix: https://www.w3.org/TR/cors
 
 spec: Fetch; urlPrefix: https://fetch.spec.whatwg.org
   type: dfn
+    text: credentials; url: credentials
+    text: credentials mode; url: concept-request-credentials-mode
     text: fetch; url: concept-fetch
     text: request; url: concept-request
     text: response type; url: concept-response-type
@@ -446,6 +448,7 @@ spec:dom-ls; type:interface; text:Document
       <dfn>suborigin-policy-option</dfn> = "'unsafe-postmessage-send'"
                                 / "'unsafe-postmessage-receive'"
                                 / "'unsafe-cookies'"
+                                / "'unsafe-include-credentials'"
       <dfn>suborigin-policy-list</dfn> = 1*(<a>RWS</a> <a>suborigin-policy-option</a> <a>OWS</a>)
       <dfn>suborigin-header</dfn> = <a>suborigin-name</a> [ <a>suborigin-policy-list</a> ]
   </pre>
@@ -778,6 +781,24 @@ spec:dom-ls; type:interface; text:Document
     Issue: TODO(devd): Write an example that makes clear that this is extremely
     dangerous and should not be used if you have Real Deal auth and csrf cookies
     used.
+
+   * '<dfn>`unsafe-include-credentials`</dfn>' All cross-origin requests to the
+     <a>physical origin</a> for the execution context will include
+     <a>credentials</a>. In particular, when this option is set in an execution
+     context, all cross-origin <a>requests</a> from that execution context to
+     the <a>physical origin</a> will have their <a>credentials mode</a> set to
+     "`include`". Additionally, if the <a>credentials mode</a> is
+     programmitically set, it will still be overriden to be set to "`include`".
+
+     Note: This applies to <em>all</em> cross-origin requests, not just
+     `xmlHttpRequests` and `fetch` requests. Thus all cross-origin elements on
+     the page, including, for example, image tags, will have the equivalement of
+     the `crossorigin` attribute set to "`use-credentials`". See <a
+     href="https://fetch.spec.whatwg.org/#cors-protocol-and-credentials">CORS
+     protocol and credentials</a> for more on including credentials and the
+     implications of including credentials in requests.
+
+     Issue: TODO(jww,aaj): Provide an example of why this might be needed.
 
   Issue: TODO: These opt-out descriptions should probably be moved to the
   individual sections where the behaviors are discussed (i.e. postMessage and

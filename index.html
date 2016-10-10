@@ -1363,7 +1363,7 @@ Possible extra rowspan handling
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Suborigins</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2016-10-04">4 October 2016</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2016-10-10">10 October 2016</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1786,6 +1786,7 @@ This includes providing security-model opt-outs where necessary.</p>
 <dfn class="dfn-paneled" data-dfn-type="grammar" data-export="" id="grammardef-suborigin-policy-option">suborigin-policy-option</dfn> = "'unsafe-postmessage-send'"
                           / "'unsafe-postmessage-receive'"
                           / "'unsafe-cookies'"
+                          / "'unsafe-include-credentials'"
 <dfn class="dfn-paneled" data-dfn-type="grammar" data-export="" id="grammardef-suborigin-policy-list">suborigin-policy-list</dfn> = 1*(<a data-link-type="grammar" href="https://tools.ietf.org/html/rfc7230#section-3.2.3">RWS</a> <a data-link-type="grammar" href="#grammardef-suborigin-policy-option" id="ref-for-grammardef-suborigin-policy-option-1">suborigin-policy-option</a> <a data-link-type="grammar" href="https://tools.ietf.org/html/rfc7230#section-3.2.3">OWS</a>)
 <dfn data-dfn-type="grammar" data-export="" id="grammardef-suborigin-header">suborigin-header<a class="self-link" href="#grammardef-suborigin-header"></a></dfn> = <a data-link-type="grammar" href="#grammardef-suborigin-name" id="ref-for-grammardef-suborigin-name-1">suborigin-name</a> [ <a data-link-type="grammar" href="#grammardef-suborigin-policy-list" id="ref-for-grammardef-suborigin-policy-list-1">suborigin-policy-list</a> ]
 </pre>
@@ -2026,6 +2027,18 @@ suborigin for the execution context.</p>
      <p class="issue" id="issue-a4bfe642"><a class="self-link" href="#issue-a4bfe642"></a> TODO(devd): Write an example that makes clear that this is extremely
 dangerous and should not be used if you have Real Deal auth and csrf cookies
 used.</p>
+    <li data-md="">
+     <p>'<dfn data-dfn-type="dfn" data-noexport="" id="unsafe-include-credentials"><code>unsafe-include-credentials</code><a class="self-link" href="#unsafe-include-credentials"></a></dfn>' All cross-origin requests to the <a data-link-type="dfn" href="#physical-origin" id="ref-for-physical-origin-2">physical origin</a> for the execution context will include <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#credentials">credentials</a>. In particular, when this option is set in an execution
+ context, all cross-origin <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-request">requests</a> from that execution context to
+ the <a data-link-type="dfn" href="#physical-origin" id="ref-for-physical-origin-3">physical origin</a> will have their <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-request-credentials-mode">credentials mode</a> set to
+ "<code>include</code>". Additionally, if the <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-request-credentials-mode">credentials mode</a> is
+ programmitically set, it will still be overriden to be set to "<code>include</code>".</p>
+     <p class="note" role="note">Note: This applies to <em>all</em> cross-origin requests, not just <code>xmlHttpRequests</code> and <code>fetch</code> requests. Thus all cross-origin elements on
+ the page, including, for example, image tags, will have the equivalement of
+ the <code>crossorigin</code> attribute set to "<code>use-credentials</code>". See <a href="https://fetch.spec.whatwg.org/#cors-protocol-and-credentials">CORS
+ protocol and credentials</a> for more on including credentials and the
+ implications of including credentials in requests.</p>
+     <p class="issue" id="issue-ec925137"><a class="self-link" href="#issue-ec925137"></a> TODO(jww,aaj): Provide an example of why this might be needed.</p>
    </ul>
    <p class="issue" id="issue-01de7cd9"><a class="self-link" href="#issue-01de7cd9"></a> TODO: These opt-out descriptions should probably be moved to the
   individual sections where the behaviors are discussed (i.e. postMessage and
@@ -2121,6 +2134,7 @@ used.</p>
    <li><a href="#grammardef-suborigin-policy-list">suborigin-policy-list</a><span>, in §3.6</span>
    <li><a href="#grammardef-suborigin-policy-option">suborigin-policy-option</a><span>, in §3.6</span>
    <li><a href="#unsafe-cookies">unsafe-cookies</a><span>, in §6.5</span>
+   <li><a href="#unsafe-include-credentials">unsafe-include-credentials</a><span>, in §6.5</span>
    <li><a href="#unsafe-postmessage-receive">unsafe-postmessage-receive</a><span>, in §6.5</span>
    <li><a href="#unsafe-postmessage-send">unsafe-postmessage-send</a><span>, in §6.5</span>
    <li><a href="#xhr">XHR</a><span>, in §2</span>
@@ -2150,7 +2164,10 @@ used.</p>
    <li>
     <a data-link-type="biblio">[FETCH]</a> defines the following terms:
     <ul>
+     <li><a href="https://fetch.spec.whatwg.org#credentials">credentials</a>
+     <li><a href="https://fetch.spec.whatwg.org#concept-request-credentials-mode">credentials mode</a>
      <li><a href="https://fetch.spec.whatwg.org#concept-fetch">fetch</a>
+     <li><a href="https://fetch.spec.whatwg.org#concept-request">request</a>
     </ul>
    <li>
     <a data-link-type="biblio">[HTML]</a> defines the following terms:
@@ -2257,6 +2274,7 @@ used.</p>
    <div class="issue"> TODO(devd): Write an example that makes clear that this is extremely
 dangerous and should not be used if you have Real Deal auth and csrf cookies
 used.<a href="#issue-a4bfe642"> ↵ </a></div>
+   <div class="issue"> TODO(jww,aaj): Provide an example of why this might be needed.<a href="#issue-ec925137"> ↵ </a></div>
    <div class="issue"> TODO: These opt-out descriptions should probably be moved to the
   individual sections where the behaviors are discussed (i.e. postMessage and
   cookies). These just need to be fleshed out anyway, and examples and reasons
@@ -2307,6 +2325,7 @@ used.<a href="#issue-a4bfe642"> ↵ </a></div>
    <b><a href="#physical-origin">#physical-origin</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-physical-origin-1">6.4.1. Cookies</a>
+    <li><a href="#ref-for-physical-origin-2">6.5. Security Model Opt-Outs</a> <a href="#ref-for-physical-origin-3">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="suborigin">
