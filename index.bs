@@ -725,11 +725,12 @@ spec:dom-ls; type:interface; text:Document
   present in a <a>suborigin policy</a> have the following effects:
 
   * '<dfn>`force-include-credentials`</dfn>' All cross-origin requests will
-    include <a>credentials</a>. In particular, when this option is set, all
-    cross-origin <a>requests</a> will have their <a>credentials mode</a> set to
-    "`include`".  See <a
+    include <a>credentials</a>. In particular, when this option is set in an
+    execution context, all cross-origin <a>requests</a> from that execution
+    context will have their <a>credentials mode</a> set to "`include`".  See <a
     href="https://fetch.spec.whatwg.org/#cors-protocol-and-credentials">CORS
-    protocol and credentials</a> for more on including credentials.
+    protocol and credentials</a> for more on including credentials and the
+    implications of including credentials in requests.
 
     Issue: TODO(jww): Provide an example of why this might be needed.
 
