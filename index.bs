@@ -726,8 +726,8 @@ spec:dom-ls; type:interface; text:Document
 
   * '<dfn>`force-include-credentials`</dfn>' All cross-origin requests will
     include <a>credentials</a>. In particular, when this option is set, all
-    <a>requests</a> will have their <a>credentials mode</a> set to "`include`".
-    See <a
+    cross-origin <a>requests</a> will have their <a>credentials mode</a> set to
+    "`include`".  See <a
     href="https://fetch.spec.whatwg.org/#cors-protocol-and-credentials">CORS
     protocol and credentials</a> for more on including credentials.
 
