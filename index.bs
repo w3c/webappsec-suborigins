@@ -65,6 +65,10 @@ spec: URL; urlPrefix: https://url.spec.whatwg.org/
     text: scheme; url: #syntax-url-scheme
     text: host; url: #syntax-host
     text: port; url: #syntax-url-port
+
+spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
+  type: dfn
+    text: withCredentials; url: #the-withcredentials-attribute
 </pre>
 
 <pre class="link-defaults">
@@ -448,7 +452,7 @@ spec:dom-ls; type:interface; text:Document
       <dfn>suborigin-policy-option</dfn> = "'unsafe-postmessage-send'"
                                 / "'unsafe-postmessage-receive'"
                                 / "'unsafe-cookies'"
-                                / "'unsafe-include-credentials'"
+                                / "'unsafe-with-credentials'"
       <dfn>suborigin-policy-list</dfn> = 1*(<a>RWS</a> <a>suborigin-policy-option</a> <a>OWS</a>)
       <dfn>suborigin-header</dfn> = <a>suborigin-name</a> [ <a>suborigin-policy-list</a> ]
   </pre>
@@ -609,20 +613,30 @@ spec:dom-ls; type:interface; text:Document
 
   </ol>
 
+  ## Comparing Physical Origins ## {#comparing-physical-origins}
+
+  Two suborigins are "the same physical origin" if, and only if, the
+  physical origin portion of the suborgiin are idential. In particular:
+
+  *   If the origin portions of the suborigin pairs are scheme/host/port
+      triples, the two suborigins are the same physical origin if, and only if,
+      they have identical schemes, hosts, and ports.
+  *   An origin that is a globally unique identifier cannot be the same as an
+      origin that is a scheme/host/port triple.
+
+  Two resources are the same-physical-origin if their suborigins are the same
+  physical origin.
+
   ## Comparing Suborigins ## {#comparing-suborigins}
 
   Two suborigins are "the same" if, and only if, they are identical. In
   particular:
 
-  *   If the origin portions of the suborigin pairs are scheme/host/port triples,
-      the two suborigins are the same if, and only if, they have identical
-      schemes, hosts, and ports and the `suborigin-namespace` portions
-      of the suborigin pairs are identical.
-  *   If both `suborigin-namespace` portions of the suborigin pairs are
-      null, this is considered identical.
-  *   An origin that is a globally unique identifier cannot be the same as an
-      origin that is a scheme/host/port triple, with or without a
-      `suborigin-namespace`.
+  *   By [[#comparing-physical-origins]], the suborigins must be
+      same-physical-origin.
+  *   In addition, the `suborigin-namespace` portion of the suborigin pairs must
+      be identical. If both `suborigin-namespace` portions of the suborigin
+      pairs are null, this is considered identical.
 
   Two resources are the same-origin if their suborigins are the same.
 
@@ -782,7 +796,21 @@ spec:dom-ls; type:interface; text:Document
     dangerous and should not be used if you have Real Deal auth and csrf cookies
     used.
 
-   * '<dfn>`unsafe-include-credentials`</dfn>' All cross-origin requests to the
+   * '<dfn>`unsafe-with-credentials`</dfn>' All cross-origin
+     <a>`XMLHttpRequest`</a>s to the <a>physical origin</a> for the execution
+     context will include <a>credentials</a>. This is to simulate setting the
+     <a>`withCredentials`</a> attribute to `true` on all such requests.
+
+     In particular, update the "credentials mode" subsection of step 6 of the
+     XHR spec [[!XHR]] to read:
+
+     If the <a>withCredentials</a> attribute value is true or if the
+     `unsafe-with-credentials` option is set on the document's settings object
+     and the
+     settings, and the, "include", and
+     "same-origin" otherwise.
+   
+   * All cross-origin requests to the
      <a>physical origin</a> for the execution context will include
      <a>credentials</a>. In particular, when this option is set in an execution
      context, all cross-origin <a>requests</a> from that execution context to
