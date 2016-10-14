@@ -2044,20 +2044,12 @@ used.</p>
      <p>In particular, update the "credentials mode" subsection of step 6 of the
  XHR spec <a data-link-type="biblio" href="#biblio-xhr">[XHR]</a> to read:</p>
      <p>If the <a data-link-type="dfn" href="https://xhr.spec.whatwg.org/#the-withcredentials-attribute">withCredentials</a> attribute value is true or if the <code>unsafe-with-credentials</code> option is set on the document’s settings object
- and the
- settings, and the, "include", and
+ and the origin of <a data-link-type="dfn" href="https://xhr.spec.whatwg.org/#request-url">request URL</a> is the same-physical-origin with the
+ document’s origin according to <a href="#comparing-physical-origins">§6.2 Comparing Physical Origins</a>, "include",
  "same-origin" otherwise.</p>
-    <li data-md="">
-     <p>All cross-origin requests to the <a data-link-type="dfn" href="#physical-origin" id="ref-for-physical-origin-3">physical origin</a> for the execution context will include <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#credentials">credentials</a>. In particular, when this option is set in an execution
- context, all cross-origin <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-request">requests</a> from that execution context to
- the <a data-link-type="dfn" href="#physical-origin" id="ref-for-physical-origin-4">physical origin</a> will have their <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-request-credentials-mode">credentials mode</a> set to
- "<code>include</code>". Additionally, if the <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-request-credentials-mode">credentials mode</a> is
- programmitically set, it will still be overriden to be set to "<code>include</code>".</p>
-     <p class="note" role="note">Note: This applies to <em>all</em> cross-origin requests, not just <code>xmlHttpRequests</code> and <code>fetch</code> requests. Thus all cross-origin elements on
- the page, including, for example, image tags, will have the equivalement of
- the <code>crossorigin</code> attribute set to "<code>use-credentials</code>". See <a href="https://fetch.spec.whatwg.org/#cors-protocol-and-credentials">CORS
- protocol and credentials</a> for more on including credentials and the
- implications of including credentials in requests.</p>
+     <p class="note" role="note">Note: This purposefully excludes regular resource requests and <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-fetch"><code>fetch</code></a>. The former is unneeded since cookies will travel with the
+ physical origin on regular requests and the later is unneeded because
+ credentials are not sent by default, even to same-origin.</p>
      <p class="issue" id="issue-ec925137"><a class="self-link" href="#issue-ec925137"></a> TODO(jww,aaj): Provide an example of why this might be needed.</p>
    </ul>
    <p class="issue" id="issue-01de7cd9"><a class="self-link" href="#issue-01de7cd9"></a> TODO: These opt-out descriptions should probably be moved to the
@@ -2185,9 +2177,7 @@ used.</p>
     <a data-link-type="biblio">[FETCH]</a> defines the following terms:
     <ul>
      <li><a href="https://fetch.spec.whatwg.org#credentials">credentials</a>
-     <li><a href="https://fetch.spec.whatwg.org#concept-request-credentials-mode">credentials mode</a>
      <li><a href="https://fetch.spec.whatwg.org#concept-fetch">fetch</a>
-     <li><a href="https://fetch.spec.whatwg.org#concept-request">request</a>
     </ul>
    <li>
     <a data-link-type="biblio">[HTML]</a> defines the following terms:
@@ -2216,6 +2206,7 @@ used.</p>
    <li>
     <a data-link-type="biblio">[XHR]</a> defines the following terms:
     <ul>
+     <li><a href="https://xhr.spec.whatwg.org/#request-url">request url</a>
      <li><a href="https://xhr.spec.whatwg.org/#the-withcredentials-attribute">withcredentials</a>
     </ul>
   </ul>
@@ -2351,7 +2342,7 @@ used.<a href="#issue-a4bfe642"> ↵ </a></div>
    <b><a href="#physical-origin">#physical-origin</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-physical-origin-1">6.5.1. Cookies</a>
-    <li><a href="#ref-for-physical-origin-2">6.6. Security Model Opt-Outs</a> <a href="#ref-for-physical-origin-3">(2)</a> <a href="#ref-for-physical-origin-4">(3)</a>
+    <li><a href="#ref-for-physical-origin-2">6.6. Security Model Opt-Outs</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="suborigin">
