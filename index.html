@@ -1363,7 +1363,7 @@ Possible extra rowspan handling
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Suborigins</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2016-10-14">14 October 2016</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2016-10-15">15 October 2016</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -2041,8 +2041,7 @@ used.</p>
     <li data-md="">
      <p>'<dfn data-dfn-type="dfn" data-noexport="" id="unsafe-with-credentials"><code>unsafe-with-credentials</code><a class="self-link" href="#unsafe-with-credentials"></a></dfn>' All cross-origin <a data-link-type="dfn" href="#xmlhttprequest" id="ref-for-xmlhttprequest-2"><code>XMLHttpRequest</code></a>s to the <a data-link-type="dfn" href="#physical-origin" id="ref-for-physical-origin-2">physical origin</a> for the execution
  context will include <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#credentials">credentials</a>. This is to simulate setting the <a data-link-type="dfn" href="https://xhr.spec.whatwg.org/#the-withcredentials-attribute"><code>withCredentials</code></a> attribute to <code>true</code> on all such requests.</p>
-     <p>In particular, update the "credentials mode" subsection of step 6 of the
- XHR spec <a data-link-type="biblio" href="#biblio-xhr">[XHR]</a> to read:</p>
+     <p>In particular, update the "credentials mode" subsection of step 6 of <a data-link-type="dfn" href="https://xhr.spec.whatwg.org/#the-send()-method">the <code>send()</code> method</a> in the XHR spec <a data-link-type="biblio" href="#biblio-xhr">[XHR]</a> to read:</p>
      <p>If the <a data-link-type="dfn" href="https://xhr.spec.whatwg.org/#the-withcredentials-attribute">withCredentials</a> attribute value is true or if the <code>unsafe-with-credentials</code> option is set on the document’s settings object
  and the origin of <a data-link-type="dfn" href="https://xhr.spec.whatwg.org/#request-url">request URL</a> is the same-physical-origin with the
  document’s origin according to <a href="#comparing-physical-origins">§6.2 Comparing Physical Origins</a>, "include",
@@ -2207,6 +2206,7 @@ used.</p>
     <a data-link-type="biblio">[XHR]</a> defines the following terms:
     <ul>
      <li><a href="https://xhr.spec.whatwg.org/#request-url">request url</a>
+     <li><a href="https://xhr.spec.whatwg.org/#the-send()-method">the send() method</a>
      <li><a href="https://xhr.spec.whatwg.org/#the-withcredentials-attribute">withcredentials</a>
     </ul>
   </ul>

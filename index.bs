@@ -69,6 +69,7 @@ spec: URL; urlPrefix: https://url.spec.whatwg.org/
 spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
   type: dfn
     text: request URL; url: #request-url
+    text: the send() method; url: #the-send()-method
     text: withCredentials; url: #the-withcredentials-attribute
 </pre>
 
@@ -802,8 +803,8 @@ spec:dom-ls; type:interface; text:Document
      context will include <a>credentials</a>. This is to simulate setting the
      <a>`withCredentials`</a> attribute to `true` on all such requests.
 
-     In particular, update the "credentials mode" subsection of step 6 of the
-     XHR spec [[!XHR]] to read:
+     In particular, update the "credentials mode" subsection of step 6 of <a>the
+     `send()` method</a> in the XHR spec [[!XHR]] to read:
 
      If the <a>withCredentials</a> attribute value is true or if the
      `unsafe-with-credentials` option is set on the document's settings object
