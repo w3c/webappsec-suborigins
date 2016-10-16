@@ -2048,13 +2048,13 @@ used.</p>
        <p>Let credentials flag be set if one of</p>
        <ul>
         <li data-md="">
-         <p>request’s credentials mode is "include"</p>
+         <p><code>request</code>'s credentials mode is "include"</p>
         <li data-md="">
-         <p>request’s credentials mode is "same-origin" and request’s response
+         <p><code>request</code>'s credentials mode is "same-origin" and request’s response
 tainting is "basic"</p>
         <li data-md="">
-         <p>request’s credentials mode is "same-origin" and the request’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-request-current-url">current url</a> is <a data-link-type="dfn" href="#same-physical-origin" id="ref-for-same-physical-origin-1">same-physical-origin</a> with <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-request-origin">request
-origin</a>.</p>
+         <p><code>request</code>'s credentials mode is "same-origin" and <code>request</code>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/comms.html#environment-settings-object">environment settings object</a> has the <code>suborigin unsafe
+credentials</code> flag set and the request’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-request-current-url">current url</a> is <a data-link-type="dfn" href="#same-physical-origin" id="ref-for-same-physical-origin-1">same-physical-origin</a> with <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-request-origin">request origin</a>.</p>
        </ul>
      </ol>
      <p class="note" role="note">Note: This has several important, practical effects. If the <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-request-credentials-mode">credentials
@@ -2066,10 +2066,11 @@ origin</a>.</p>
  origin.</p>
      <p class="issue" id="issue-ec925137"><a class="self-link" href="#issue-ec925137"></a> TODO(jww,aaj): Provide an example of why this might be needed.</p>
    </ul>
-   <p class="issue" id="issue-01de7cd9"><a class="self-link" href="#issue-01de7cd9"></a> TODO: These opt-out descriptions should probably be moved to the
+   <p class="issue" id="issue-cbcfa8c1"><a class="self-link" href="#issue-cbcfa8c1"></a> TODO: These opt-out descriptions should probably be moved to the
   individual sections where the behaviors are discussed (i.e. postMessage and
   cookies). These just need to be fleshed out anyway, and examples and reasons
-  need to be given.</p>
+  need to be given. Also, they need to update the processing model, such as
+  adding appropriate flags to the environment settings object.</p>
    <h2 class="heading settled" data-level="7" id="practical-considerations"><span class="secno">7. </span><span class="content">Practical Considerations in Using Suborigins</span><a class="self-link" href="#practical-considerations"></a></h2>
    <p>Using suborigins with a Web application should be relatively simple. At the most
   basic level, if you have an application hosted on <code>https://example.com/app/</code>,
@@ -2201,6 +2202,7 @@ origin</a>.</p>
    <li>
     <a data-link-type="biblio">[HTML]</a> defines the following terms:
     <ul>
+     <li><a href="https://html.spec.whatwg.org/multipage/comms.html#environment-settings-object">environment settings object</a>
      <li><a href="https://html.spec.whatwg.org/multipage/comms.html#dom-messageport-postmessage">postmessage</a>
     </ul>
    <li>
@@ -2312,7 +2314,8 @@ used.<a href="#issue-a4bfe642"> ↵ </a></div>
    <div class="issue"> TODO: These opt-out descriptions should probably be moved to the
   individual sections where the behaviors are discussed (i.e. postMessage and
   cookies). These just need to be fleshed out anyway, and examples and reasons
-  need to be given.<a href="#issue-01de7cd9"> ↵ </a></div>
+  need to be given. Also, they need to update the processing model, such as
+  adding appropriate flags to the environment settings object.<a href="#issue-cbcfa8c1"> ↵ </a></div>
    <div class="issue"> TODO(devd): Flesh out the above and make sure it covers all it needs to
   cover.<a href="#issue-dc6c80f7"> ↵ </a></div>
    <div class="issue"> TODO: Need to list concerns with serialization, e.g. apps that don’t

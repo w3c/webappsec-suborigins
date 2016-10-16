@@ -50,6 +50,7 @@ spec: Fetch; urlPrefix: https://fetch.spec.whatwg.org
 spec: HTML; urlPrefix: https://html.spec.whatwg.org/multipage/
   type: dfn
     urlPrefix: comms.html
+      text: environment settings object; url: #environment-settings-object
       text: postMessage; url: #dom-messageport-postmessage
 
 spec: HTML51; urlPrefix: http://www.w3.org/TR/html51/
@@ -807,12 +808,13 @@ spec:dom-ls; type:interface; text:Document
      the Fetch spec [[!FETCH]] to read:
 
      2. Let credentials flag be set if one of
-        * request's credentials mode is "include"
-        * request's credentials mode is "same-origin" and request's response
+        * `request`'s credentials mode is "include"
+        * `request`'s credentials mode is "same-origin" and request's response
           tainting is "basic"
-        * request's credentials mode is "same-origin" and the request's
-          <a>current url</a> is <a>same-physical-origin</a> with <a>request
-          origin</a>.
+        * `request`'s credentials mode is "same-origin" and `request`'s
+          <a>environment settings object</a> has the `suborigin unsafe
+          credentials` flag set and the request's <a>current url</a> is
+          <a>same-physical-origin</a> with <a>request origin</a>.
 
      Note: This has several important, practical effects. If the <a>credentials
      mode</a> of a `fetch()` is set to "same-origin", and if it is to the same
@@ -829,7 +831,8 @@ spec:dom-ls; type:interface; text:Document
   Issue: TODO: These opt-out descriptions should probably be moved to the
   individual sections where the behaviors are discussed (i.e. postMessage and
   cookies). These just need to be fleshed out anyway, and examples and reasons
-  need to be given.
+  need to be given. Also, they need to update the processing model, such as
+  adding appropriate flags to the environment settings object.
 
   # Practical Considerations in Using Suborigins # {#practical-considerations}
 
