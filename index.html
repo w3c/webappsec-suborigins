@@ -1363,7 +1363,7 @@ Possible extra rowspan handling
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Suborigins</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2016-10-15">15 October 2016</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2016-10-16">16 October 2016</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1787,7 +1787,7 @@ This includes providing security-model opt-outs where necessary.</p>
 <dfn class="dfn-paneled" data-dfn-type="grammar" data-export="" id="grammardef-suborigin-policy-option">suborigin-policy-option</dfn> = "'unsafe-postmessage-send'"
                           / "'unsafe-postmessage-receive'"
                           / "'unsafe-cookies'"
-                          / "'unsafe-with-credentials'"
+                          / "'unsafe-credentials'"
 <dfn class="dfn-paneled" data-dfn-type="grammar" data-export="" id="grammardef-suborigin-policy-list">suborigin-policy-list</dfn> = 1*(<a data-link-type="grammar" href="https://tools.ietf.org/html/rfc7230#section-3.2.3">RWS</a> <a data-link-type="grammar" href="#grammardef-suborigin-policy-option" id="ref-for-grammardef-suborigin-policy-option-1">suborigin-policy-option</a> <a data-link-type="grammar" href="https://tools.ietf.org/html/rfc7230#section-3.2.3">OWS</a>)
 <dfn data-dfn-type="grammar" data-export="" id="grammardef-suborigin-header">suborigin-header<a class="self-link" href="#grammardef-suborigin-header"></a></dfn> = <a data-link-type="grammar" href="#grammardef-suborigin-name" id="ref-for-grammardef-suborigin-name-1">suborigin-name</a> [ <a data-link-type="grammar" href="#grammardef-suborigin-policy-list" id="ref-for-grammardef-suborigin-policy-list-1">suborigin-policy-list</a> ]
 </pre>
@@ -1897,8 +1897,8 @@ This includes providing security-model opt-outs where necessary.</p>
      <p>An origin that is a globally unique identifier cannot be the same as an
   origin that is a scheme/host/port triple.</p>
    </ul>
-   <p>Two resources are the same-physical-origin if their suborigins are the same
-  physical origin.</p>
+   <p>Two resources are the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="same-physical-origin">same-physical-origin</dfn> if their suborigins are
+  the same physical origin.</p>
    <h3 class="heading settled" data-level="6.3" id="comparing-suborigins"><span class="secno">6.3. </span><span class="content">Comparing Suborigins</span><a class="self-link" href="#comparing-suborigins"></a></h3>
    <p>Two suborigins are "the same" if, and only if, they are identical. In
   particular:</p>
@@ -2039,16 +2039,31 @@ suborigin for the execution context.</p>
 dangerous and should not be used if you have Real Deal auth and csrf cookies
 used.</p>
     <li data-md="">
-     <p>'<dfn data-dfn-type="dfn" data-noexport="" id="unsafe-with-credentials"><code>unsafe-with-credentials</code><a class="self-link" href="#unsafe-with-credentials"></a></dfn>' All cross-origin <a data-link-type="dfn" href="#xmlhttprequest" id="ref-for-xmlhttprequest-2"><code>XMLHttpRequest</code></a>s to the <a data-link-type="dfn" href="#physical-origin" id="ref-for-physical-origin-2">physical origin</a> for the execution
- context will include <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#credentials">credentials</a>. This is to simulate setting the <a data-link-type="dfn" href="https://xhr.spec.whatwg.org/#the-withcredentials-attribute"><code>withCredentials</code></a> attribute to <code>true</code> on all such requests.</p>
-     <p>In particular, update the "credentials mode" subsection of step 6 of <a data-link-type="dfn" href="https://xhr.spec.whatwg.org/#the-send()-method">the <code>send()</code> method</a> in the XHR spec <a data-link-type="biblio" href="#biblio-xhr">[XHR]</a> to read:</p>
-     <p>If the <a data-link-type="dfn" href="https://xhr.spec.whatwg.org/#the-withcredentials-attribute">withCredentials</a> attribute value is true or if the <code>unsafe-with-credentials</code> option is set on the document’s settings object
- and the origin of <a data-link-type="dfn" href="https://xhr.spec.whatwg.org/#request-url">request URL</a> is the same-physical-origin with the
- document’s origin according to <a href="#comparing-physical-origins">§6.2 Comparing Physical Origins</a>, "include",
- "same-origin" otherwise.</p>
-     <p class="note" role="note">Note: This purposefully excludes regular resource requests and <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-fetch"><code>fetch</code></a>. The former is unneeded since cookies will travel with the
- physical origin on regular requests and the later is unneeded because
- credentials are not sent by default, even to same-origin.</p>
+     <p>'<dfn data-dfn-type="dfn" data-noexport="" id="unsafe-credentials"><code>unsafe-credentials</code><a class="self-link" href="#unsafe-credentials"></a></dfn>' All cross-origin requests  to the <a data-link-type="dfn" href="#physical-origin" id="ref-for-physical-origin-2">physical origin</a> for the execution
+ context will include <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#credentials">credentials</a>.</p>
+     <p>Specifically, update the step 2 of <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#http-network-or-cache-fetch">HTTP-network-or-cache fetch</a> in
+ the Fetch spec <a data-link-type="biblio" href="#biblio-fetch">[FETCH]</a> to read:</p>
+     <ol start="2">
+      <li data-md="">
+       <p>Let credentials flag be set if one of</p>
+       <ul>
+        <li data-md="">
+         <p>request’s credentials mode is "include"</p>
+        <li data-md="">
+         <p>request’s credentials mode is "same-origin" and request’s response
+tainting is "basic"</p>
+        <li data-md="">
+         <p>request’s credentials mode is "same-origin" and the request’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-request-current-url">current url</a> is <a data-link-type="dfn" href="#same-physical-origin" id="ref-for-same-physical-origin-1">same-physical-origin</a> with <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-request-origin">request
+origin</a>.</p>
+       </ul>
+     </ol>
+     <p class="note" role="note">Note: This has several important, practical effects. If the <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-request-credentials-mode">credentials
+ mode</a> of a <code>fetch()</code> is set to "same-origin", and if it is to the same
+ physical origin as the current execution context, credentials will be
+ included. This means that if the <code>crossorigin</code> attribute on elements such
+ as <code>&lt;img></code> are set to <code>anonymous</code>, credentials will be sent if the origin
+ of the URL is the same physical origin. Similarly, if making an <a data-link-type="dfn" href="#xmlhttprequest" id="ref-for-xmlhttprequest-2">XMLHttpRequest</a>, setting this flag is equivalent to setting <a data-link-type="dfn" href="https://xhr.spec.whatwg.org/#the-withcredentials-attribute"><code>withCredentials</code></a> to <code>true</code> for requests to the same physical
+ origin.</p>
      <p class="issue" id="issue-ec925137"><a class="self-link" href="#issue-ec925137"></a> TODO(jww,aaj): Provide an example of why this might be needed.</p>
    </ul>
    <p class="issue" id="issue-01de7cd9"><a class="self-link" href="#issue-01de7cd9"></a> TODO: These opt-out descriptions should probably be moved to the
@@ -2137,6 +2152,7 @@ used.</p>
    <li><a href="#origin">origin</a><span>, in §2</span>
    <li><a href="#physical-origin">physical origin</a><span>, in §3.4</span>
    <li><a href="#same-origin">same-origin</a><span>, in §2</span>
+   <li><a href="#same-physical-origin">same-physical-origin</a><span>, in §6.2</span>
    <li><a href="#suborigin">suborigin</a><span>, in §3.6</span>
    <li><a href="#grammardef-suborigin-header">suborigin-header</a><span>, in §3.6</span>
    <li><a href="#grammardef-suborigin-name">suborigin-name</a><span>, in §3.6</span>
@@ -2145,9 +2161,9 @@ used.</p>
    <li><a href="#grammardef-suborigin-policy-list">suborigin-policy-list</a><span>, in §3.6</span>
    <li><a href="#grammardef-suborigin-policy-option">suborigin-policy-option</a><span>, in §3.6</span>
    <li><a href="#unsafe-cookies">unsafe-cookies</a><span>, in §6.6</span>
+   <li><a href="#unsafe-credentials">unsafe-credentials</a><span>, in §6.6</span>
    <li><a href="#unsafe-postmessage-receive">unsafe-postmessage-receive</a><span>, in §6.6</span>
    <li><a href="#unsafe-postmessage-send">unsafe-postmessage-send</a><span>, in §6.6</span>
-   <li><a href="#unsafe-with-credentials">unsafe-with-credentials</a><span>, in §6.6</span>
    <li><a href="#xhr">XHR</a><span>, in §2</span>
    <li><a href="#xmlhttprequest">XMLHttpRequest</a><span>, in §2</span>
    <li><a href="#xss">XSS</a><span>, in §2</span>
@@ -2176,7 +2192,11 @@ used.</p>
     <a data-link-type="biblio">[FETCH]</a> defines the following terms:
     <ul>
      <li><a href="https://fetch.spec.whatwg.org#credentials">credentials</a>
+     <li><a href="https://fetch.spec.whatwg.org#concept-request-credentials-mode">credentials mode</a>
+     <li><a href="https://fetch.spec.whatwg.org#concept-request-current-url">current url</a>
      <li><a href="https://fetch.spec.whatwg.org#concept-fetch">fetch</a>
+     <li><a href="https://fetch.spec.whatwg.org#http-network-or-cache-fetch">http-network-or-cache fetch</a>
+     <li><a href="https://fetch.spec.whatwg.org#concept-request-origin">request origin</a>
     </ul>
    <li>
     <a data-link-type="biblio">[HTML]</a> defines the following terms:
@@ -2205,8 +2225,6 @@ used.</p>
    <li>
     <a data-link-type="biblio">[XHR]</a> defines the following terms:
     <ul>
-     <li><a href="https://xhr.spec.whatwg.org/#request-url">request url</a>
-     <li><a href="https://xhr.spec.whatwg.org/#the-send()-method">the send() method</a>
      <li><a href="https://xhr.spec.whatwg.org/#the-withcredentials-attribute">withcredentials</a>
     </ul>
   </ul>
@@ -2383,6 +2401,12 @@ used.<a href="#issue-a4bfe642"> ↵ </a></div>
    <b><a href="#suborigin-policy">#suborigin-policy</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-suborigin-policy-1">6.6. Security Model Opt-Outs</a> <a href="#ref-for-suborigin-policy-2">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="same-physical-origin">
+   <b><a href="#same-physical-origin">#same-physical-origin</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-same-physical-origin-1">6.6. Security Model Opt-Outs</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="unsafe-postmessage-receive">
