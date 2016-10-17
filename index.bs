@@ -621,7 +621,7 @@ spec:dom-ls; type:interface; text:Document
   ## Comparing Physical Origins ## {#comparing-physical-origins}
 
   Two suborigins are "the same physical origin" if, and only if, the
-  physical origin portion of the suborgiin are idential. In particular:
+  physical origin portion of the suborigin are identical. In particular:
 
   *   If the origin portions of the suborigin pairs are scheme/host/port
       triples, the two suborigins are the same physical origin if, and only if,
@@ -824,7 +824,8 @@ spec:dom-ls; type:interface; text:Document
      of the URL is the same physical origin. Similarly, if making an
      <a>XMLHttpRequest</a>, setting this flag is equivalent to setting
      <a>`withCredentials`</a> to `true` for requests to the same physical
-     origin.
+     origin. This means that it credentials will be sent even for requests to
+     another suborigin at the same physical origin.
 
      Issue: TODO(jww,aaj): Provide an example of why this might be needed.
 
