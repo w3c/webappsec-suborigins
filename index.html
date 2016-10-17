@@ -1363,7 +1363,7 @@ Possible extra rowspan handling
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Suborigins</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2016-10-16">16 October 2016</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2016-10-17">17 October 2016</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1887,7 +1887,7 @@ This includes providing security-model opt-outs where necessary.</p>
    </ol>
    <h3 class="heading settled" data-level="6.2" id="comparing-physical-origins"><span class="secno">6.2. </span><span class="content">Comparing Physical Origins</span><a class="self-link" href="#comparing-physical-origins"></a></h3>
    <p>Two suborigins are "the same physical origin" if, and only if, the
-  physical origin portion of the suborgiin are idential. In particular:</p>
+  physical origin portion of the suborigin are identical. In particular:</p>
    <ul>
     <li data-md="">
      <p>If the origin portions of the suborigin pairs are scheme/host/port
@@ -2063,7 +2063,8 @@ credentials</code> flag set and the request’s <a data-link-type="dfn" href="ht
  included. This means that if the <code>crossorigin</code> attribute on elements such
  as <code>&lt;img></code> are set to <code>anonymous</code>, credentials will be sent if the origin
  of the URL is the same physical origin. Similarly, if making an <a data-link-type="dfn" href="#xmlhttprequest" id="ref-for-xmlhttprequest-2">XMLHttpRequest</a>, setting this flag is equivalent to setting <a data-link-type="dfn" href="https://xhr.spec.whatwg.org/#the-withcredentials-attribute"><code>withCredentials</code></a> to <code>true</code> for requests to the same physical
- origin.</p>
+ origin. This means that it credentials will be sent even for requests to
+ another suborigin at the same physical origin.</p>
      <p class="issue" id="issue-ec925137"><a class="self-link" href="#issue-ec925137"></a> TODO(jww,aaj): Provide an example of why this might be needed.</p>
    </ul>
    <p class="issue" id="issue-cbcfa8c1"><a class="self-link" href="#issue-cbcfa8c1"></a> TODO: These opt-out descriptions should probably be moved to the
