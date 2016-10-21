@@ -40,13 +40,17 @@ spec: Fetch; urlPrefix: https://fetch.spec.whatwg.org
   type: dfn
     text: credentials; url: credentials
     text: credentials mode; url: concept-request-credentials-mode
+    text: current url; url:#concept-request-current-url
     text: fetch; url: concept-fetch
     text: request; url: concept-request
+    text: request origin; url: concept-request-origin
     text: response type; url: concept-response-type
+    text: HTTP-network-or-cache fetch; url: http-network-or-cache-fetch
 
 spec: HTML; urlPrefix: https://html.spec.whatwg.org/multipage/
   type: dfn
     urlPrefix: comms.html
+      text: environment settings object; url: #environment-settings-object
       text: postMessage; url: #dom-messageport-postmessage
 
 spec: HTML51; urlPrefix: http://www.w3.org/TR/html51/
@@ -65,6 +69,11 @@ spec: URL; urlPrefix: https://url.spec.whatwg.org/
     text: scheme; url: #syntax-url-scheme
     text: host; url: #syntax-host
     text: port; url: #syntax-url-port
+
+spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
+  type: dfn
+    text: request URL; url: #request-url
+    text: withCredentials; url: #the-withcredentials-attribute
 </pre>
 
 <pre class="link-defaults">
@@ -448,7 +457,7 @@ spec:dom-ls; type:interface; text:Document
       <dfn>suborigin-policy-option</dfn> = "'unsafe-postmessage-send'"
                                 / "'unsafe-postmessage-receive'"
                                 / "'unsafe-cookies'"
-                                / "'unsafe-include-credentials'"
+                                / "'unsafe-credentials'"
       <dfn>suborigin-policy-list</dfn> = 1*(<a>RWS</a> <a>suborigin-policy-option</a> <a>OWS</a>)
       <dfn>suborigin-header</dfn> = <a>suborigin-name</a> [ <a>suborigin-policy-list</a> ]
   </pre>
@@ -609,20 +618,31 @@ spec:dom-ls; type:interface; text:Document
 
   </ol>
 
+  ## Comparing Physical Origins ## {#comparing-physical-origins}
+
+  Two suborigins are "the same physical origin" if, and only if, the physical
+  origin portion of the suborigin are identical, per [[RFC6454]].  In
+  particular:
+
+  *   If the origin portions of the suborigin pairs are scheme/host/port
+      triples, the two suborigins are the same physical origin if, and only if,
+      they have identical schemes, hosts, and ports.
+  *   An origin that is a globally unique identifier cannot be the same as an
+      origin that is a scheme/host/port triple.
+
+  Two resources are the <dfn>same-physical-origin</dfn> if their suborigins are
+  the same physical origin.
+
   ## Comparing Suborigins ## {#comparing-suborigins}
 
   Two suborigins are "the same" if, and only if, they are identical. In
   particular:
 
-  *   If the origin portions of the suborigin pairs are scheme/host/port triples,
-      the two suborigins are the same if, and only if, they have identical
-      schemes, hosts, and ports and the `suborigin-namespace` portions
-      of the suborigin pairs are identical.
-  *   If both `suborigin-namespace` portions of the suborigin pairs are
-      null, this is considered identical.
-  *   An origin that is a globally unique identifier cannot be the same as an
-      origin that is a scheme/host/port triple, with or without a
-      `suborigin-namespace`.
+  *   By [[#comparing-physical-origins]], the suborigins must be
+      same-physical-origin.
+  *   In addition, the `suborigin-namespace` portion of the suborigin pairs must
+      be identical. If both `suborigin-namespace` portions of the suborigin
+      pairs are null, this is considered identical.
 
   Two resources are the same-origin if their suborigins are the same.
 
@@ -782,28 +802,39 @@ spec:dom-ls; type:interface; text:Document
     dangerous and should not be used if you have Real Deal auth and csrf cookies
     used.
 
-   * '<dfn>`unsafe-include-credentials`</dfn>' All cross-origin requests to the
-     <a>physical origin</a> for the execution context will include
-     <a>credentials</a>. In particular, when this option is set in an execution
-     context, all cross-origin <a>requests</a> from that execution context to
-     the <a>physical origin</a> will have their <a>credentials mode</a> set to
-     "`include`". Additionally, if the <a>credentials mode</a> is
-     programmitically set, it will still be overriden to be set to "`include`".
+   * '<dfn>`unsafe-credentials`</dfn>' All cross-origin requests  to the <a>physical origin</a> for the execution
+     context will include <a>credentials</a>.
 
-     Note: This applies to <em>all</em> cross-origin requests, not just
-     `xmlHttpRequests` and `fetch` requests. Thus all cross-origin elements on
-     the page, including, for example, image tags, will have the equivalement of
-     the `crossorigin` attribute set to "`use-credentials`". See <a
-     href="https://fetch.spec.whatwg.org/#cors-protocol-and-credentials">CORS
-     protocol and credentials</a> for more on including credentials and the
-     implications of including credentials in requests.
+     Specifically, update the step 2 of <a>HTTP-network-or-cache fetch</a> in
+     the Fetch spec [[!FETCH]] to read:
+
+     2. Let credentials flag be set if one of
+        * `request`'s credentials mode is "include"
+        * `request`'s credentials mode is "same-origin" and request's response
+          tainting is "basic"
+        * `request`'s credentials mode is "same-origin" and `request`'s
+          <a>environment settings object</a> has the `suborigin unsafe
+          credentials` flag set and the request's <a>current url</a> is
+          <a>same-physical-origin</a> with <a>request origin</a>.
+
+     Note: This has several important, practical effects. If the <a>credentials
+     mode</a> of a `fetch()` is set to "same-origin", and if it is to the same
+     physical origin as the current execution context, credentials will be
+     included. This means that if the `crossorigin` attribute on elements such
+     as `<img>` are set to `anonymous`, credentials will be sent if the origin
+     of the URL is the same physical origin. Similarly, if making an
+     <a>XMLHttpRequest</a>, setting this flag is equivalent to setting
+     <a>`withCredentials`</a> to `true` for requests to the same physical
+     origin. This means that it credentials will be sent even for requests to
+     another suborigin at the same physical origin.
 
      Issue: TODO(jww,aaj): Provide an example of why this might be needed.
 
   Issue: TODO: These opt-out descriptions should probably be moved to the
   individual sections where the behaviors are discussed (i.e. postMessage and
   cookies). These just need to be fleshed out anyway, and examples and reasons
-  need to be given.
+  need to be given. Also, they need to update the processing model, such as
+  adding appropriate flags to the environment settings object.
 
   # Practical Considerations in Using Suborigins # {#practical-considerations}
 
