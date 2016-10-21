@@ -19,6 +19,10 @@ Indent: 2
 Markup Shorthands: css off, markdown on
 </pre>
 
+<pre class="link-defaults">
+spec:dom; type:interface; text:Document
+</pre>
+
 <pre class="anchors">
 spec: ABNF; urlPrefix: https://tools.ietf.org/html/rfc5234
   type: dfn
@@ -74,10 +78,6 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
   type: dfn
     text: request URL; url: #request-url
     text: withCredentials; url: #the-withcredentials-attribute
-</pre>
-
-<pre class="link-defaults">
-spec:dom-ls; type:interface; text:Document
 </pre>
 
 <pre class="biblio">
@@ -890,8 +890,12 @@ spec:dom-ls; type:interface; text:Document
   always. In fact, this document defines suborigins within the context of the
   same-origin policy so that, in theory, serialized suborigins can be thought of
   as a just a special case of the traditional same-origin policy.
- 
+
   ## Problems with Serialized Representation ## {#serialization-concerns}
 
   Issue: TODO: Need to list concerns with serialization, e.g. apps that don't
   recognize the suborigin serialization, esp. if they blocklist origins.
+
+  # Privacy Considerations # {#privacy-considerations}
+
+  Issue: TODO: Do we have privacy issues?
