@@ -651,6 +651,13 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
   * The domain is the domain component of the origin
   * The suborigin is the empty string
 
+  ### Comparing Origins ### {#comparing-origins}
+
+  Update the <a>same origin</a> algorithm in [[HTML]] such that step 2 reads:
+
+  2. If A and B are both tuple origins and their schemes, hosts, ports, and
+     suborigins are identical, then return true.
+
   ### Comparing Physical Origins ### {#comparing-physical-origins}
 
   Two origins, A and B, are said to be <dfn>same physical origin</dfn> if the
