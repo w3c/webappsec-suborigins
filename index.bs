@@ -601,6 +601,9 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
 
   ### Suborigin of a Resource ### {#suborigin-of-resource}
 
+  TODO (jww): This should be updated in terms of HTML and how origins are obtained
+  there.
+
   The suborigin of a resource is the value computed by the following algorithm:
 
   <ol>
@@ -669,19 +672,6 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
   2. If AP and BP are the <a>same origin</a>, return true.
 
   3. Return false.
-
-  ### Comparing Suborigins ### {#comparing-suborigins}
-
-  Two suborigins are "the same" if, and only if, they are identical. In
-  particular:
-
-  *   By [[#comparing-physical-origins]], the suborigins must be
-      <a>same physical origin</a>.
-  *   In addition, the `suborigin-namespace` portion of the suborigin pairs must
-      be identical. If both `suborigin-namespace` portions of the suborigin
-      pairs are null, this is considered identical.
-
-  Two resources are the same-origin if their suborigins are the same.
 
   ### Serializing Suborigins ### {#serializing}
 
