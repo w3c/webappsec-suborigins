@@ -1932,27 +1932,23 @@ otherwise.</p>
      <p>The suborigin is the empty string</p>
    </ul>
    <h4 class="heading settled" data-level="6.1.4" id="comparing-physical-origins"><span class="secno">6.1.4. </span><span class="content">Comparing Physical Origins</span><a class="self-link" href="#comparing-physical-origins"></a></h4>
-   <p>Two suborigins are "the same physical origin" if, and only if, the physical
-  origin portion of the suborigin are identical, per <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a>.  In
-  particular:</p>
-   <ul>
+   <p>Two origins, A and B, are said to be <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="same-physical-origin">same physical origin</dfn> if the
+  following algorithm returns true:</p>
+   <ol>
     <li data-md="">
-     <p>If the origin portions of the suborigin pairs are scheme/host/port
-  triples, the two suborigins are the same physical origin if, and only if,
-  they have identical schemes, hosts, and ports.</p>
+     <p>Let AP be the <a data-link-type="dfn" href="#physical-origin" id="ref-for-physical-origin-2">physical origin</a> of A. Let BP be the <a data-link-type="dfn" href="#physical-origin" id="ref-for-physical-origin-3">physical
+ origin</a> of B.</p>
     <li data-md="">
-     <p>An origin that is a globally unique identifier cannot be the same as an
-  origin that is a scheme/host/port triple.</p>
-   </ul>
-   <p>Two resources are the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="same-physical-origin">same-physical-origin</dfn> if their suborigins are
-  the same physical origin.</p>
+     <p>If AP and BP are the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#same-origin">same origin</a>, return true.</p>
+    <li data-md="">
+     <p>Return false.</p>
+   </ol>
    <h4 class="heading settled" data-level="6.1.5" id="comparing-suborigins"><span class="secno">6.1.5. </span><span class="content">Comparing Suborigins</span><a class="self-link" href="#comparing-suborigins"></a></h4>
    <p>Two suborigins are "the same" if, and only if, they are identical. In
   particular:</p>
    <ul>
     <li data-md="">
-     <p>By <a href="#comparing-physical-origins">§6.1.4 Comparing Physical Origins</a>, the suborigins must be
-  same-physical-origin.</p>
+     <p>By <a href="#comparing-physical-origins">§6.1.4 Comparing Physical Origins</a>, the suborigins must be <a data-link-type="dfn" href="#same-physical-origin" id="ref-for-same-physical-origin-1">same physical origin</a>.</p>
     <li data-md="">
      <p>In addition, the <code>suborigin-namespace</code> portion of the suborigin pairs must
   be identical. If both <code>suborigin-namespace</code> portions of the suborigin
@@ -2031,7 +2027,7 @@ the <a href="#unsafe-cookies">§6.3.3 'unsafe-cookies'</a> value.</p>
    <p class="note" role="note">Note: A <a data-link-type="dfn" href="http://www.w3.org/TR/html51/dom.html#cookie-averse">cookie-averse</a> <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document">Document</a></code> object has the property that direct
   access to <code>document.cookie</code> returns the empty string, and assigning to <code>document.cookie</code> has no effect whatsoever. However, that network cookies are
   not affected and documents with different <a data-link-type="dfn" href="#suborigin-namespace" id="ref-for-suborigin-namespace-7">suborigin namespaces</a> on the
-  same <a data-link-type="dfn" href="#physical-origin" id="ref-for-physical-origin-2">physical origin</a> share the same cookies on the network.</p>
+  same <a data-link-type="dfn" href="#physical-origin" id="ref-for-physical-origin-4">physical origin</a> share the same cookies on the network.</p>
    <p class="note" role="note">Note: For practical purposes, this means that a developer cannot use <code>document.cookie</code> directly because assignment and reading of the object are both
   no-ops. However, a <a data-link-type="dfn" href="http://www.w3.org/TR/html51/dom.html#cookie-averse">cookie-averse</a> <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document">Document</a></code> may
   still use getters and setters on the <code>cookie</code> property of the <code>document</code> object
@@ -2092,7 +2088,7 @@ the <a href="#unsafe-cookies">§6.3.3 'unsafe-cookies'</a> value.</p>
   dangerous and should not be used if you have Real Deal auth and csrf cookies
   used.</p>
    <h4 class="heading settled" data-level="6.3.4" id="unsafe-credentials"><span class="secno">6.3.4. </span><span class="content"><code>'unsafe-credentials'</code></span><a class="self-link" href="#unsafe-credentials"></a></h4>
-   <p>All cross-origin requests  to the <a data-link-type="dfn" href="#physical-origin" id="ref-for-physical-origin-3">physical origin</a> for the execution
+   <p>All cross-origin requests  to the <a data-link-type="dfn" href="#physical-origin" id="ref-for-physical-origin-5">physical origin</a> for the execution
   context will include <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#credentials">credentials</a> if the <code>'unsafe-credentials'</code> suborigin policy option for the execution context is set.</p>
    <p>Specifically, update the step 2 of <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#http-network-or-cache-fetch">HTTP-network-or-cache fetch</a> in the
   Fetch spec <a data-link-type="biblio" href="#biblio-fetch">[FETCH]</a> to read:</p>
@@ -2106,7 +2102,7 @@ the <a href="#unsafe-cookies">§6.3.3 'unsafe-cookies'</a> value.</p>
        <p><code>request</code>'s credentials mode is "same-origin" and request’s response
  tainting is "basic"</p>
       <li data-md="">
-       <p><code>request</code>'s credentials mode is "same-origin" and <code>request</code>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/comms.html#environment-settings-object">environment settings object</a> has the <code>suborigin unsafe credentials</code> flag set and the request’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-request-current-url">current url</a> is <a data-link-type="dfn" href="#same-physical-origin" id="ref-for-same-physical-origin-1">same-physical-origin</a> with <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-request-origin">request origin</a>.</p>
+       <p><code>request</code>'s credentials mode is "same-origin" and <code>request</code>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/comms.html#environment-settings-object">environment settings object</a> has the <code>suborigin unsafe credentials</code> flag set and the request’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-request-current-url">current url</a> is <a data-link-type="dfn" href="#same-physical-origin" id="ref-for-same-physical-origin-2">same physical origin</a> with <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-request-origin">request origin</a>.</p>
      </ul>
    </ol>
    <p class="note" role="note">Note: This has several important, practical effects. If the <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-request-credentials-mode">credentials
@@ -2204,7 +2200,7 @@ the <a href="#unsafe-cookies">§6.3.3 'unsafe-cookies'</a> value.</p>
    <li><a href="#cross-site-scripting">cross-site scripting</a><span>, in §2</span>
    <li><a href="#grammardef-loweralpha">LOWERALPHA</a><span>, in §2.1</span>
    <li><a href="#physical-origin">physical origin</a><span>, in §6.1.3</span>
-   <li><a href="#same-physical-origin">same-physical-origin</a><span>, in §6.1.4</span>
+   <li><a href="#same-physical-origin">same physical origin</a><span>, in §6.1.4</span>
    <li><a href="#suborigin">suborigin</a><span>, in §3.6</span>
    <li><a href="#grammardef-suborigin-header">suborigin-header</a><span>, in §3.6</span>
    <li><a href="#grammardef-suborigin-name">suborigin-name</a><span>, in §3.6</span>
@@ -2255,6 +2251,7 @@ the <a href="#unsafe-cookies">§6.3.3 'unsafe-cookies'</a> value.</p>
      <li><a href="https://html.spec.whatwg.org/multipage/#concept-origin">origin</a>
      <li><a href="https://html.spec.whatwg.org/multipage/#concept-origin-tuple">origin tuple</a>
      <li><a href="https://html.spec.whatwg.org/multipage/comms.html#dom-messageport-postmessage">postmessage</a>
+     <li><a href="https://html.spec.whatwg.org/multipage/browsers.html#same-origin">same origin</a>
      <li><a href="https://html.spec.whatwg.org/multipage/#same-origin">same-origin</a>
      <li><a href="https://html.spec.whatwg.org/multipage/#concept-origin-tuple">tuple origin</a>
     </ul>
@@ -2447,14 +2444,16 @@ the <a href="#unsafe-cookies">§6.3.3 'unsafe-cookies'</a> value.</p>
    <b><a href="#physical-origin">#physical-origin</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-physical-origin-1">3.4. Representation of Suborigins</a>
-    <li><a href="#ref-for-physical-origin-2">6.2.1. Cookies</a>
-    <li><a href="#ref-for-physical-origin-3">6.3.4. 'unsafe-credentials'</a>
+    <li><a href="#ref-for-physical-origin-2">6.1.4. Comparing Physical Origins</a> <a href="#ref-for-physical-origin-3">(2)</a>
+    <li><a href="#ref-for-physical-origin-4">6.2.1. Cookies</a>
+    <li><a href="#ref-for-physical-origin-5">6.3.4. 'unsafe-credentials'</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="same-physical-origin">
    <b><a href="#same-physical-origin">#same-physical-origin</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-same-physical-origin-1">6.3.4. 'unsafe-credentials'</a>
+    <li><a href="#ref-for-same-physical-origin-1">6.1.5. Comparing Suborigins</a>
+    <li><a href="#ref-for-same-physical-origin-2">6.3.4. 'unsafe-credentials'</a>
    </ul>
   </aside>
 <script>/* script-dfn-panel */

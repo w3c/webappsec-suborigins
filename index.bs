@@ -653,18 +653,15 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
 
   ### Comparing Physical Origins ### {#comparing-physical-origins}
 
-  Two suborigins are "the same physical origin" if, and only if, the physical
-  origin portion of the suborigin are identical, per [[RFC6454]].  In
-  particular:
+  Two origins, A and B, are said to be <dfn>same physical origin</dfn> if the
+  following algorithm returns true:
 
-  *   If the origin portions of the suborigin pairs are scheme/host/port
-      triples, the two suborigins are the same physical origin if, and only if,
-      they have identical schemes, hosts, and ports.
-  *   An origin that is a globally unique identifier cannot be the same as an
-      origin that is a scheme/host/port triple.
+  1. Let AP be the <a>physical origin</a> of A. Let BP be the <a>physical
+     origin</a> of B.
 
-  Two resources are the <dfn>same-physical-origin</dfn> if their suborigins are
-  the same physical origin.
+  2. If AP and BP are the <a>same origin</a>, return true.
+
+  3. Return false.
 
   ### Comparing Suborigins ### {#comparing-suborigins}
 
@@ -672,7 +669,7 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
   particular:
 
   *   By [[#comparing-physical-origins]], the suborigins must be
-      same-physical-origin.
+      <a>same physical origin</a>.
   *   In addition, the `suborigin-namespace` portion of the suborigin pairs must
       be identical. If both `suborigin-namespace` portions of the suborigin
       pairs are null, this is considered identical.
@@ -860,7 +857,7 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
      * `request`'s credentials mode is "same-origin" and `request`'s
        <a>environment settings object</a> has the `suborigin unsafe
        credentials` flag set and the request's <a>current url</a> is
-       <a>same-physical-origin</a> with <a>request origin</a>.
+       <a>same physical origin</a> with <a>request origin</a>.
 
   Note: This has several important, practical effects. If the <a>credentials
   mode</a> of a `fetch()` is set to "same-origin", and if it is to the same
