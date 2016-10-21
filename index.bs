@@ -714,7 +714,7 @@ spec:dom-ls; type:interface; text:Document
 
   * A {{Document}} who has a non-empty <a>suborigin namespace</a>, unless the <a
     link-type="grammar">suborigin-policy-option</a> for the {{Document}} contains
-    the '<a>`unsafe-cookies`</a>' value.
+    the [[#unsafe-cookies]] value.
 
   Modify the paragraph following this list to read "scheme/host/port/suborigin
   tuple" instead of "scheme/host/port tuple".
@@ -744,91 +744,97 @@ spec:dom-ls; type:interface; text:Document
   The values of <a link-type="grammar">suborigin-policy-option</a> that may be
   present in a <a>suborigin policy</a> have the following effects:
 
-  * '<dfn>`unsafe-postmessage-receive`</dfn>' When a message is sent <i>to</i> a
-    frame with a `postMessage` `target` of a serialized physical origin, but not a
-    serialized suborigin, if the frame has an execution context with a suborigin
-    where the scheme, host, and port match the `target`, but it also has a
-    suborigin namespace, if <a>`unsafe-postmessage-receive`</a> is set, it will
-    still receive the message.
+  ### `'unsafe-postmessage-receive'` ### {#unsafe-postmessage-receive}
+  When a message is sent <i>to</i> a
+  frame with a `postMessage` `target` of a serialized physical origin, but not
+  a serialized suborigin, if the frame has an execution context with a
+  suborigin where the scheme, host, and port match the `target`, but it also
+  has a suborigin namespace, if `'unsafe-postmessage-receive'`</a> is set, it
+  will still receive the message.
 
-    <div class="example" id="unsafe-postmessage-send-ex">
-    `https://example.com` runs a map API at `https://example.com/maps` which is
-    embedded by many other websites. It provides a `postMessage()` API to place
-    markers on the map at locations the embedder chooses.
+  <div class="example">
+  `https://example.com` runs a map API at `https://example.com/maps` which is
+  embedded by many other websites. It provides a `postMessage()` API to place
+  markers on the map at locations the embedder chooses.
 
-    The developer would like to run `https://example.com/maps` in a suborigin
-    namespace "maps".  However, when embedders send messages to the embedded
-    frame, because they are legacy uses from before the use of suborigins, they
-    send essages with a `target` of `https://example.com`, <em>not</em>
-    `https-so://maps.example.com`. Since the developer would still like this
-    frame to be able to provide the API to these legacy embedders, it can serve
-    the frame with the <a>`unsafe-postmessage-receive`</a> directive, which will
-    allow the frame to receive messages on behalf of `https://example.com`, even
-    though it is at `https-so://maps.example.com`.
-    </div>
+  The developer would like to run `https://example.com/maps` in a suborigin
+  namespace "maps".  However, when embedders send messages to the embedded
+  frame, because they are legacy uses from before the use of suborigins, they
+  send essages with a `target` of `https://example.com`, <em>not</em>
+  `https-so://maps.example.com`. Since the developer would still like this
+  frame to be able to provide the API to these legacy embedders, it can serve
+  the frame with the `'unsafe-postmessage-receive'` directive, which will
+  allow the frame to receive messages on behalf of `https://example.com`, even
+  though it is at `https-so://maps.example.com`.
+  </div>
 
-  * '<dfn>`unsafe-postmessage-send`</dfn>' When a message is sent <i>from</i> a
-    suborigin namespace with <a>`unsafe-postmessage-send`</a> set, the
-    `event.origin` value of the receiver should be set to the serialized
-    physical origin, not the serialized suborigin value. However, the
-    `event.suborigin` field should still be set to the name of the suborigin
-    namespace.
+  ### `'unsafe-postmessage-send'` ### {#unsafe-postmessage-send}
+  When a message is sent <i>from</i> a
+  suborigin namespace with `'unsafe-postmessage-send'` set, the
+  `event.origin` value of the receiver should be set to the serialized
+  physical origin, not the serialized suborigin value. However, the
+  `event.suborigin` field should still be set to the name of the suborigin
+  namespace.
 
-    <div class="example">
-    Continuing the case in the above example, `https://example.com/maps` is a
-    mapping application that is commonly embedded in other sites. It provides a
-    `postMessage()` based API to place locations of the embedder's choosing on the
-    map. `httsp://example.com` would like to run the application in a suborigin
-    named "maps".
+  <div class="example">
+  Continuing the case in the above example, `https://example.com/maps` is a
+  mapping application that is commonly embedded in other sites. It provides a
+  `postMessage()` based API to place locations of the embedder's choosing on the
+  map. `httsp://example.com` would like to run the application in a suborigin
+  named "maps".
 
-    In response to queries to the API, `https://example.com/maps` may send
-    messages back to the embedder if, for example, a user clicks on one of the
-    locations. However, since the embedder may be legacy and not be aware of
-    suborigins, when it checks the `event.origin` protery of the
-    `MesseageEvent`, if it sees `https-so://maps.example.com` as the origin, it
-    will reject the message as a potential attack. Thus, `https://example.com`
-    may use the <a>`unsafe-postmessage-send`</a> directive to allow its messages
-    to appear with the origin of the physical origin, in this case
-    `https://example.com`.
-    </div>
+  In response to queries to the API, `https://example.com/maps` may send
+  messages back to the embedder if, for example, a user clicks on one of the
+  locations. However, since the embedder may be legacy and not be aware of
+  suborigins, when it checks the `event.origin` protery of the
+  `MesseageEvent`, if it sees `https-so://maps.example.com` as the origin, it
+  will reject the message as a potential attack. Thus, `https://example.com`
+  may use the `'unsafe-postmessage-send'` directive to allow its messages
+  to appear with the origin of the physical origin, in this case
+  `https://example.com`.
+  </div>
 
-  * '<dfn>`unsafe-cookies`</dfn>' When an execution context with a suborigin
-    namespace has <a>`unsafe-cookies`</a> set, the
-    execution context should not have a fresh cookie jar for the suborigin
-    namespace, and instead, the cookie jar should be shared with the null
-    suborigin for the execution context.
+  ### `'unsafe-cookies'` ### {#unsafe-cookies}
+  When an execution context with a suborigin
+  namespace has a suborigin policy option of `unsafe-cookies` set, the
+  execution context should not have a fresh cookie jar for the suborigin
+  namespace, and instead, the cookie jar should be shared with the null
+  suborigin for the execution context.
 
-    Issue: TODO(devd): Write an example that makes clear that this is extremely
-    dangerous and should not be used if you have Real Deal auth and csrf cookies
-    used.
+  Issue: TODO(devd): Write an example that makes clear that this is extremely
+  dangerous and should not be used if you have Real Deal auth and csrf cookies
+  used.
 
-   * '<dfn>`unsafe-credentials`</dfn>' All cross-origin requests  to the <a>physical origin</a> for the execution
-     context will include <a>credentials</a>.
+  ### `'unsafe-credentials'` ### {#unsafe-credentials}
 
-     Specifically, update the step 2 of <a>HTTP-network-or-cache fetch</a> in
-     the Fetch spec [[!FETCH]] to read:
+  All cross-origin requests  to the <a>physical origin</a> for the execution
+  context will include <a>credentials</a> if the `'unsafe-credentials'`
+  suborigin policy option for the execution context is set.
 
-     2. Let credentials flag be set if one of
-        * `request`'s credentials mode is "include"
-        * `request`'s credentials mode is "same-origin" and request's response
-          tainting is "basic"
-        * `request`'s credentials mode is "same-origin" and `request`'s
-          <a>environment settings object</a> has the `suborigin unsafe
-          credentials` flag set and the request's <a>current url</a> is
-          <a>same-physical-origin</a> with <a>request origin</a>.
+  Specifically, update the step 2 of <a>HTTP-network-or-cache fetch</a> in the
+  Fetch spec [[!FETCH]] to read:
 
-     Note: This has several important, practical effects. If the <a>credentials
-     mode</a> of a `fetch()` is set to "same-origin", and if it is to the same
-     physical origin as the current execution context, credentials will be
-     included. This means that if the `crossorigin` attribute on elements such
-     as `<img>` are set to `anonymous`, credentials will be sent if the origin
-     of the URL is the same physical origin. Similarly, if making an
-     <a>XMLHttpRequest</a>, setting this flag is equivalent to setting
-     <a>`withCredentials`</a> to `true` for requests to the same physical
-     origin. This means that it credentials will be sent even for requests to
-     another suborigin at the same physical origin.
+  2. Let credentials flag be set if one of
+     * `request`'s credentials mode is "include"
+     * `request`'s credentials mode is "same-origin" and request's response
+       tainting is "basic"
+     * `request`'s credentials mode is "same-origin" and `request`'s
+       <a>environment settings object</a> has the `suborigin unsafe
+       credentials` flag set and the request's <a>current url</a> is
+       <a>same-physical-origin</a> with <a>request origin</a>.
 
-     Issue: TODO(jww,aaj): Provide an example of why this might be needed.
+  Note: This has several important, practical effects. If the <a>credentials
+  mode</a> of a `fetch()` is set to "same-origin", and if it is to the same
+  physical origin as the current execution context, credentials will be
+  included. This means that if the `crossorigin` attribute on elements such
+  as `<img>` are set to `anonymous`, credentials will be sent if the origin
+  of the URL is the same physical origin. Similarly, if making an
+  <a>XMLHttpRequest</a>, setting this flag is equivalent to setting
+  <a>`withCredentials`</a> to `true` for requests to the same physical
+  origin. This means that it credentials will be sent even for requests to
+  another suborigin at the same physical origin.
+
+  Issue: TODO(jww,aaj): Provide an example of why this might be needed.
 
   Issue: TODO: These opt-out descriptions should probably be moved to the
   individual sections where the behaviors are discussed (i.e. postMessage and

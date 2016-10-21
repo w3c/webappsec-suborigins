@@ -1484,7 +1484,14 @@ boundary between this resource and resources in other namespaces.</p>
        <ol class="toc">
         <li><a href="#cookies"><span class="secno">6.5.1</span> <span class="content">Cookies</span></a>
        </ol>
-      <li><a href="#security-model-opt-outs"><span class="secno">6.6</span> <span class="content">Security Model Opt-Outs</span></a>
+      <li>
+       <a href="#security-model-opt-outs"><span class="secno">6.6</span> <span class="content">Security Model Opt-Outs</span></a>
+       <ol class="toc">
+        <li><a href="#unsafe-postmessage-receive"><span class="secno">6.6.1</span> <span class="content"><code>'unsafe-postmessage-receive'</code></span></a>
+        <li><a href="#unsafe-postmessage-send"><span class="secno">6.6.2</span> <span class="content"><code>'unsafe-postmessage-send'</code></span></a>
+        <li><a href="#unsafe-cookies"><span class="secno">6.6.3</span> <span class="content"><code>'unsafe-cookies'</code></span></a>
+        <li><a href="#unsafe-credentials"><span class="secno">6.6.4</span> <span class="content"><code>'unsafe-credentials'</code></span></a>
+       </ol>
      </ol>
     <li><a href="#practical-considerations"><span class="secno">7</span> <span class="content">Practical Considerations in Using Suborigins</span></a>
     <li>
@@ -1971,7 +1978,7 @@ these steps.</p>
    <ul>
     <li data-md="">
      <p>A <code class="idl"><a data-link-type="idl">Document</a></code> who has a non-empty <a data-link-type="dfn" href="#suborigin-namespace" id="ref-for-suborigin-namespace-5">suborigin namespace</a>, unless the <a data-link-type="grammar" href="#grammardef-suborigin-policy-option" id="ref-for-grammardef-suborigin-policy-option-3">suborigin-policy-option</a> for the <code class="idl"><a data-link-type="idl">Document</a></code> contains
-the '<a data-link-type="dfn" href="#unsafe-cookies" id="ref-for-unsafe-cookies-1"><code>unsafe-cookies</code></a>' value.</p>
+the <a href="#unsafe-cookies">§6.6.3 'unsafe-cookies'</a> value.</p>
    </ul>
    <p>Modify the paragraph following this list to read "scheme/host/port/suborigin
   tuple" instead of "scheme/host/port tuple".</p>
@@ -1992,82 +1999,79 @@ the '<a data-link-type="dfn" href="#unsafe-cookies" id="ref-for-unsafe-cookies-1
   NOT use these options unless they are required to make their application work.</p>
    <p>The values of <a data-link-type="grammar" href="#grammardef-suborigin-policy-option" id="ref-for-grammardef-suborigin-policy-option-4">suborigin-policy-option</a> that may be
   present in a <a data-link-type="dfn" href="#suborigin-policy" id="ref-for-suborigin-policy-2">suborigin policy</a> have the following effects:</p>
-   <ul>
+   <h4 class="heading settled" data-level="6.6.1" id="unsafe-postmessage-receive"><span class="secno">6.6.1. </span><span class="content"><code>'unsafe-postmessage-receive'</code></span><a class="self-link" href="#unsafe-postmessage-receive"></a></h4>
+    When a message is sent <i>to</i> a
+  frame with a <code>postMessage</code> <code>target</code> of a serialized physical origin, but not
+  a serialized suborigin, if the frame has an execution context with a
+  suborigin where the scheme, host, and port match the <code>target</code>, but it also
+  has a suborigin namespace, if <code>'unsafe-postmessage-receive'</code> is set, it
+  will still receive the message. 
+   <div class="example" id="example-6553f88d">
+    <a class="self-link" href="#example-6553f88d"></a> <code>https://example.com</code> runs a map API at <code>https://example.com/maps</code> which is
+  embedded by many other websites. It provides a <code>postMessage()</code> API to place
+  markers on the map at locations the embedder chooses. 
+    <p>The developer would like to run <code>https://example.com/maps</code> in a suborigin
+  namespace "maps".  However, when embedders send messages to the embedded
+  frame, because they are legacy uses from before the use of suborigins, they
+  send essages with a <code>target</code> of <code>https://example.com</code>, <em>not</em> <code>https-so://maps.example.com</code>. Since the developer would still like this
+  frame to be able to provide the API to these legacy embedders, it can serve
+  the frame with the <code>'unsafe-postmessage-receive'</code> directive, which will
+  allow the frame to receive messages on behalf of <code>https://example.com</code>, even
+  though it is at <code>https-so://maps.example.com</code>.</p>
+   </div>
+   <h4 class="heading settled" data-level="6.6.2" id="unsafe-postmessage-send"><span class="secno">6.6.2. </span><span class="content"><code>'unsafe-postmessage-send'</code></span><a class="self-link" href="#unsafe-postmessage-send"></a></h4>
+    When a message is sent <i>from</i> a
+  suborigin namespace with <code>'unsafe-postmessage-send'</code> set, the <code>event.origin</code> value of the receiver should be set to the serialized
+  physical origin, not the serialized suborigin value. However, the <code>event.suborigin</code> field should still be set to the name of the suborigin
+  namespace. 
+   <div class="example" id="example-4e12be32">
+    <a class="self-link" href="#example-4e12be32"></a> Continuing the case in the above example, <code>https://example.com/maps</code> is a
+  mapping application that is commonly embedded in other sites. It provides a <code>postMessage()</code> based API to place locations of the embedder’s choosing on the
+  map. <code>httsp://example.com</code> would like to run the application in a suborigin
+  named "maps". 
+    <p>In response to queries to the API, <code>https://example.com/maps</code> may send
+  messages back to the embedder if, for example, a user clicks on one of the
+  locations. However, since the embedder may be legacy and not be aware of
+  suborigins, when it checks the <code>event.origin</code> protery of the <code>MesseageEvent</code>, if it sees <code>https-so://maps.example.com</code> as the origin, it
+  will reject the message as a potential attack. Thus, <code>https://example.com</code> may use the <code>'unsafe-postmessage-send'</code> directive to allow its messages
+  to appear with the origin of the physical origin, in this case <code>https://example.com</code>.</p>
+   </div>
+   <h4 class="heading settled" data-level="6.6.3" id="unsafe-cookies"><span class="secno">6.6.3. </span><span class="content"><code>'unsafe-cookies'</code></span><a class="self-link" href="#unsafe-cookies"></a></h4>
+    When an execution context with a suborigin
+  namespace has a suborigin policy option of <code>unsafe-cookies</code> set, the
+  execution context should not have a fresh cookie jar for the suborigin
+  namespace, and instead, the cookie jar should be shared with the null
+  suborigin for the execution context. 
+   <p class="issue" id="issue-cb838d10"><a class="self-link" href="#issue-cb838d10"></a> TODO(devd): Write an example that makes clear that this is extremely
+  dangerous and should not be used if you have Real Deal auth and csrf cookies
+  used.</p>
+   <h4 class="heading settled" data-level="6.6.4" id="unsafe-credentials"><span class="secno">6.6.4. </span><span class="content"><code>'unsafe-credentials'</code></span><a class="self-link" href="#unsafe-credentials"></a></h4>
+   <p>All cross-origin requests  to the <a data-link-type="dfn" href="#physical-origin" id="ref-for-physical-origin-2">physical origin</a> for the execution
+  context will include <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#credentials">credentials</a> if the <code>'unsafe-credentials'</code> suborigin policy option for the execution context is set.</p>
+   <p>Specifically, update the step 2 of <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#http-network-or-cache-fetch">HTTP-network-or-cache fetch</a> in the
+  Fetch spec <a data-link-type="biblio" href="#biblio-fetch">[FETCH]</a> to read:</p>
+   <ol start="2">
     <li data-md="">
-     <p>'<dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="unsafe-postmessage-receive"><code>unsafe-postmessage-receive</code></dfn>' When a message is sent <i>to</i> a
-frame with a <code>postMessage</code> <code>target</code> of a serialized physical origin, but not a
-serialized suborigin, if the frame has an execution context with a suborigin
-where the scheme, host, and port match the <code>target</code>, but it also has a
-suborigin namespace, if <a data-link-type="dfn" href="#unsafe-postmessage-receive" id="ref-for-unsafe-postmessage-receive-1"><code>unsafe-postmessage-receive</code></a> is set, it will
-still receive the message.</p>
-     <div class="example" id="unsafe-postmessage-send-ex">
-      <a class="self-link" href="#unsafe-postmessage-send-ex"></a> <code>https://example.com</code> runs a map API at <code>https://example.com/maps</code> which is
-embedded by many other websites. It provides a <code>postMessage()</code> API to place
-markers on the map at locations the embedder chooses. 
-      <p>The developer would like to run <code>https://example.com/maps</code> in a suborigin
-namespace "maps".  However, when embedders send messages to the embedded
-frame, because they are legacy uses from before the use of suborigins, they
-send essages with a <code>target</code> of <code>https://example.com</code>, <em>not</em> <code>https-so://maps.example.com</code>. Since the developer would still like this
-frame to be able to provide the API to these legacy embedders, it can serve
-the frame with the <a data-link-type="dfn" href="#unsafe-postmessage-receive" id="ref-for-unsafe-postmessage-receive-2"><code>unsafe-postmessage-receive</code></a> directive, which will
-allow the frame to receive messages on behalf of <code>https://example.com</code>, even
-though it is at <code>https-so://maps.example.com</code>.</p>
-     </div>
-    <li data-md="">
-     <p>'<dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="unsafe-postmessage-send"><code>unsafe-postmessage-send</code></dfn>' When a message is sent <i>from</i> a
-suborigin namespace with <a data-link-type="dfn" href="#unsafe-postmessage-send" id="ref-for-unsafe-postmessage-send-1"><code>unsafe-postmessage-send</code></a> set, the <code>event.origin</code> value of the receiver should be set to the serialized
-physical origin, not the serialized suborigin value. However, the <code>event.suborigin</code> field should still be set to the name of the suborigin
-namespace.</p>
-     <div class="example" id="example-4e02913e">
-      <a class="self-link" href="#example-4e02913e"></a> Continuing the case in the above example, <code>https://example.com/maps</code> is a
-mapping application that is commonly embedded in other sites. It provides a <code>postMessage()</code> based API to place locations of the embedder’s choosing on the
-map. <code>httsp://example.com</code> would like to run the application in a suborigin
-named "maps". 
-      <p>In response to queries to the API, <code>https://example.com/maps</code> may send
-messages back to the embedder if, for example, a user clicks on one of the
-locations. However, since the embedder may be legacy and not be aware of
-suborigins, when it checks the <code>event.origin</code> protery of the <code>MesseageEvent</code>, if it sees <code>https-so://maps.example.com</code> as the origin, it
-will reject the message as a potential attack. Thus, <code>https://example.com</code> may use the <a data-link-type="dfn" href="#unsafe-postmessage-send" id="ref-for-unsafe-postmessage-send-2"><code>unsafe-postmessage-send</code></a> directive to allow its messages
-to appear with the origin of the physical origin, in this case <code>https://example.com</code>.</p>
-     </div>
-    <li data-md="">
-     <p>'<dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="unsafe-cookies"><code>unsafe-cookies</code></dfn>' When an execution context with a suborigin
-namespace has <a data-link-type="dfn" href="#unsafe-cookies" id="ref-for-unsafe-cookies-2"><code>unsafe-cookies</code></a> set, the
-execution context should not have a fresh cookie jar for the suborigin
-namespace, and instead, the cookie jar should be shared with the null
-suborigin for the execution context.</p>
-     <p class="issue" id="issue-a4bfe642"><a class="self-link" href="#issue-a4bfe642"></a> TODO(devd): Write an example that makes clear that this is extremely
-dangerous and should not be used if you have Real Deal auth and csrf cookies
-used.</p>
-    <li data-md="">
-     <p>'<dfn data-dfn-type="dfn" data-noexport="" id="unsafe-credentials"><code>unsafe-credentials</code><a class="self-link" href="#unsafe-credentials"></a></dfn>' All cross-origin requests  to the <a data-link-type="dfn" href="#physical-origin" id="ref-for-physical-origin-2">physical origin</a> for the execution
- context will include <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#credentials">credentials</a>.</p>
-     <p>Specifically, update the step 2 of <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#http-network-or-cache-fetch">HTTP-network-or-cache fetch</a> in
- the Fetch spec <a data-link-type="biblio" href="#biblio-fetch">[FETCH]</a> to read:</p>
-     <ol start="2">
+     <p>Let credentials flag be set if one of</p>
+     <ul>
       <li data-md="">
-       <p>Let credentials flag be set if one of</p>
-       <ul>
-        <li data-md="">
-         <p><code>request</code>'s credentials mode is "include"</p>
-        <li data-md="">
-         <p><code>request</code>'s credentials mode is "same-origin" and request’s response
-tainting is "basic"</p>
-        <li data-md="">
-         <p><code>request</code>'s credentials mode is "same-origin" and <code>request</code>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/comms.html#environment-settings-object">environment settings object</a> has the <code>suborigin unsafe
-credentials</code> flag set and the request’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-request-current-url">current url</a> is <a data-link-type="dfn" href="#same-physical-origin" id="ref-for-same-physical-origin-1">same-physical-origin</a> with <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-request-origin">request origin</a>.</p>
-       </ul>
-     </ol>
-     <p class="note" role="note">Note: This has several important, practical effects. If the <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-request-credentials-mode">credentials
- mode</a> of a <code>fetch()</code> is set to "same-origin", and if it is to the same
- physical origin as the current execution context, credentials will be
- included. This means that if the <code>crossorigin</code> attribute on elements such
- as <code>&lt;img></code> are set to <code>anonymous</code>, credentials will be sent if the origin
- of the URL is the same physical origin. Similarly, if making an <a data-link-type="dfn" href="#xmlhttprequest" id="ref-for-xmlhttprequest-2">XMLHttpRequest</a>, setting this flag is equivalent to setting <a data-link-type="dfn" href="https://xhr.spec.whatwg.org/#the-withcredentials-attribute"><code>withCredentials</code></a> to <code>true</code> for requests to the same physical
- origin. This means that it credentials will be sent even for requests to
- another suborigin at the same physical origin.</p>
-     <p class="issue" id="issue-ec925137"><a class="self-link" href="#issue-ec925137"></a> TODO(jww,aaj): Provide an example of why this might be needed.</p>
-   </ul>
+       <p><code>request</code>'s credentials mode is "include"</p>
+      <li data-md="">
+       <p><code>request</code>'s credentials mode is "same-origin" and request’s response
+ tainting is "basic"</p>
+      <li data-md="">
+       <p><code>request</code>'s credentials mode is "same-origin" and <code>request</code>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/comms.html#environment-settings-object">environment settings object</a> has the <code>suborigin unsafe credentials</code> flag set and the request’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-request-current-url">current url</a> is <a data-link-type="dfn" href="#same-physical-origin" id="ref-for-same-physical-origin-1">same-physical-origin</a> with <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-request-origin">request origin</a>.</p>
+     </ul>
+   </ol>
+   <p class="note" role="note">Note: This has several important, practical effects. If the <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-request-credentials-mode">credentials
+  mode</a> of a <code>fetch()</code> is set to "same-origin", and if it is to the same
+  physical origin as the current execution context, credentials will be
+  included. This means that if the <code>crossorigin</code> attribute on elements such
+  as <code>&lt;img></code> are set to <code>anonymous</code>, credentials will be sent if the origin
+  of the URL is the same physical origin. Similarly, if making an <a data-link-type="dfn" href="#xmlhttprequest" id="ref-for-xmlhttprequest-2">XMLHttpRequest</a>, setting this flag is equivalent to setting <a data-link-type="dfn" href="https://xhr.spec.whatwg.org/#the-withcredentials-attribute"><code>withCredentials</code></a> to <code>true</code> for requests to the same physical
+  origin. This means that it credentials will be sent even for requests to
+  another suborigin at the same physical origin.</p>
+   <p class="issue" id="issue-ec925137"><a class="self-link" href="#issue-ec925137"></a> TODO(jww,aaj): Provide an example of why this might be needed.</p>
    <p class="issue" id="issue-cbcfa8c1"><a class="self-link" href="#issue-cbcfa8c1"></a> TODO: These opt-out descriptions should probably be moved to the
   individual sections where the behaviors are discussed (i.e. postMessage and
   cookies). These just need to be fleshed out anyway, and examples and reasons
@@ -2163,10 +2167,6 @@ credentials</code> flag set and the request’s <a data-link-type="dfn" href="ht
    <li><a href="#suborigin-policy">suborigin policy</a><span>, in §3.6</span>
    <li><a href="#grammardef-suborigin-policy-list">suborigin-policy-list</a><span>, in §3.6</span>
    <li><a href="#grammardef-suborigin-policy-option">suborigin-policy-option</a><span>, in §3.6</span>
-   <li><a href="#unsafe-cookies">unsafe-cookies</a><span>, in §6.6</span>
-   <li><a href="#unsafe-credentials">unsafe-credentials</a><span>, in §6.6</span>
-   <li><a href="#unsafe-postmessage-receive">unsafe-postmessage-receive</a><span>, in §6.6</span>
-   <li><a href="#unsafe-postmessage-send">unsafe-postmessage-send</a><span>, in §6.6</span>
    <li><a href="#xhr">XHR</a><span>, in §2</span>
    <li><a href="#xmlhttprequest">XMLHttpRequest</a><span>, in §2</span>
    <li><a href="#xss">XSS</a><span>, in §2</span>
@@ -2310,8 +2310,8 @@ credentials</code> flag set and the request’s <a data-link-type="dfn" href="ht
   needs to be formalized. Maybe just stick with creating a new execution
   context, and then carving out the weird exceptions?<a href="#issue-73e47fd0"> ↵ </a></div>
    <div class="issue"> TODO(devd): Write an example that makes clear that this is extremely
-dangerous and should not be used if you have Real Deal auth and csrf cookies
-used.<a href="#issue-a4bfe642"> ↵ </a></div>
+  dangerous and should not be used if you have Real Deal auth and csrf cookies
+  used.<a href="#issue-cb838d10"> ↵ </a></div>
    <div class="issue"> TODO(jww,aaj): Provide an example of why this might be needed.<a href="#issue-ec925137"> ↵ </a></div>
    <div class="issue"> TODO: These opt-out descriptions should probably be moved to the
   individual sections where the behaviors are discussed (i.e. postMessage and
@@ -2346,7 +2346,7 @@ used.<a href="#issue-a4bfe642"> ↵ </a></div>
    <b><a href="#xmlhttprequest">#xmlhttprequest</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-xmlhttprequest-1">4.1. CORS</a>
-    <li><a href="#ref-for-xmlhttprequest-2">6.6. Security Model Opt-Outs</a>
+    <li><a href="#ref-for-xmlhttprequest-2">6.6.4. 'unsafe-credentials'</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="xss">
@@ -2365,7 +2365,7 @@ used.<a href="#issue-a4bfe642"> ↵ </a></div>
    <b><a href="#physical-origin">#physical-origin</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-physical-origin-1">6.5.1. Cookies</a>
-    <li><a href="#ref-for-physical-origin-2">6.6. Security Model Opt-Outs</a>
+    <li><a href="#ref-for-physical-origin-2">6.6.4. 'unsafe-credentials'</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="suborigin">
@@ -2411,26 +2411,7 @@ used.<a href="#issue-a4bfe642"> ↵ </a></div>
   <aside class="dfn-panel" data-for="same-physical-origin">
    <b><a href="#same-physical-origin">#same-physical-origin</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-same-physical-origin-1">6.6. Security Model Opt-Outs</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="unsafe-postmessage-receive">
-   <b><a href="#unsafe-postmessage-receive">#unsafe-postmessage-receive</a></b><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-unsafe-postmessage-receive-1">6.6. Security Model Opt-Outs</a> <a href="#ref-for-unsafe-postmessage-receive-2">(2)</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="unsafe-postmessage-send">
-   <b><a href="#unsafe-postmessage-send">#unsafe-postmessage-send</a></b><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-unsafe-postmessage-send-1">6.6. Security Model Opt-Outs</a> <a href="#ref-for-unsafe-postmessage-send-2">(2)</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="unsafe-cookies">
-   <b><a href="#unsafe-cookies">#unsafe-cookies</a></b><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-unsafe-cookies-1">6.5.1. Cookies</a>
-    <li><a href="#ref-for-unsafe-cookies-2">6.6. Security Model Opt-Outs</a>
+    <li><a href="#ref-for-same-physical-origin-1">6.6.4. 'unsafe-credentials'</a>
    </ul>
   </aside>
 <script>/* script-dfn-panel */
