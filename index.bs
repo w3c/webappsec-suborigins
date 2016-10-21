@@ -54,6 +54,8 @@ spec: Fetch; urlPrefix: https://fetch.spec.whatwg.org
 spec: HTML; urlPrefix: https://html.spec.whatwg.org/multipage/
   type: dfn
     text: cookie setter; url: #attr-meta-http-equiv-set-cookie
+    text: origin; url: #concept-origin
+    text: same-origin; url: #same-origin
     urlPrefix: comms.html
       text: environment settings object; url: #environment-settings-object
       text: postMessage; url: #dom-messageport-postmessage
@@ -256,9 +258,6 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
 
   This section defines several terms used throughout the document.
 
-  The terms <dfn>origin</dfn>, <dfn>cross-origin</dfn>, and <dfn>same-origin</dfn>
-  are defined by the Origin specification. [[!RFC6454]]
-
   <dfn>CORS</dfn>, or <dfn>Cross-Origin Resource Sharing</dfn>, are defined by the
   CORS specification. [[!CORS]]
 
@@ -283,7 +282,7 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
   # Defining a Suborigin # {#defining-suborigin}
 
   Origins are a mechanism for user agents to group URIs into protection domains.
-  As defined in [[!RFC6454]], two URIs are in the <a>same-origin</a> if they share
+  Two URIs are in the <a>same-origin</a> if they share
   the same <a>scheme</a>, <a>host</a>, and <a>port</a>.  If URIs are same-origin,
   then they share the same authority and can access all of each others resources.
 
@@ -591,7 +590,11 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
   define suborigins in terms of URIs. Since the suborigin namespace is defined in
   a header, not in the URI, we need to define them in terms of resources.
 
-  ## Suborigin of a Resource ## {#suborigin-of-resource}
+  ## Updates to Origin ## {#origin-updates}
+
+  Suborigins extend
+
+  ### Suborigin of a Resource ### {#suborigin-of-resource}
 
   The suborigin of a resource is the value computed by the following algorithm:
 
@@ -619,7 +622,7 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
 
   </ol>
 
-  ## Comparing Physical Origins ## {#comparing-physical-origins}
+  ### Comparing Physical Origins ### {#comparing-physical-origins}
 
   Two suborigins are "the same physical origin" if, and only if, the physical
   origin portion of the suborigin are identical, per [[RFC6454]].  In
@@ -634,7 +637,7 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
   Two resources are the <dfn>same-physical-origin</dfn> if their suborigins are
   the same physical origin.
 
-  ## Comparing Suborigins ## {#comparing-suborigins}
+  ### Comparing Suborigins ### {#comparing-suborigins}
 
   Two suborigins are "the same" if, and only if, they are identical. In
   particular:
@@ -647,12 +650,12 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
 
   Two resources are the same-origin if their suborigins are the same.
 
-  ## Serializing Suborigins ## {#serializing}
+  ### Serializing Suborigins ### {#serializing}
 
   This section defines how to serialize an origin to a unicode [[!Unicode6]]
   string and to an ASCII [[!RFC0020]] string.
 
-  ### Update Scheme/Host/Port Triple with Suborigin for Serialization ### {#update-triple}
+  #### Update Scheme/Host/Port Triple with Suborigin for Serialization #### {#update-triple}
 
   Given a suborigin pair |pair|, the scheme/host/port triple of |pair| is
   updated for serialization by the following algorithm:
@@ -665,7 +668,7 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
 
   4. Append the string "-so" to the scheme part of the origin triple in |pair|.
 
-  ### Unicode Serialization of a Suborigin ### {#unicode-serialization}
+  #### Unicode Serialization of a Suborigin #### {#unicode-serialization}
 
   The Unicode serialization of a suborigin is the value returned by the following
   algorithm:
@@ -685,7 +688,7 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
      href="https://tools.ietf.org/html/rfc6454#section-6.1">Section 6.1 in the
      Origin specification</a> [[!RFC6454]].
 
-  ### ASCII Serialization of a Suborigin ### {#ascii-serialization}
+  #### ASCII Serialization of a Suborigin #### {#ascii-serialization}
 
   The ASCII serialization of a suborigin is the value returned by the following
   algorithm:
