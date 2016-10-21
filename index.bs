@@ -620,8 +620,9 @@ spec:dom-ls; type:interface; text:Document
 
   ## Comparing Physical Origins ## {#comparing-physical-origins}
 
-  Two suborigins are "the same physical origin" if, and only if, the
-  physical origin portion of the suborigin are identical. In particular:
+  Two suborigins are "the same physical origin" if, and only if, the physical
+  origin portion of the suborigin are identical, per [[RFC6454]].  In
+  particular:
 
   *   If the origin portions of the suborigin pairs are scheme/host/port
       triples, the two suborigins are the same physical origin if, and only if,
