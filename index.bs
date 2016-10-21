@@ -56,6 +56,7 @@ spec: HTML; urlPrefix: https://html.spec.whatwg.org/multipage/
     text: cookie setter; url: #attr-meta-http-equiv-set-cookie
     text: origin; url: #concept-origin
     text: same-origin; url: #same-origin
+    text: tuple origin; url: #concept-origin-tuple
     urlPrefix: comms.html
       text: environment settings object; url: #environment-settings-object
       text: postMessage; url: #dom-messageport-postmessage
@@ -592,7 +593,8 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
 
   ## Updates to Origin ## {#origin-updates}
 
-  Suborigins extend
+  Suborigins extends the <a>origin</a> concept. The following sections define
+  how this extension works.
 
   ### Suborigin of a Resource ### {#suborigin-of-resource}
 
@@ -621,6 +623,20 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
     </li>
 
   </ol>
+
+  ### Origin Tuple ### {#origin-tuple}
+
+  Update the definition of <a>tuple origin</a> in the <a>origin</a> section of
+  [[HTML]] to read:
+
+  A tuple consists of:
+
+  * A scheme (a scheme).
+  * A host (a host).
+  * A port (a port).
+  * A domain (null or a domain). Null unless stated otherwise.
+  * A suborigin (a <a>suborigin namespace</a>). The empty string unless stated
+    otherwise.
 
   ### Comparing Physical Origins ### {#comparing-physical-origins}
 
