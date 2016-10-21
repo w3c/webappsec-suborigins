@@ -1501,6 +1501,7 @@ boundary between this resource and resources in other namespaces.</p>
       <li><a href="#not-overthrowing-sop"><span class="secno">8.2</span> <span class="content">Not Overthrowing Same-Origin Policy</span></a>
       <li><a href="#serialization-concerns"><span class="secno">8.3</span> <span class="content">Problems with Serialized Representation</span></a>
      </ol>
+    <li><a href="#privacy-considerations"><span class="secno">9</span> <span class="content">Privacy Considerations</span></a>
     <li>
      <a href="#conformance"><span class="secno"></span> <span class="content">Conformance</span></a>
      <ol class="toc">
@@ -1973,21 +1974,21 @@ these steps.</p>
    </ol>
    <h3 class="heading settled" data-level="6.5" id="dom-interactions"><span class="secno">6.5. </span><span class="content">Interactions with the DOM</span><a class="self-link" href="#dom-interactions"></a></h3>
    <h4 class="heading settled" data-level="6.5.1" id="cookies"><span class="secno">6.5.1. </span><span class="content">Cookies</span><a class="self-link" href="#cookies"></a></h4>
-   <p>Append the following to the list of conditions of <code class="idl"><a data-link-type="idl">Document</a></code> objects that are <a data-link-type="dfn" href="http://www.w3.org/TR/html51/dom.html#cookie-averse">cookie-averse</a> in Section 3.1.2 of HTML5’s <a data-link-type="dfn" href="http://www.w3.org/TR/html51/dom.html#resource-metadata-management">resource metadata
+   <p>Append the following to the list of conditions of <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document">Document</a></code> objects that are <a data-link-type="dfn" href="http://www.w3.org/TR/html51/dom.html#cookie-averse">cookie-averse</a> in Section 3.1.2 of HTML5’s <a data-link-type="dfn" href="http://www.w3.org/TR/html51/dom.html#resource-metadata-management">resource metadata
   management</a>:</p>
    <ul>
     <li data-md="">
-     <p>A <code class="idl"><a data-link-type="idl">Document</a></code> who has a non-empty <a data-link-type="dfn" href="#suborigin-namespace" id="ref-for-suborigin-namespace-5">suborigin namespace</a>, unless the <a data-link-type="grammar" href="#grammardef-suborigin-policy-option" id="ref-for-grammardef-suborigin-policy-option-3">suborigin-policy-option</a> for the <code class="idl"><a data-link-type="idl">Document</a></code> contains
+     <p>A <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document">Document</a></code> who has a non-empty <a data-link-type="dfn" href="#suborigin-namespace" id="ref-for-suborigin-namespace-5">suborigin namespace</a>, unless the <a data-link-type="grammar" href="#grammardef-suborigin-policy-option" id="ref-for-grammardef-suborigin-policy-option-3">suborigin-policy-option</a> for the <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document">Document</a></code> contains
 the <a href="#unsafe-cookies">§6.6.3 'unsafe-cookies'</a> value.</p>
    </ul>
    <p>Modify the paragraph following this list to read "scheme/host/port/suborigin
   tuple" instead of "scheme/host/port tuple".</p>
-   <p class="note" role="note">Note: A <a data-link-type="dfn" href="http://www.w3.org/TR/html51/dom.html#cookie-averse">cookie-averse</a> <code class="idl"><a data-link-type="idl">Document</a></code> object has the property that direct
+   <p class="note" role="note">Note: A <a data-link-type="dfn" href="http://www.w3.org/TR/html51/dom.html#cookie-averse">cookie-averse</a> <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document">Document</a></code> object has the property that direct
   access to <code>document.cookie</code> returns the empty string, and assigning to <code>document.cookie</code> has no effect whatsoever. However, that network cookies are
   not affected and documents with different <a data-link-type="dfn" href="#suborigin-namespace" id="ref-for-suborigin-namespace-6">suborigin namespaces</a> on the
   same <a data-link-type="dfn" href="#physical-origin" id="ref-for-physical-origin-1">physical origin</a> share the same cookies on the network.</p>
    <p class="note" role="note">Note: For practical purposes, this means that a developer cannot use <code>document.cookie</code> directly because assignment and reading of the object are both
-  no-ops. However, a <a data-link-type="dfn" href="http://www.w3.org/TR/html51/dom.html#cookie-averse">cookie-averse</a> <code class="idl"><a data-link-type="idl">Document</a></code> may
+  no-ops. However, a <a data-link-type="dfn" href="http://www.w3.org/TR/html51/dom.html#cookie-averse">cookie-averse</a> <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document">Document</a></code> may
   still use getters and setters on the <code>cookie</code> property of the <code>document</code> object
   and, in that way, may still simulate cookie access.</p>
    <h3 class="heading settled" data-level="6.6" id="security-model-opt-outs"><span class="secno">6.6. </span><span class="content">Security Model Opt-Outs</span><a class="self-link" href="#security-model-opt-outs"></a></h3>
@@ -2115,6 +2116,8 @@ the <a href="#unsafe-cookies">§6.6.3 'unsafe-cookies'</a> value.</p>
    <h3 class="heading settled" data-level="8.3" id="serialization-concerns"><span class="secno">8.3. </span><span class="content">Problems with Serialized Representation</span><a class="self-link" href="#serialization-concerns"></a></h3>
    <p class="issue" id="issue-e47a7b08"><a class="self-link" href="#issue-e47a7b08"></a> TODO: Need to list concerns with serialization, e.g. apps that don’t
   recognize the suborigin serialization, esp. if they blocklist origins.</p>
+   <h2 class="heading settled" data-level="9" id="privacy-considerations"><span class="secno">9. </span><span class="content">Privacy Considerations</span><a class="self-link" href="#privacy-considerations"></a></h2>
+   <p class="issue" id="issue-747044d5"><a class="self-link" href="#issue-747044d5"></a> TODO: Do we have privacy issues?</p>
   </main>
   <h2 class="no-ref no-num heading settled" id="conformance"><span class="content">Conformance</span><a class="self-link" href="#conformance"></a></h2>
   <h3 class="no-ref no-num heading settled" id="conventions"><span class="content">Document conventions</span><a class="self-link" href="#conventions"></a></h3>
@@ -2188,6 +2191,7 @@ the <a href="#unsafe-cookies">§6.6.3 'unsafe-cookies'</a> value.</p>
    <li>
     <a data-link-type="biblio">[WHATWG-DOM]</a> defines the following terms:
     <ul>
+     <li><a href="https://dom.spec.whatwg.org/#document">Document</a>
      <li><a href="https://dom.spec.whatwg.org/#concept-document">document</a>
      <li><a href="https://dom.spec.whatwg.org/#concept-reflect">reflect</a>
     </ul>
@@ -2322,6 +2326,7 @@ the <a href="#unsafe-cookies">§6.6.3 'unsafe-cookies'</a> value.</p>
   cover.<a href="#issue-dc6c80f7"> ↵ </a></div>
    <div class="issue"> TODO: Need to list concerns with serialization, e.g. apps that don’t
   recognize the suborigin serialization, esp. if they blocklist origins.<a href="#issue-e47a7b08"> ↵ </a></div>
+   <div class="issue"> TODO: Do we have privacy issues?<a href="#issue-747044d5"> ↵ </a></div>
   </div>
   <aside class="dfn-panel" data-for="origin">
    <b><a href="#origin">#origin</a></b><b>Referenced in:</b>
