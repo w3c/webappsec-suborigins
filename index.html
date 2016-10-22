@@ -1482,6 +1482,7 @@ boundary between this resource and resources in other namespaces.</p>
          <ol class="toc">
           <li><a href="#unicode-serialization"><span class="secno">6.1.6.1</span> <span class="content">Unicode Serialization of a Suborigin</span></a>
           <li><a href="#ascii-serialization"><span class="secno">6.1.6.2</span> <span class="content">ASCII Serialization of a Suborigin</span></a>
+          <li><a href="#document-origin"><span class="secno">6.1.6.3</span> <span class="content"><code>Document</code> object’s origin</span></a>
          </ol>
        </ol>
       <li>
@@ -1988,6 +1989,13 @@ otherwise.</p>
     <li data-md="">
      <p>Return result.</p>
    </ol>
+   <h5 class="heading settled" data-level="6.1.6.3" id="document-origin"><span class="secno">6.1.6.3. </span><span class="content"><code>Document</code> object’s origin</span><a class="self-link" href="#document-origin"></a></h5>
+   <p>TODO: Need to assign how Document gets a suborigin. Need to patch the "For
+  Document objects" subsection of https://html.spec.whatwg.org/#origin. Will
+  also probably need to update https://fetch.spec.whatwg.org/#concept-response
+  to have a suborigin property, which uses that response to assign a suborigin
+  to the origin tuple for Object, similar to
+  https://w3c.github.io/webappsec-csp/#sandbox-init.</p>
    <h3 class="heading settled" data-level="6.2" id="dom-interactions"><span class="secno">6.2. </span><span class="content">Interactions with the DOM</span><a class="self-link" href="#dom-interactions"></a></h3>
    <h4 class="heading settled" data-level="6.2.1" id="cookies"><span class="secno">6.2.1. </span><span class="content">Cookies</span><a class="self-link" href="#cookies"></a></h4>
    <p>Append the following to the list of conditions of <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document">Document</a></code> objects that are <a data-link-type="dfn" href="http://www.w3.org/TR/html51/dom.html#cookie-averse">cookie-averse</a> in Section 3.1.2 of HTML5’s <a data-link-type="dfn" href="http://www.w3.org/TR/html51/dom.html#resource-metadata-management">resource metadata

@@ -715,6 +715,15 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
 
   10. Return result.
 
+  #### `Document` object's origin #### {#document-origin}
+
+  TODO: Need to assign how Document gets a suborigin. Need to patch the "For
+  Document objects" subsection of https://html.spec.whatwg.org/#origin. Will
+  also probably need to update https://fetch.spec.whatwg.org/#concept-response
+  to have a suborigin property, which uses that response to assign a suborigin
+  to the origin tuple for Object, similar to
+  https://w3c.github.io/webappsec-csp/#sandbox-init.
+
   ## Interactions with the DOM ## {#dom-interactions}
 
   ### Cookies ### {#cookies}
