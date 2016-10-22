@@ -1363,7 +1363,7 @@ Possible extra rowspan handling
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Suborigins</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2016-10-22">22 October 2016</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2016-10-23">23 October 2016</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1480,9 +1480,8 @@ boundary between this resource and resources in other namespaces.</p>
         <li>
          <a href="#serializing"><span class="secno">6.1.6</span> <span class="content">Serializing Suborigins</span></a>
          <ol class="toc">
-          <li><a href="#update-triple"><span class="secno">6.1.6.1</span> <span class="content">Update Scheme/Host/Port Triple with Suborigin for Serialization</span></a>
-          <li><a href="#unicode-serialization"><span class="secno">6.1.6.2</span> <span class="content">Unicode Serialization of a Suborigin</span></a>
-          <li><a href="#ascii-serialization"><span class="secno">6.1.6.3</span> <span class="content">ASCII Serialization of a Suborigin</span></a>
+          <li><a href="#unicode-serialization"><span class="secno">6.1.6.1</span> <span class="content">Unicode Serialization of a Suborigin</span></a>
+          <li><a href="#ascii-serialization"><span class="secno">6.1.6.2</span> <span class="content">ASCII Serialization of a Suborigin</span></a>
          </ol>
        </ol>
       <li>
@@ -1953,55 +1952,41 @@ otherwise.</p>
      <p>Return false.</p>
    </ol>
    <h4 class="heading settled" data-level="6.1.6" id="serializing"><span class="secno">6.1.6. </span><span class="content">Serializing Suborigins</span><a class="self-link" href="#serializing"></a></h4>
-   <p>This section defines how to serialize an origin to a unicode <a data-link-type="biblio" href="#biblio-unicode6">[Unicode6]</a> string and to an ASCII <a data-link-type="biblio" href="#biblio-rfc0020">[RFC0020]</a> string.</p>
-   <h5 class="heading settled" data-level="6.1.6.1" id="update-triple"><span class="secno">6.1.6.1. </span><span class="content">Update Scheme/Host/Port Triple with Suborigin for Serialization</span><a class="self-link" href="#update-triple"></a></h5>
-   <p>Given a suborigin pair <var>pair</var>, the scheme/host/port triple of <var>pair</var> is
-  updated for serialization by the following algorithm:</p>
-   <ol>
+   <p>This section defines how to serialize an origin to a Unicode <a data-link-type="biblio" href="#biblio-unicode6">[Unicode6]</a> string and to an ASCII <a data-link-type="biblio" href="#biblio-rfc0020">[RFC0020]</a> string.</p>
+   <h5 class="heading settled" data-level="6.1.6.1" id="unicode-serialization"><span class="secno">6.1.6.1. </span><span class="content">Unicode Serialization of a Suborigin</span><a class="self-link" href="#unicode-serialization"></a></h5>
+   <p>Update the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#unicode-serialisation-of-an-origin">Unicode serialization of an origin</a> in <a data-link-type="biblio" href="#biblio-html">[HTML]</a> by modifying
+  step 4 to read:</p>
+   <ol start="4">
     <li data-md="">
-     <p>Let <var>prefix</var> be the suborigin namespace portion of <var>pair</var>.</p>
-    <li data-md="">
-     <p>Append the string "." to <var>prefix</var>.</p>
-    <li data-md="">
-     <p>Prepend <var>prefix</var> to the host part of the origin triple in <var>pair</var>.</p>
-    <li data-md="">
-     <p>Append the string "-so" to the scheme part of the origin triple in <var>pair</var>.</p>
+     <p>Let unicodeOrigin be a new tuple origin consisting origin’s scheme,
+ unicodeHost, origin’s port, and origin’s suborigin.</p>
    </ol>
-   <h5 class="heading settled" data-level="6.1.6.2" id="unicode-serialization"><span class="secno">6.1.6.2. </span><span class="content">Unicode Serialization of a Suborigin</span><a class="self-link" href="#unicode-serialization"></a></h5>
-   <p>The Unicode serialization of a suborigin is the value returned by the following
-  algorithm:</p>
+   <h5 class="heading settled" data-level="6.1.6.2" id="ascii-serialization"><span class="secno">6.1.6.2. </span><span class="content">ASCII Serialization of a Suborigin</span><a class="self-link" href="#ascii-serialization"></a></h5>
+   <p>Update the steps of <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#ascii-serialisation-of-an-origin">ASCII serialization of an origin</a> in <a data-link-type="biblio" href="#biblio-html">[HTML]</a> to
+  read:</p>
    <ol>
     <li data-md="">
-     <p>If the origin portion of the suborigin pair is not a scheme/host/port
- triple, then return the string</p>
-<pre>null
-</pre>
-     <p>(i.e., the code point sequence U+006E, U+0075, U+006C, U+006C) and abort
-  these steps.</p>
+     <p>If origin is an opaque origin, then return "null".</p>
     <li data-md="">
-     <p>Otherwise, if the suborigin namespace portion of the suborigin pair is not
- null, <a href="#update-triple">§6.1.6.1 Update Scheme/Host/Port Triple with Suborigin for Serialization</a>.</p>
+     <p>Otherwise, let result be origin’s scheme.</p>
     <li data-md="">
-     <p>Proceed with step 1 of <a href="https://tools.ietf.org/html/rfc6454#section-6.1">Section 6.1 in the
- Origin specification</a> <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a>.</p>
-   </ol>
-   <h5 class="heading settled" data-level="6.1.6.3" id="ascii-serialization"><span class="secno">6.1.6.3. </span><span class="content">ASCII Serialization of a Suborigin</span><a class="self-link" href="#ascii-serialization"></a></h5>
-   <p>The ASCII serialization of a suborigin is the value returned by the following
-  algorithm:</p>
-   <ol>
+     <p>Let <code>schemeSuffix</code> be "-so://" if the suborigin component of origin is not
+ the empty string, and "://" otherwise.</p>
     <li data-md="">
-     <p>If the origin portion of the suborigin pair is not a scheme/host/port
- triple, then return the string</p>
-<pre>null
-</pre>
-     <p>(i.e., the code point sequence U+006E, U+0075, U+006C, U+006C) and abort
-these steps.</p>
+     <p>Let <code>hostPrefix</code> be the suborigin component of origin with "." appended to
+ it if the suborigin component of origin is not the empty string, and ""
+ otherwise.</p>
     <li data-md="">
-     <p>Otherwise, if the suborigin namespace portion of the suborigin pair is not
- null, <a href="#update-triple">§6.1.6.1 Update Scheme/Host/Port Triple with Suborigin for Serialization</a>.</p>
+     <p>Append <code>schemeSuffix</code> to result.</p>
     <li data-md="">
-     <p>Proceed with step 1 of <a href="https://tools.ietf.org/html/rfc6454#section-6.2">Section 6.2 in the
- Origin specification</a> <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a>.</p>
+     <p>Append <code>hostPrefix</code> to result.</p>
+    <li data-md="">
+     <p>Append origin’s host, serialized, to result.</p>
+    <li data-md="">
+     <p>If origin’s port is non-null, append a U+003A COLON character (:), and
+ origin’s port, serialized, to result.</p>
+    <li data-md="">
+     <p>Return result.</p>
    </ol>
    <h3 class="heading settled" data-level="6.2" id="dom-interactions"><span class="secno">6.2. </span><span class="content">Interactions with the DOM</span><a class="self-link" href="#dom-interactions"></a></h3>
    <h4 class="heading settled" data-level="6.2.1" id="cookies"><span class="secno">6.2.1. </span><span class="content">Cookies</span><a class="self-link" href="#cookies"></a></h4>
@@ -2243,6 +2228,7 @@ the <a href="#unsafe-cookies">§6.3.3 'unsafe-cookies'</a> value.</p>
    <li>
     <a data-link-type="biblio">[HTML]</a> defines the following terms:
     <ul>
+     <li><a href="https://html.spec.whatwg.org/multipage/#ascii-serialisation-of-an-origin">ascii serialization of an origin</a>
      <li><a href="https://html.spec.whatwg.org/multipage/#attr-meta-http-equiv-set-cookie">cookie setter</a>
      <li><a href="https://html.spec.whatwg.org/multipage/comms.html#environment-settings-object">environment settings object</a>
      <li><a href="https://html.spec.whatwg.org/multipage/#concept-origin">origin</a>
@@ -2251,6 +2237,7 @@ the <a href="#unsafe-cookies">§6.3.3 'unsafe-cookies'</a> value.</p>
      <li><a href="https://html.spec.whatwg.org/multipage/browsers.html#same-origin">same origin</a>
      <li><a href="https://html.spec.whatwg.org/multipage/#same-origin">same-origin</a>
      <li><a href="https://html.spec.whatwg.org/multipage/#concept-origin-tuple">tuple origin</a>
+     <li><a href="https://html.spec.whatwg.org/multipage/#unicode-serialisation-of-an-origin">unicode serialization of an origin</a>
     </ul>
    <li>
     <a data-link-type="biblio">[html51]</a> defines the following terms:

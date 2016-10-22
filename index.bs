@@ -58,6 +58,8 @@ spec: HTML; urlPrefix: https://html.spec.whatwg.org/multipage/
     text: origin tuple; url: #concept-origin-tuple
     text: same-origin; url: #same-origin
     text: tuple origin; url: #concept-origin-tuple
+    text: ASCII serialization of an origin; url: #ascii-serialisation-of-an-origin
+    text: Unicode serialization of an origin; url: #unicode-serialisation-of-an-origin
     urlPrefix: comms.html
       text: environment settings object; url: #environment-settings-object
       text: postMessage; url: #dom-messageport-postmessage
@@ -675,61 +677,43 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
 
   ### Serializing Suborigins ### {#serializing}
 
-  This section defines how to serialize an origin to a unicode [[!Unicode6]]
+  This section defines how to serialize an origin to a Unicode [[!Unicode6]]
   string and to an ASCII [[!RFC0020]] string.
-
-  #### Update Scheme/Host/Port Triple with Suborigin for Serialization #### {#update-triple}
-
-  Given a suborigin pair |pair|, the scheme/host/port triple of |pair| is
-  updated for serialization by the following algorithm:
-
-  1. Let |prefix| be the suborigin namespace portion of |pair|.
-
-  2. Append the string "." to |prefix|.
-
-  3. Prepend |prefix| to the host part of the origin triple in |pair|.
-
-  4. Append the string "-so" to the scheme part of the origin triple in |pair|.
 
   #### Unicode Serialization of a Suborigin #### {#unicode-serialization}
 
-  The Unicode serialization of a suborigin is the value returned by the following
-  algorithm:
+  Update the <a>Unicode serialization of an origin</a> in [[HTML]] by modifying
+  step 4 to read:
 
-  1. If the origin portion of the suborigin pair is not a scheme/host/port
-     triple, then return the string
-      <pre>
-        null
-      </pre>
-      (i.e., the code point sequence U+006E, U+0075, U+006C, U+006C) and abort
-      these steps.
-
-  2. Otherwise, if the suborigin namespace portion of the suborigin pair is not
-     null, [[#update-triple]].
-
-  3. Proceed with step 1 of <a
-     href="https://tools.ietf.org/html/rfc6454#section-6.1">Section 6.1 in the
-     Origin specification</a> [[!RFC6454]].
+  4. Let unicodeOrigin be a new tuple origin consisting origin's scheme,
+     unicodeHost, origin's port, and origin's suborigin.
 
   #### ASCII Serialization of a Suborigin #### {#ascii-serialization}
 
-  The ASCII serialization of a suborigin is the value returned by the following
-  algorithm:
+  Update the steps of <a>ASCII serialization of an origin</a> in [[HTML]] to
+  read:
 
-  1. If the origin portion of the suborigin pair is not a scheme/host/port
-     triple, then return the string
-     <pre>
-       null
-     </pre>
-    (i.e., the code point sequence U+006E, U+0075, U+006C, U+006C) and abort
-    these steps.
+  1. If origin is an opaque origin, then return "null".
 
-  2. Otherwise, if the suborigin namespace portion of the suborigin pair is not
-     null, [[#update-triple]].
+  2. Otherwise, let result be origin's scheme.
 
-  3. Proceed with step 1 of <a
-     href="https://tools.ietf.org/html/rfc6454#section-6.2">Section 6.2 in the
-     Origin specification</a> [[!RFC6454]].
+  4. Let `schemeSuffix` be "-so://" if the suborigin component of origin is not
+     the empty string, and "://" otherwise.
+
+  5. Let `hostPrefix` be the suborigin component of origin with "." appended to
+     it if the suborigin component of origin is not the empty string, and ""
+     otherwise.
+
+  6. Append `schemeSuffix` to result.
+
+  7. Append `hostPrefix` to result.
+
+  8. Append origin's host, serialized, to result.
+
+  9. If origin's port is non-null, append a U+003A COLON character (:), and
+     origin's port, serialized, to result.
+
+  10. Return result.
 
   ## Interactions with the DOM ## {#dom-interactions}
 
