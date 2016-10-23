@@ -53,6 +53,7 @@ spec: Fetch; urlPrefix: https://fetch.spec.whatwg.org
 
 spec: HTML; urlPrefix: https://html.spec.whatwg.org/multipage/
   type: dfn
+    text: cookie setter; url: #attr-meta-http-equiv-set-cookie
     urlPrefix: comms.html
       text: environment settings object; url: #environment-settings-object
       text: postMessage; url: #dom-messageport-postmessage
@@ -718,6 +719,12 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
 
   Modify the paragraph following this list to read "scheme/host/port/suborigin
   tuple" instead of "scheme/host/port tuple".
+
+  Additionally, modify step 1 of <a>Cookie setter</a> to read:
+
+  1. If the meta element has no content attribute, or if that attribute's value
+     is the empty string, or if the {{Document}} is <a>cookie-averse</a> then
+     abort these steps.
 
   Note: A <a>cookie-averse</a> {{Document}} object has the property that direct
   access to `document.cookie` returns the empty string, and assigning to
