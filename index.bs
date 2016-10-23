@@ -54,6 +54,12 @@ spec: Fetch; urlPrefix: https://fetch.spec.whatwg.org
 spec: HTML; urlPrefix: https://html.spec.whatwg.org/multipage/
   type: dfn
     text: cookie setter; url: #attr-meta-http-equiv-set-cookie
+    text: origin; url: #concept-origin
+    text: origin tuple; url: #concept-origin-tuple
+    text: same-origin; url: #same-origin
+    text: tuple origin; url: #concept-origin-tuple
+    text: ASCII serialization of an origin; url: #ascii-serialisation-of-an-origin
+    text: Unicode serialization of an origin; url: #unicode-serialisation-of-an-origin
     urlPrefix: comms.html
       text: environment settings object; url: #environment-settings-object
       text: postMessage; url: #dom-messageport-postmessage
@@ -71,9 +77,10 @@ spec: HTTP; urlPrefix: https://tools.ietf.org/html/rfc7230
 
 spec: URL; urlPrefix: https://url.spec.whatwg.org/
   type: dfn
-    text: scheme; url: #syntax-url-scheme
-    text: host; url: #syntax-host
-    text: port; url: #syntax-url-port
+    text: domain; url: #concept-domain
+    text: scheme; url: #concept-scheme
+    text: host; url: #concept-host
+    text: port; url: #concept-port
 
 spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
   type: dfn
@@ -256,9 +263,6 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
 
   This section defines several terms used throughout the document.
 
-  The terms <dfn>origin</dfn>, <dfn>cross-origin</dfn>, and <dfn>same-origin</dfn>
-  are defined by the Origin specification. [[!RFC6454]]
-
   <dfn>CORS</dfn>, or <dfn>Cross-Origin Resource Sharing</dfn>, are defined by the
   CORS specification. [[!CORS]]
 
@@ -283,7 +287,7 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
   # Defining a Suborigin # {#defining-suborigin}
 
   Origins are a mechanism for user agents to group URIs into protection domains.
-  As defined in [[!RFC6454]], two URIs are in the <a>same-origin</a> if they share
+  Two URIs are in the <a>same-origin</a> if they share
   the same <a>scheme</a>, <a>host</a>, and <a>port</a>.  If URIs are same-origin,
   then they share the same authority and can access all of each others resources.
 
@@ -399,7 +403,8 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
 
   ## Representation of Suborigins ## {#representation}
 
-  At an abstract level, a suborigin consists of the <dfn>physical origin</dfn>,
+  At an abstract level, a suborigin consists of the
+  <a link-type="dfn">physical origin</a>,
   which is a <a>scheme</a>, <a>host</a>, and <a>port</a>, plus a <a>suborigin
   namespace</a>.  However, as mentioned above, suborigins are intended to fit
   within the framework of [[!RFC6454]].  Therefore, this specification provides a
@@ -591,7 +596,15 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
   define suborigins in terms of URIs. Since the suborigin namespace is defined in
   a header, not in the URI, we need to define them in terms of resources.
 
-  ## Suborigin of a Resource ## {#suborigin-of-resource}
+  ## Updates to Origin ## {#origin-updates}
+
+  Suborigins extends the <a>origin</a> concept. The following sections define
+  how this extension works.
+
+  ### Suborigin of a Resource ### {#suborigin-of-resource}
+
+  TODO (jww): This should be updated in terms of HTML and how origins are obtained
+  there.
 
   The suborigin of a resource is the value computed by the following algorithm:
 
@@ -619,91 +632,97 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
 
   </ol>
 
-  ## Comparing Physical Origins ## {#comparing-physical-origins}
+  ### Origin Tuple ### {#origin-tuple}
 
-  Two suborigins are "the same physical origin" if, and only if, the physical
-  origin portion of the suborigin are identical, per [[RFC6454]].  In
-  particular:
+  Update the definition of <a>tuple origin</a> in the <a>origin</a> section of
+  [[HTML]] to read:
 
-  *   If the origin portions of the suborigin pairs are scheme/host/port
-      triples, the two suborigins are the same physical origin if, and only if,
-      they have identical schemes, hosts, and ports.
-  *   An origin that is a globally unique identifier cannot be the same as an
-      origin that is a scheme/host/port triple.
+  A tuple consists of:
 
-  Two resources are the <dfn>same-physical-origin</dfn> if their suborigins are
-  the same physical origin.
+  * A scheme (a <a>scheme</a>).
+  * A host (a <a>host</a>).
+  * A port (a <a>port</a>).
+  * A domain (null or a <a>domain</a>). Null unless stated otherwise.
+  * A suborigin (a <a>suborigin namespace</a>). The empty string unless stated
+    otherwise.
 
-  ## Comparing Suborigins ## {#comparing-suborigins}
+  ### Physical Origin ### {#physical-origin-concept}
+  The <dfn>physical origin</dfn> of an <a>origin</a> is an <a>origin tuple</a>
+  where the components are:
 
-  Two suborigins are "the same" if, and only if, they are identical. In
-  particular:
+  * The scheme is the scheme component of the origin
+  * The host is the host component of the origin
+  * The port is the port component of the origin
+  * The domain is the domain component of the origin
+  * The suborigin is the empty string
 
-  *   By [[#comparing-physical-origins]], the suborigins must be
-      same-physical-origin.
-  *   In addition, the `suborigin-namespace` portion of the suborigin pairs must
-      be identical. If both `suborigin-namespace` portions of the suborigin
-      pairs are null, this is considered identical.
+  ### Comparing Origins ### {#comparing-origins}
 
-  Two resources are the same-origin if their suborigins are the same.
+  Update the <a>same origin</a> algorithm in [[HTML]] such that step 2 reads:
 
-  ## Serializing Suborigins ## {#serializing}
+  2. If A and B are both tuple origins and their schemes, hosts, ports, and
+     suborigins are identical, then return true.
 
-  This section defines how to serialize an origin to a unicode [[!Unicode6]]
+  ### Comparing Physical Origins ### {#comparing-physical-origins}
+
+  Two origins, A and B, are said to be <dfn>same physical origin</dfn> if the
+  following algorithm returns true:
+
+  1. Let AP be the <a>physical origin</a> of A. Let BP be the <a>physical
+     origin</a> of B.
+
+  2. If AP and BP are the <a>same origin</a>, return true.
+
+  3. Return false.
+
+  ### Serializing Suborigins ### {#serializing}
+
+  This section defines how to serialize an origin to a Unicode [[!Unicode6]]
   string and to an ASCII [[!RFC0020]] string.
 
-  ### Update Scheme/Host/Port Triple with Suborigin for Serialization ### {#update-triple}
+  #### Unicode Serialization of a Suborigin #### {#unicode-serialization}
 
-  Given a suborigin pair |pair|, the scheme/host/port triple of |pair| is
-  updated for serialization by the following algorithm:
+  Update the <a>Unicode serialization of an origin</a> in [[HTML]] by modifying
+  step 4 to read:
 
-  1. Let |prefix| be the suborigin namespace portion of |pair|.
+  4. Let unicodeOrigin be a new tuple origin consisting origin's scheme,
+     unicodeHost, origin's port, and origin's suborigin.
 
-  2. Append the string "." to |prefix|.
+  #### ASCII Serialization of a Suborigin #### {#ascii-serialization}
 
-  3. Prepend |prefix| to the host part of the origin triple in |pair|.
+  Update the steps of <a>ASCII serialization of an origin</a> in [[HTML]] to
+  read:
 
-  4. Append the string "-so" to the scheme part of the origin triple in |pair|.
+  1. If origin is an opaque origin, then return "null".
 
-  ### Unicode Serialization of a Suborigin ### {#unicode-serialization}
+  2. Otherwise, let result be origin's scheme.
 
-  The Unicode serialization of a suborigin is the value returned by the following
-  algorithm:
+  4. Let `schemeSuffix` be "-so://" if the suborigin component of origin is not
+     the empty string, and "://" otherwise.
 
-  1. If the origin portion of the suborigin pair is not a scheme/host/port
-     triple, then return the string
-      <pre>
-        null
-      </pre>
-      (i.e., the code point sequence U+006E, U+0075, U+006C, U+006C) and abort
-      these steps.
+  5. Let `hostPrefix` be the suborigin component of origin with "." appended to
+     it if the suborigin component of origin is not the empty string, and ""
+     otherwise.
 
-  2. Otherwise, if the suborigin namespace portion of the suborigin pair is not
-     null, [[#update-triple]].
+  6. Append `schemeSuffix` to result.
 
-  3. Proceed with step 1 of <a
-     href="https://tools.ietf.org/html/rfc6454#section-6.1">Section 6.1 in the
-     Origin specification</a> [[!RFC6454]].
+  7. Append `hostPrefix` to result.
 
-  ### ASCII Serialization of a Suborigin ### {#ascii-serialization}
+  8. Append origin's host, serialized, to result.
 
-  The ASCII serialization of a suborigin is the value returned by the following
-  algorithm:
+  9. If origin's port is non-null, append a U+003A COLON character (:), and
+     origin's port, serialized, to result.
 
-  1. If the origin portion of the suborigin pair is not a scheme/host/port
-     triple, then return the string
-     <pre>
-       null
-     </pre>
-    (i.e., the code point sequence U+006E, U+0075, U+006C, U+006C) and abort
-    these steps.
+  10. Return result.
 
-  2. Otherwise, if the suborigin namespace portion of the suborigin pair is not
-     null, [[#update-triple]].
+  #### `Document` object's origin #### {#document-origin}
 
-  3. Proceed with step 1 of <a
-     href="https://tools.ietf.org/html/rfc6454#section-6.2">Section 6.2 in the
-     Origin specification</a> [[!RFC6454]].
+  TODO: Need to assign how Document gets a suborigin. Need to patch the "For
+  Document objects" subsection of https://html.spec.whatwg.org/#origin. Will
+  also probably need to update https://fetch.spec.whatwg.org/#concept-response
+  to have a suborigin property, which uses that response to assign a suborigin
+  to the origin tuple for Object, similar to
+  https://w3c.github.io/webappsec-csp/#sandbox-init.
 
   ## Interactions with the DOM ## {#dom-interactions}
 
@@ -828,7 +847,7 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
      * `request`'s credentials mode is "same-origin" and `request`'s
        <a>environment settings object</a> has the `suborigin unsafe
        credentials` flag set and the request's <a>current url</a> is
-       <a>same-physical-origin</a> with <a>request origin</a>.
+       <a>same physical origin</a> with <a>request origin</a>.
 
   Note: This has several important, practical effects. If the <a>credentials
   mode</a> of a `fetch()` is set to "same-origin", and if it is to the same

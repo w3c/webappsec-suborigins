@@ -1363,7 +1363,7 @@ Possible extra rowspan handling
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Suborigins</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2016-10-22">22 October 2016</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2016-10-23">23 October 2016</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1469,28 +1469,34 @@ boundary between this resource and resources in other namespaces.</p>
     <li>
      <a href="#framework"><span class="secno">6</span> <span class="content">Framework</span></a>
      <ol class="toc">
-      <li><a href="#suborigin-of-resource"><span class="secno">6.1</span> <span class="content">Suborigin of a Resource</span></a>
-      <li><a href="#comparing-physical-origins"><span class="secno">6.2</span> <span class="content">Comparing Physical Origins</span></a>
-      <li><a href="#comparing-suborigins"><span class="secno">6.3</span> <span class="content">Comparing Suborigins</span></a>
       <li>
-       <a href="#serializing"><span class="secno">6.4</span> <span class="content">Serializing Suborigins</span></a>
+       <a href="#origin-updates"><span class="secno">6.1</span> <span class="content">Updates to Origin</span></a>
        <ol class="toc">
-        <li><a href="#update-triple"><span class="secno">6.4.1</span> <span class="content">Update Scheme/Host/Port Triple with Suborigin for Serialization</span></a>
-        <li><a href="#unicode-serialization"><span class="secno">6.4.2</span> <span class="content">Unicode Serialization of a Suborigin</span></a>
-        <li><a href="#ascii-serialization"><span class="secno">6.4.3</span> <span class="content">ASCII Serialization of a Suborigin</span></a>
+        <li><a href="#suborigin-of-resource"><span class="secno">6.1.1</span> <span class="content">Suborigin of a Resource</span></a>
+        <li><a href="#origin-tuple"><span class="secno">6.1.2</span> <span class="content">Origin Tuple</span></a>
+        <li><a href="#physical-origin-concept"><span class="secno">6.1.3</span> <span class="content">Physical Origin</span></a>
+        <li><a href="#comparing-origins"><span class="secno">6.1.4</span> <span class="content">Comparing Origins</span></a>
+        <li><a href="#comparing-physical-origins"><span class="secno">6.1.5</span> <span class="content">Comparing Physical Origins</span></a>
+        <li>
+         <a href="#serializing"><span class="secno">6.1.6</span> <span class="content">Serializing Suborigins</span></a>
+         <ol class="toc">
+          <li><a href="#unicode-serialization"><span class="secno">6.1.6.1</span> <span class="content">Unicode Serialization of a Suborigin</span></a>
+          <li><a href="#ascii-serialization"><span class="secno">6.1.6.2</span> <span class="content">ASCII Serialization of a Suborigin</span></a>
+          <li><a href="#document-origin"><span class="secno">6.1.6.3</span> <span class="content"><code>Document</code> object’s origin</span></a>
+         </ol>
        </ol>
       <li>
-       <a href="#dom-interactions"><span class="secno">6.5</span> <span class="content">Interactions with the DOM</span></a>
+       <a href="#dom-interactions"><span class="secno">6.2</span> <span class="content">Interactions with the DOM</span></a>
        <ol class="toc">
-        <li><a href="#cookies"><span class="secno">6.5.1</span> <span class="content">Cookies</span></a>
+        <li><a href="#cookies"><span class="secno">6.2.1</span> <span class="content">Cookies</span></a>
        </ol>
       <li>
-       <a href="#security-model-opt-outs"><span class="secno">6.6</span> <span class="content">Security Model Opt-Outs</span></a>
+       <a href="#security-model-opt-outs"><span class="secno">6.3</span> <span class="content">Security Model Opt-Outs</span></a>
        <ol class="toc">
-        <li><a href="#unsafe-postmessage-receive"><span class="secno">6.6.1</span> <span class="content"><code>'unsafe-postmessage-receive'</code></span></a>
-        <li><a href="#unsafe-postmessage-send"><span class="secno">6.6.2</span> <span class="content"><code>'unsafe-postmessage-send'</code></span></a>
-        <li><a href="#unsafe-cookies"><span class="secno">6.6.3</span> <span class="content"><code>'unsafe-cookies'</code></span></a>
-        <li><a href="#unsafe-credentials"><span class="secno">6.6.4</span> <span class="content"><code>'unsafe-credentials'</code></span></a>
+        <li><a href="#unsafe-postmessage-receive"><span class="secno">6.3.1</span> <span class="content"><code>'unsafe-postmessage-receive'</code></span></a>
+        <li><a href="#unsafe-postmessage-send"><span class="secno">6.3.2</span> <span class="content"><code>'unsafe-postmessage-send'</code></span></a>
+        <li><a href="#unsafe-cookies"><span class="secno">6.3.3</span> <span class="content"><code>'unsafe-cookies'</code></span></a>
+        <li><a href="#unsafe-credentials"><span class="secno">6.3.4</span> <span class="content"><code>'unsafe-credentials'</code></span></a>
        </ol>
      </ol>
     <li><a href="#practical-considerations"><span class="secno">7</span> <span class="content">Practical Considerations in Using Suborigins</span></a>
@@ -1650,7 +1656,6 @@ This includes providing security-model opt-outs where necessary.</p>
   the basic structure of this document. At that point, we should extract the terms
   defined throughout the spec and place them here.</p>
    <p>This section defines several terms used throughout the document.</p>
-   <p>The terms <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="origin">origin</dfn>, <dfn data-dfn-type="dfn" data-noexport="" id="cross-origin">cross-origin<a class="self-link" href="#cross-origin"></a></dfn>, and <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="same-origin">same-origin</dfn> are defined by the Origin specification. <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a></p>
    <p><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="cors">CORS</dfn>, or <dfn data-dfn-type="dfn" data-noexport="" id="cross-origin-resource-sharing">Cross-Origin Resource Sharing<a class="self-link" href="#cross-origin-resource-sharing"></a></dfn>, are defined by the
   CORS specification. <a data-link-type="biblio" href="#biblio-cors">[CORS]</a></p>
    <p><dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="xmlhttprequest">XMLHttpRequest</dfn>, or <dfn data-dfn-type="dfn" data-noexport="" id="xhr">XHR<a class="self-link" href="#xhr"></a></dfn>, is defined by the XMLHttpRequest
@@ -1667,8 +1672,8 @@ This includes providing security-model opt-outs where necessary.</p>
 </pre>
    <h2 class="heading settled" data-level="3" id="defining-suborigin"><span class="secno">3. </span><span class="content">Defining a Suborigin</span><a class="self-link" href="#defining-suborigin"></a></h2>
    <p>Origins are a mechanism for user agents to group URIs into protection domains.
-  As defined in <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a>, two URIs are in the <a data-link-type="dfn" href="#same-origin" id="ref-for-same-origin-1">same-origin</a> if they share
-  the same <a data-link-type="dfn" href="https://url.spec.whatwg.org/#syntax-url-scheme">scheme</a>, <a data-link-type="dfn" href="https://url.spec.whatwg.org/#syntax-host">host</a>, and <a data-link-type="dfn" href="https://url.spec.whatwg.org/#syntax-url-port">port</a>.  If URIs are same-origin,
+  Two URIs are in the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#same-origin">same-origin</a> if they share
+  the same <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-scheme">scheme</a>, <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-host">host</a>, and <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-port">port</a>.  If URIs are same-origin,
   then they share the same authority and can access all of each others resources.</p>
    <p>Compared to per-user isolation in traditional operating systems, the
   same-origin policy isolates distinct applications identified by their origins.
@@ -1682,8 +1687,8 @@ This includes providing security-model opt-outs where necessary.</p>
    <p>Suborigins provide a mechanism for creating this type of separation
   programatically. Any resources may provide, in a manner detailed below, a string
   value <a data-link-type="dfn" href="#suborigin-namespace" id="ref-for-suborigin-namespace-1">suborigin namespace</a>.  If either of two URIs provide a suborigin
-  namespace, then the two URIs are in the <a data-link-type="dfn" href="#same-origin" id="ref-for-same-origin-2">same-origin</a> if and only if they
-  share the same <a data-link-type="dfn" href="https://url.spec.whatwg.org/#syntax-url-scheme">scheme</a>, <a data-link-type="dfn" href="https://url.spec.whatwg.org/#syntax-host">host</a>, <a data-link-type="dfn" href="https://url.spec.whatwg.org/#syntax-url-port">port</a>, and <a data-link-type="dfn" href="#suborigin-namespace" id="ref-for-suborigin-namespace-2">suborigin
+  namespace, then the two URIs are in the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#same-origin">same-origin</a> if and only if they
+  share the same <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-scheme">scheme</a>, <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-host">host</a>, <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-port">port</a>, and <a data-link-type="dfn" href="#suborigin-namespace" id="ref-for-suborigin-namespace-2">suborigin
   namespace</a>.</p>
    <p>Q. In today’s Web, can’t a site get the effective same protection domain simply
   by hosting their content at different subdomains?</p>
@@ -1716,7 +1721,7 @@ This includes providing security-model opt-outs where necessary.</p>
   they utilize <code>sandbox</code>. This provides much of the motivation for the
   named container nature of suborigins.</p>
    <h3 class="heading settled" data-level="3.2" id="threat-model"><span class="secno">3.2. </span><span class="content">Threat Model</span><a class="self-link" href="#threat-model"></a></h3>
-   <p><a data-link-type="dfn" href="#origin" id="ref-for-origin-1">Origins</a> and the <a href="http://www.w3.org/Security/wiki/Same_Origin_Policy">Same-Origin Policy</a> have provided a strong defense against
+   <p><a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#concept-origin">Origins</a> and the <a href="http://www.w3.org/Security/wiki/Same_Origin_Policy">Same-Origin Policy</a> have provided a strong defense against
   malicious applications. Instead of giving the application the power of the user,
   applications on the Web are limited to a unique space that is defined by their
   host. However, by tying the origin to the physical host, this has limited the
@@ -1747,12 +1752,12 @@ This includes providing security-model opt-outs where necessary.</p>
   Suborigins are simply in different Origins, and the relationship between the two
   resources should be the same as any other two differing origins as described in <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a>. However, given the impracticalities this may impart on some
   applications who might want to adopt Suborigins, a few security-model opt-outs
-  to ease the use of Suborigins in legacy applications are also presented. See <a href="#security-model-opt-outs">§6.6 Security Model Opt-Outs</a> for more information.</p>
+  to ease the use of Suborigins in legacy applications are also presented. See <a href="#security-model-opt-outs">§6.3 Security Model Opt-Outs</a> for more information.</p>
    <p class="issue" id="issue-9c923902"><a class="self-link" href="#issue-9c923902"></a> TODO: Figure out if this all will require updates to the HTML spec’s
   origin definition.</p>
    <h3 class="heading settled" data-level="3.4" id="representation"><span class="secno">3.4. </span><span class="content">Representation of Suborigins</span><a class="self-link" href="#representation"></a></h3>
-   <p>At an abstract level, a suborigin consists of the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="physical-origin">physical origin</dfn>,
-  which is a <a data-link-type="dfn" href="https://url.spec.whatwg.org/#syntax-url-scheme">scheme</a>, <a data-link-type="dfn" href="https://url.spec.whatwg.org/#syntax-host">host</a>, and <a data-link-type="dfn" href="https://url.spec.whatwg.org/#syntax-url-port">port</a>, plus a <a data-link-type="dfn" href="#suborigin-namespace" id="ref-for-suborigin-namespace-3">suborigin
+   <p>At an abstract level, a suborigin consists of the <a data-link-type="dfn" href="#physical-origin" id="ref-for-physical-origin-1">physical origin</a>,
+  which is a <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-scheme">scheme</a>, <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-host">host</a>, and <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-port">port</a>, plus a <a data-link-type="dfn" href="#suborigin-namespace" id="ref-for-suborigin-namespace-3">suborigin
   namespace</a>.  However, as mentioned above, suborigins are intended to fit
   within the framework of <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a>.  Therefore, this specification provides a
   way of serializing a Suborigin bound resource into a physical origin. This is
@@ -1767,7 +1772,7 @@ This includes providing security-model opt-outs where necessary.</p>
   the suborigin namespace <code>separate</code> would be serialized as <code>https-so://separate.example.com:8080/</code>.</p>
    <p>Internally, the user agent just tracks the <a data-link-type="dfn" href="#suborigin-namespace" id="ref-for-suborigin-namespace-4">suborigin namespace</a> of the resource.
   When the origin needs to be serialized, the user agent should
-  follow the algorithm in <a href="#serializing">§6.4 Serializing Suborigins</a>.</p>
+  follow the algorithm in <a href="#serializing">§6.1.6 Serializing Suborigins</a>.</p>
    <p class="note" role="note">Note: The underscore character is not a valid character for hostnames used
   on the web <a data-link-type="biblio" href="#biblio-rfc1123">[RFC1123]</a> and as a result, the serialization above cannot collide
   with valid existing hostnames.</p>
@@ -1806,7 +1811,7 @@ This includes providing security-model opt-outs where necessary.</p>
    <p>A <code>suborigin</code> property is added to the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-document">document</a> object which <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-reflect">reflects</a> the value of the suborigin namespace for the current execution
   context. If there is no suborigin namespace, the value should be undefined.</p>
    <p>Additionally, the <code>origin</code> property of the <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-document">document</a> object should reflect
-  the serialized value of the origin as returned by <a href="#serializing">§6.4 Serializing Suborigins</a>.</p>
+  the serialized value of the origin as returned by <a href="#serializing">§6.1.6 Serializing Suborigins</a>.</p>
    <p class="issue" id="issue-1dbd01cb"><a class="self-link" href="#issue-1dbd01cb"></a> TODO(jww): Need to write the formal IDL for this.</p>
    <h2 class="heading settled" data-level="4" id="access-control"><span class="secno">4. </span><span class="content">Access Control</span><a class="self-link" href="#access-control"></a></h2>
    <p>Cross-origin (including cross-suborigin) communication is tricky when suborigins
@@ -1823,12 +1828,12 @@ This includes providing security-model opt-outs where necessary.</p>
   cross-origin requests</a>. Additionally, all requests from a suborigin namespace
   must include a <code>Suborigin</code> header whose value is the context’s suborigin name.
   Finally, the <code>Origin</code> header <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a> value must use the serialized suborigin
-  value instead of the serializied origin, as described in <a href="#serializing">§6.4 Serializing Suborigins</a>.</p>
+  value instead of the serializied origin, as described in <a href="#serializing">§6.1.6 Serializing Suborigins</a>.</p>
    <p>Similar changes are needed for responses from the server with the addition of an <code>Access-Control-Allow-Suborigin</code> response header. Its value must match the
   context’s suborigin namespace value, or <code>*</code> to allow all suborigin namespaces.
   At the same time, the <code>Access-Control-Allow-Origin</code> response header value must
   be modified to use the serialized suborigin value instead of the serializied
-  origin, as described in <a href="#serializing">§6.4 Serializing Suborigins</a>.</p>
+  origin, as described in <a href="#serializing">§6.1.6 Serializing Suborigins</a>.</p>
    <p class="issue" id="issue-daf4a3ea"><a class="self-link" href="#issue-daf4a3ea"></a> TODO(jww): Formal definition of the headers and responses w/grammars.
   Also need to be explicit about <code>*</code> having same limitations as <code>Access-Control-Allow-Origin</code> w/credentials.</p>
    <h3 class="heading settled" data-level="4.2" id="postmessage-ac"><span class="secno">4.2. </span><span class="content"><code>postMessage</code></span><a class="self-link" href="#postmessage-ac"></a></h3>
@@ -1836,7 +1841,7 @@ This includes providing security-model opt-outs where necessary.</p>
   able to see the suborigin namespace of the message sender so it can make an
   appropriate access control decision. When a message is sent from a suborigin
   namespace, the receiver has the <code>event.origin</code> value set to the serialized
-  suborigin value instead of the serializied origin, as described in <a href="#serializing">§6.4 Serializing Suborigins</a>. Additionally, a new <code>suborigin</code> property must be added to
+  suborigin value instead of the serializied origin, as described in <a href="#serializing">§6.1.6 Serializing Suborigins</a>. Additionally, a new <code>suborigin</code> property must be added to
   the <code>MessageEvent</code> given to the receiver which contains the suborigin
   namespace value.</p>
    <p class="issue" id="issue-4439486d"><a class="self-link" href="#issue-4439486d"></a> TODO(jww): Formalize by updating the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/comms.html#dom-messageport-postmessage">postMessage</a> algorithm</p>
@@ -1881,7 +1886,12 @@ This includes providing security-model opt-outs where necessary.</p>
    <p class="note" role="note">Note: These sections are tricky because, unlike physical origins, we can’t
   define suborigins in terms of URIs. Since the suborigin namespace is defined in
   a header, not in the URI, we need to define them in terms of resources.</p>
-   <h3 class="heading settled" data-level="6.1" id="suborigin-of-resource"><span class="secno">6.1. </span><span class="content">Suborigin of a Resource</span><a class="self-link" href="#suborigin-of-resource"></a></h3>
+   <h3 class="heading settled" data-level="6.1" id="origin-updates"><span class="secno">6.1. </span><span class="content">Updates to Origin</span><a class="self-link" href="#origin-updates"></a></h3>
+   <p>Suborigins extends the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#concept-origin">origin</a> concept. The following sections define
+  how this extension works.</p>
+   <h4 class="heading settled" data-level="6.1.1" id="suborigin-of-resource"><span class="secno">6.1.1. </span><span class="content">Suborigin of a Resource</span><a class="self-link" href="#suborigin-of-resource"></a></h4>
+   <p>TODO (jww): This should be updated in terms of HTML and how origins are obtained
+  there.</p>
    <p>The suborigin of a resource is the value computed by the following algorithm:</p>
    <ol>
     <li> Let origin be the triple result from starting with step 1 of Section 4 of
@@ -1893,93 +1903,107 @@ This includes providing security-model opt-outs where necessary.</p>
     <li> Otherwise, let <code>suborigin-namespace</code> be <code>null</code>. 
     <li> Return the pair <code>(origin, suborigin-namespace)</code>. 
    </ol>
-   <h3 class="heading settled" data-level="6.2" id="comparing-physical-origins"><span class="secno">6.2. </span><span class="content">Comparing Physical Origins</span><a class="self-link" href="#comparing-physical-origins"></a></h3>
-   <p>Two suborigins are "the same physical origin" if, and only if, the physical
-  origin portion of the suborigin are identical, per <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a>.  In
-  particular:</p>
+   <h4 class="heading settled" data-level="6.1.2" id="origin-tuple"><span class="secno">6.1.2. </span><span class="content">Origin Tuple</span><a class="self-link" href="#origin-tuple"></a></h4>
+   <p>Update the definition of <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#concept-origin-tuple">tuple origin</a> in the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#concept-origin">origin</a> section of <a data-link-type="biblio" href="#biblio-html">[HTML]</a> to read:</p>
+   <p>A tuple consists of:</p>
    <ul>
     <li data-md="">
-     <p>If the origin portions of the suborigin pairs are scheme/host/port
-  triples, the two suborigins are the same physical origin if, and only if,
-  they have identical schemes, hosts, and ports.</p>
+     <p>A scheme (a <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-scheme">scheme</a>).</p>
     <li data-md="">
-     <p>An origin that is a globally unique identifier cannot be the same as an
-  origin that is a scheme/host/port triple.</p>
+     <p>A host (a <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-host">host</a>).</p>
+    <li data-md="">
+     <p>A port (a <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-port">port</a>).</p>
+    <li data-md="">
+     <p>A domain (null or a <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-domain">domain</a>). Null unless stated otherwise.</p>
+    <li data-md="">
+     <p>A suborigin (a <a data-link-type="dfn" href="#suborigin-namespace" id="ref-for-suborigin-namespace-5">suborigin namespace</a>). The empty string unless stated
+otherwise.</p>
    </ul>
-   <p>Two resources are the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="same-physical-origin">same-physical-origin</dfn> if their suborigins are
-  the same physical origin.</p>
-   <h3 class="heading settled" data-level="6.3" id="comparing-suborigins"><span class="secno">6.3. </span><span class="content">Comparing Suborigins</span><a class="self-link" href="#comparing-suborigins"></a></h3>
-   <p>Two suborigins are "the same" if, and only if, they are identical. In
-  particular:</p>
+   <h4 class="heading settled" data-level="6.1.3" id="physical-origin-concept"><span class="secno">6.1.3. </span><span class="content">Physical Origin</span><a class="self-link" href="#physical-origin-concept"></a></h4>
+    The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="physical-origin">physical origin</dfn> of an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#concept-origin">origin</a> is an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#concept-origin-tuple">origin tuple</a> where the components are: 
    <ul>
     <li data-md="">
-     <p>By <a href="#comparing-physical-origins">§6.2 Comparing Physical Origins</a>, the suborigins must be
-  same-physical-origin.</p>
+     <p>The scheme is the scheme component of the origin</p>
     <li data-md="">
-     <p>In addition, the <code>suborigin-namespace</code> portion of the suborigin pairs must
-  be identical. If both <code>suborigin-namespace</code> portions of the suborigin
-  pairs are null, this is considered identical.</p>
+     <p>The host is the host component of the origin</p>
+    <li data-md="">
+     <p>The port is the port component of the origin</p>
+    <li data-md="">
+     <p>The domain is the domain component of the origin</p>
+    <li data-md="">
+     <p>The suborigin is the empty string</p>
    </ul>
-   <p>Two resources are the same-origin if their suborigins are the same.</p>
-   <h3 class="heading settled" data-level="6.4" id="serializing"><span class="secno">6.4. </span><span class="content">Serializing Suborigins</span><a class="self-link" href="#serializing"></a></h3>
-   <p>This section defines how to serialize an origin to a unicode <a data-link-type="biblio" href="#biblio-unicode6">[Unicode6]</a> string and to an ASCII <a data-link-type="biblio" href="#biblio-rfc0020">[RFC0020]</a> string.</p>
-   <h4 class="heading settled" data-level="6.4.1" id="update-triple"><span class="secno">6.4.1. </span><span class="content">Update Scheme/Host/Port Triple with Suborigin for Serialization</span><a class="self-link" href="#update-triple"></a></h4>
-   <p>Given a suborigin pair <var>pair</var>, the scheme/host/port triple of <var>pair</var> is
-  updated for serialization by the following algorithm:</p>
+   <h4 class="heading settled" data-level="6.1.4" id="comparing-origins"><span class="secno">6.1.4. </span><span class="content">Comparing Origins</span><a class="self-link" href="#comparing-origins"></a></h4>
+   <p>Update the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#same-origin">same origin</a> algorithm in <a data-link-type="biblio" href="#biblio-html">[HTML]</a> such that step 2 reads:</p>
+   <ol start="2">
+    <li data-md="">
+     <p>If A and B are both tuple origins and their schemes, hosts, ports, and
+ suborigins are identical, then return true.</p>
+   </ol>
+   <h4 class="heading settled" data-level="6.1.5" id="comparing-physical-origins"><span class="secno">6.1.5. </span><span class="content">Comparing Physical Origins</span><a class="self-link" href="#comparing-physical-origins"></a></h4>
+   <p>Two origins, A and B, are said to be <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="same-physical-origin">same physical origin</dfn> if the
+  following algorithm returns true:</p>
    <ol>
     <li data-md="">
-     <p>Let <var>prefix</var> be the suborigin namespace portion of <var>pair</var>.</p>
+     <p>Let AP be the <a data-link-type="dfn" href="#physical-origin" id="ref-for-physical-origin-2">physical origin</a> of A. Let BP be the <a data-link-type="dfn" href="#physical-origin" id="ref-for-physical-origin-3">physical
+ origin</a> of B.</p>
     <li data-md="">
-     <p>Append the string "." to <var>prefix</var>.</p>
+     <p>If AP and BP are the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#same-origin">same origin</a>, return true.</p>
     <li data-md="">
-     <p>Prepend <var>prefix</var> to the host part of the origin triple in <var>pair</var>.</p>
-    <li data-md="">
-     <p>Append the string "-so" to the scheme part of the origin triple in <var>pair</var>.</p>
+     <p>Return false.</p>
    </ol>
-   <h4 class="heading settled" data-level="6.4.2" id="unicode-serialization"><span class="secno">6.4.2. </span><span class="content">Unicode Serialization of a Suborigin</span><a class="self-link" href="#unicode-serialization"></a></h4>
-   <p>The Unicode serialization of a suborigin is the value returned by the following
-  algorithm:</p>
+   <h4 class="heading settled" data-level="6.1.6" id="serializing"><span class="secno">6.1.6. </span><span class="content">Serializing Suborigins</span><a class="self-link" href="#serializing"></a></h4>
+   <p>This section defines how to serialize an origin to a Unicode <a data-link-type="biblio" href="#biblio-unicode6">[Unicode6]</a> string and to an ASCII <a data-link-type="biblio" href="#biblio-rfc0020">[RFC0020]</a> string.</p>
+   <h5 class="heading settled" data-level="6.1.6.1" id="unicode-serialization"><span class="secno">6.1.6.1. </span><span class="content">Unicode Serialization of a Suborigin</span><a class="self-link" href="#unicode-serialization"></a></h5>
+   <p>Update the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#unicode-serialisation-of-an-origin">Unicode serialization of an origin</a> in <a data-link-type="biblio" href="#biblio-html">[HTML]</a> by modifying
+  step 4 to read:</p>
+   <ol start="4">
+    <li data-md="">
+     <p>Let unicodeOrigin be a new tuple origin consisting origin’s scheme,
+ unicodeHost, origin’s port, and origin’s suborigin.</p>
+   </ol>
+   <h5 class="heading settled" data-level="6.1.6.2" id="ascii-serialization"><span class="secno">6.1.6.2. </span><span class="content">ASCII Serialization of a Suborigin</span><a class="self-link" href="#ascii-serialization"></a></h5>
+   <p>Update the steps of <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#ascii-serialisation-of-an-origin">ASCII serialization of an origin</a> in <a data-link-type="biblio" href="#biblio-html">[HTML]</a> to
+  read:</p>
    <ol>
     <li data-md="">
-     <p>If the origin portion of the suborigin pair is not a scheme/host/port
- triple, then return the string</p>
-<pre>null
-</pre>
-     <p>(i.e., the code point sequence U+006E, U+0075, U+006C, U+006C) and abort
-  these steps.</p>
+     <p>If origin is an opaque origin, then return "null".</p>
     <li data-md="">
-     <p>Otherwise, if the suborigin namespace portion of the suborigin pair is not
- null, <a href="#update-triple">§6.4.1 Update Scheme/Host/Port Triple with Suborigin for Serialization</a>.</p>
+     <p>Otherwise, let result be origin’s scheme.</p>
     <li data-md="">
-     <p>Proceed with step 1 of <a href="https://tools.ietf.org/html/rfc6454#section-6.1">Section 6.1 in the
- Origin specification</a> <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a>.</p>
+     <p>Let <code>schemeSuffix</code> be "-so://" if the suborigin component of origin is not
+ the empty string, and "://" otherwise.</p>
+    <li data-md="">
+     <p>Let <code>hostPrefix</code> be the suborigin component of origin with "." appended to
+ it if the suborigin component of origin is not the empty string, and ""
+ otherwise.</p>
+    <li data-md="">
+     <p>Append <code>schemeSuffix</code> to result.</p>
+    <li data-md="">
+     <p>Append <code>hostPrefix</code> to result.</p>
+    <li data-md="">
+     <p>Append origin’s host, serialized, to result.</p>
+    <li data-md="">
+     <p>If origin’s port is non-null, append a U+003A COLON character (:), and
+ origin’s port, serialized, to result.</p>
+    <li data-md="">
+     <p>Return result.</p>
    </ol>
-   <h4 class="heading settled" data-level="6.4.3" id="ascii-serialization"><span class="secno">6.4.3. </span><span class="content">ASCII Serialization of a Suborigin</span><a class="self-link" href="#ascii-serialization"></a></h4>
-   <p>The ASCII serialization of a suborigin is the value returned by the following
-  algorithm:</p>
-   <ol>
-    <li data-md="">
-     <p>If the origin portion of the suborigin pair is not a scheme/host/port
- triple, then return the string</p>
-<pre>null
-</pre>
-     <p>(i.e., the code point sequence U+006E, U+0075, U+006C, U+006C) and abort
-these steps.</p>
-    <li data-md="">
-     <p>Otherwise, if the suborigin namespace portion of the suborigin pair is not
- null, <a href="#update-triple">§6.4.1 Update Scheme/Host/Port Triple with Suborigin for Serialization</a>.</p>
-    <li data-md="">
-     <p>Proceed with step 1 of <a href="https://tools.ietf.org/html/rfc6454#section-6.2">Section 6.2 in the
- Origin specification</a> <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a>.</p>
-   </ol>
-   <h3 class="heading settled" data-level="6.5" id="dom-interactions"><span class="secno">6.5. </span><span class="content">Interactions with the DOM</span><a class="self-link" href="#dom-interactions"></a></h3>
-   <h4 class="heading settled" data-level="6.5.1" id="cookies"><span class="secno">6.5.1. </span><span class="content">Cookies</span><a class="self-link" href="#cookies"></a></h4>
+   <h5 class="heading settled" data-level="6.1.6.3" id="document-origin"><span class="secno">6.1.6.3. </span><span class="content"><code>Document</code> object’s origin</span><a class="self-link" href="#document-origin"></a></h5>
+   <p>TODO: Need to assign how Document gets a suborigin. Need to patch the "For
+  Document objects" subsection of https://html.spec.whatwg.org/#origin. Will
+  also probably need to update https://fetch.spec.whatwg.org/#concept-response
+  to have a suborigin property, which uses that response to assign a suborigin
+  to the origin tuple for Object, similar to
+  https://w3c.github.io/webappsec-csp/#sandbox-init.</p>
+   <h3 class="heading settled" data-level="6.2" id="dom-interactions"><span class="secno">6.2. </span><span class="content">Interactions with the DOM</span><a class="self-link" href="#dom-interactions"></a></h3>
+   <h4 class="heading settled" data-level="6.2.1" id="cookies"><span class="secno">6.2.1. </span><span class="content">Cookies</span><a class="self-link" href="#cookies"></a></h4>
    <p>Append the following to the list of conditions of <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document">Document</a></code> objects that are <a data-link-type="dfn" href="http://www.w3.org/TR/html51/dom.html#cookie-averse">cookie-averse</a> in Section 3.1.2 of HTML5’s <a data-link-type="dfn" href="http://www.w3.org/TR/html51/dom.html#resource-metadata-management">resource metadata
   management</a>:</p>
    <ul>
     <li data-md="">
-     <p>A <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document">Document</a></code> who has a non-empty <a data-link-type="dfn" href="#suborigin-namespace" id="ref-for-suborigin-namespace-5">suborigin namespace</a>, unless the <a data-link-type="grammar" href="#grammardef-suborigin-policy-option" id="ref-for-grammardef-suborigin-policy-option-3">suborigin-policy-option</a> for the <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document">Document</a></code> contains
-the <a href="#unsafe-cookies">§6.6.3 'unsafe-cookies'</a> value.</p>
+     <p>A <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document">Document</a></code> who has a non-empty <a data-link-type="dfn" href="#suborigin-namespace" id="ref-for-suborigin-namespace-6">suborigin namespace</a>, unless the <a data-link-type="grammar" href="#grammardef-suborigin-policy-option" id="ref-for-grammardef-suborigin-policy-option-3">suborigin-policy-option</a> for the <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document">Document</a></code> contains
+the <a href="#unsafe-cookies">§6.3.3 'unsafe-cookies'</a> value.</p>
    </ul>
    <p>Modify the paragraph following this list to read "scheme/host/port/suborigin
   tuple" instead of "scheme/host/port tuple".</p>
@@ -1992,13 +2016,13 @@ the <a href="#unsafe-cookies">§6.6.3 'unsafe-cookies'</a> value.</p>
    </ol>
    <p class="note" role="note">Note: A <a data-link-type="dfn" href="http://www.w3.org/TR/html51/dom.html#cookie-averse">cookie-averse</a> <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document">Document</a></code> object has the property that direct
   access to <code>document.cookie</code> returns the empty string, and assigning to <code>document.cookie</code> has no effect whatsoever. However, that network cookies are
-  not affected and documents with different <a data-link-type="dfn" href="#suborigin-namespace" id="ref-for-suborigin-namespace-6">suborigin namespaces</a> on the
-  same <a data-link-type="dfn" href="#physical-origin" id="ref-for-physical-origin-1">physical origin</a> share the same cookies on the network.</p>
+  not affected and documents with different <a data-link-type="dfn" href="#suborigin-namespace" id="ref-for-suborigin-namespace-7">suborigin namespaces</a> on the
+  same <a data-link-type="dfn" href="#physical-origin" id="ref-for-physical-origin-4">physical origin</a> share the same cookies on the network.</p>
    <p class="note" role="note">Note: For practical purposes, this means that a developer cannot use <code>document.cookie</code> directly because assignment and reading of the object are both
   no-ops. However, a <a data-link-type="dfn" href="http://www.w3.org/TR/html51/dom.html#cookie-averse">cookie-averse</a> <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document">Document</a></code> may
   still use getters and setters on the <code>cookie</code> property of the <code>document</code> object
   and, in that way, may still simulate cookie access.</p>
-   <h3 class="heading settled" data-level="6.6" id="security-model-opt-outs"><span class="secno">6.6. </span><span class="content">Security Model Opt-Outs</span><a class="self-link" href="#security-model-opt-outs"></a></h3>
+   <h3 class="heading settled" data-level="6.3" id="security-model-opt-outs"><span class="secno">6.3. </span><span class="content">Security Model Opt-Outs</span><a class="self-link" href="#security-model-opt-outs"></a></h3>
    <p>For backwards compatibility, Suborigins provide several opt-opts from the
   standard security model. A developer can choose to use these opt-outs by
   specifying a <a data-link-type="dfn" href="#suborigin-policy" id="ref-for-suborigin-policy-1">suborigin policy</a> in <a href="#the-suborigin-header">the
@@ -2007,7 +2031,7 @@ the <a href="#unsafe-cookies">§6.6.3 'unsafe-cookies'</a> value.</p>
   NOT use these options unless they are required to make their application work.</p>
    <p>The values of <a data-link-type="grammar" href="#grammardef-suborigin-policy-option" id="ref-for-grammardef-suborigin-policy-option-4">suborigin-policy-option</a> that may be
   present in a <a data-link-type="dfn" href="#suborigin-policy" id="ref-for-suborigin-policy-2">suborigin policy</a> have the following effects:</p>
-   <h4 class="heading settled" data-level="6.6.1" id="unsafe-postmessage-receive"><span class="secno">6.6.1. </span><span class="content"><code>'unsafe-postmessage-receive'</code></span><a class="self-link" href="#unsafe-postmessage-receive"></a></h4>
+   <h4 class="heading settled" data-level="6.3.1" id="unsafe-postmessage-receive"><span class="secno">6.3.1. </span><span class="content"><code>'unsafe-postmessage-receive'</code></span><a class="self-link" href="#unsafe-postmessage-receive"></a></h4>
     When a message is sent <i>to</i> a
   frame with a <code>postMessage</code> <code>target</code> of a serialized physical origin, but not
   a serialized suborigin, if the frame has an execution context with a
@@ -2027,7 +2051,7 @@ the <a href="#unsafe-cookies">§6.6.3 'unsafe-cookies'</a> value.</p>
   allow the frame to receive messages on behalf of <code>https://example.com</code>, even
   though it is at <code>https-so://maps.example.com</code>.</p>
    </div>
-   <h4 class="heading settled" data-level="6.6.2" id="unsafe-postmessage-send"><span class="secno">6.6.2. </span><span class="content"><code>'unsafe-postmessage-send'</code></span><a class="self-link" href="#unsafe-postmessage-send"></a></h4>
+   <h4 class="heading settled" data-level="6.3.2" id="unsafe-postmessage-send"><span class="secno">6.3.2. </span><span class="content"><code>'unsafe-postmessage-send'</code></span><a class="self-link" href="#unsafe-postmessage-send"></a></h4>
     When a message is sent <i>from</i> a
   suborigin namespace with <code>'unsafe-postmessage-send'</code> set, the <code>event.origin</code> value of the receiver should be set to the serialized
   physical origin, not the serialized suborigin value. However, the <code>event.suborigin</code> field should still be set to the name of the suborigin
@@ -2044,7 +2068,7 @@ the <a href="#unsafe-cookies">§6.6.3 'unsafe-cookies'</a> value.</p>
   will reject the message as a potential attack. Thus, <code>https://example.com</code> may use the <code>'unsafe-postmessage-send'</code> directive to allow its messages
   to appear with the origin of the physical origin, in this case <code>https://example.com</code>.</p>
    </div>
-   <h4 class="heading settled" data-level="6.6.3" id="unsafe-cookies"><span class="secno">6.6.3. </span><span class="content"><code>'unsafe-cookies'</code></span><a class="self-link" href="#unsafe-cookies"></a></h4>
+   <h4 class="heading settled" data-level="6.3.3" id="unsafe-cookies"><span class="secno">6.3.3. </span><span class="content"><code>'unsafe-cookies'</code></span><a class="self-link" href="#unsafe-cookies"></a></h4>
     When an execution context with a suborigin
   namespace has a suborigin policy option of <code>unsafe-cookies</code> set, the
   execution context should not have a fresh cookie jar for the suborigin
@@ -2053,8 +2077,8 @@ the <a href="#unsafe-cookies">§6.6.3 'unsafe-cookies'</a> value.</p>
    <p class="issue" id="issue-cb838d10"><a class="self-link" href="#issue-cb838d10"></a> TODO(devd): Write an example that makes clear that this is extremely
   dangerous and should not be used if you have Real Deal auth and csrf cookies
   used.</p>
-   <h4 class="heading settled" data-level="6.6.4" id="unsafe-credentials"><span class="secno">6.6.4. </span><span class="content"><code>'unsafe-credentials'</code></span><a class="self-link" href="#unsafe-credentials"></a></h4>
-   <p>All cross-origin requests  to the <a data-link-type="dfn" href="#physical-origin" id="ref-for-physical-origin-2">physical origin</a> for the execution
+   <h4 class="heading settled" data-level="6.3.4" id="unsafe-credentials"><span class="secno">6.3.4. </span><span class="content"><code>'unsafe-credentials'</code></span><a class="self-link" href="#unsafe-credentials"></a></h4>
+   <p>All cross-origin requests  to the <a data-link-type="dfn" href="#physical-origin" id="ref-for-physical-origin-5">physical origin</a> for the execution
   context will include <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#credentials">credentials</a> if the <code>'unsafe-credentials'</code> suborigin policy option for the execution context is set.</p>
    <p>Specifically, update the step 2 of <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#http-network-or-cache-fetch">HTTP-network-or-cache fetch</a> in the
   Fetch spec <a data-link-type="biblio" href="#biblio-fetch">[FETCH]</a> to read:</p>
@@ -2068,7 +2092,7 @@ the <a href="#unsafe-cookies">§6.6.3 'unsafe-cookies'</a> value.</p>
        <p><code>request</code>'s credentials mode is "same-origin" and request’s response
  tainting is "basic"</p>
       <li data-md="">
-       <p><code>request</code>'s credentials mode is "same-origin" and <code>request</code>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/comms.html#environment-settings-object">environment settings object</a> has the <code>suborigin unsafe credentials</code> flag set and the request’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-request-current-url">current url</a> is <a data-link-type="dfn" href="#same-physical-origin" id="ref-for-same-physical-origin-1">same-physical-origin</a> with <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-request-origin">request origin</a>.</p>
+       <p><code>request</code>'s credentials mode is "same-origin" and <code>request</code>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/comms.html#environment-settings-object">environment settings object</a> has the <code>suborigin unsafe credentials</code> flag set and the request’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-request-current-url">current url</a> is <a data-link-type="dfn" href="#same-physical-origin" id="ref-for-same-physical-origin-1">same physical origin</a> with <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-request-origin">request origin</a>.</p>
      </ul>
    </ol>
    <p class="note" role="note">Note: This has several important, practical effects. If the <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-request-credentials-mode">credentials
@@ -2162,14 +2186,11 @@ the <a href="#unsafe-cookies">§6.6.3 'unsafe-cookies'</a> value.</p>
   <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
    <li><a href="#cors">CORS</a><span>, in §2</span>
-   <li><a href="#cross-origin">cross-origin</a><span>, in §2</span>
    <li><a href="#cross-origin-resource-sharing">Cross-Origin Resource Sharing</a><span>, in §2</span>
    <li><a href="#cross-site-scripting">cross-site scripting</a><span>, in §2</span>
    <li><a href="#grammardef-loweralpha">LOWERALPHA</a><span>, in §2.1</span>
-   <li><a href="#origin">origin</a><span>, in §2</span>
-   <li><a href="#physical-origin">physical origin</a><span>, in §3.4</span>
-   <li><a href="#same-origin">same-origin</a><span>, in §2</span>
-   <li><a href="#same-physical-origin">same-physical-origin</a><span>, in §6.2</span>
+   <li><a href="#physical-origin">physical origin</a><span>, in §6.1.3</span>
+   <li><a href="#same-physical-origin">same physical origin</a><span>, in §6.1.5</span>
    <li><a href="#suborigin">suborigin</a><span>, in §3.6</span>
    <li><a href="#grammardef-suborigin-header">suborigin-header</a><span>, in §3.6</span>
    <li><a href="#grammardef-suborigin-name">suborigin-name</a><span>, in §3.6</span>
@@ -2215,9 +2236,16 @@ the <a href="#unsafe-cookies">§6.6.3 'unsafe-cookies'</a> value.</p>
    <li>
     <a data-link-type="biblio">[HTML]</a> defines the following terms:
     <ul>
+     <li><a href="https://html.spec.whatwg.org/multipage/#ascii-serialisation-of-an-origin">ascii serialization of an origin</a>
      <li><a href="https://html.spec.whatwg.org/multipage/#attr-meta-http-equiv-set-cookie">cookie setter</a>
      <li><a href="https://html.spec.whatwg.org/multipage/comms.html#environment-settings-object">environment settings object</a>
+     <li><a href="https://html.spec.whatwg.org/multipage/#concept-origin">origin</a>
+     <li><a href="https://html.spec.whatwg.org/multipage/#concept-origin-tuple">origin tuple</a>
      <li><a href="https://html.spec.whatwg.org/multipage/comms.html#dom-messageport-postmessage">postmessage</a>
+     <li><a href="https://html.spec.whatwg.org/multipage/browsers.html#same-origin">same origin</a>
+     <li><a href="https://html.spec.whatwg.org/multipage/#same-origin">same-origin</a>
+     <li><a href="https://html.spec.whatwg.org/multipage/#concept-origin-tuple">tuple origin</a>
+     <li><a href="https://html.spec.whatwg.org/multipage/#unicode-serialisation-of-an-origin">unicode serialization of an origin</a>
     </ul>
    <li>
     <a data-link-type="biblio">[html51]</a> defines the following terms:
@@ -2234,9 +2262,10 @@ the <a href="#unsafe-cookies">§6.6.3 'unsafe-cookies'</a> value.</p>
    <li>
     <a data-link-type="biblio">[WHATWG-URL]</a> defines the following terms:
     <ul>
-     <li><a href="https://url.spec.whatwg.org/#syntax-host">host</a>
-     <li><a href="https://url.spec.whatwg.org/#syntax-url-port">port</a>
-     <li><a href="https://url.spec.whatwg.org/#syntax-url-scheme">scheme</a>
+     <li><a href="https://url.spec.whatwg.org/#concept-domain">domain</a>
+     <li><a href="https://url.spec.whatwg.org/#concept-host">host</a>
+     <li><a href="https://url.spec.whatwg.org/#concept-port">port</a>
+     <li><a href="https://url.spec.whatwg.org/#concept-scheme">scheme</a>
     </ul>
    <li>
     <a data-link-type="biblio">[XHR]</a> defines the following terms:
@@ -2336,18 +2365,6 @@ the <a href="#unsafe-cookies">§6.6.3 'unsafe-cookies'</a> value.</p>
   recognize the suborigin serialization, esp. if they blocklist origins.<a href="#issue-e47a7b08"> ↵ </a></div>
    <div class="issue"> TODO: Do we have privacy issues?<a href="#issue-747044d5"> ↵ </a></div>
   </div>
-  <aside class="dfn-panel" data-for="origin">
-   <b><a href="#origin">#origin</a></b><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-origin-1">3.2. Threat Model</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="same-origin">
-   <b><a href="#same-origin">#same-origin</a></b><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-same-origin-1">3. Defining a Suborigin</a> <a href="#ref-for-same-origin-2">(2)</a>
-   </ul>
-  </aside>
   <aside class="dfn-panel" data-for="cors">
    <b><a href="#cors">#cors</a></b><b>Referenced in:</b>
    <ul>
@@ -2359,7 +2376,7 @@ the <a href="#unsafe-cookies">§6.6.3 'unsafe-cookies'</a> value.</p>
    <b><a href="#xmlhttprequest">#xmlhttprequest</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-xmlhttprequest-1">4.1. CORS</a>
-    <li><a href="#ref-for-xmlhttprequest-2">6.6.4. 'unsafe-credentials'</a>
+    <li><a href="#ref-for-xmlhttprequest-2">6.3.4. 'unsafe-credentials'</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="xss">
@@ -2372,13 +2389,6 @@ the <a href="#unsafe-cookies">§6.6.3 'unsafe-cookies'</a> value.</p>
    <b><a href="#grammardef-loweralpha">#grammardef-loweralpha</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-grammardef-loweralpha-1">3.6. The suborigin header</a>
-   </ul>
-  </aside>
-  <aside class="dfn-panel" data-for="physical-origin">
-   <b><a href="#physical-origin">#physical-origin</a></b><b>Referenced in:</b>
-   <ul>
-    <li><a href="#ref-for-physical-origin-1">6.5.1. Cookies</a>
-    <li><a href="#ref-for-physical-origin-2">6.6.4. 'unsafe-credentials'</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="suborigin">
@@ -2397,8 +2407,8 @@ the <a href="#unsafe-cookies">§6.6.3 'unsafe-cookies'</a> value.</p>
    <b><a href="#grammardef-suborigin-policy-option">#grammardef-suborigin-policy-option</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-grammardef-suborigin-policy-option-1">3.6. The suborigin header</a> <a href="#ref-for-grammardef-suborigin-policy-option-2">(2)</a>
-    <li><a href="#ref-for-grammardef-suborigin-policy-option-3">6.5.1. Cookies</a>
-    <li><a href="#ref-for-grammardef-suborigin-policy-option-4">6.6. Security Model Opt-Outs</a>
+    <li><a href="#ref-for-grammardef-suborigin-policy-option-3">6.2.1. Cookies</a>
+    <li><a href="#ref-for-grammardef-suborigin-policy-option-4">6.3. Security Model Opt-Outs</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="grammardef-suborigin-policy-list">
@@ -2412,19 +2422,29 @@ the <a href="#unsafe-cookies">§6.6.3 'unsafe-cookies'</a> value.</p>
    <ul>
     <li><a href="#ref-for-suborigin-namespace-1">3. Defining a Suborigin</a> <a href="#ref-for-suborigin-namespace-2">(2)</a>
     <li><a href="#ref-for-suborigin-namespace-3">3.4. Representation of Suborigins</a> <a href="#ref-for-suborigin-namespace-4">(2)</a>
-    <li><a href="#ref-for-suborigin-namespace-5">6.5.1. Cookies</a> <a href="#ref-for-suborigin-namespace-6">(2)</a>
+    <li><a href="#ref-for-suborigin-namespace-5">6.1.2. Origin Tuple</a>
+    <li><a href="#ref-for-suborigin-namespace-6">6.2.1. Cookies</a> <a href="#ref-for-suborigin-namespace-7">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="suborigin-policy">
    <b><a href="#suborigin-policy">#suborigin-policy</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-suborigin-policy-1">6.6. Security Model Opt-Outs</a> <a href="#ref-for-suborigin-policy-2">(2)</a>
+    <li><a href="#ref-for-suborigin-policy-1">6.3. Security Model Opt-Outs</a> <a href="#ref-for-suborigin-policy-2">(2)</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="physical-origin">
+   <b><a href="#physical-origin">#physical-origin</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-physical-origin-1">3.4. Representation of Suborigins</a>
+    <li><a href="#ref-for-physical-origin-2">6.1.5. Comparing Physical Origins</a> <a href="#ref-for-physical-origin-3">(2)</a>
+    <li><a href="#ref-for-physical-origin-4">6.2.1. Cookies</a>
+    <li><a href="#ref-for-physical-origin-5">6.3.4. 'unsafe-credentials'</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="same-physical-origin">
    <b><a href="#same-physical-origin">#same-physical-origin</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-same-physical-origin-1">6.6.4. 'unsafe-credentials'</a>
+    <li><a href="#ref-for-same-physical-origin-1">6.3.4. 'unsafe-credentials'</a>
    </ul>
   </aside>
 <script>/* script-dfn-panel */
