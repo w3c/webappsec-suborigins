@@ -1363,7 +1363,7 @@ Possible extra rowspan handling
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Suborigins</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2016-10-23">23 October 2016</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2016-10-25">25 October 2016</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -2002,8 +2002,7 @@ otherwise.</p>
   management</a>:</p>
    <ul>
     <li data-md="">
-     <p>A <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document">Document</a></code> who has a non-empty <a data-link-type="dfn" href="#suborigin-namespace" id="ref-for-suborigin-namespace-6">suborigin namespace</a>, unless the <a data-link-type="grammar" href="#grammardef-suborigin-policy-option" id="ref-for-grammardef-suborigin-policy-option-3">suborigin-policy-option</a> for the <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document">Document</a></code> contains
-the <a href="#unsafe-cookies">§6.3.3 'unsafe-cookies'</a> value.</p>
+     <p>A <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document">Document</a></code> who has a non-empty <a data-link-type="dfn" href="#suborigin-namespace" id="ref-for-suborigin-namespace-6">suborigin namespace</a>, unless the <a data-link-type="grammar" href="#grammardef-suborigin-policy-option" id="ref-for-grammardef-suborigin-policy-option-3">suborigin-policy-option</a> for the <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document">Document</a></code>'s <a data-link-type="dfn" href="#suborigin-policy" id="ref-for-suborigin-policy-1">suborigin policy</a> contains the <a href="#unsafe-cookies">§6.3.3 'unsafe-cookies'</a> value.</p>
    </ul>
    <p>Modify the paragraph following this list to read "scheme/host/port/suborigin
   tuple" instead of "scheme/host/port tuple".</p>
@@ -2025,12 +2024,12 @@ the <a href="#unsafe-cookies">§6.3.3 'unsafe-cookies'</a> value.</p>
    <h3 class="heading settled" data-level="6.3" id="security-model-opt-outs"><span class="secno">6.3. </span><span class="content">Security Model Opt-Outs</span><a class="self-link" href="#security-model-opt-outs"></a></h3>
    <p>For backwards compatibility, Suborigins provide several opt-opts from the
   standard security model. A developer can choose to use these opt-outs by
-  specifying a <a data-link-type="dfn" href="#suborigin-policy" id="ref-for-suborigin-policy-1">suborigin policy</a> in <a href="#the-suborigin-header">the
+  specifying a <a data-link-type="dfn" href="#suborigin-policy" id="ref-for-suborigin-policy-2">suborigin policy</a> in <a href="#the-suborigin-header">the
   suborigin header</a></p>
    <p>Since these opt-outs weaken the security model of suborigins, developers SHOULD
   NOT use these options unless they are required to make their application work.</p>
    <p>The values of <a data-link-type="grammar" href="#grammardef-suborigin-policy-option" id="ref-for-grammardef-suborigin-policy-option-4">suborigin-policy-option</a> that may be
-  present in a <a data-link-type="dfn" href="#suborigin-policy" id="ref-for-suborigin-policy-2">suborigin policy</a> have the following effects:</p>
+  present in a <a data-link-type="dfn" href="#suborigin-policy" id="ref-for-suborigin-policy-3">suborigin policy</a> have the following effects:</p>
    <h4 class="heading settled" data-level="6.3.1" id="unsafe-postmessage-receive"><span class="secno">6.3.1. </span><span class="content"><code>'unsafe-postmessage-receive'</code></span><a class="self-link" href="#unsafe-postmessage-receive"></a></h4>
     When a message is sent <i>to</i> a
   frame with a <code>postMessage</code> <code>target</code> of a serialized physical origin, but not
@@ -2069,16 +2068,20 @@ the <a href="#unsafe-cookies">§6.3.3 'unsafe-cookies'</a> value.</p>
   to appear with the origin of the physical origin, in this case <code>https://example.com</code>.</p>
    </div>
    <h4 class="heading settled" data-level="6.3.3" id="unsafe-cookies"><span class="secno">6.3.3. </span><span class="content"><code>'unsafe-cookies'</code></span><a class="self-link" href="#unsafe-cookies"></a></h4>
-    When an execution context with a suborigin
-  namespace has a suborigin policy option of <code>unsafe-cookies</code> set, the
-  execution context should not have a fresh cookie jar for the suborigin
-  namespace, and instead, the cookie jar should be shared with the null
-  suborigin for the execution context. 
+    Normally, a <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document">Document</a></code> with a non-empty suborigin namespace is <a data-link-type="dfn" href="http://www.w3.org/TR/html51/dom.html#cookie-averse">cookie-averse</a>, which means that cookies cannot be read or written.
+  However, if the <a data-link-type="dfn" href="#suborigin-policy" id="ref-for-suborigin-policy-4">suborigin policy</a> contains the <code>unsafe-cookies</code> option,
+  the <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document">Document</a></code> is <em>not</em> made <a data-link-type="dfn" href="http://www.w3.org/TR/html51/dom.html#cookie-averse">cookie-averse</a>, which leaves
+  cookies readable and writable by the execution context. See <a href="#cookies">§6.2.1 Cookies</a> for
+  the precise definition of how this is defined. 
+   <p>Practically speaking, this means that code executing in this suborigin can
+  access and set cookies for any other suborigin at that <a data-link-type="dfn" href="#physical-origin" id="ref-for-physical-origin-5">physical origin</a>,
+  including the empty suborigin. Thus, this option SHOULD NOT be used if cookies
+  are security-sensitive in your application.</p>
    <p class="issue" id="issue-cb838d10"><a class="self-link" href="#issue-cb838d10"></a> TODO(devd): Write an example that makes clear that this is extremely
   dangerous and should not be used if you have Real Deal auth and csrf cookies
   used.</p>
    <h4 class="heading settled" data-level="6.3.4" id="unsafe-credentials"><span class="secno">6.3.4. </span><span class="content"><code>'unsafe-credentials'</code></span><a class="self-link" href="#unsafe-credentials"></a></h4>
-   <p>All cross-origin requests  to the <a data-link-type="dfn" href="#physical-origin" id="ref-for-physical-origin-5">physical origin</a> for the execution
+   <p>All cross-origin requests  to the <a data-link-type="dfn" href="#physical-origin" id="ref-for-physical-origin-6">physical origin</a> for the execution
   context will include <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#credentials">credentials</a> if the <code>'unsafe-credentials'</code> suborigin policy option for the execution context is set.</p>
    <p>Specifically, update the step 2 of <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#http-network-or-cache-fetch">HTTP-network-or-cache fetch</a> in the
   Fetch spec <a data-link-type="biblio" href="#biblio-fetch">[FETCH]</a> to read:</p>
@@ -2429,7 +2432,9 @@ the <a href="#unsafe-cookies">§6.3.3 'unsafe-cookies'</a> value.</p>
   <aside class="dfn-panel" data-for="suborigin-policy">
    <b><a href="#suborigin-policy">#suborigin-policy</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-suborigin-policy-1">6.3. Security Model Opt-Outs</a> <a href="#ref-for-suborigin-policy-2">(2)</a>
+    <li><a href="#ref-for-suborigin-policy-1">6.2.1. Cookies</a>
+    <li><a href="#ref-for-suborigin-policy-2">6.3. Security Model Opt-Outs</a> <a href="#ref-for-suborigin-policy-3">(2)</a>
+    <li><a href="#ref-for-suborigin-policy-4">6.3.3. 'unsafe-cookies'</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="physical-origin">
@@ -2438,7 +2443,8 @@ the <a href="#unsafe-cookies">§6.3.3 'unsafe-cookies'</a> value.</p>
     <li><a href="#ref-for-physical-origin-1">3.4. Representation of Suborigins</a>
     <li><a href="#ref-for-physical-origin-2">6.1.5. Comparing Physical Origins</a> <a href="#ref-for-physical-origin-3">(2)</a>
     <li><a href="#ref-for-physical-origin-4">6.2.1. Cookies</a>
-    <li><a href="#ref-for-physical-origin-5">6.3.4. 'unsafe-credentials'</a>
+    <li><a href="#ref-for-physical-origin-5">6.3.3. 'unsafe-cookies'</a>
+    <li><a href="#ref-for-physical-origin-6">6.3.4. 'unsafe-credentials'</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="same-physical-origin">

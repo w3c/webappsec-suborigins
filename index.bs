@@ -733,8 +733,8 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
   management</a>:
 
   * A {{Document}} who has a non-empty <a>suborigin namespace</a>, unless the <a
-    link-type="grammar">suborigin-policy-option</a> for the {{Document}} contains
-    the [[#unsafe-cookies]] value.
+    link-type="grammar">suborigin-policy-option</a> for the {{Document}}'s
+    <a>suborigin policy</a> contains the [[#unsafe-cookies]] value.
 
   Modify the paragraph following this list to read "scheme/host/port/suborigin
   tuple" instead of "scheme/host/port tuple".
@@ -821,11 +821,17 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
   </div>
 
   ### `'unsafe-cookies'` ### {#unsafe-cookies}
-  When an execution context with a suborigin
-  namespace has a suborigin policy option of `unsafe-cookies` set, the
-  execution context should not have a fresh cookie jar for the suborigin
-  namespace, and instead, the cookie jar should be shared with the null
-  suborigin for the execution context.
+  Normally, a {{Document}} with a non-empty suborigin namespace is
+  <a>cookie-averse</a>, which means that cookies cannot be read or written.
+  However, if the <a>suborigin policy</a> contains the `unsafe-cookies` option,
+  the {{Document}} is <em>not</em> made <a>cookie-averse</a>, which leaves
+  cookies readable and writable by the execution context. See [[#cookies]] for
+  the precise definition of how this is defined.
+
+  Practically speaking, this means that code executing in this suborigin can
+  access and set cookies for any other suborigin at that <a>physical origin</a>,
+  including the empty suborigin. Thus, this option SHOULD NOT be used if cookies
+  are security-sensitive in your application.
 
   Issue: TODO(devd): Write an example that makes clear that this is extremely
   dangerous and should not be used if you have Real Deal auth and csrf cookies
