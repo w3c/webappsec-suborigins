@@ -557,26 +557,26 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
   # Impact on Web Platform # {#impact}
 
   Content inside a suborigin namespace is restricted in the same way that other
-  origins are restricted. There are some additional restrictions as well, in order
-  to simplfy some complicated cases, and there are also some loosening of
-  same-origin restrctions in order to facilitate and ease adoption of suborigins
-  for developers.
+  origins are restricted. There are some additional restrictions as well, in
+  order to simplify some complicated cases.
 
-  ## Relationship with Sensitive Permissions ## {#sensitive-permissions}
+  ## Storage ## {#storage}
 
-  User agents MUST prevent a page running in a suborigin from accessing stateful
-  mechanisms (e.g., localStorage, sessionStorage, document.cookie) tied to the
-  parent, physical origin. Instead, the user agent SHOULD create a new object
-  tied to the namespaced suborigin.
+  The storage APIs, such as {{localStorage}} and {{sessionStorage}}, are
+  accessible from within suborigins. By nature of their APIs, they are bound to
+  the <a>origin</a> of the {{Document}}, which has the practical effect of
+  giving a separate {{Storage}} object to each <a>suborigin namespace</a>. Per
+  the definitions in {{localStorage}} and {{sessionStorage}}, the user agent
+  MUST provide separate {{Storage}} objects per <a>origin</a>, and thus per
+  <a>suborigin namespace</a>.
 
+  ## `document.domain` ## {#document-domain}
+
+  The {{document.domain}} property
   User agents MUST ignore modifications to the document.domain property of the
   page.
 
-  Issue: TODO: This section should probably be broken up. At the very least,
-  needs to be formalized. Maybe just stick with creating a new execution
-  context, and then carving out the weird exceptions?
-
-  ### Modifications to WebSockets ### {#websockets}
+  ### WebSockets ### {#websockets}
 
   The <a
   href="https://www.w3.org/TR/websockets/#the-websocket-interface">`WebSocket()`

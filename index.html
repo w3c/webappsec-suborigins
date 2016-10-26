@@ -1460,10 +1460,11 @@ boundary between this resource and resources in other namespaces.</p>
     <li>
      <a href="#impact"><span class="secno">5</span> <span class="content">Impact on Web Platform</span></a>
      <ol class="toc">
+      <li><a href="#storage"><span class="secno">5.1</span> <span class="content">Storage</span></a>
       <li>
-       <a href="#sensitive-permissions"><span class="secno">5.1</span> <span class="content">Relationship with Sensitive Permissions</span></a>
+       <a href="#document-domain"><span class="secno">5.2</span> <span class="content"><code>document.domain</code></span></a>
        <ol class="toc">
-        <li><a href="#websockets"><span class="secno">5.1.1</span> <span class="content">Modifications to WebSockets</span></a>
+        <li><a href="#websockets"><span class="secno">5.2.1</span> <span class="content">WebSockets</span></a>
        </ol>
      </ol>
     <li>
@@ -1863,21 +1864,20 @@ This includes providing security-model opt-outs where necessary.</p>
   a page not in a suborigin.</p>
    <h2 class="heading settled" data-level="5" id="impact"><span class="secno">5. </span><span class="content">Impact on Web Platform</span><a class="self-link" href="#impact"></a></h2>
    <p>Content inside a suborigin namespace is restricted in the same way that other
-  origins are restricted. There are some additional restrictions as well, in order
-  to simplfy some complicated cases, and there are also some loosening of
-  same-origin restrctions in order to facilitate and ease adoption of suborigins
-  for developers.</p>
-   <h3 class="heading settled" data-level="5.1" id="sensitive-permissions"><span class="secno">5.1. </span><span class="content">Relationship with Sensitive Permissions</span><a class="self-link" href="#sensitive-permissions"></a></h3>
-   <p>User agents MUST prevent a page running in a suborigin from accessing stateful
-  mechanisms (e.g., localStorage, sessionStorage, document.cookie) tied to the
-  parent, physical origin. Instead, the user agent SHOULD create a new object
-  tied to the namespaced suborigin.</p>
-   <p>User agents MUST ignore modifications to the document.domain property of the
+  origins are restricted. There are some additional restrictions as well, in
+  order to simplify some complicated cases.</p>
+   <h3 class="heading settled" data-level="5.1" id="storage"><span class="secno">5.1. </span><span class="content">Storage</span><a class="self-link" href="#storage"></a></h3>
+   <p>The storage APIs, such as <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/webstorage.html#dom-localstorage">localStorage</a></code> and <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/webstorage.html#dom-sessionstorage">sessionStorage</a></code>, are
+  accessible from within suborigins. By nature of their APIs, they are bound to
+  the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#concept-origin">origin</a> of the <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document">Document</a></code>, which has the practical effect of
+  giving a separate <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/webstorage.html#storage-2">Storage</a></code> object to each <a data-link-type="dfn" href="#suborigin-namespace" id="ref-for-suborigin-namespace-5">suborigin namespace</a>. Per
+  the definitions in <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/webstorage.html#dom-localstorage">localStorage</a></code> and <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/webstorage.html#dom-sessionstorage">sessionStorage</a></code>, the user agent
+  MUST provide separate <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/webstorage.html#storage-2">Storage</a></code> objects per <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#concept-origin">origin</a>, and thus per <a data-link-type="dfn" href="#suborigin-namespace" id="ref-for-suborigin-namespace-6">suborigin namespace</a>.</p>
+   <h3 class="heading settled" data-level="5.2" id="document-domain"><span class="secno">5.2. </span><span class="content"><code>document.domain</code></span><a class="self-link" href="#document-domain"></a></h3>
+   <p>The <code class="idl"><a data-link-type="idl">document.domain</a></code> property
+  User agents MUST ignore modifications to the document.domain property of the
   page.</p>
-   <p class="issue" id="issue-73e47fd0"><a class="self-link" href="#issue-73e47fd0"></a> TODO: This section should probably be broken up. At the very least,
-  needs to be formalized. Maybe just stick with creating a new execution
-  context, and then carving out the weird exceptions?</p>
-   <h4 class="heading settled" data-level="5.1.1" id="websockets"><span class="secno">5.1.1. </span><span class="content">Modifications to WebSockets</span><a class="self-link" href="#websockets"></a></h4>
+   <h4 class="heading settled" data-level="5.2.1" id="websockets"><span class="secno">5.2.1. </span><span class="content">WebSockets</span><a class="self-link" href="#websockets"></a></h4>
    <p>The <a href="https://www.w3.org/TR/websockets/#the-websocket-interface"><code>WebSocket()</code> constructor algrithm</a> <a data-link-type="biblio" href="#biblio-websockets">[WebSockets]</a> is modified as follows:</p>
    <p>After  the current step 1, perform the following step:</p>
    <ol start="2">
@@ -1910,7 +1910,7 @@ This includes providing security-model opt-outs where necessary.</p>
     <li data-md="">
      <p>A domain (null or a <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-domain">domain</a>). Null unless stated otherwise.</p>
     <li data-md="">
-     <p>A suborigin (a <a data-link-type="dfn" href="#suborigin-namespace" id="ref-for-suborigin-namespace-5">suborigin namespace</a>). The empty string unless stated
+     <p>A suborigin (a <a data-link-type="dfn" href="#suborigin-namespace" id="ref-for-suborigin-namespace-7">suborigin namespace</a>). The empty string unless stated
 otherwise.</p>
    </ul>
    <h4 class="heading settled" data-level="6.1.3" id="physical-origin-concept"><span class="secno">6.1.3. </span><span class="content">Physical Origin</span><a class="self-link" href="#physical-origin-concept"></a></h4>
@@ -1996,7 +1996,7 @@ otherwise.</p>
   management</a>:</p>
    <ul>
     <li data-md="">
-     <p>A <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document">Document</a></code> who has a non-empty <a data-link-type="dfn" href="#suborigin-namespace" id="ref-for-suborigin-namespace-6">suborigin namespace</a>, unless the <a data-link-type="grammar" href="#grammardef-suborigin-policy-option" id="ref-for-grammardef-suborigin-policy-option-3">suborigin-policy-option</a> for the <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document">Document</a></code>'s <a data-link-type="dfn" href="#suborigin-policy" id="ref-for-suborigin-policy-1">suborigin policy</a> contains the <a href="#unsafe-cookies">§6.3.3 'unsafe-cookies'</a> value.</p>
+     <p>A <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document">Document</a></code> who has a non-empty <a data-link-type="dfn" href="#suborigin-namespace" id="ref-for-suborigin-namespace-8">suborigin namespace</a>, unless the <a data-link-type="grammar" href="#grammardef-suborigin-policy-option" id="ref-for-grammardef-suborigin-policy-option-3">suborigin-policy-option</a> for the <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document">Document</a></code>'s <a data-link-type="dfn" href="#suborigin-policy" id="ref-for-suborigin-policy-1">suborigin policy</a> contains the <a href="#unsafe-cookies">§6.3.3 'unsafe-cookies'</a> value.</p>
    </ul>
    <p>Modify the paragraph following this list to read "scheme/host/port/suborigin
   tuple" instead of "scheme/host/port tuple".</p>
@@ -2009,7 +2009,7 @@ otherwise.</p>
    </ol>
    <p class="note" role="note">Note: A <a data-link-type="dfn" href="http://www.w3.org/TR/html51/dom.html#cookie-averse">cookie-averse</a> <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document">Document</a></code> object has the property that direct
   access to <code>document.cookie</code> returns the empty string, and assigning to <code>document.cookie</code> has no effect whatsoever. However, that network cookies are
-  not affected and documents with different <a data-link-type="dfn" href="#suborigin-namespace" id="ref-for-suborigin-namespace-7">suborigin namespaces</a> on the
+  not affected and documents with different <a data-link-type="dfn" href="#suborigin-namespace" id="ref-for-suborigin-namespace-9">suborigin namespaces</a> on the
   same <a data-link-type="dfn" href="#physical-origin" id="ref-for-physical-origin-4">physical origin</a> share the same cookies on the network.</p>
    <p class="note" role="note">Note: For practical purposes, this means that a developer cannot use <code>document.cookie</code> directly because assignment and reading of the object are both
   no-ops. However, a <a data-link-type="dfn" href="http://www.w3.org/TR/html51/dom.html#cookie-averse">cookie-averse</a> <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document">Document</a></code> may
@@ -2234,14 +2234,17 @@ otherwise.</p>
    <li>
     <a data-link-type="biblio">[HTML]</a> defines the following terms:
     <ul>
+     <li><a href="https://html.spec.whatwg.org/multipage/webstorage.html#storage-2">Storage</a>
      <li><a href="https://html.spec.whatwg.org/multipage/#ascii-serialisation-of-an-origin">ascii serialization of an origin</a>
      <li><a href="https://html.spec.whatwg.org/multipage/#attr-meta-http-equiv-set-cookie">cookie setter</a>
      <li><a href="https://html.spec.whatwg.org/multipage/comms.html#environment-settings-object">environment settings object</a>
+     <li><a href="https://html.spec.whatwg.org/multipage/webstorage.html#dom-localstorage">localStorage</a>
      <li><a href="https://html.spec.whatwg.org/multipage/#concept-origin">origin</a>
      <li><a href="https://html.spec.whatwg.org/multipage/#concept-origin-tuple">origin tuple</a>
      <li><a href="https://html.spec.whatwg.org/multipage/comms.html#dom-messageport-postmessage">postmessage</a>
      <li><a href="https://html.spec.whatwg.org/multipage/browsers.html#same-origin">same origin</a>
      <li><a href="https://html.spec.whatwg.org/multipage/#same-origin">same-origin</a>
+     <li><a href="https://html.spec.whatwg.org/multipage/webstorage.html#dom-sessionstorage">sessionStorage</a>
      <li><a href="https://html.spec.whatwg.org/multipage/#concept-origin-tuple">tuple origin</a>
      <li><a href="https://html.spec.whatwg.org/multipage/#unicode-serialisation-of-an-origin">unicode serialization of an origin</a>
     </ul>
@@ -2345,9 +2348,6 @@ otherwise.</p>
   Opera don’t allow creation of workers from sandbox’d iframes/the 'null'
   origin, but not sure if this formalized in a spec. If it is, should probably
   just update whatever disallows creation from sandbox.<a href="#issue-defb3871"> ↵ </a></div>
-   <div class="issue"> TODO: This section should probably be broken up. At the very least,
-  needs to be formalized. Maybe just stick with creating a new execution
-  context, and then carving out the weird exceptions?<a href="#issue-73e47fd0"> ↵ </a></div>
    <div class="issue"> TODO(devd): Write an example that makes clear that this is extremely
   dangerous and should not be used if you have Real Deal auth and csrf cookies
   used.<a href="#issue-cb838d10"> ↵ </a></div>
@@ -2392,7 +2392,7 @@ otherwise.</p>
   <aside class="dfn-panel" data-for="suborigin">
    <b><a href="#suborigin">#suborigin</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-suborigin-1">5.1.1. Modifications to WebSockets</a>
+    <li><a href="#ref-for-suborigin-1">5.2.1. WebSockets</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="grammardef-suborigin-name">
@@ -2420,8 +2420,9 @@ otherwise.</p>
    <ul>
     <li><a href="#ref-for-suborigin-namespace-1">3. Defining a Suborigin</a> <a href="#ref-for-suborigin-namespace-2">(2)</a>
     <li><a href="#ref-for-suborigin-namespace-3">3.4. Representation of Suborigins</a> <a href="#ref-for-suborigin-namespace-4">(2)</a>
-    <li><a href="#ref-for-suborigin-namespace-5">6.1.2. Origin Tuple</a>
-    <li><a href="#ref-for-suborigin-namespace-6">6.2.1. Cookies</a> <a href="#ref-for-suborigin-namespace-7">(2)</a>
+    <li><a href="#ref-for-suborigin-namespace-5">5.1. Storage</a> <a href="#ref-for-suborigin-namespace-6">(2)</a>
+    <li><a href="#ref-for-suborigin-namespace-7">6.1.2. Origin Tuple</a>
+    <li><a href="#ref-for-suborigin-namespace-8">6.2.1. Cookies</a> <a href="#ref-for-suborigin-namespace-9">(2)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="suborigin-policy">
