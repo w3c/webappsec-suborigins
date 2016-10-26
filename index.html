@@ -1363,7 +1363,7 @@ Possible extra rowspan handling
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Suborigins</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2016-10-25">25 October 2016</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2016-10-26">26 October 2016</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1472,7 +1472,7 @@ boundary between this resource and resources in other namespaces.</p>
       <li>
        <a href="#origin-updates"><span class="secno">6.1</span> <span class="content">Updates to Origin</span></a>
        <ol class="toc">
-        <li><a href="#suborigin-of-resource"><span class="secno">6.1.1</span> <span class="content">Suborigin of a Resource</span></a>
+        <li><a href="#suborigin-of-response"><span class="secno">6.1.1</span> <span class="content">Suborigin of a Response</span></a>
         <li><a href="#origin-tuple"><span class="secno">6.1.2</span> <span class="content">Origin Tuple</span></a>
         <li><a href="#physical-origin-concept"><span class="secno">6.1.3</span> <span class="content">Physical Origin</span></a>
         <li><a href="#comparing-origins"><span class="secno">6.1.4</span> <span class="content">Comparing Origins</span></a>
@@ -1749,23 +1749,26 @@ This includes providing security-model opt-outs where necessary.</p>
   simply provide <em>an additional way to construct Origins</em>. That is,
   Suborigins do not supercede Origins or provide any additional authority above
   Origins. From the user agent’s  perspective, two resources in different
-  Suborigins are simply in different Origins, and the relationship between the two
-  resources should be the same as any other two differing origins as described in <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a>. However, given the impracticalities this may impart on some
-  applications who might want to adopt Suborigins, a few security-model opt-outs
-  to ease the use of Suborigins in legacy applications are also presented. See <a href="#security-model-opt-outs">§6.3 Security Model Opt-Outs</a> for more information.</p>
+  Suborigins are simply in different Origins, and the relationship between the
+  two resources should be the same as any other two differing origins as
+  described in <a href="https://html.spec.whatwg.org/multipage/#origin">HTML Standard §origin</a> and <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a>. However, given the
+  impracticalities this may impart on some applications who might want to adopt
+  Suborigins, a few security-model opt-outs to ease the use of Suborigins in
+  legacy applications are also presented. See <a href="#security-model-opt-outs">§6.3 Security Model Opt-Outs</a> for
+  more information.</p>
    <p class="issue" id="issue-9c923902"><a class="self-link" href="#issue-9c923902"></a> TODO: Figure out if this all will require updates to the HTML spec’s
   origin definition.</p>
    <h3 class="heading settled" data-level="3.4" id="representation"><span class="secno">3.4. </span><span class="content">Representation of Suborigins</span><a class="self-link" href="#representation"></a></h3>
-   <p>At an abstract level, a suborigin consists of the <a data-link-type="dfn" href="#physical-origin" id="ref-for-physical-origin-1">physical origin</a>,
-  which is a <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-scheme">scheme</a>, <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-host">host</a>, and <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-port">port</a>, plus a <a data-link-type="dfn" href="#suborigin-namespace" id="ref-for-suborigin-namespace-3">suborigin
-  namespace</a>.  However, as mentioned above, suborigins are intended to fit
-  within the framework of <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a>.  Therefore, this specification provides a
-  way of serializing a Suborigin bound resource into a physical origin. This is
-  done by inserting the suborigin namespace into the host of the Origin, thus
-  creating a new host but maintaining all of the information about both the
-  original scheme, host, port, and the suborigin namespace. The serialization
-  format appends the string "-so" to the scheme and prepends the host name with
-  the suborigin namespace followed by a "." character.</p>
+   <p>At an abstract level, a suborigin consists of the <a data-link-type="dfn" href="#physical-origin" id="ref-for-physical-origin-1">physical
+  origin</a>, which is a <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-scheme">scheme</a>, <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-host">host</a>, and <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-port">port</a>, plus a <a data-link-type="dfn" href="#suborigin-namespace" id="ref-for-suborigin-namespace-3">suborigin namespace</a>.  However, as mentioned above, suborigins are
+  intended to fit within the framework of <a href="https://html.spec.whatwg.org/multipage/#origin">HTML Standard §origin</a> and <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a>.
+  Therefore, this specification provides a way of serializing a Suborigin bound
+  resource into a physical origin. This is done by inserting the suborigin
+  namespace into the host of the Origin, thus creating a new host but
+  maintaining all of the information about both the original scheme, host, port,
+  and the suborigin namespace. The serialization format appends the string "-so"
+  to the scheme and prepends the host name with the suborigin namespace followed
+  by a "." character.</p>
    <p>For example, a resource hosted at <code>https://example.com/</code> in
   the suborigin namespace <code>profile</code> would be serialized as <code>https-so://profile.example.com/</code>.</p>
    <p>Similarly, a resource hosted at <code>https://example.com:8080/</code> in
@@ -1825,10 +1828,11 @@ This includes providing security-model opt-outs where necessary.</p>
    <h3 class="heading settled" data-level="4.1" id="cors-ac"><span class="secno">4.1. </span><span class="content">CORS</span><a class="self-link" href="#cors-ac"></a></h3>
    <p>For pages in a suborigin namespace, all <a data-link-type="dfn" href="#xmlhttprequest" id="ref-for-xmlhttprequest-1"><code>XMLHttpRequest</code></a>s and <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-fetch"><code>fetch</code></a> requests to any URL should be treated as cross-origin, thus
   triggering a <a data-link-type="dfn" href="https://www.w3.org/TR/cors#cross-origin-request-with-preflight-0">cross-origin request with preflight</a> for all non-<a data-link-type="dfn" href="https://www.w3.org/TR/cors#simple-cross-origin-request">simple
-  cross-origin requests</a>. Additionally, all requests from a suborigin namespace
-  must include a <code>Suborigin</code> header whose value is the context’s suborigin name.
-  Finally, the <code>Origin</code> header <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a> value must use the serialized suborigin
-  value instead of the serializied origin, as described in <a href="#serializing">§6.1.6 Serializing Suborigins</a>.</p>
+  cross-origin requests</a>. Additionally, all requests from a suborigin
+  namespace must include a <code>Suborigin</code> header whose value is the context’s
+  suborigin name.  Finally, the <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#origin-header"><code>Origin</code> header</a> <a data-link-type="biblio" href="#biblio-fetch">[FETCH]</a> value must use
+  the serialized suborigin value instead of the serialized origin, as described
+  in <a href="#serializing">§6.1.6 Serializing Suborigins</a>.</p>
    <p>Similar changes are needed for responses from the server with the addition of an <code>Access-Control-Allow-Suborigin</code> response header. Its value must match the
   context’s suborigin namespace value, or <code>*</code> to allow all suborigin namespaces.
   At the same time, the <code>Access-Control-Allow-Origin</code> response header value must
@@ -1889,20 +1893,10 @@ This includes providing security-model opt-outs where necessary.</p>
    <h3 class="heading settled" data-level="6.1" id="origin-updates"><span class="secno">6.1. </span><span class="content">Updates to Origin</span><a class="self-link" href="#origin-updates"></a></h3>
    <p>Suborigins extends the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#concept-origin">origin</a> concept. The following sections define
   how this extension works.</p>
-   <h4 class="heading settled" data-level="6.1.1" id="suborigin-of-resource"><span class="secno">6.1.1. </span><span class="content">Suborigin of a Resource</span><a class="self-link" href="#suborigin-of-resource"></a></h4>
-   <p>TODO (jww): This should be updated in terms of HTML and how origins are obtained
-  there.</p>
-   <p>The suborigin of a resource is the value computed by the following algorithm:</p>
-   <ol>
-    <li> Let origin be the triple result from starting with step 1 of Section 4 of
-      the <a href="https://tools.ietf.org/html/rfc6454#section-4">Section 4</a> of
-      of the Origin specification. <a data-link-type="biblio" href="#biblio-rfc6454">[RFC6454]</a> 
-    <li> If the HTTP response of the resource contains a valid
-      [suborigin] header, then let <code>suborigin-namespace</code> be the
-      value of the header. 
-    <li> Otherwise, let <code>suborigin-namespace</code> be <code>null</code>. 
-    <li> Return the pair <code>(origin, suborigin-namespace)</code>. 
-   </ol>
+   <h4 class="heading settled" data-level="6.1.1" id="suborigin-of-response"><span class="secno">6.1.1. </span><span class="content">Suborigin of a Response</span><a class="self-link" href="#suborigin-of-response"></a></h4>
+   <p>TODO: This needs update Fetch to change the origin of response. Maybe just
+  need to make sure that response’s URL has the suborigin serialized?a
+  https://fetch.spec.whatwg.org/#responses</p>
    <h4 class="heading settled" data-level="6.1.2" id="origin-tuple"><span class="secno">6.1.2. </span><span class="content">Origin Tuple</span><a class="self-link" href="#origin-tuple"></a></h4>
    <p>Update the definition of <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#concept-origin-tuple">tuple origin</a> in the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#concept-origin">origin</a> section of <a data-link-type="biblio" href="#biblio-html">[HTML]</a> to read:</p>
    <p>A tuple consists of:</p>
@@ -2234,6 +2228,7 @@ otherwise.</p>
      <li><a href="https://fetch.spec.whatwg.org#concept-request-current-url">current url</a>
      <li><a href="https://fetch.spec.whatwg.org#concept-fetch">fetch</a>
      <li><a href="https://fetch.spec.whatwg.org#http-network-or-cache-fetch">http-network-or-cache fetch</a>
+     <li><a href="https://fetch.spec.whatwg.org#origin-header">origin header</a>
      <li><a href="https://fetch.spec.whatwg.org#concept-request-origin">request origin</a>
     </ul>
    <li>
@@ -2295,8 +2290,6 @@ otherwise.</p>
    <dd>S. Bradner. <a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>. March 1997. Best Current Practice. URL: <a href="https://tools.ietf.org/html/rfc2119">https://tools.ietf.org/html/rfc2119</a>
    <dt id="biblio-rfc5234">[RFC5234]
    <dd>D. Crocker, Ed.; P. Overell. <a href="https://tools.ietf.org/html/rfc5234">Augmented BNF for Syntax Specifications: ABNF</a>. January 2008. Internet Standard. URL: <a href="https://tools.ietf.org/html/rfc5234">https://tools.ietf.org/html/rfc5234</a>
-   <dt id="biblio-rfc6454">[RFC6454]
-   <dd>A. Barth. <a href="https://tools.ietf.org/html/rfc6454">The Web Origin Concept</a>. December 2011. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc6454">https://tools.ietf.org/html/rfc6454</a>
    <dt id="biblio-unicode6">[Unicode6]
    <dd>The Unicode Consortium. <a href="http://www.unicode.org/versions/Unicode6.2.0/">The Unicode Standard, Version 6.2.0</a>. URL: <a href="http://www.unicode.org/versions/Unicode6.2.0/">http://www.unicode.org/versions/Unicode6.2.0/</a>
    <dt id="biblio-websockets">[WebSockets]
@@ -2318,6 +2311,8 @@ otherwise.</p>
    <dd>Mike West. <a href="http://www.html5rocks.com/en/tutorials/security/sandboxed-iframes/">Play safely in sandboxed IFrames</a>. URL: <a href="http://www.html5rocks.com/en/tutorials/security/sandboxed-iframes/">http://www.html5rocks.com/en/tutorials/security/sandboxed-iframes/</a>
    <dt id="biblio-privilegeseparation">[PRIVILEGESEPARATION]
    <dd>Devdatta Akhawe; Prateek Saxena; Dawn Song. <a href="https://www.usenix.org/system/files/conference/usenixsecurity12/sec12-final168.pdf">Privilege Separation in HTML5 Applications</a>. URL: <a href="https://www.usenix.org/system/files/conference/usenixsecurity12/sec12-final168.pdf">https://www.usenix.org/system/files/conference/usenixsecurity12/sec12-final168.pdf</a>
+   <dt id="biblio-rfc6454">[RFC6454]
+   <dd>A. Barth. <a href="https://tools.ietf.org/html/rfc6454">The Web Origin Concept</a>. December 2011. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc6454">https://tools.ietf.org/html/rfc6454</a>
   </dl>
   <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
