@@ -559,13 +559,13 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
 
   ## Storage ## {#storage}
 
-  The storage APIs, such as <a>localStorage</a> and <a>sessionStorage</a>, are
+  The storage APIs, such as {{localStorage}} and {{sessionStorage}}, are
   accessible from within suborigins. By nature of their APIs, they are bound to
   the <a>origin</a> of the {{Document}}, which has the practical effect of
-  giving a separate {{Storage}} object to each <a>suborigin namespace</a>.
-
-  Issue: TODO: Should this storage section be dropped completely or at least
-  made non-normative, since it's really just informational?
+  giving a separate {{Storage}} object to each <a>suborigin namespace</a>. Per
+  the definitions in {{localStorage}} and {{sessionStorage}}, the user agent
+  MUST provide separate {{Storage}} objects per <a>origin</a>, and thus per
+  <a>suborigin namespace</a>.
 
   ## `document.domain` ## {#document-domain}
 
