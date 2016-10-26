@@ -46,6 +46,7 @@ spec: Fetch; urlPrefix: https://fetch.spec.whatwg.org
     text: credentials mode; url: concept-request-credentials-mode
     text: current url; url:#concept-request-current-url
     text: fetch; url: concept-fetch
+    text: Origin header; url: origin-header
     text: request; url: concept-request
     text: request origin; url: concept-request-origin
     text: response type; url: concept-response-type
@@ -391,29 +392,30 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
   simply provide <em>an additional way to construct Origins</em>. That is,
   Suborigins do not supercede Origins or provide any additional authority above
   Origins. From the user agent's  perspective, two resources in different
-  Suborigins are simply in different Origins, and the relationship between the two
-  resources should be the same as any other two differing origins as described in
-  [[!RFC6454]]. However, given the impracticalities this may impart on some
-  applications who might want to adopt Suborigins, a few security-model opt-outs
-  to ease the use of Suborigins in legacy applications are also presented. See
-  [[#security-model-opt-outs]] for more information.
+  Suborigins are simply in different Origins, and the relationship between the
+  two resources should be the same as any other two differing origins as
+  described in [[HTML#origin]] and [[RFC6454]]. However, given the
+  impracticalities this may impart on some applications who might want to adopt
+  Suborigins, a few security-model opt-outs to ease the use of Suborigins in
+  legacy applications are also presented. See [[#security-model-opt-outs]] for
+  more information.
 
   Issue: TODO: Figure out if this all will require updates to the HTML spec's
   origin definition.
 
   ## Representation of Suborigins ## {#representation}
 
-  At an abstract level, a suborigin consists of the
-  <a link-type="dfn">physical origin</a>,
-  which is a <a>scheme</a>, <a>host</a>, and <a>port</a>, plus a <a>suborigin
-  namespace</a>.  However, as mentioned above, suborigins are intended to fit
-  within the framework of [[!RFC6454]].  Therefore, this specification provides a
-  way of serializing a Suborigin bound resource into a physical origin. This is
-  done by inserting the suborigin namespace into the host of the Origin, thus
-  creating a new host but maintaining all of the information about both the
-  original scheme, host, port, and the suborigin namespace. The serialization
-  format appends the string "-so" to the scheme and prepends the host name with
-  the suborigin namespace followed by a "." character.
+  At an abstract level, a suborigin consists of the <a link-type="dfn">physical
+  origin</a>, which is a <a>scheme</a>, <a>host</a>, and <a>port</a>, plus a
+  <a>suborigin namespace</a>.  However, as mentioned above, suborigins are
+  intended to fit within the framework of [[HTML#origin]] and [[RFC6454]].
+  Therefore, this specification provides a way of serializing a Suborigin bound
+  resource into a physical origin. This is done by inserting the suborigin
+  namespace into the host of the Origin, thus creating a new host but
+  maintaining all of the information about both the original scheme, host, port,
+  and the suborigin namespace. The serialization format appends the string "-so"
+  to the scheme and prepends the host name with the suborigin namespace followed
+  by a "." character.
 
   For example, a resource hosted at `https://example.com/` in
   the suborigin namespace `profile` would be serialized as
@@ -504,10 +506,11 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
   For pages in a suborigin namespace, all <a>`XMLHttpRequest`</a>s and
   <a>`fetch`</a> requests to any URL should be treated as cross-origin, thus
   triggering a <a>cross-origin request with preflight</a> for all non-<a>simple
-  cross-origin requests</a>. Additionally, all requests from a suborigin namespace
-  must include a `Suborigin` header whose value is the context's suborigin name.
-  Finally, the `Origin` header [[!RFC6454]] value must use the serialized suborigin
-  value instead of the serializied origin, as described in [[#serializing]].
+  cross-origin requests</a>. Additionally, all requests from a suborigin
+  namespace must include a `Suborigin` header whose value is the context's
+  suborigin name.  Finally, the <a>`Origin` header</a> [[!FETCH]] value must use
+  the serialized suborigin value instead of the serialized origin, as described
+  in [[#serializing]].
 
   Similar changes are needed for responses from the server with the addition of an
   `Access-Control-Allow-Suborigin` response header. Its value must match the
@@ -601,36 +604,11 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
   Suborigins extends the <a>origin</a> concept. The following sections define
   how this extension works.
 
-  ### Suborigin of a Resource ### {#suborigin-of-resource}
+  ### Suborigin of a Response ### {#suborigin-of-response}
 
-  TODO (jww): This should be updated in terms of HTML and how origins are obtained
-  there.
-
-  The suborigin of a resource is the value computed by the following algorithm:
-
-  <ol>
-
-    <li>
-      Let origin be the triple result from starting with step 1 of Section 4 of
-      the <a href="https://tools.ietf.org/html/rfc6454#section-4">Section 4</a> of
-      of the Origin specification. [[!RFC6454]]
-    </li>
-
-    <li>
-      If the HTTP response of the resource contains a valid
-      [suborigin] header, then let `suborigin-namespace` be the
-      value of the header.
-    </li>
-
-    <li>
-      Otherwise, let `suborigin-namespace` be `null`.
-    </li>
-
-    <li>
-      Return the pair `(origin, suborigin-namespace)`.
-    </li>
-
-  </ol>
+  TODO: This needs update Fetch to change the origin of response. Maybe just
+  need to make sure that response's URL has the suborigin serialized?a
+  https://fetch.spec.whatwg.org/#responses
 
   ### Origin Tuple ### {#origin-tuple}
 
