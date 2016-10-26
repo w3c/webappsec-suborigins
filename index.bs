@@ -576,7 +576,7 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
   User agents MUST ignore modifications to the document.domain property of the
   page.
 
-  ### WebSockets ### {#websockets}
+  ## WebSockets ## {#websockets}
 
   The <a
   href="https://www.w3.org/TR/websockets/#the-websocket-interface">`WebSocket()`

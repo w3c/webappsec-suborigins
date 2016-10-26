@@ -1461,11 +1461,8 @@ boundary between this resource and resources in other namespaces.</p>
      <a href="#impact"><span class="secno">5</span> <span class="content">Impact on Web Platform</span></a>
      <ol class="toc">
       <li><a href="#storage"><span class="secno">5.1</span> <span class="content">Storage</span></a>
-      <li>
-       <a href="#document-domain"><span class="secno">5.2</span> <span class="content"><code>document.domain</code></span></a>
-       <ol class="toc">
-        <li><a href="#websockets"><span class="secno">5.2.1</span> <span class="content">WebSockets</span></a>
-       </ol>
+      <li><a href="#document-domain"><span class="secno">5.2</span> <span class="content"><code>document.domain</code></span></a>
+      <li><a href="#websockets"><span class="secno">5.3</span> <span class="content">WebSockets</span></a>
      </ol>
     <li>
      <a href="#framework"><span class="secno">6</span> <span class="content">Framework</span></a>
@@ -1877,7 +1874,7 @@ This includes providing security-model opt-outs where necessary.</p>
    <p>The <code class="idl"><a data-link-type="idl">document.domain</a></code> property
   User agents MUST ignore modifications to the document.domain property of the
   page.</p>
-   <h4 class="heading settled" data-level="5.2.1" id="websockets"><span class="secno">5.2.1. </span><span class="content">WebSockets</span><a class="self-link" href="#websockets"></a></h4>
+   <h3 class="heading settled" data-level="5.3" id="websockets"><span class="secno">5.3. </span><span class="content">WebSockets</span><a class="self-link" href="#websockets"></a></h3>
    <p>The <a href="https://www.w3.org/TR/websockets/#the-websocket-interface"><code>WebSocket()</code> constructor algrithm</a> <a data-link-type="biblio" href="#biblio-websockets">[WebSockets]</a> is modified as follows:</p>
    <p>After  the current step 1, perform the following step:</p>
    <ol start="2">
@@ -2392,7 +2389,7 @@ otherwise.</p>
   <aside class="dfn-panel" data-for="suborigin">
    <b><a href="#suborigin">#suborigin</a></b><b>Referenced in:</b>
    <ul>
-    <li><a href="#ref-for-suborigin-1">5.2.1. WebSockets</a>
+    <li><a href="#ref-for-suborigin-1">5.3. WebSockets</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="grammardef-suborigin-name">
