@@ -461,7 +461,7 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
   grammar [[!RFC5234]]:
 
   <pre dfn-type="grammar" link-type="grammar">
-      <dfn>suborigin-name</dfn> = 1*( <a>LOWERALPHA</a> / <a>DIGIT</a> / "-" )
+      <dfn>suborigin-name</dfn> = <a>LOWERALPHA</a> *( <a>LOWERALPHA</a> / <a>DIGIT</a> )
       <dfn>suborigin-policy-option</dfn> = "'unsafe-postmessage-send'"
                                 / "'unsafe-postmessage-receive'"
                                 / "'unsafe-cookies'"
@@ -478,6 +478,12 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
   A resource's <dfn>suborigin policy</dfn> is the list of individual
   <a link-type="grammar">suborigin-policy-option</a> values in the `suborigin`
   header's  <a link-type="grammar">suborigin-policy-list</a>.
+
+  Note: A suborigin name must start with a lowercase character, but after the
+  first character, the name may contain lowercase characters or numerals. This
+  is to avoid potential confusion when the origin is serialized if the
+  serialization started with a number.
+
   ## Accessing the Suborigin in JavaScript ## {#suborigin-in-js}
 
   A `suborigin` property is added to the <a>document</a> object which
