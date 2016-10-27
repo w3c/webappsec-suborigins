@@ -400,9 +400,6 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
   legacy applications are also presented. See [[#security-model-opt-outs]] for
   more information.
 
-  Issue: TODO: Figure out if this all will require updates to the HTML spec's
-  origin definition.
-
   ## Representation of Suborigins ## {#representation}
 
   At an abstract level, a suborigin consists of the <a link-type="dfn">physical
