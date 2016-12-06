@@ -130,7 +130,7 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
   Per-page Suborigins is an attempt to fill some of those gaps. Two of the most
   notable mechanisms are Sandboxed IFrames [[IFrameSandbox]] and Content Security
   Policy (CSP) [[CSP2]]. Both are powerful but have shortcomings and there are
-  many external developers building legacy applications that find they cannot use
+  external developers building legacy applications that find they cannot use
   those tools.
 
   Application developers can use sandboxed frames to completely isolate untrusted content, but they
@@ -152,24 +152,25 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
   a new section.
 
   Content Security Policy is also promising but is generally incompatible with
-  current website design. Many notable companies found it impractical to retrofit
-  most of their applications with it. On top of this, until all applications
+  current website design. Developers and security teams have found it impractical to retrofit
+  legacy applications with it. On top of this, until all applications
   hosted within a single origin are simultaneously put behind CSP, the mechanism
   offers limited incremental benefits, which is especially problematic for
   companies with large portfolios of disparate products all under the same domain.
 
   ## Goals ## {#goals}
 
-  * Provide a way for different applications hosted at the same physical origin to
-    separate their content into separate logical origins. For example,
+  * Provide a way for different applications hosted on a single physical origin to
+    isolate these into separate logical origins. For example,
     `https://foobar.com/application` and `https://foobar.com/widget`, today, are,
     by definition, in the same origin, even if they are different applications.
     Thus an XSS at `https://foobar.com/application` means an XSS at
     `https://foobar.com/widget`, even if `https://foobar.com/widget` is
-    "protected" by a strong Content Security Policy.
+    "protected" by a strong Content Security Policy. Suborigins should allow
+    isolating /application and /widget.
 
   * Similarly, provide a way for content authors to split their applications
-    into logical modules with origin level separation without using different real
+    into logical modules with origin level separation without using different physical
     origins. Content authors should not have to choose between putting all of
     their content in the same origin, on different physical origins, or putting
     content in anonymous unique origins (sandboxes).
@@ -309,12 +310,14 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
   share the same <a>scheme</a>, <a>host</a>, <a>port</a>, and <a>suborigin
   namespace</a>.
 
-  Q. In today's Web, can't a site get the effective same protection domain simply
-  by hosting their content at different subdomains?
-
-  A. Yes, but there are many practical reasons why this is difficult:
 
   ## Difficulties using subdomains ## {#difficulties}
+
+  <em>This section is not normative.</em>
+
+  At first glance, subdomains provide an ability to setup multiple origins and
+  isolate applications. Unfortunately, a number of practical difficulties make
+  relying on subdomains infeasible.
 
   ### Separate applications, same origin ### {#separate-applications-same-origin}
   Google runs Search and Maps on the same domain, respectively
@@ -377,6 +380,10 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
   Issue: TODO(devd): Should we also assert that attacker on main/parent origin
   cannot compromise the app in sub-origin?
 
+  Issue: "Should not control" is a stronger statement than I think we want to
+  make. The browser can only isolate per origin isolation. If the app has a bug
+  (due to postmessage or server-side) the browser can't do anything. We should
+  stick to saying "are isolated like physical origins."
 
   ### Out of Scope Attacker ### {#threat-model-out-of-scope}
 
@@ -399,39 +406,6 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
   Suborigins, a few security-model opt-outs to ease the use of Suborigins in
   legacy applications are also presented. See [[#security-model-opt-outs]] for
   more information.
-
-  ## Representation of Suborigins ## {#representation}
-
-  At an abstract level, a suborigin consists of the <a link-type="dfn">physical
-  origin</a>, which is a <a>scheme</a>, <a>host</a>, and <a>port</a>, plus a
-  <a>suborigin namespace</a>.  However, as mentioned above, suborigins are
-  intended to fit within the framework of [[HTML#origin]] and [[RFC6454]].
-  Therefore, this specification provides a way of serializing a Suborigin bound
-  resource into a physical origin. This is done by inserting the suborigin
-  namespace into the host of the Origin, thus creating a new host but
-  maintaining all of the information about both the original scheme, host, port,
-  and the suborigin namespace. The serialization format appends the string "-so"
-  to the scheme and prepends the host name with the suborigin namespace followed
-  by a "." character.
-
-  For example, a resource hosted at `https://example.com/` in
-  the suborigin namespace `profile` would be serialized as
-  `https-so://profile.example.com/`.
-
-  Similarly, a resource hosted at `https://example.com:8080/` in
-  the suborigin namespace `separate` would be serialized as
-  `https-so://separate.example.com:8080/`.
-
-  Internally, the user agent just tracks the <a>suborigin namespace</a> of the resource.
-  When the origin needs to be serialized, the user agent should
-  follow the algorithm in [[#serializing]].
-
-  Note: The underscore character is not a valid character for hostnames used
-  on the web [[!RFC1123]] and as a result, the serialization above cannot collide
-  with valid existing hostnames.
-
-  Issue: TODO: Determine how the serialization should relate to the URL spec:
-  https://url.spec.whatwg.org/#host-parsing
 
   ## Opting into a Suborigin ## {#opting-in}
 
@@ -481,6 +455,36 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
   is to avoid potential confusion when the origin is serialized if the
   serialization started with a number.
 
+  ## Representation of Suborigins ## {#representation}
+
+  At an abstract level, a suborigin consists of the <a link-type="dfn">physical
+  origin</a>, which is a <a>scheme</a>, <a>host</a>, and <a>port</a>, plus a
+  <a>suborigin namespace</a>.  However, as mentioned above, suborigins are
+  intended to fit within the framework of [[HTML#origin]] and [[RFC6454]].
+  Therefore, this specification provides a way of serializing a Suborigin bound
+  resource into a physical origin. This is done by inserting the suborigin
+  namespace into the host of the Origin, thus creating a new host but
+  maintaining all of the information about both the original scheme, host, port,
+  and the suborigin namespace. The serialization format appends the string "-so"
+  to the scheme and prepends the host name with the suborigin namespace followed
+  by a "." character.
+
+  For example, a resource hosted at `https://example.com/` in
+  the suborigin namespace `profile` would be serialized as
+  `https-so://profile.example.com/`.
+
+  Similarly, a resource hosted at `https://example.com:8080/` in
+  the suborigin namespace `separate` would be serialized as
+  `https-so://separate.example.com:8080/`.
+
+  Internally, the user agent just tracks the <a>suborigin namespace</a> of the resource.
+  When the origin needs to be serialized, the user agent should
+  follow the algorithm in [[#serializing]].
+
+  Issue: TODO: Determine how the serialization should relate to the URL spec:
+  https://url.spec.whatwg.org/#host-parsing
+
+
   ## Accessing the Suborigin in JavaScript ## {#suborigin-in-js}
 
   A `suborigin` property is added to the <a>document</a> object which
@@ -522,9 +526,31 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
   be modified to use the serialized suborigin value instead of the serializied
   origin, as described in [[#serializing]].
 
+  Note: Since the suborigin of a server resource is unknown until fetched, all
+  requests, even to resources in the same suborigin are <em>cross-origin</em>.
+  Concretely, imagine putting https://example.com/widget/ in the 'widget'
+  suborigin. An XmlHttpRequest from /widget/index.html to /widget/data.json
+  will be treatd as a cross origin request. A simple XmlHttpRequest will need
+  an Access-Control-Allow-Suborigin header allowing the page to read the
+  response. An XmlHttpRequest of content-type text/json will be preflighted.
+
   Issue: TODO(jww): Formal definition of the headers and responses w/grammars.
   Also need to be explicit about `*` having same limitations as
   `Access-Control-Allow-Origin` w/credentials. 
+
+  Issue: Access-Control-Allow-Origin * fails with credentialed requests. Does
+  Access-Control-Allow-Suborigin have the same behavior? We should detail that
+  in more detail.
+
+  Issue: Browsers have a really low cache time (15mins) for preflight responses
+  which makes CORS a big pain for websites. This will become even more salient
+  with suborigins. Should the spec ask browsers to increase cache times?
+
+  Issue: Serializing the suborigin value into the origin header seems like it
+  will break things. Whats the risk with serializing the physical origin in the
+  origin header? The browser won't let you read the responses (or succeed
+  preflight) if neither of them have the right allow-suborigin behavior. This
+  seems more compatible with no security risk.
 
   ## `postMessage` ## {#postmessage-ac}
 
@@ -738,6 +764,10 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
   still use getters and setters on the `cookie` property of the `document` object
   and, in that way, may still simulate cookie access.
 
+  Issue: Currently, some browsers do not let applications redefine getters and
+  setters on cookie averse documents. Should the spec enforce that this is
+  allowed?
+
   ## Security Model Opt-Outs ## {#security-model-opt-outs}
 
   For backwards compatibility, Suborigins provide several opt-opts from the
@@ -761,7 +791,7 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
 
   <div class="example">
   `https://example.com` runs a map API at `https://example.com/maps` which is
-  embedded by many other websites. It provides a `postMessage()` API to place
+  embedded by other websites. It provides a `postMessage()` API to place
   markers on the map at locations the embedder chooses.
 
   The developer would like to run `https://example.com/maps` in a suborigin
@@ -774,6 +804,10 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
   allow the frame to receive messages on behalf of `https://example.com`, even
   though it is at `https-so://maps.example.com`.
   </div>
+
+  Issue: Should both postMessage opt-outs clarify that explicitly setting to
+  the serialized suborigin representation will still work? I.e., applications
+  that are aware of suborigins can use that if they want.
 
   ### `'unsafe-postmessage-send'` ### {#unsafe-postmessage-send}
   When a message is sent <i>from</i> a
@@ -868,13 +902,11 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
 
   Additionally, if your application allows cross-origin requests, instead of
   adding the usual `Access-Control-Allow-Origin` header for cross-origin requests,
-  the server must add the `Access-Control-Allow-Finer-Origin` and
-   `Access-Control-Allow-Suborigin` headers, as defined in [[#cors-ac]].
+  add `Access-Control-Allow-Suborigin` headers, as defined in [[#cors-ac]].
 
   In the client-side portion of the application, if `postMessage` is used, the
   application must be modified so it does not check the `event.origin` field.
-  Instead, it should check `event.finerorigin` and additionally the
-   `event.suborigin` fields, as they are defined in [[#postmessage-ac]].
+  Instead, it the `event.suborigin` fields, as they are defined in [[#postmessage-ac]].
 
   Issue: TODO(devd): Flesh out the above and make sure it covers all it needs to
   cover.
@@ -894,6 +926,10 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
   Therefore, suborigins should be used only internally in a user agent and MUST
   NOT be presented to users at all. For example, user agents must never present
   suborigins in link text or a URL bar.
+
+  Issue: Is history.pushState allowed in a suborigin? I suggest no to reduce
+  complexity and inherit from sandbox behavior. On the other hand, this impacts
+  compatibility.
 
   ## Not Overthrowing Same-Origin Policy ## {#not-overthrowing-sop}
 
