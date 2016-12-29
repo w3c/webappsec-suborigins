@@ -133,24 +133,20 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
   external developers building legacy applications that find they cannot use
   those tools.
 
-  Application developers can use sandboxed frames to completely isolate untrusted content, but they
-  pose a large problem for containing trusted but potentially buggy code because
-  it is very difficult, by design, for them to communicate with other frames. The
-  synthetic origins assigned in a sandboxed frame are random and unpredictable,
-  making the use of <a>postMessage</a> and <a>CORS</a> difficult. Moreover,
-  because they are by definition unique origins, with no relationship to the
-  original origin, designing permissions for them to access resources of the
-  original origin would be difficult.
-
-  Issue: TODO: Problems with CSP sandbox goes well beyond this. synthetic origins
-  via CSP sandbox do not let you persist state. This makes it impossible to port
-  an old webpage to run unprivileged. Further, since sandbox inherits on all
-  iframes within so you can't insert an iframe to say a widget since that gets
-  sandboxed too and so would need to be rewritten to support such a scenario.
-  This significantly complicates adoption. This probably needs to go into a new
-  section This significantly complicates adoption. This probably needs to go into
-  a new section.
-
+  Application developers can use sandboxed frames to completely isolate
+  untrusted content, but there are a number of problems with such an approach.
+  Since user agents assign sandboxed frames a random, unpredictable origin, it is
+  very difficult, by design, for them to communicate with other frames or use
+  modern, origin-bound mechanisms like <a>postMessage</a> and <a>CORS</a>.
+  Further, there is no easy way to persist client-side state (e.g., using
+  <a>localStorage</a> or <a>sessionStorage</a>) in random, unpredictable origins.
+  Finally, sandboxed frames not only sandbox the application but also any other
+  frames loaded by the appplication. This makes this technique infeasible for any
+  page relying on third-party integrations.  Moreover, because they are by
+  definition unique origins, with no relationship to the original origin,
+  designing permissions for them to access resources of the original origin would
+  be difficult.
+   
   Content Security Policy is also promising but is generally incompatible with
   current website design. Developers and security teams have found it impractical to retrofit
   legacy applications with it. On top of this, until all applications
