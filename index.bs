@@ -848,9 +848,16 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
   including the empty suborigin. Thus, this option SHOULD NOT be used if cookies
   are security-sensitive in your application.
 
-  Issue: TODO(devd): Write an example that makes clear that this is extremely
-  dangerous and should not be used if you have Real Deal auth and csrf cookies
-  used.
+  Note: This option is intended only for easing deployment. Application authors
+  should carefully evaluate the risk and impact on their application before
+  turning it on. The untrusted sub-origin code can overwrite session cookies
+  and execute a session fixation attack on the applications running in the
+  physical origin. Worse, if an application on the physical origin relies on
+  simple double-submit CSRF tokens (not tied to the session), then an untrusted
+  sub-origin can execute arbitrary CSRF attacks. Similarly, if session ccookies
+  or CSRF cookies are readable from javascript (i.e., they are not Http-Only),
+  then the untrusted sub-origin can steal the user's session or execute
+  arbitrary CSRF attacks.
 
   ### `'unsafe-credentials'` ### {#unsafe-credentials}
 
