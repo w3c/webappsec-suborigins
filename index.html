@@ -418,7 +418,7 @@
 	[data-algorithm]:not(.heading) {
 	  padding: .5em;
 	  border: thin solid #ddd; border-radius: .5em;
-	  margin: .5em 0;
+	  margin: .5em calc(-0.5em - 1px);
 	}
 	[data-algorithm]:not(.heading) > :first-child {
 	  margin-top: 0;
@@ -1176,7 +1176,8 @@ Possible extra rowspan handling
 		}
 	}
 </style>
-  <meta content="Bikeshed version 176d39d5a285c04f57d2f0e078fa69273028eb45" name="generator">
+  <meta content="Bikeshed version aa692b5bb18791d7660cd494994fd0ac2ec23132" name="generator">
+  <link href="https://w3c.github.io/webappsec-suborigins/" rel="canonical">
 <style>/* style-md-lists */
 
             /* This is a weird hack for me not yet following the commonmark spec
@@ -1187,72 +1188,6 @@ Possible extra rowspan handling
             [data-md] > :last-child {
                 margin-bottom: 0;
             }</style>
-<style>/* style-counters */
-
-            body {
-                counter-reset: example figure issue;
-            }
-            .issue {
-                counter-increment: issue;
-            }
-            .issue:not(.no-marker)::before {
-                content: "Issue " counter(issue);
-            }
-
-            .example {
-                counter-increment: example;
-            }
-            .example:not(.no-marker)::before {
-                content: "Example " counter(example);
-            }
-            .invalid.example:not(.no-marker)::before,
-            .illegal.example:not(.no-marker)::before {
-                content: "Invalid Example" counter(example);
-            }
-
-            figcaption {
-                counter-increment: figure;
-            }
-            figcaption:not(.no-marker)::before {
-                content: "Figure " counter(figure) " ";
-            }</style>
-<style>/* style-dfn-panel */
-
-        .dfn-panel {
-            position: absolute;
-            z-index: 35;
-            height: auto;
-            width: -webkit-fit-content;
-            width: fit-content;
-            max-width: 300px;
-            max-height: 500px;
-            overflow: auto;
-            padding: 0.5em 0.75em;
-            font: small Helvetica Neue, sans-serif, Droid Sans Fallback;
-            background: #DDDDDD;
-            color: black;
-            border: outset 0.2em;
-        }
-        .dfn-panel:not(.on) { display: none; }
-        .dfn-panel * { margin: 0; padding: 0; text-indent: 0; }
-        .dfn-panel > b { display: block; }
-        .dfn-panel a { color: black; }
-        .dfn-panel a:not(:hover) { text-decoration: none !important; border-bottom: none !important; }
-        .dfn-panel > b + b { margin-top: 0.25em; }
-        .dfn-panel ul { padding: 0; }
-        .dfn-panel li { list-style: inside; }
-        .dfn-panel.activated {
-            display: inline-block;
-            position: fixed;
-            left: .5em;
-            bottom: 2em;
-            margin: 0 auto;
-            max-width: calc(100vw - 1.5em - .4em - .5em);
-            max-height: 30vh;
-        }
-
-        .dfn-paneled { cursor: pointer; }
-        </style>
 <style>/* style-selflinks */
 
             .heading, .issue, .note, .example, li, dt {
@@ -1299,6 +1234,35 @@ Possible extra rowspan handling
             a.self-link::before            { content: "¶"; }
             .heading > a.self-link::before { content: "§"; }
             dfn > a.self-link::before      { content: "#"; }</style>
+<style>/* style-counters */
+
+            body {
+                counter-reset: example figure issue;
+            }
+            .issue {
+                counter-increment: issue;
+            }
+            .issue:not(.no-marker)::before {
+                content: "Issue " counter(issue);
+            }
+
+            .example {
+                counter-increment: example;
+            }
+            .example:not(.no-marker)::before {
+                content: "Example " counter(example);
+            }
+            .invalid.example:not(.no-marker)::before,
+            .illegal.example:not(.no-marker)::before {
+                content: "Invalid Example" counter(example);
+            }
+
+            figcaption {
+                counter-increment: figure;
+            }
+            figcaption:not(.no-marker)::before {
+                content: "Figure " counter(figure) " ";
+            }</style>
 <style>/* style-autolinks */
 
             .css.css, .property.property, .descriptor.descriptor {
@@ -1361,11 +1325,106 @@ Possible extra rowspan handling
             [data-link-type=biblio] {
                 white-space: pre;
             }</style>
+<style>/* style-dfn-panel */
+
+        .dfn-panel {
+            position: absolute;
+            z-index: 35;
+            height: auto;
+            width: -webkit-fit-content;
+            width: fit-content;
+            max-width: 300px;
+            max-height: 500px;
+            overflow: auto;
+            padding: 0.5em 0.75em;
+            font: small Helvetica Neue, sans-serif, Droid Sans Fallback;
+            background: #DDDDDD;
+            color: black;
+            border: outset 0.2em;
+        }
+        .dfn-panel:not(.on) { display: none; }
+        .dfn-panel * { margin: 0; padding: 0; text-indent: 0; }
+        .dfn-panel > b { display: block; }
+        .dfn-panel a { color: black; }
+        .dfn-panel a:not(:hover) { text-decoration: none !important; border-bottom: none !important; }
+        .dfn-panel > b + b { margin-top: 0.25em; }
+        .dfn-panel ul { padding: 0; }
+        .dfn-panel li { list-style: inside; }
+        .dfn-panel.activated {
+            display: inline-block;
+            position: fixed;
+            left: .5em;
+            bottom: 2em;
+            margin: 0 auto;
+            max-width: calc(100vw - 1.5em - .4em - .5em);
+            max-height: 30vh;
+        }
+
+        .dfn-paneled { cursor: pointer; }
+        </style>
+<style>/* style-syntax-highlighting */
+pre.idl.highlight { color: #708090; }
+        .highlight:not(.idl) { background: hsl(24, 20%, 95%); }
+        code.highlight { padding: .1em; border-radius: .3em; }
+        pre.highlight, pre > code.highlight { display: block; padding: 1em; margin: .5em 0; overflow: auto; border-radius: 0; }
+        .highlight .c { color: #708090 } /* Comment */
+        .highlight .k { color: #990055 } /* Keyword */
+        .highlight .l { color: #000000 } /* Literal */
+        .highlight .n { color: #0077aa } /* Name */
+        .highlight .o { color: #999999 } /* Operator */
+        .highlight .p { color: #999999 } /* Punctuation */
+        .highlight .cm { color: #708090 } /* Comment.Multiline */
+        .highlight .cp { color: #708090 } /* Comment.Preproc */
+        .highlight .c1 { color: #708090 } /* Comment.Single */
+        .highlight .cs { color: #708090 } /* Comment.Special */
+        .highlight .kc { color: #990055 } /* Keyword.Constant */
+        .highlight .kd { color: #990055 } /* Keyword.Declaration */
+        .highlight .kn { color: #990055 } /* Keyword.Namespace */
+        .highlight .kp { color: #990055 } /* Keyword.Pseudo */
+        .highlight .kr { color: #990055 } /* Keyword.Reserved */
+        .highlight .kt { color: #990055 } /* Keyword.Type */
+        .highlight .ld { color: #000000 } /* Literal.Date */
+        .highlight .m { color: #000000 } /* Literal.Number */
+        .highlight .s { color: #a67f59 } /* Literal.String */
+        .highlight .na { color: #0077aa } /* Name.Attribute */
+        .highlight .nc { color: #0077aa } /* Name.Class */
+        .highlight .no { color: #0077aa } /* Name.Constant */
+        .highlight .nd { color: #0077aa } /* Name.Decorator */
+        .highlight .ni { color: #0077aa } /* Name.Entity */
+        .highlight .ne { color: #0077aa } /* Name.Exception */
+        .highlight .nf { color: #0077aa } /* Name.Function */
+        .highlight .nl { color: #0077aa } /* Name.Label */
+        .highlight .nn { color: #0077aa } /* Name.Namespace */
+        .highlight .py { color: #0077aa } /* Name.Property */
+        .highlight .nt { color: #669900 } /* Name.Tag */
+        .highlight .nv { color: #222222 } /* Name.Variable */
+        .highlight .ow { color: #999999 } /* Operator.Word */
+        .highlight .mb { color: #000000 } /* Literal.Number.Bin */
+        .highlight .mf { color: #000000 } /* Literal.Number.Float */
+        .highlight .mh { color: #000000 } /* Literal.Number.Hex */
+        .highlight .mi { color: #000000 } /* Literal.Number.Integer */
+        .highlight .mo { color: #000000 } /* Literal.Number.Oct */
+        .highlight .sb { color: #a67f59 } /* Literal.String.Backtick */
+        .highlight .sc { color: #a67f59 } /* Literal.String.Char */
+        .highlight .sd { color: #a67f59 } /* Literal.String.Doc */
+        .highlight .s2 { color: #a67f59 } /* Literal.String.Double */
+        .highlight .se { color: #a67f59 } /* Literal.String.Escape */
+        .highlight .sh { color: #a67f59 } /* Literal.String.Heredoc */
+        .highlight .si { color: #a67f59 } /* Literal.String.Interpol */
+        .highlight .sx { color: #a67f59 } /* Literal.String.Other */
+        .highlight .sr { color: #a67f59 } /* Literal.String.Regex */
+        .highlight .s1 { color: #a67f59 } /* Literal.String.Single */
+        .highlight .ss { color: #a67f59 } /* Literal.String.Symbol */
+        .highlight .vc { color: #0077aa } /* Name.Variable.Class */
+        .highlight .vg { color: #0077aa } /* Name.Variable.Global */
+        .highlight .vi { color: #0077aa } /* Name.Variable.Instance */
+        .highlight .il { color: #000000 } /* Literal.Number.Integer.Long */
+        </style>
  <body class="h-entry">
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Suborigins</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2017-01-01">1 January 2017</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2017-04-18">18 April 2017</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1384,8 +1443,8 @@ Possible extra rowspan handling
    <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> © 2017 <a href="https://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>®</sup> (<a href="https://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>, <a href="https://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>, <a href="https://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>). W3C <a href="https://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply. </p>
    <hr title="Separator for header">
   </div>
-  <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
   <div class="p-summary" data-fill-with="abstract">
+   <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
    <p>This specification defines a mechanism for programmatically defining origins
 
 to isolate different applications running in the same physical origin. It
@@ -1413,7 +1472,7 @@ boundary between this resource and resources in other namespaces.</p>
 	W3C maintains a <a href="https://www.w3.org/2004/01/pp-impl/49309/status" rel="disclosure">public list of any patent disclosures</a> made in connection with the deliverables of the group;
 	that page also includes instructions for disclosing a patent.
 	An individual who has actual knowledge of a patent which the individual believes contains <a href="https://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">Essential Claim(s)</a> must disclose the information in accordance with <a href="https://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure">section 6 of the W3C Patent Policy</a>. </p>
-   <p> This document is governed by the <a href="https://www.w3.org/2015/Process-20150901/" id="w3c_process_revision">1 September 2015 W3C Process Document</a>. </p>
+   <p> This document is governed by the <a href="https://www.w3.org/2017/Process-20170301/" id="w3c_process_revision">1 March 2017 W3C Process Document</a>. </p>
    <p></p>
   </div>
   <div data-fill-with="at-risk"></div>
@@ -1526,6 +1585,7 @@ boundary between this resource and resources in other namespaces.</p>
       <li><a href="#normative"><span class="secno"></span> <span class="content">Normative References</span></a>
       <li><a href="#informative"><span class="secno"></span> <span class="content">Informative References</span></a>
      </ol>
+    <li><a href="#idl-index"><span class="secno"></span> <span class="content">IDL Index</span></a>
     <li><a href="#issues-index"><span class="secno"></span> <span class="content">Issues Index</span></a>
    </ol>
   </nav>
@@ -1787,7 +1847,7 @@ This includes providing security-model opt-outs where necessary.</p>
    <p>User agents MUST ignore multiple suborigin headers and only apply the first.</p>
    <p>A resource’s <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="suborigin-namespace">suborigin namespace</dfn> is the value of the <a data-link-type="grammar" href="#grammardef-suborigin-name" id="ref-for-grammardef-suborigin-name-2">suborigin-name</a> in the <code>suborigin</code> header.</p>
    <p>A resource’s <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport="" id="suborigin-policy">suborigin policy</dfn> is the list of individual <a data-link-type="grammar" href="#grammardef-suborigin-policy-option" id="ref-for-grammardef-suborigin-policy-option-2">suborigin-policy-option</a> values in the <code>suborigin</code> header’s <a data-link-type="grammar" href="#grammardef-suborigin-policy-list" id="ref-for-grammardef-suborigin-policy-list-2">suborigin-policy-list</a>.</p>
-   <p class="note" role="note">Note: A suborigin name must start with a lowercase character, but after the
+   <p class="note" role="note"><span>Note:</span> A suborigin name must start with a lowercase character, but after the
   first character, the name may contain lowercase characters or numerals. This
   is to avoid potential confusion when the origin is serialized if the
   serialization started with a number.</p>
@@ -1839,7 +1899,7 @@ This includes providing security-model opt-outs where necessary.</p>
   At the same time, the <code>Access-Control-Allow-Origin</code> response header value must
   be modified to use the serialized suborigin value instead of the serializied
   origin, as described in <a href="#serializing">§6.1.6 Serializing Suborigins</a>.</p>
-   <p class="note" role="note">Note: Since the suborigin of a server resource is unknown until fetched, all
+   <p class="note" role="note"><span>Note:</span> Since the suborigin of a server resource is unknown until fetched, all
   requests, even to resources in the same suborigin are <em>cross-origin</em>.
   Concretely, imagine putting https://example.com/widget/ in the 'widget'
   suborigin. An XmlHttpRequest from /widget/index.html to /widget/data.json
@@ -1862,11 +1922,39 @@ This includes providing security-model opt-outs where necessary.</p>
    <h3 class="heading settled" data-level="4.2" id="postmessage-ac"><span class="secno">4.2. </span><span class="content"><code>postMessage</code></span><a class="self-link" href="#postmessage-ac"></a></h3>
    <p>Cross-origin messaging via <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/comms.html#dom-messageport-postmessage"><code>postMessage</code></a> requires that the recipient be
   able to see the suborigin namespace of the message sender so it can make an
-  appropriate access control decision. When a message is sent from a suborigin
-  namespace, the receiver has the <code>event.origin</code> value set to the serialized
-  suborigin value instead of the serializied origin, as described in <a href="#serializing">§6.1.6 Serializing Suborigins</a>. Additionally, a new <code>suborigin</code> property must be added to
-  the <code>MessageEvent</code> given to the receiver which contains the suborigin
-  namespace value.</p>
+  appropriate access control decision. We introduce a new dictionary <code>EventInitiator</code> that holds information about both the origin and
+  the suborigin namespace:</p>
+<pre class="idl highlight def"><span class="kt">dictionary</span> <dfn class="nv dfn-paneled idl-code" data-dfn-type="dictionary" data-export="" id="dictdef-eventinitiator">EventInitiator</dfn> {
+  <a class="n idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-USVString"><span class="kt">USVString</span></a> <dfn class="nv idl-code" data-default="&quot;&quot;" data-dfn-for="EventInitiator" data-dfn-type="dict-member" data-export="" data-type="USVString " id="dom-eventinitiator-origin">origin<a class="self-link" href="#dom-eventinitiator-origin"></a></dfn> = "";
+  <a class="n idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-USVString"><span class="kt">USVString</span></a>? <dfn class="nv idl-code" data-default="null" data-dfn-for="EventInitiator" data-dfn-type="dict-member" data-export="" data-type="USVString? " id="dom-eventinitiator-suborigin">suborigin<a class="self-link" href="#dom-eventinitiator-suborigin"></a></dfn> = <span class="kt">null</span>;
+};
+</pre>
+   <p>And we extend the definition of the MessageEvent and MessageEventInit as follows:</p>
+<pre class="idl highlight def"><span class="kt">partial</span> <span class="kt">interface</span> <a class="nv idl-code" data-link-type="interface" href="https://html.spec.whatwg.org/multipage/comms.html#messageevent">MessageEvent</a> {
+  USVString? origin;
+  EventInitiator? initiator;
+  void initMessageEvent(DOMString type, optional boolean bubbles = false, optional boolean cancelable = false, optional any data = null, optional EventInitiator initator? = null, optional DOMString lastEventId = "", optional MessageEventSource? source = null, optional sequence&lt;MessagePort> ports = []);
+};
+
+<span class="kt">partial</span> <span class="kt">interface</span> <a class="nv idl-code" data-link-type="interface">MessageEventInit</a> : <a class="n" data-link-type="idl-name" href="https://dom.spec.whatwg.org/#dictdef-eventinit">EventInit</a> {
+  EventInitiator? initiator = null;
+};
+</pre>
+   <p>Similarly, we add a new overloaded version of postMessage to the Window interface:</p>
+<pre class="idl highlight def"><span class="kt">partial</span> <span class="kt">interface</span> <a class="nv idl-code" data-link-type="interface" href="https://html.spec.whatwg.org/multipage/browsers.html#window">Window</a> {
+  <span class="kt">void</span> <dfn class="nv idl-code" data-dfn-for="Window" data-dfn-type="method" data-export="" data-lt="postMessage(message, targetOrigin, transfer)|postMessage(message, targetOrigin)" id="dom-window-postmessage">postMessage<a class="self-link" href="#dom-window-postmessage"></a></dfn>(<span class="kt">any</span> <dfn class="nv idl-code" data-dfn-for="Window/postMessage(message, targetOrigin, transfer), Window/postMessage(message, targetOrigin)" data-dfn-type="argument" data-export="" id="dom-window-postmessage-message-targetorigin-transfer-message">message<a class="self-link" href="#dom-window-postmessage-message-targetorigin-transfer-message"></a></dfn>, <a class="n" data-link-type="idl-name" href="#dictdef-eventinitiator" id="ref-for-dictdef-eventinitiator-1">EventInitiator</a> <dfn class="nv idl-code" data-dfn-for="Window/postMessage(message, targetOrigin, transfer), Window/postMessage(message, targetOrigin)" data-dfn-type="argument" data-export="" id="dom-window-postmessage-message-targetorigin-transfer-targetorigin">targetOrigin<a class="self-link" href="#dom-window-postmessage-message-targetorigin-transfer-targetorigin"></a></dfn>, <span class="kt">optional</span> <span class="kt">sequence</span>&lt;<a class="n idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-object"><span class="kt">object</span></a>> <dfn class="nv idl-code" data-dfn-for="Window/postMessage(message, targetOrigin, transfer), Window/postMessage(message, targetOrigin)" data-dfn-type="argument" data-export="" id="dom-window-postmessage-message-targetorigin-transfer-transfer">transfer<a class="self-link" href="#dom-window-postmessage-message-targetorigin-transfer-transfer"></a></dfn> = []);
+};
+</pre>
+   <p>Those new interfaces can also be used to communicate with browsing contexts that
+  aren’t in a suborigin namespace. Furthermore, the <code>origin</code> attribute of an <code>MessageEvent</code> will be <code>null</code> (the value, not the string) if the <code>suborigin</code> attribute of
+  the event’s <code>initiator</code> is non-<code>null</code>, unless <code>unsafe-postmessage-receive</code> was specified
+  for the corresponding suborigin namespace declaration, and it is not possible
+  to use the legacy <code>postMessage</code> method to communicate with a browsing context in
+  a suborigin, unless <code>unsafe-postmessage-send</code> was specified.</p>
+   <p>If the <code>suborigin</code> attribute of the <code>EventInitializer</code> passed to <code>postMessage</code> is
+  the literal string <code>*</code>, it will match any suborigin namespace. Otherwise, the
+  suborigin has to match exactly. A browsing context that doesn’t specify a
+  suborigin is matched by the value <code>null</code>, and not by the empty string.</p>
    <p class="issue" id="issue-4439486d"><a class="self-link" href="#issue-4439486d"></a> TODO(jww): Formalize by updating the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/comms.html#dom-messageport-postmessage">postMessage</a> algorithm</p>
    <h3 class="heading settled" data-level="4.3" id="workers-ac"><span class="secno">4.3. </span><span class="content">Workers</span><a class="self-link" href="#workers-ac"></a></h3>
    <p>User agents MUST refuse to create or execute any workers in a page executing in
@@ -1875,7 +1963,7 @@ This includes providing security-model opt-outs where necessary.</p>
   Opera don’t allow creation of workers from sandbox’d iframes/the 'null'
   origin, but not sure if this formalized in a spec. If it is, should probably
   just update whatever disallows creation from sandbox.</p>
-   <p class="note" role="note">Note: This may change in the future, and suborigins may eventually be allowed to
+   <p class="note" role="note"><span>Note:</span> This may change in the future, and suborigins may eventually be allowed to
   register service workers, but, for now, allowing the creation of any workers,
   including service workers and shared workers, from suborigins adds too many
   complications. Applications can still create workers by creating an iframe of
@@ -1902,10 +1990,10 @@ This includes providing security-model opt-outs where necessary.</p>
     <li data-md="">
      <p>If the <a href="https://www.w3.org/TR/html51/webappapis.html#environment-settings-object">origin property</a> of the <em>client</em>’s <a href="https://www.w3.org/TR/html51/webappapis.html#relevant-settings-object">relevant settings object</a> has a <a data-link-type="dfn" href="#suborigin" id="ref-for-suborigin-1">suborigin</a>, throw a <a href="https://www.w3.org/TR/WebIDL-1/#h-idl-domexception-error-names">SecurityError exception</a>.</p>
    </ol>
-   <p class="note" role="note">Note: Suborigins are likely to allow WebSockets in the future, but are
+   <p class="note" role="note"><span>Note:</span> Suborigins are likely to allow WebSockets in the future, but are
   disabled until it can be decided how they should be protected.</p>
    <h2 class="heading settled" data-level="6" id="framework"><span class="secno">6. </span><span class="content">Framework</span><a class="self-link" href="#framework"></a></h2>
-   <p class="note" role="note">Note: These sections are tricky because, unlike physical origins, we can’t
+   <p class="note" role="note"><span>Note:</span> These sections are tricky because, unlike physical origins, we can’t
   define suborigins in terms of URIs. Since the suborigin namespace is defined in
   a header, not in the URI, we need to define them in terms of resources.</p>
    <h3 class="heading settled" data-level="6.1" id="origin-updates"><span class="secno">6.1. </span><span class="content">Updates to Origin</span><a class="self-link" href="#origin-updates"></a></h3>
@@ -2025,11 +2113,11 @@ otherwise.</p>
  is the empty string, or if the <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document">Document</a></code> is <a data-link-type="dfn" href="http://www.w3.org/TR/html51/dom.html#cookie-averse">cookie-averse</a> then
  abort these steps.</p>
    </ol>
-   <p class="note" role="note">Note: A <a data-link-type="dfn" href="http://www.w3.org/TR/html51/dom.html#cookie-averse">cookie-averse</a> <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document">Document</a></code> object has the property that direct
+   <p class="note" role="note"><span>Note:</span> A <a data-link-type="dfn" href="http://www.w3.org/TR/html51/dom.html#cookie-averse">cookie-averse</a> <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document">Document</a></code> object has the property that direct
   access to <code>document.cookie</code> returns the empty string, and assigning to <code>document.cookie</code> has no effect whatsoever. However, that network cookies are
   not affected and documents with different <a data-link-type="dfn" href="#suborigin-namespace" id="ref-for-suborigin-namespace-9">suborigin namespaces</a> on the
   same <a data-link-type="dfn" href="#physical-origin" id="ref-for-physical-origin-4">physical origin</a> share the same cookies on the network.</p>
-   <p class="note" role="note">Note: For practical purposes, this means that a developer cannot use <code>document.cookie</code> directly because assignment and reading of the object are both
+   <p class="note" role="note"><span>Note:</span> For practical purposes, this means that a developer cannot use <code>document.cookie</code> directly because assignment and reading of the object are both
   no-ops. However, a <a data-link-type="dfn" href="http://www.w3.org/TR/html51/dom.html#cookie-averse">cookie-averse</a> <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document">Document</a></code> may
   still use getters and setters on the <code>cookie</code> property of the <code>document</code> object
   and, in that way, may still simulate cookie access.</p>
@@ -2046,45 +2134,13 @@ otherwise.</p>
    <p>The values of <a data-link-type="grammar" href="#grammardef-suborigin-policy-option" id="ref-for-grammardef-suborigin-policy-option-4">suborigin-policy-option</a> that may be
   present in a <a data-link-type="dfn" href="#suborigin-policy" id="ref-for-suborigin-policy-3">suborigin policy</a> have the following effects:</p>
    <h4 class="heading settled" data-level="6.3.1" id="unsafe-postmessage-receive"><span class="secno">6.3.1. </span><span class="content"><code>'unsafe-postmessage-receive'</code></span><a class="self-link" href="#unsafe-postmessage-receive"></a></h4>
-    When a message is sent <i>to</i> a
-  frame with a <code>postMessage</code> <code>target</code> of a serialized physical origin, but not
-  a serialized suborigin, if the frame has an execution context with a
-  suborigin where the scheme, host, and port match the <code>target</code>, but it also
-  has a suborigin namespace, if <code>'unsafe-postmessage-receive'</code> is set, it
-  will still receive the message. 
-   <div class="example" id="example-e2e2b294">
-    <a class="self-link" href="#example-e2e2b294"></a> <code>https://example.com</code> runs a map API at <code>https://example.com/maps</code> which is
-  embedded by other websites. It provides a <code>postMessage()</code> API to place
-  markers on the map at locations the embedder chooses. 
-    <p>The developer would like to run <code>https://example.com/maps</code> in a suborigin
-  namespace "maps".  However, when embedders send messages to the embedded
-  frame, because they are legacy uses from before the use of suborigins, they
-  send essages with a <code>target</code> of <code>https://example.com</code>, <em>not</em> <code>https-so://maps.example.com</code>. Since the developer would still like this
-  frame to be able to provide the API to these legacy embedders, it can serve
-  the frame with the <code>'unsafe-postmessage-receive'</code> directive, which will
-  allow the frame to receive messages on behalf of <code>https://example.com</code>, even
-  though it is at <code>https-so://maps.example.com</code>.</p>
-   </div>
-   <p class="issue" id="issue-017c524b"><a class="self-link" href="#issue-017c524b"></a> Should both postMessage opt-outs clarify that explicitly setting to
-  the serialized suborigin representation will still work? I.e., applications
-  that are aware of suborigins can use that if they want.</p>
+    If <code>unsafe-postmessage-receive</code> is set, <code>MessageEvent</code>s sent to and from a
+  browsing context in the respective suborigin namespace will expose the
+  serialization of their physical origin via the <code>origin</code> attribute of the <code>MessageEvent</code>s. 
    <h4 class="heading settled" data-level="6.3.2" id="unsafe-postmessage-send"><span class="secno">6.3.2. </span><span class="content"><code>'unsafe-postmessage-send'</code></span><a class="self-link" href="#unsafe-postmessage-send"></a></h4>
-    When a message is sent <i>from</i> a
-  suborigin namespace with <code>'unsafe-postmessage-send'</code> set, the <code>event.origin</code> value of the receiver should be set to the serialized
-  physical origin, not the serialized suborigin value. However, the <code>event.suborigin</code> field should still be set to the name of the suborigin
-  namespace. 
-   <div class="example" id="example-4e12be32">
-    <a class="self-link" href="#example-4e12be32"></a> Continuing the case in the above example, <code>https://example.com/maps</code> is a
-  mapping application that is commonly embedded in other sites. It provides a <code>postMessage()</code> based API to place locations of the embedder’s choosing on the
-  map. <code>httsp://example.com</code> would like to run the application in a suborigin
-  named "maps". 
-    <p>In response to queries to the API, <code>https://example.com/maps</code> may send
-  messages back to the embedder if, for example, a user clicks on one of the
-  locations. However, since the embedder may be legacy and not be aware of
-  suborigins, when it checks the <code>event.origin</code> protery of the <code>MesseageEvent</code>, if it sees <code>https-so://maps.example.com</code> as the origin, it
-  will reject the message as a potential attack. Thus, <code>https://example.com</code> may use the <code>'unsafe-postmessage-send'</code> directive to allow its messages
-  to appear with the origin of the physical origin, in this case <code>https://example.com</code>.</p>
-   </div>
+    If <code>unsafe-postmessage-send</code> is set, the legacy <code>postMessage</code> method can
+  be used to communicate with the browsing context in the respective suborigin.
+  The missing suborigin parameter is then interpreted to be a wildcard. 
    <h4 class="heading settled" data-level="6.3.3" id="unsafe-cookies"><span class="secno">6.3.3. </span><span class="content"><code>'unsafe-cookies'</code></span><a class="self-link" href="#unsafe-cookies"></a></h4>
     Normally, a <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document">Document</a></code> with a non-empty suborigin namespace is <a data-link-type="dfn" href="http://www.w3.org/TR/html51/dom.html#cookie-averse">cookie-averse</a>, which means that cookies cannot be read or written.
   However, if the <a data-link-type="dfn" href="#suborigin-policy" id="ref-for-suborigin-policy-4">suborigin policy</a> contains the <code>unsafe-cookies</code> option,
@@ -2095,7 +2151,7 @@ otherwise.</p>
   access and set cookies for any other suborigin at that <a data-link-type="dfn" href="#physical-origin" id="ref-for-physical-origin-5">physical origin</a>,
   including the empty suborigin. Thus, this option SHOULD NOT be used if cookies
   are security-sensitive in your application.</p>
-   <p class="note" role="note">Note: This option is intended only for easing deployment. Application authors
+   <p class="note" role="note"><span>Note:</span> This option is intended only for easing deployment. Application authors
   should carefully evaluate the risk and impact on their application before
   turning it on. The untrusted sub-origin code can overwrite session cookies
   and execute a session fixation attack on the applications running in the
@@ -2123,7 +2179,7 @@ otherwise.</p>
        <p><code>request</code>'s credentials mode is "same-origin" and <code>request</code>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/comms.html#environment-settings-object">environment settings object</a> has the <code>suborigin unsafe credentials</code> flag set and the request’s <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-request-current-url">current url</a> is <a data-link-type="dfn" href="#same-physical-origin" id="ref-for-same-physical-origin-1">same physical origin</a> with <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-request-origin">request origin</a>.</p>
      </ul>
    </ol>
-   <p class="note" role="note">Note: This has several important, practical effects. If the <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-request-credentials-mode">credentials
+   <p class="note" role="note"><span>Note:</span> This has several important, practical effects. If the <a data-link-type="dfn" href="https://fetch.spec.whatwg.org#concept-request-credentials-mode">credentials
   mode</a> of a <code>fetch()</code> is set to "same-origin", and if it is to the same
   physical origin as the current execution context, credentials will be
   included. This means that if the <code>crossorigin</code> attribute on elements such
@@ -2219,10 +2275,19 @@ otherwise.</p>
    <li><a href="#cors">CORS</a><span>, in §2</span>
    <li><a href="#cross-origin-resource-sharing">Cross-Origin Resource Sharing</a><span>, in §2</span>
    <li><a href="#cross-site-scripting">cross-site scripting</a><span>, in §2</span>
+   <li><a href="#dictdef-eventinitiator">EventInitiator</a><span>, in §4.2</span>
    <li><a href="#grammardef-loweralpha">LOWERALPHA</a><span>, in §2.1</span>
+   <li><a href="#dom-eventinitiator-origin">origin</a><span>, in §4.2</span>
    <li><a href="#physical-origin">physical origin</a><span>, in §6.1.3</span>
+   <li><a href="#dom-window-postmessage">postMessage(message, targetOrigin)</a><span>, in §4.2</span>
+   <li><a href="#dom-window-postmessage">postMessage(message, targetOrigin, transfer)</a><span>, in §4.2</span>
    <li><a href="#same-physical-origin">same physical origin</a><span>, in §6.1.5</span>
-   <li><a href="#suborigin">suborigin</a><span>, in §3.5</span>
+   <li>
+    suborigin
+    <ul>
+     <li><a href="#suborigin">definition of</a><span>, in §3.5</span>
+     <li><a href="#dom-eventinitiator-suborigin">dict-member for EventInitiator</a><span>, in §4.2</span>
+    </ul>
    <li><a href="#grammardef-suborigin-header">suborigin-header</a><span>, in §3.5</span>
    <li><a href="#grammardef-suborigin-name">suborigin-name</a><span>, in §3.5</span>
    <li><a href="#suborigin-namespace">suborigin namespace</a><span>, in §3.5</span>
@@ -2248,9 +2313,10 @@ otherwise.</p>
      <li><a href="https://www.w3.org/TR/cors#simple-cross-origin-request">simple cross-origin request</a>
     </ul>
    <li>
-    <a data-link-type="biblio">[WHATWG-DOM]</a> defines the following terms:
+    <a data-link-type="biblio">[DOM]</a> defines the following terms:
     <ul>
      <li><a href="https://dom.spec.whatwg.org/#document">Document</a>
+     <li><a href="https://dom.spec.whatwg.org/#dictdef-eventinit">EventInit</a>
      <li><a href="https://dom.spec.whatwg.org/#concept-document">document</a>
      <li><a href="https://dom.spec.whatwg.org/#concept-reflect">reflect</a>
     </ul>
@@ -2268,7 +2334,9 @@ otherwise.</p>
    <li>
     <a data-link-type="biblio">[HTML]</a> defines the following terms:
     <ul>
+     <li><a href="https://html.spec.whatwg.org/multipage/comms.html#messageevent">MessageEvent</a>
      <li><a href="https://html.spec.whatwg.org/multipage/webstorage.html#storage-2">Storage</a>
+     <li><a href="https://html.spec.whatwg.org/multipage/browsers.html#window">Window</a>
      <li><a href="https://html.spec.whatwg.org/multipage/#ascii-serialisation-of-an-origin">ascii serialization of an origin</a>
      <li><a href="https://html.spec.whatwg.org/multipage/#attr-meta-http-equiv-set-cookie">cookie setter</a>
      <li><a href="https://html.spec.whatwg.org/multipage/comms.html#environment-settings-object">environment settings object</a>
@@ -2295,12 +2363,18 @@ otherwise.</p>
      <li><a href="https://tools.ietf.org/html/rfc7230#section-3.2.3">rws</a>
     </ul>
    <li>
-    <a data-link-type="biblio">[WHATWG-URL]</a> defines the following terms:
+    <a data-link-type="biblio">[URL]</a> defines the following terms:
     <ul>
      <li><a href="https://url.spec.whatwg.org/#concept-domain">domain</a>
      <li><a href="https://url.spec.whatwg.org/#concept-host">host</a>
      <li><a href="https://url.spec.whatwg.org/#concept-port">port</a>
      <li><a href="https://url.spec.whatwg.org/#concept-scheme">scheme</a>
+    </ul>
+   <li>
+    <a data-link-type="biblio">[WebIDL]</a> defines the following terms:
+    <ul>
+     <li><a href="https://heycam.github.io/webidl/#idl-USVString">USVString</a>
+     <li><a href="https://heycam.github.io/webidl/#idl-object">object</a>
     </ul>
    <li>
     <a data-link-type="biblio">[XHR]</a> defines the following terms:
@@ -2313,12 +2387,14 @@ otherwise.</p>
   <dl>
    <dt id="biblio-cors">[CORS]
    <dd>Anne van Kesteren. <a href="https://www.w3.org/TR/cors/">Cross-Origin Resource Sharing</a>. 16 January 2014. REC. URL: <a href="https://www.w3.org/TR/cors/">https://www.w3.org/TR/cors/</a>
+   <dt id="biblio-dom">[DOM]
+   <dd>Anne van Kesteren. <a href="https://dom.spec.whatwg.org/">DOM Standard</a>. Living Standard. URL: <a href="https://dom.spec.whatwg.org/">https://dom.spec.whatwg.org/</a>
    <dt id="biblio-fetch">[FETCH]
    <dd>Anne van Kesteren. <a href="https://fetch.spec.whatwg.org/">Fetch Standard</a>. Living Standard. URL: <a href="https://fetch.spec.whatwg.org/">https://fetch.spec.whatwg.org/</a>
    <dt id="biblio-html">[HTML]
    <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/">HTML Standard</a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
    <dt id="biblio-html51">[HTML51]
-   <dd>Steve Faulkner; et al. <a href="https://w3c.github.io/html/">HTML 5.1</a>. URL: <a href="https://w3c.github.io/html/">https://w3c.github.io/html/</a>
+   <dd>Steve Faulkner; et al. <a href="https://www.w3.org/TR/html51/">HTML 5.1</a>. URL: <a href="https://www.w3.org/TR/html51/">https://www.w3.org/TR/html51/</a>
    <dt id="biblio-rfc0020">[RFC0020]
    <dd>V.G. Cerf. <a href="https://tools.ietf.org/html/rfc20">ASCII format for network interchange</a>. October 1969. Internet Standard. URL: <a href="https://tools.ietf.org/html/rfc20">https://tools.ietf.org/html/rfc20</a>
    <dt id="biblio-rfc2119">[RFC2119]
@@ -2327,21 +2403,21 @@ otherwise.</p>
    <dd>D. Crocker, Ed.; P. Overell. <a href="https://tools.ietf.org/html/rfc5234">Augmented BNF for Syntax Specifications: ABNF</a>. January 2008. Internet Standard. URL: <a href="https://tools.ietf.org/html/rfc5234">https://tools.ietf.org/html/rfc5234</a>
    <dt id="biblio-unicode6">[Unicode6]
    <dd>The Unicode Consortium. <a href="http://www.unicode.org/versions/Unicode6.2.0/">The Unicode Standard, Version 6.2.0</a>. URL: <a href="http://www.unicode.org/versions/Unicode6.2.0/">http://www.unicode.org/versions/Unicode6.2.0/</a>
+   <dt id="biblio-url">[URL]
+   <dd>Anne van Kesteren. <a href="https://url.spec.whatwg.org/">URL Standard</a>. Living Standard. URL: <a href="https://url.spec.whatwg.org/">https://url.spec.whatwg.org/</a>
+   <dt id="biblio-webidl">[WebIDL]
+   <dd>Cameron McCormack; Boris Zbarsky; Tobie Langel. <a href="https://www.w3.org/TR/WebIDL-1/">Web IDL</a>. URL: <a href="https://www.w3.org/TR/WebIDL-1/">https://www.w3.org/TR/WebIDL-1/</a>
    <dt id="biblio-websockets">[WebSockets]
    <dd>Ian Hickson. <a href="https://www.w3.org/TR/websockets/">The WebSocket API</a>. 20 September 2012. CR. URL: <a href="https://www.w3.org/TR/websockets/">https://www.w3.org/TR/websockets/</a>
-   <dt id="biblio-whatwg-dom">[WHATWG-DOM]
-   <dd>Anne van Kesteren. <a href="https://dom.spec.whatwg.org/">DOM Standard</a>. Living Standard. URL: <a href="https://dom.spec.whatwg.org/">https://dom.spec.whatwg.org/</a>
-   <dt id="biblio-whatwg-url">[WHATWG-URL]
-   <dd>Anne van Kesteren. <a href="https://url.spec.whatwg.org/">URL Standard</a>. Living Standard. URL: <a href="https://url.spec.whatwg.org/">https://url.spec.whatwg.org/</a>
    <dt id="biblio-workers">[WORKERS]
-   <dd>Ian Hickson. <a href="https://html.spec.whatwg.org/multipage/workers.html">Web Workers</a>. URL: <a href="https://html.spec.whatwg.org/multipage/workers.html">https://html.spec.whatwg.org/multipage/workers.html</a>
+   <dd>Ian Hickson. <a href="https://www.w3.org/TR/workers/">Web Workers</a>. URL: <a href="https://www.w3.org/TR/workers/">https://www.w3.org/TR/workers/</a>
    <dt id="biblio-xhr">[XHR]
    <dd>Anne van Kesteren. <a href="https://xhr.spec.whatwg.org/">XMLHttpRequest Standard</a>. Living Standard. URL: <a href="https://xhr.spec.whatwg.org/">https://xhr.spec.whatwg.org/</a>
   </dl>
   <h3 class="no-num no-ref heading settled" id="informative"><span class="content">Informative References</span><a class="self-link" href="#informative"></a></h3>
   <dl>
    <dt id="biblio-csp2">[CSP2]
-   <dd>Mike West; Adam Barth; Daniel Veditz. <a href="https://w3c.github.io/webappsec-csp/">Content Security Policy Level 2</a>. URL: <a href="https://w3c.github.io/webappsec-csp/">https://w3c.github.io/webappsec-csp/</a>
+   <dd>Mike West; Adam Barth; Daniel Veditz. <a href="https://www.w3.org/TR/CSP2/">Content Security Policy Level 2</a>. URL: <a href="https://www.w3.org/TR/CSP2/">https://www.w3.org/TR/CSP2/</a>
    <dt id="biblio-iframesandbox">[IFrameSandbox]
    <dd>Mike West. <a href="http://www.html5rocks.com/en/tutorials/security/sandboxed-iframes/">Play safely in sandboxed IFrames</a>. URL: <a href="http://www.html5rocks.com/en/tutorials/security/sandboxed-iframes/">http://www.html5rocks.com/en/tutorials/security/sandboxed-iframes/</a>
    <dt id="biblio-privilegeseparation">[PRIVILEGESEPARATION]
@@ -2349,6 +2425,34 @@ otherwise.</p>
    <dt id="biblio-rfc6454">[RFC6454]
    <dd>A. Barth. <a href="https://tools.ietf.org/html/rfc6454">The Web Origin Concept</a>. December 2011. Proposed Standard. URL: <a href="https://tools.ietf.org/html/rfc6454">https://tools.ietf.org/html/rfc6454</a>
   </dl>
+  <h2 class="no-num no-ref heading settled" id="idl-index"><span class="content">IDL Index</span><a class="self-link" href="#idl-index"></a></h2>
+<pre class="idl highlight def"><span class="kt"><span class="kt">dictionary</span></span> <a class="nv" href="#dictdef-eventinitiator"><span class="nv">EventInitiator</span></a> {
+  <a class="n idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-USVString"><span class="kt"><span class="kt">USVString</span></span></a> <a class="nv" data-default="&quot;&quot;" data-type="USVString " href="#dom-eventinitiator-origin"><span class="nv">origin</span></a> = "";
+  <a class="n idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-USVString"><span class="kt"><span class="kt">USVString</span></span></a>? <a class="nv" data-default="null" data-type="USVString? " href="#dom-eventinitiator-suborigin"><span class="nv">suborigin</span></a> = <span class="kt"><span class="kt">null</span></span>;
+};
+
+<span class="kt"><span class="kt">partial</span></span> <span class="kt"><span class="kt">interface</span></span> <a class="nv idl-code" data-link-type="interface" href="https://html.spec.whatwg.org/multipage/comms.html#messageevent"><span class="nv">MessageEvent</span></a> {
+  USVString? origin;
+  EventInitiator? initiator;
+  void initMessageEvent(DOMString type, optional boolean bubbles = false, optional boolean cancelable = false, optional any data = null, optional EventInitiator initator? = null, optional DOMString lastEventId = "", optional MessageEventSource? source = null, optional sequence<span class=""> ports = []);
+};
+
+</span><span class="kt ">partial</span>  <span class="">  </span><span class="kt ">
+
+</span><span class="kt"><span class="kt ">terface</span></span> <span class="kt"> <span class="">  </span><span class="nv ">erface</span></span><span class="nv "> </span><a class="nv idl-code" data-link-type="interface"><span class="nv ">EventInit</span> :  : <span class="">t</span></a><span class=""> : </span><a class="n" data-link-type="idl-name" href="https://dom.spec.whatwg.org/#dictdef-eventinit"><span class="">: </span><span class="n ">entInit</span></a><span class="n ">it</span>
+  EventInitiator? initiator = null;
+};
+
+<span class="kt">partial</span> <span class="kt">interface</span> <a class="nv idl-code" data-link-type="interface" href="https://html.spec.whatwg.org/multipage/browsers.html#window">Window</a> {
+  <span class="kt">void</span> <a class="nv" href="#dom-window-postmessage"> null;
+};
+
+</a><span class="">(</span><span class="kt"><span class="">any</span></span><span class=""> </span><a class="nv" href="#dom-window-postmessage-message-targetorigin-transfer-message"><span class="">message</span></a><span class="">, </span><a class="n" data-link-type="idl-name" href="#dictdef-eventinitiator"><span class="">EventInitiator</span></a><span class=""> </span><a class="nv" href="#dom-window-postmessage-message-targetorigin-transfer-targetorigin"><span class="">targetOrigin</span></a><span class="">, </span><span class="kt"><span class="">optional</span></span><span class=""> </span><span class="kt"><span class="">sequence</span></span><span class="">&lt;</span><a class="n idl-code" data-link-type="interface" href="https://heycam.github.io/webidl/#idl-object"><span class="kt"><span class="">object</span></span></a><span class="">> </span><a class="nv" href="#dom-window-postmessage-message-targetorigin-transfer-transfer"><span class="">transfer</span></a><span class="">ull;
+};
+
+</span><span class="kt ">;
+
+</span></pre>
   <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
    <div class="issue"> TODO: We probably should add additional examples, or perhaps match an
@@ -2388,9 +2492,6 @@ otherwise.</p>
    <div class="issue"> Currently, some browsers do not let applications redefine getters and
   setters on cookie averse documents. Should the spec enforce that this is
   allowed?<a href="#issue-5a85b2dc"> ↵ </a></div>
-   <div class="issue"> Should both postMessage opt-outs clarify that explicitly setting to
-  the serialized suborigin representation will still work? I.e., applications
-  that are aware of suborigins can use that if they want.<a href="#issue-017c524b"> ↵ </a></div>
    <div class="issue"> TODO(jww,aaj): Provide an example of why this might be needed.<a href="#issue-ec925137"> ↵ </a></div>
    <div class="issue"> TODO: These opt-out descriptions should probably be moved to the
   individual sections where the behaviors are discussed (i.e. postMessage and
@@ -2474,6 +2575,12 @@ otherwise.</p>
     <li><a href="#ref-for-suborigin-policy-1">6.2.1. Cookies</a>
     <li><a href="#ref-for-suborigin-policy-2">6.3. Security Model Opt-Outs</a> <a href="#ref-for-suborigin-policy-3">(2)</a>
     <li><a href="#ref-for-suborigin-policy-4">6.3.3. 'unsafe-cookies'</a>
+   </ul>
+  </aside>
+  <aside class="dfn-panel" data-for="dictdef-eventinitiator">
+   <b><a href="#dictdef-eventinitiator">#dictdef-eventinitiator</a></b><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-dictdef-eventinitiator-1">4.2. postMessage</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="physical-origin">
