@@ -563,41 +563,61 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
     };
   </pre>
 
+  Issue: We're monkey-patching HTML, submit a PR when we're sure this is the
+  general direction we want to go in.
+
   And we extend the definition of the MessageEvent and MessageEventInit as follows:
 
   <pre class="idl">
-    partial interface MessageEvent {
-      USVString? origin;
-      EventInitiator? initiator;
-      void initMessageEvent(DOMString type, optional boolean bubbles = false, optional boolean cancelable = false, optional any data = null, optional EventInitiator initator? = null, optional DOMString lastEventId = "", optional MessageEventSource? source = null, optional sequence&lt;MessagePort&gt; ports = []);
+    interface MessageEvent {
+      readonly attribute USVString? origin;
+      readonly attribute EventInitiator initiator;
+      void initMessageEvent(DOMString type, optional boolean bubbles = false, optional boolean cancelable = false, optional any data = null, optional EventInitiator? initator = null, optional DOMString lastEventId = "", optional MessageEventSource? source = null, optional sequence&lt;MessagePort&gt; ports = []);
     };
 
-    partial interface MessageEventInit : EventInit {
+    dictionary MessageEventInit {
       EventInitiator? initiator = null;
     };
   </pre>
-  
+
   Similarly, we add a new overloaded version of postMessage to the Window interface:
 
   <pre class="idl">
     partial interface Window {
-      void postMessage(any message, EventInitiator targetOrigin, optional sequence&lt;object&gt; transfer = []);
+      void postMessage(any message, optional EventInitiator targetOrigin, optional sequence&lt;object&gt; transfer = []);
     };
   </pre>
 
-  Those new interfaces can also be used to communicate with browsing contexts that
-  aren't in a suborigin namespace. Furthermore, the `origin` attribute of an `MessageEvent`
-  will be `null` (the value, not the string) if the `suborigin` attribute of
-  the event's `initiator` is non-`null`, unless `unsafe-postmessage-receive` was specified
-  for the corresponding suborigin namespace declaration, and it is not possible
-  to use the legacy `postMessage` method to communicate with a browsing context in
-  a suborigin, unless `unsafe-postmessage-send` was specified.
+  Those new interfaces can also be used to communicate with browsing contexts
+  that aren't in a suborigin namespace. Furthermore, the `origin` attribute of
+  an `MessageEvent` will be `null` (the value, not the string) if the
+  `suborigin` attribute of the event's `initiator` is non-`null`, unless either
+  `unsafe-postmessage-receive` or `unsafe-postmessage-send` was specified
+  (depending on whether the context inside the suborigin, or its communication
+   peers don't support this API).
 
   If the `suborigin` attribute of the `EventInitializer` passed to `postMessage` is
   the literal string `*`, it will match any suborigin namespace. Otherwise, the
   suborigin has to match exactly. A browsing context that doesn't specify a
-  suborigin is matched by the value `null`, and not by the empty string.
-    
+  suborigin is matched by the value `null`, and not by the empty string. Again,
+  the restriction that a suborigin namespace is required can be removed via
+  the `unsafe-postmessage-receive` and `unsafe-postmessage-send` options.
+
+  <p class="example">
+    Website authors can use the presence of the EventInitializer constructor to
+    feature detect the presence of these new interfaces. For `postMessage` and
+    `initMessageEvent`, authors can also add a custom `toString` method to the
+    dictionary they pass to it like so:
+
+    <pre>
+      postMessage(data, {
+          'origin': 'http://example.com',
+          'suborigin': '*',
+          'toString': () => { return 'http://example.com' }
+      });
+    </pre>
+  </p>
+
   Issue: TODO(jww): Formalize by updating the <a>postMessage</a> algorithm
 
 
@@ -817,16 +837,18 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
   present in a <a>suborigin policy</a> have the following effects:
 
   ### `'unsafe-postmessage-receive'` ### {#unsafe-postmessage-receive}
-  If `unsafe-postmessage-receive` is set, `MessageEvent`s sent to and from a
+  If `unsafe-postmessage-receive` is set, `MessageEvent`s sent to
   browsing context in the respective suborigin namespace will expose the
   serialization of their physical origin via the `origin` attribute of the
-  `MessageEvent`s.
+  `MessageEvent`s. Browsing context sending `MessageEvent`s to the suborigin
+  do not need to specify a target suborigin.
 
   ### `'unsafe-postmessage-send'` ### {#unsafe-postmessage-send}
   If `unsafe-postmessage-send` is set, the legacy `postMessage` method can
-  be used to communicate with the browsing context in the respective suborigin.
-  The missing suborigin parameter is then interpreted to be a wildcard.
-
+  be used to communicate from within the browsing context in the respective
+  suborigin. The `MessageEvent`s dispatched in response to a `postMessage` from
+  the respective suborigin will expose the serializatoin of the suborigin's
+  physical origin via the `origin` attribute.
 
   ### `'unsafe-cookies'` ### {#unsafe-cookies}
   Normally, a {{Document}} with a non-empty suborigin namespace is
