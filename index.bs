@@ -552,12 +552,72 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
 
   Cross-origin messaging via <a>`postMessage`</a> requires that the recipient be
   able to see the suborigin namespace of the message sender so it can make an
-  appropriate access control decision. When a message is sent from a suborigin
-  namespace, the receiver has the `event.origin` value set to the serialized
-  suborigin value instead of the serializied origin, as described in
-  [[#serializing]]. Additionally, a new `suborigin` property must be added to
-  the `MessageEvent` given to the receiver which contains the suborigin
-  namespace value.
+  appropriate access control decision. We introduce a new dictionary
+  `ExtendedOrigin` that holds information about both the origin and
+  the suborigin namespace:
+
+  <pre class="idl">
+    dictionary ExtendedOrigin {
+      USVString origin = "";
+      USVString? suborigin = null;
+    };
+  </pre>
+
+  Issue: We're monkey-patching HTML, submit a PR when we're sure this is the
+  general direction we want to go in.
+
+  And we extend the definition of the MessageEvent and MessageEventInit as follows:
+
+  <pre class="idl">
+    interface MessageEvent {
+      readonly attribute USVString? origin;
+      readonly attribute ExtendedOrigin extendedOrigin;
+      void initMessageEvent(DOMString type, optional boolean bubbles = false, optional boolean cancelable = false, optional any data = null, optional ExtendedOrigin? extendedOrigin = null, optional DOMString lastEventId = "", optional MessageEventSource? source = null, optional sequence&lt;MessagePort&gt; ports = []);
+    };
+
+    dictionary MessageEventInit {
+      ExtendedOrigin? extendedOrigin = null;
+    };
+  </pre>
+
+  Similarly, we add a new overloaded version of postMessage to the Window interface:
+
+  <pre class="idl">
+    partial interface Window {
+      void postMessage(any message, optional ExtendedOrigin targetOrigin, optional sequence&lt;object&gt; transfer = []);
+    };
+  </pre>
+
+  Those new interfaces can also be used to communicate with browsing contexts
+  that aren't in a suborigin namespace. Furthermore, the `origin` attribute of
+  an `MessageEvent` will be `null` (the value, not the string) if the
+  `suborigin` attribute of the event's `extendedOrigin` is non-`null`, unless
+  either `unsafe-postmessage-receive` or `unsafe-postmessage-send` was
+  specified (depending on whether the context inside the suborigin, or its
+  communication peers don't support this API).
+
+  If the `suborigin` attribute of the `EventInitializer` passed to
+  `postMessage` is the literal string `*`, it will match any suborigin
+  namespace, including if the receiver doesn't have any suborigin. Otherwise,
+  the suborigin has to match exactly. A browsing context that doesn't specify a
+  suborigin is matched by the value `null`, and not by the empty string. Again,
+  the restriction that a suborigin namespace is required can be removed via the
+  `unsafe-postmessage-receive` and `unsafe-postmessage-send` options.
+
+  <p class="example">
+    Website authors can use the presence of the EventInitializer constructor to
+    feature detect the presence of these new interfaces. For `postMessage` and
+    `initMessageEvent`, authors can also add a custom `toString` method to the
+    dictionary they pass to it like so:
+
+    <pre>
+      postMessage(data, {
+          'origin': 'http://example.com',
+          'suborigin': '*',
+          'toString': () => { return 'http://example.com' }
+      });
+    </pre>
+  </p>
 
   Issue: TODO(jww): Formalize by updating the <a>postMessage</a> algorithm
 
@@ -778,58 +838,18 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
   present in a <a>suborigin policy</a> have the following effects:
 
   ### `'unsafe-postmessage-receive'` ### {#unsafe-postmessage-receive}
-  When a message is sent <i>to</i> a
-  frame with a `postMessage` `target` of a serialized physical origin, but not
-  a serialized suborigin, if the frame has an execution context with a
-  suborigin where the scheme, host, and port match the `target`, but it also
-  has a suborigin namespace, if `'unsafe-postmessage-receive'`</a> is set, it
-  will still receive the message.
-
-  <div class="example">
-  `https://example.com` runs a map API at `https://example.com/maps` which is
-  embedded by other websites. It provides a `postMessage()` API to place
-  markers on the map at locations the embedder chooses.
-
-  The developer would like to run `https://example.com/maps` in a suborigin
-  namespace "maps".  However, when embedders send messages to the embedded
-  frame, because they are legacy uses from before the use of suborigins, they
-  send essages with a `target` of `https://example.com`, <em>not</em>
-  `https-so://maps.example.com`. Since the developer would still like this
-  frame to be able to provide the API to these legacy embedders, it can serve
-  the frame with the `'unsafe-postmessage-receive'` directive, which will
-  allow the frame to receive messages on behalf of `https://example.com`, even
-  though it is at `https-so://maps.example.com`.
-  </div>
-
-  Issue: Should both postMessage opt-outs clarify that explicitly setting to
-  the serialized suborigin representation will still work? I.e., applications
-  that are aware of suborigins can use that if they want.
+  If `unsafe-postmessage-receive` is set, `MessageEvent`s sent to
+  browsing context in the respective suborigin namespace will expose the
+  serialization of their physical origin via the `origin` attribute of the
+  `MessageEvent`s. Browsing context sending `MessageEvent`s to the suborigin
+  do not need to specify a target suborigin.
 
   ### `'unsafe-postmessage-send'` ### {#unsafe-postmessage-send}
-  When a message is sent <i>from</i> a
-  suborigin namespace with `'unsafe-postmessage-send'` set, the
-  `event.origin` value of the receiver should be set to the serialized
-  physical origin, not the serialized suborigin value. However, the
-  `event.suborigin` field should still be set to the name of the suborigin
-  namespace.
-
-  <div class="example">
-  Continuing the case in the above example, `https://example.com/maps` is a
-  mapping application that is commonly embedded in other sites. It provides a
-  `postMessage()` based API to place locations of the embedder's choosing on the
-  map. `httsp://example.com` would like to run the application in a suborigin
-  named "maps".
-
-  In response to queries to the API, `https://example.com/maps` may send
-  messages back to the embedder if, for example, a user clicks on one of the
-  locations. However, since the embedder may be legacy and not be aware of
-  suborigins, when it checks the `event.origin` protery of the
-  `MesseageEvent`, if it sees `https-so://maps.example.com` as the origin, it
-  will reject the message as a potential attack. Thus, `https://example.com`
-  may use the `'unsafe-postmessage-send'` directive to allow its messages
-  to appear with the origin of the physical origin, in this case
-  `https://example.com`.
-  </div>
+  If `unsafe-postmessage-send` is set, the legacy `postMessage` method can
+  be used to communicate from within the browsing context in the respective
+  suborigin. The `MessageEvent`s dispatched in response to a `postMessage` from
+  the respective suborigin will expose the serializatoin of the suborigin's
+  physical origin via the `origin` attribute.
 
   ### `'unsafe-cookies'` ### {#unsafe-cookies}
   Normally, a {{Document}} with a non-empty suborigin namespace is
