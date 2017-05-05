@@ -553,11 +553,11 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
   Cross-origin messaging via <a>`postMessage`</a> requires that the recipient be
   able to see the suborigin namespace of the message sender so it can make an
   appropriate access control decision. We introduce a new dictionary
-  `EventInitiator` that holds information about both the origin and
+  `ExtendedOrigin` that holds information about both the origin and
   the suborigin namespace:
 
   <pre class="idl">
-    dictionary EventInitiator {
+    dictionary ExtendedOrigin {
       USVString origin = "";
       USVString? suborigin = null;
     };
@@ -571,12 +571,12 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
   <pre class="idl">
     interface MessageEvent {
       readonly attribute USVString? origin;
-      readonly attribute EventInitiator initiator;
-      void initMessageEvent(DOMString type, optional boolean bubbles = false, optional boolean cancelable = false, optional any data = null, optional EventInitiator? initator = null, optional DOMString lastEventId = "", optional MessageEventSource? source = null, optional sequence&lt;MessagePort&gt; ports = []);
+      readonly attribute ExtendedOrigin extendedOrigin;
+      void initMessageEvent(DOMString type, optional boolean bubbles = false, optional boolean cancelable = false, optional any data = null, optional ExtendedOrigin? extendedOrigin = null, optional DOMString lastEventId = "", optional MessageEventSource? source = null, optional sequence&lt;MessagePort&gt; ports = []);
     };
 
     dictionary MessageEventInit {
-      EventInitiator? initiator = null;
+      ExtendedOrigin? extendedOrigin = null;
     };
   </pre>
 
@@ -584,24 +584,25 @@ spec: XHR; urlPrefix: https://xhr.spec.whatwg.org/
 
   <pre class="idl">
     partial interface Window {
-      void postMessage(any message, optional EventInitiator targetOrigin, optional sequence&lt;object&gt; transfer = []);
+      void postMessage(any message, optional ExtendedOrigin targetOrigin, optional sequence&lt;object&gt; transfer = []);
     };
   </pre>
 
   Those new interfaces can also be used to communicate with browsing contexts
   that aren't in a suborigin namespace. Furthermore, the `origin` attribute of
   an `MessageEvent` will be `null` (the value, not the string) if the
-  `suborigin` attribute of the event's `initiator` is non-`null`, unless either
-  `unsafe-postmessage-receive` or `unsafe-postmessage-send` was specified
-  (depending on whether the context inside the suborigin, or its communication
-   peers don't support this API).
+  `suborigin` attribute of the event's `extendedOrigin` is non-`null`, unless
+  either `unsafe-postmessage-receive` or `unsafe-postmessage-send` was
+  specified (depending on whether the context inside the suborigin, or its
+  communication peers don't support this API).
 
-  If the `suborigin` attribute of the `EventInitializer` passed to `postMessage` is
-  the literal string `*`, it will match any suborigin namespace. Otherwise, the
-  suborigin has to match exactly. A browsing context that doesn't specify a
+  If the `suborigin` attribute of the `EventInitializer` passed to
+  `postMessage` is the literal string `*`, it will match any suborigin
+  namespace, including if the receiver doesn't have any suborigin. Otherwise,
+  the suborigin has to match exactly. A browsing context that doesn't specify a
   suborigin is matched by the value `null`, and not by the empty string. Again,
-  the restriction that a suborigin namespace is required can be removed via
-  the `unsafe-postmessage-receive` and `unsafe-postmessage-send` options.
+  the restriction that a suborigin namespace is required can be removed via the
+  `unsafe-postmessage-receive` and `unsafe-postmessage-send` options.
 
   <p class="example">
     Website authors can use the presence of the EventInitializer constructor to
