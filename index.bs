@@ -5,9 +5,9 @@ ED: https://w3c.github.io/webappsec-suborigins/
 Shortname: suborigins
 Repository: w3c/webappsec-suborigins
 Level: 1
-Editor: Jochen Eisinger, Google Inc., eisinger@google.com
+Editor: Joel Weinberger, Google Inc., https://joelweinberger.us, jww@google.com
 Editor: Devdatta Akhawe, Dropbox Inc., http://devd.me, dev.akhawe@gmail.com
-Former Editor: Joel Weinberger
+Editor: Jochen Eisinger, Google Inc., eisinger@google.com
 Abstract:
   This specification defines a mechanism for programmatically defining origins
   to isolate different applications running in the same physical origin. It
