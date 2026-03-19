@@ -4,7 +4,7 @@ clean:
 	rm -rf ./index.html
 
 index.html: index.bs
-	curl https://api.csswg.org/bikeshed/ -F file=@index.bs -F force=1 > ./index.html
+	curl https://www.w3.org/publications/spec-generator/ -F file=@index.bs -F type=bikeshed-spec -F die-on=nothing > ./index.html
 
 local:
 	bikeshed -f spec index.bs
